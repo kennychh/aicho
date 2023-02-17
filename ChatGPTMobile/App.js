@@ -1,54 +1,90 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Pressable, Alert, TextInput } from "react-native";
-import { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  Alert,
+  TextInput,
+  FlatList,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
+import { useState, useEffect } from "react";
 
 export default function App() {
   const API_URL = "https://chatgpt-api-blue.vercel.app/api";
-  const [input, setInput] = useState("what is chatgpt");
-  const [result, setResult] = useState("");
+  const [input, setInput] = useState("");
+  const [result, setResult] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isResultValid, setResultValid] = useState(false);
+
+  useEffect(() => {
+    if (input != "") {
+      setResultValid(true);
+    } else {
+      setResultValid(false);
+    }
+  }, [input]);
 
   const onSubmit = async () => {
     if (loading) {
       return;
     }
     setLoading(true);
-    setResult("");
+    setInput("");
     try {
       const response = await fetch(`${API_URL}/generate`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ input: input }),
+        body: JSON.stringify({
+          input: input,
+          conversationId: result[0]?.result.conversationId,
+          id: result[0]?.result.id,
+        }),
       });
       const data = await response.json();
-      setResult(data.result);
+      setResult((oldResult) => [data, ...oldResult]);
     } catch (e) {
       Alert.alert("Couldn't generate ideas", e.message);
     } finally {
       setLoading(false);
     }
   };
+
+  const renderItem = ({ item }) => {
+    const text = item.result?.text || "";
+    return <Text>{text}</Text>;
+  };
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
+      <FlatList
+        inverted
+        data={result}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+      />
       <TextInput
         placeholder="Enter prompt"
         style={styles.input}
         value={input}
         onChangeText={(s) => setInput(s)}
       />
-      <Text>{result}</Text>
       <Pressable
         onPress={() => {
           onSubmit();
         }}
         style={styles.button}
+        disabled={!isResultValid}
       >
         <Text style={styles.buttonText}>Generate gift ideas</Text>
       </Pressable>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 const styles = StyleSheet.create({
