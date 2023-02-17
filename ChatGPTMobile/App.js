@@ -1,9 +1,9 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Pressable, Alert } from "react-native";
+import { StyleSheet, Text, View, Pressable, Alert, TextInput } from "react-native";
 import { useState } from "react";
 
 export default function App() {
-  const API_URL = "http://localhost:3000/api";
+  const API_URL = "https://chatgpt-api-blue.vercel.app/api";
   const [input, setInput] = useState("what is chatgpt");
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
@@ -20,7 +20,7 @@ export default function App() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({input: input}),
+        body: JSON.stringify({ input: input }),
       });
       const data = await response.json();
       setResult(data.result);
@@ -30,12 +30,22 @@ export default function App() {
       setLoading(false);
     }
   };
-  console.log(result)
   return (
     <View style={styles.container}>
       <Text>Open up App.js to start working on your app!</Text>
+      <TextInput
+        placeholder="Enter prompt"
+        style={styles.input}
+        value={input}
+        onChangeText={(s) => setInput(s)}
+      />
       <Text>{result}</Text>
-      <Pressable onPress={() => {onSubmit()}} style={styles.button}>
+      <Pressable
+        onPress={() => {
+          onSubmit();
+        }}
+        style={styles.button}
+      >
         <Text style={styles.buttonText}>Generate gift ideas</Text>
       </Pressable>
     </View>
@@ -58,5 +68,16 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontWeight: "bold",
+  },
+  input: {
+    fontSize: 16,
+
+    borderColor: "#353740;",
+    borderWidth: 1,
+    borderRadius: 4,
+
+    padding: 16,
+    marginTop: 6,
+    marginBottom: 12,
   },
 });
