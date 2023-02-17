@@ -32,7 +32,16 @@ export default function App() {
       return;
     }
     setLoading(true);
+    const inputText = {
+      result: {
+        text: input,
+      },
+      isInput: true,
+    };
     setInput("");
+    const res = result[0];
+    setResult((oldResult) => [inputText, ...oldResult]);
+    console.log(inputText);
     try {
       const response = await fetch(`${API_URL}/generate`, {
         method: "POST",
@@ -41,8 +50,8 @@ export default function App() {
         },
         body: JSON.stringify({
           input: input,
-          conversationId: result[0]?.result.conversationId,
-          id: result[0]?.result.id,
+          conversationId: res?.result.conversationId,
+          id: res?.result.id,
         }),
       });
       const data = await response.json();
@@ -56,7 +65,8 @@ export default function App() {
 
   const renderItem = ({ item }) => {
     const text = item.result?.text || "";
-    return <Text>{text}</Text>;
+    const isInput = item.isInput;
+    return <Text style={isInput ? {textAlign: 'right'} : {textAlign: 'left'}}>{text}</Text>;
   };
   return (
     <KeyboardAvoidingView
@@ -67,7 +77,9 @@ export default function App() {
         inverted
         data={result}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => {
+          return item.result.id;
+        }}
       />
       <TextInput
         placeholder="Enter prompt"
