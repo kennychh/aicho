@@ -1,10 +1,11 @@
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, Keyboard } from "react-native";
 import { More, Menu } from "../icons";
+import { HeaderButton } from "./HeaderButton";
 export const Header = () => {
   return (
     <View style={styles.bar}>
       <View style={styles.barIcon}>
-        <Menu />
+      <HeaderButton  icon={Menu} onPress={Keyboard.dismiss}/>
       </View>
       <View style={{ flex: 1, alignItems: "center" }}>
         <Image
@@ -14,7 +15,7 @@ export const Header = () => {
         <Text style={styles.barText}>ChatGPT</Text>
       </View>
       <View style={styles.barIcon}>
-        <More />
+        <HeaderButton  icon={More} onPress={Keyboard.dismiss}/>
       </View>
     </View>
   );
