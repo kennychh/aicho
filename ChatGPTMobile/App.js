@@ -183,11 +183,10 @@ const styles = StyleSheet.create({
   },
   messageContainer: {
     flexDirection: "row",
-    paddingVertical: 24,
+    paddingVertical: 16,
     alignItems: "center",
     paddingHorizontal: 24,
     justifyContent: "center",
-    backgroundColor: "transparent",
   },
   container: {
     flex: 1,
@@ -208,6 +207,7 @@ const styles = StyleSheet.create({
     height: 32,
     justifyContent: "center",
     marginRight: 6,
+    marginVertical: 6,
   },
   buttonText: {
     color: "white",
