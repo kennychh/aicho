@@ -10,6 +10,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
+  Dimensions,
+  Image,
 } from "react-native";
 import { useState, useEffect } from "react";
 import { ArrowUp } from "./icons/ArrowUp";
@@ -20,6 +22,7 @@ export default function App() {
   const [result, setResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isResultValid, setResultValid] = useState(false);
+  const windowWidth = Dimensions.get("window").width;
 
   useEffect(() => {
     if (input != "") {
@@ -69,13 +72,33 @@ export default function App() {
     const text = item.result?.text || "";
     const isInput = item.isInput;
     return (
-      <Text style={isInput ? { textAlign: "right" } : { textAlign: "left" }}>
-        {text}
-      </Text>
+      <View
+        style={[
+          styles.itemContainer,
+          { maxWidth: windowWidth - 120 },
+          isInput
+            ? {
+                marginLeft: "auto",
+                backgroundColor: "#10a37f",
+                fontColor: "white",
+              }
+            : { marginRight: "auto" },
+        ]}
+      >
+        <Text
+          style={[
+            styles.text,
+            isInput ? { color: "white" } : { fontColor: "black" },
+          ]}
+        >
+          {text}
+        </Text>
+      </View>
     );
   };
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar animated={true} />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.componentContainer}
@@ -84,6 +107,7 @@ export default function App() {
           inverted
           data={result}
           renderItem={renderItem}
+          style={{ paddingHorizontal: 24 }}
           keyExtractor={(item) => {
             return item.result.id;
           }}
@@ -100,22 +124,70 @@ export default function App() {
               onPress={() => {
                 onSubmit();
               }}
-              style={styles.button}
+              style={[
+                styles.button,
+                !isResultValid ? { backgroundColor: "transparent" } : {},
+              ]}
               disabled={!isResultValid}
             >
-              <ArrowUp width="18px" height="18px" viewBox="0 0 24 24" />
+              {isResultValid ? (
+                <ArrowUp width="18px" height="18px" viewBox="0 0 24 24" />
+              ) : (
+                <View />
+              )}
             </Pressable>
           </View>
+        </View>
+        <View style={styles.bar}>
+          <Image
+            source={require("./assets/chat-gpt-logo.jpg")}
+            style={styles.icon}
+          />
+          <Text style={styles.barText}>ChatGPT</Text>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
+  barText: {
+    fontSize: 12,
+    marginVertical: 8,
+  },
+  icon: {
+    width: 48,
+    height: 48,
+    borderRadius: "50%",
+  },
+  bar: {
+    position: "absolute",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    borderBottomColor: "#F6F6F6",
+    borderBottomWidth: 1,
+    backgroundColor: "white",
+  },
+  text: {
+    fontSize: 16,
+  },
+  itemContainer: {
+    backgroundColor: "#F7F7F8",
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 24,
+    marginTop: 16,
+    alignSelf: "left",
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   messageContainer: {
     flexDirection: "row",
-    paddingVertical: 16,
+    paddingVertical: 24,
     alignItems: "center",
+    paddingHorizontal: 24,
+    justifyContent: "center",
+    backgroundColor: 'transparent',
   },
   container: {
     flex: 1,
@@ -124,7 +196,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   componentContainer: {
-    paddingHorizontal: 24,
     width: "100%",
     flex: 1,
   },
@@ -133,10 +204,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#10a37f",
     borderRadius: "50%",
     alignItems: "center",
-    width: 40,
-    height: 40,
+    width: 32,
+    height: 32,
     justifyContent: "center",
-    marginRight: 8,
+    marginRight: 6,
   },
   buttonText: {
     color: "white",
@@ -144,9 +215,11 @@ const styles = StyleSheet.create({
   },
   input: {
     fontSize: 16,
-    backgroundColor: '#F6F6F6',
-    borderRadius: '50%',
-    padding: 16,
+    backgroundColor: "#F6F6F6",
+    borderRadius: 32,
+    paddingVertical: 12,
+    paddingLeft: 16,
+    paddingRight: 48,
     flexGrow: 1,
     width: "100%",
     flex: 1,
