@@ -73,6 +73,7 @@ export default function App() {
     const isInput = item.isInput;
     return (
       <View
+        key={item.result.id}
         style={[
           styles.itemContainer,
           { maxWidth: windowWidth - 120 },
@@ -103,6 +104,13 @@ export default function App() {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.componentContainer}
       >
+        <View style={styles.bar}>
+          <Image
+            source={require("./assets/chat-gpt-logo.jpg")}
+            style={styles.icon}
+          />
+          <Text style={styles.barText}>ChatGPT</Text>
+        </View>
         <FlatList
           inverted
           data={result}
@@ -138,13 +146,6 @@ export default function App() {
             </Pressable>
           </View>
         </View>
-        <View style={styles.bar}>
-          <Image
-            source={require("./assets/chat-gpt-logo.jpg")}
-            style={styles.icon}
-          />
-          <Text style={styles.barText}>ChatGPT</Text>
-        </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -160,7 +161,6 @@ const styles = StyleSheet.create({
     borderRadius: "50%",
   },
   bar: {
-    position: "absolute",
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
@@ -178,8 +178,8 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     marginTop: 16,
     alignSelf: "left",
-    alignItems: 'center',
-    justifyContent: 'center'
+    alignItems: "center",
+    justifyContent: "center",
   },
   messageContainer: {
     flexDirection: "row",
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 24,
     justifyContent: "center",
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
   },
   container: {
     flex: 1,
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     borderRadius: 32,
     paddingVertical: 12,
     paddingLeft: 16,
-    paddingRight: 48,
+    paddingRight: 42,
     flexGrow: 1,
     width: "100%",
     flex: 1,
