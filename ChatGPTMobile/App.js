@@ -14,7 +14,9 @@ import {
   Image,
 } from "react-native";
 import { useState, useEffect } from "react";
-import { ArrowUp } from "./icons/ArrowUp";
+import { Send, More, Menu } from "./icons";
+import { Header, MessageList, Input } from "./components";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function App() {
   const API_URL = "https://chatgpt-api-blue.vercel.app/api";
@@ -24,6 +26,41 @@ export default function App() {
   const [isResultValid, setResultValid] = useState(false);
   const windowWidth = Dimensions.get("window").width;
 
+  const storeData = async (value) => {
+    try {
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem("@storage_Key", jsonValue);
+    } catch (e) {
+      // saving error
+      Alert.alert("Couldn't store results", e.message);
+    }
+  };
+
+  const removeData = async () => {
+    try {
+      await AsyncStorage.removeItem("@storage_Key");
+    } catch (e) {
+      // remove error
+    }
+
+    console.log("Done.");
+  };
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const jsonValue = await AsyncStorage.getItem("@storage_Key");
+        const storedRes = jsonValue != null ? JSON.parse(jsonValue) : [];
+        setResult(storedRes);
+      } catch (e) {
+        // error reading value
+        Alert.alert("Couldn't retrieve results", e.message);
+      }
+    };
+
+    getData();
+  }, []);
+
   useEffect(() => {
     if (input != "") {
       setResultValid(true);
@@ -31,6 +68,10 @@ export default function App() {
       setResultValid(false);
     }
   }, [input]);
+
+  useEffect(() => {
+    storeData(result);
+  }, [result]);
 
   const onSubmit = async () => {
     if (loading) {
@@ -67,7 +108,6 @@ export default function App() {
       setLoading(false);
     }
   };
-
   const renderItem = ({ item }) => {
     const text = item.result?.text || "";
     const isInput = item.isInput;
@@ -104,53 +144,23 @@ export default function App() {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.componentContainer}
       >
-        <View style={styles.bar}>
-          <Image
-            source={require("./assets/chat-gpt-logo.jpg")}
-            style={styles.icon}
-          />
-          <Text style={styles.barText}>ChatGPT</Text>
-        </View>
-        <FlatList
-          inverted
-          data={result}
-          renderItem={renderItem}
-          style={{ paddingHorizontal: 24 }}
-          keyExtractor={(item) => {
-            return item.result.id;
-          }}
+        <Header />
+        <MessageList data={result} />
+        <Input
+          input={input}
+          setInput={setInput}
+          onSubmit={onSubmit}
+          isResultValid={isResultValid}
         />
-        <View style={styles.messageContainer}>
-          <TextInput
-            placeholder="Enter prompt"
-            style={styles.input}
-            value={input}
-            onChangeText={(s) => setInput(s)}
-          />
-          <View style={styles.buttonContainer}>
-            <Pressable
-              onPress={() => {
-                onSubmit();
-              }}
-              style={[
-                styles.button,
-                !isResultValid ? { backgroundColor: "transparent" } : {},
-              ]}
-              disabled={!isResultValid}
-            >
-              {isResultValid ? (
-                <ArrowUp width="18px" height="18px" viewBox="0 0 24 24" />
-              ) : (
-                <View />
-              )}
-            </Pressable>
-          </View>
-        </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
+  barIcon: {
+    width: 24,
+    height: 24,
+  },
   barText: {
     fontSize: 12,
     marginVertical: 8,
@@ -163,10 +173,13 @@ const styles = StyleSheet.create({
   bar: {
     alignItems: "center",
     justifyContent: "center",
+    flexDirection: "row",
     width: "100%",
     borderBottomColor: "#F6F6F6",
     borderBottomWidth: 1,
     backgroundColor: "white",
+    alignContent: "space-between",
+    paddingHorizontal: 24,
   },
   text: {
     fontSize: 16,
