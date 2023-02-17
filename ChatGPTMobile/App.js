@@ -9,8 +9,10 @@ import {
   FlatList,
   KeyboardAvoidingView,
   Platform,
+  SafeAreaView,
 } from "react-native";
 import { useState, useEffect } from "react";
+import { ArrowUp } from "./icons/ArrowUp";
 
 export default function App() {
   const API_URL = "https://chatgpt-api-blue.vercel.app/api";
@@ -66,52 +68,75 @@ export default function App() {
   const renderItem = ({ item }) => {
     const text = item.result?.text || "";
     const isInput = item.isInput;
-    return <Text style={isInput ? {textAlign: 'right'} : {textAlign: 'left'}}>{text}</Text>;
+    return (
+      <Text style={isInput ? { textAlign: "right" } : { textAlign: "left" }}>
+        {text}
+      </Text>
+    );
   };
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.container}
-    >
-      <FlatList
-        inverted
-        data={result}
-        renderItem={renderItem}
-        keyExtractor={(item) => {
-          return item.result.id;
-        }}
-      />
-      <TextInput
-        placeholder="Enter prompt"
-        style={styles.input}
-        value={input}
-        onChangeText={(s) => setInput(s)}
-      />
-      <Pressable
-        onPress={() => {
-          onSubmit();
-        }}
-        style={styles.button}
-        disabled={!isResultValid}
+    <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.componentContainer}
       >
-        <Text style={styles.buttonText}>Generate gift ideas</Text>
-      </Pressable>
-    </KeyboardAvoidingView>
+        <FlatList
+          inverted
+          data={result}
+          renderItem={renderItem}
+          keyExtractor={(item) => {
+            return item.result.id;
+          }}
+        />
+        <View style={styles.messageContainer}>
+          <TextInput
+            placeholder="Enter prompt"
+            style={styles.input}
+            value={input}
+            onChangeText={(s) => setInput(s)}
+          />
+          <View style={styles.buttonContainer}>
+            <Pressable
+              onPress={() => {
+                onSubmit();
+              }}
+              style={styles.button}
+              disabled={!isResultValid}
+            >
+              <ArrowUp width="18px" height="18px" viewBox="0 0 24 24" />
+            </Pressable>
+          </View>
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
+  messageContainer: {
+    flexDirection: "row",
+    paddingVertical: 16,
+    alignItems: "center",
+  },
   container: {
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },
+  componentContainer: {
+    paddingHorizontal: 24,
+    width: "100%",
+    flex: 1,
+  },
+  buttonContainer: { marginLeft: "auto" },
   button: {
     backgroundColor: "#10a37f",
-    padding: 16,
-    borderRadius: 4,
+    borderRadius: "50%",
     alignItems: "center",
-    marginVertical: 6,
+    width: 40,
+    height: 40,
+    justifyContent: "center",
+    marginRight: 8,
   },
   buttonText: {
     color: "white",
@@ -119,13 +144,12 @@ const styles = StyleSheet.create({
   },
   input: {
     fontSize: 16,
-
-    borderColor: "#353740;",
-    borderWidth: 1,
-    borderRadius: 4,
-
+    backgroundColor: '#F6F6F6',
+    borderRadius: '50%',
     padding: 16,
-    marginTop: 6,
-    marginBottom: 12,
+    flexGrow: 1,
+    width: "100%",
+    flex: 1,
+    position: "absolute",
   },
 });
