@@ -21,6 +21,7 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [isResultValid, setResultValid] = useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(0)).current;
 
   const storeData = async (value) => {
     try {
@@ -124,6 +125,7 @@ export default function App() {
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
           fadeAnim={fadeAnim}
+          slideAnim={slideAnim}
           animate={animate}
           setAnimate={setAnimate}
         />

@@ -12,6 +12,7 @@ export const MenuModal = ({
   modalVisible,
   setModalVisible,
   fadeAnim,
+  slideAnim,
   animate,
   setAnimate,
 }) => {
@@ -31,11 +32,29 @@ export const MenuModal = ({
     }).start();
   };
 
+  const slideUp = () => {
+    Animated.timing(slideAnim, {
+      toValue: -250,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const slideDown = () => {
+    Animated.timing(slideAnim, {
+      toValue: 0,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
+  };
+
   useEffect(() => {
     if (animate) {
       fadeIn();
+      slideUp();
     } else {
       fadeOut();
+      slideDown();
     }
   }, [animate, modalVisible]);
   return (
@@ -51,21 +70,23 @@ export const MenuModal = ({
           }, 200);
         }}
       >
-        <Animated.View style={[styles.centeredView, { opacity: fadeAnim }]}/>
-        <Animated.View style={styles.modalView}>
-            <Text style={styles.modalText}>Hello World!</Text>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => {
-                setAnimate(false);
-                setTimeout(() => {
-                  setModalVisible(false);
-                }, 200);
-              }}
-            >
-              <Text style={styles.textStyle}>Hide Modal</Text>
-            </Pressable>
-          </Animated.View>
+        <Animated.View style={[styles.centeredView, { opacity: fadeAnim }]} />
+        <Animated.View
+          style={[styles.modalView, { transform: [{ translateY: slideAnim }] }]}
+        >
+          <Text style={styles.modalText}>Hello World!</Text>
+          <Pressable
+            style={[styles.button, styles.buttonClose]}
+            onPress={() => {
+              setAnimate(false);
+              setTimeout(() => {
+                setModalVisible(false);
+              }, 200);
+            }}
+          >
+            <Text style={styles.textStyle}>Hide Modal</Text>
+          </Pressable>
+        </Animated.View>
       </Modal>
     </View>
   );
@@ -84,8 +105,9 @@ const styles = StyleSheet.create({
     padding: 35,
     alignItems: "center",
     width: "100%",
-    position: 'absolute',
-    bottom: 0
+    position: "absolute",
+    bottom: -250,
+    height: 250,
   },
   button: {
     borderRadius: 20,
