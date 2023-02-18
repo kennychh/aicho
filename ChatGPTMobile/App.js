@@ -59,7 +59,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (input != "") {
+    if (input.replace(/\s+/g, "") != "") {
       setResultValid(true);
     } else {
       setResultValid(false);
