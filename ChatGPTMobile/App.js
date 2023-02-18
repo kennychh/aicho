@@ -1,30 +1,30 @@
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
-  Text,
-  View,
-  Pressable,
   Alert,
-  TextInput,
-  FlatList,
   KeyboardAvoidingView,
   Platform,
-  SafeAreaView,
-  Dimensions,
-  Image,
+  Modal,
+  Animated,
 } from "react-native";
-import { useState, useEffect } from "react";
-import { Send, More, Menu } from "./icons";
-import { Header, MessageList, Input } from "./components";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+  SafeAreaProvider,
+} from "react-native-safe-area-context";
+import { useState, useEffect, useRef } from "react";
+import { Header, MessageList, Input, MenuModal } from "./components";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function App() {
   const API_URL = "https://chatgpt-api-blue.vercel.app/api";
   const [input, setInput] = useState("");
   const [result, setResult] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [animate, setAnimate] = useState(true);
   const [loading, setLoading] = useState(false);
   const [isResultValid, setResultValid] = useState(false);
-  const windowWidth = Dimensions.get("window").width;
+  const fadeAnim = useRef(new Animated.Value(0)).current;
 
   const storeData = async (value) => {
     try {
@@ -108,134 +108,42 @@ export default function App() {
       setLoading(false);
     }
   };
-  const renderItem = ({ item }) => {
-    const text = item.result?.text || "";
-    const isInput = item.isInput;
-    return (
-      <View
-        key={item.result.id}
-        style={[
-          styles.itemContainer,
-          { maxWidth: windowWidth - 120 },
-          isInput
-            ? {
-                marginLeft: "auto",
-                backgroundColor: "#10a37f",
-                fontColor: "white",
-              }
-            : { marginRight: "auto" },
-        ]}
-      >
-        <Text
-          style={[
-            styles.text,
-            isInput ? { color: "white" } : { fontColor: "black" },
-          ]}
-        >
-          {text}
-        </Text>
-      </View>
-    );
-  };
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar animated={true} />
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.componentContainer}
-      >
-        <Header />
-        <MessageList data={result} />
-        <Input
-          input={input}
-          setInput={setInput}
-          onSubmit={onSubmit}
-          isResultValid={isResultValid}
+    <SafeAreaProvider style={styles.container}>
+      <SafeAreaView>
+        <StatusBar animated={true} />
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={[styles.componentContainer]}
+        >
+          <Header setModalVisible={setModalVisible} setAnimate={setAnimate} />
+          <MessageList data={result} />
+          <Input
+            input={input}
+            setInput={setInput}
+            onSubmit={onSubmit}
+            isResultValid={isResultValid}
+          />
+        </KeyboardAvoidingView>
+        <MenuModal
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          fadeAnim={fadeAnim}
+          animate={animate}
+          setAnimate={setAnimate}
         />
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 const styles = StyleSheet.create({
-  barIcon: {
-    width: 24,
-    height: 24,
-  },
-  barText: {
-    fontSize: 12,
-    marginVertical: 8,
-  },
-  icon: {
-    width: 48,
-    height: 48,
-    borderRadius: "50%",
-  },
-  bar: {
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "row",
-    width: "100%",
-    borderBottomColor: "#F6F6F6",
-    borderBottomWidth: 1,
-    backgroundColor: "white",
-    alignContent: "space-between",
-    paddingHorizontal: 24,
-  },
-  text: {
-    fontSize: 16,
-  },
-  itemContainer: {
-    backgroundColor: "#F7F7F8",
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 24,
-    marginTop: 16,
-    alignSelf: "left",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  messageContainer: {
-    flexDirection: "row",
-    paddingVertical: 16,
-    alignItems: "center",
-    paddingHorizontal: 24,
-    justifyContent: "center",
-  },
   container: {
-    flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },
   componentContainer: {
     width: "100%",
-    flex: 1,
-  },
-  buttonContainer: { marginLeft: "auto" },
-  button: {
-    backgroundColor: "#10a37f",
-    borderRadius: "50%",
-    alignItems: "center",
-    width: 32,
-    height: 32,
-    justifyContent: "center",
-    marginRight: 6,
-    marginVertical: 6,
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "bold",
-  },
-  input: {
-    fontSize: 16,
-    backgroundColor: "#F6F6F6",
-    borderRadius: 32,
-    paddingVertical: 12,
-    paddingLeft: 16,
-    paddingRight: 42,
-    flexGrow: 1,
-    width: "100%",
-    flex: 1,
-    position: "absolute",
+    height: "100%",
   },
 });
