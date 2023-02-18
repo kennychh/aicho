@@ -3,3 +3,5 @@ export * from "./Input";
 export * from "./MessageList";
 export * from "./Message";
 export * from "./MenuModal";
+export * from "./Button";
+export * from "./PopUpModal";

@@ -1,13 +1,8 @@
-import {
-  Modal,
-  View,
-  Text,
-  Pressable,
-  StyleSheet,
-  Animated,
-} from "react-native";
-import { useEffect, useRef, useState } from "react";
-
+import { View, Text, StyleSheet } from "react-native";
+import { useState, useEffect } from "react";
+import { Delete, Refresh } from "../icons";
+import { Button } from "./Button";
+import { PopUpModal } from "./PopUpModal";
 export const MenuModal = ({
   modalVisible,
   setModalVisible,
@@ -15,118 +10,74 @@ export const MenuModal = ({
   slideAnim,
   animate,
   setAnimate,
+  deleteConvo,
 }) => {
-  const fadeIn = () => {
-    Animated.timing(fadeAnim, {
-      toValue: 0.7,
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  const fadeOut = () => {
-    Animated.timing(fadeAnim, {
-      toValue: 0,
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  const slideUp = () => {
-    Animated.timing(slideAnim, {
-      toValue: -250,
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  const slideDown = () => {
-    Animated.timing(slideAnim, {
-      toValue: 0,
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  useEffect(() => {
-    if (animate) {
-      fadeIn();
-      slideUp();
-    } else {
-      fadeOut();
-      slideDown();
-    }
-  }, [animate, modalVisible]);
+  const [closeModal, setCloseModal] = useState(false);
   return (
-    <View>
-      <Modal
-        animationType="none"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setAnimate(false);
-          setTimeout(() => {
-            setModalVisible(false);
-          }, 200);
-        }}
-      >
-        <Animated.View style={[styles.centeredView, { opacity: fadeAnim }]} />
-        <Animated.View
-          style={[styles.modalView, { transform: [{ translateY: slideAnim }] }]}
-        >
-          <Text style={styles.modalText}>Hello World!</Text>
-          <Pressable
-            style={[styles.button, styles.buttonClose]}
+    <PopUpModal
+      animate={animate}
+      modalVisible={modalVisible}
+      fadeAnim={fadeAnim}
+      slideAnim={slideAnim}
+      setAnimate={setAnimate}
+      setModalVisible={setModalVisible}
+      closeModal={closeModal}
+      setCloseModal={setCloseModal}
+      children={
+        <View style={styles.modalOptionsContainer}>
+          <Button
+            onPress={closeModal}
+            child={
+              <View style={styles.modalOption}>
+                <Refresh />
+                <Text style={styles.modalOptionText}>Refresh Response</Text>
+              </View>
+            }
+          />
+          <View style={styles.modalOptionDivider} />
+          <Button
             onPress={() => {
-              setAnimate(false);
-              setTimeout(() => {
-                setModalVisible(false);
-              }, 200);
+              deleteConvo();
+              setCloseModal(true);
             }}
-          >
-            <Text style={styles.textStyle}>Hide Modal</Text>
-          </Pressable>
-        </Animated.View>
-      </Modal>
-    </View>
+            child={
+              <View style={styles.modalOption}>
+                <Delete stroke={"#FF0000"} />
+                <Text style={[styles.modalOptionText, { color: "#FF0000" }]}>
+                  Delete Conversation
+                </Text>
+              </View>
+            }
+          />
+        </View>
+      }
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    justifyContent: "flex-end",
-    alignItems: "center",
-    backgroundColor: "black",
+  modalOptionText: {
+    paddingLeft: 16,
+    fontSize: 16,
+    alignSelf: "center",
   },
-  modalView: {
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-    alignItems: "center",
+  modalOptionDivider: {
     width: "100%",
-    position: "absolute",
-    bottom: -250,
-    height: 250,
+    height: 1,
+    backgroundColor: "#e0e0e0",
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
+  modalOption: {
+    width: "100%",
+    justifyContent: "center",
+    padding: 16,
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
   },
-  buttonOpen: {
-    backgroundColor: "#F194FF",
-  },
-  buttonClose: {
-    backgroundColor: "#2196F3",
-  },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center",
+  modalOptionsContainer: {
+    marginTop: 16,
+    backgroundColor: "#F6F6F6",
+    width: "100%",
+    borderRadius: 16,
   },
 });

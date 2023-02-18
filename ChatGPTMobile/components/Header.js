@@ -2,6 +2,11 @@ import { StyleSheet, Text, View, Image, Keyboard } from "react-native";
 import { More, Menu } from "../icons";
 import { HeaderButton } from "./HeaderButton";
 export const Header = ({ setModalVisible, setAnimate }) => {
+  const onPress = () => {
+    Keyboard.dismiss();
+    setModalVisible(true);
+    setAnimate(true);
+  };
   return (
     <View style={styles.bar}>
       <View style={styles.barIcon}>
@@ -17,11 +22,7 @@ export const Header = ({ setModalVisible, setAnimate }) => {
       <View style={styles.barIcon}>
         <HeaderButton
           icon={More}
-          onPress={() => {
-            Keyboard.dismiss();
-            setModalVisible(true)
-            setAnimate(true);
-          }}
+          onPress={onPress}
         />
       </View>
     </View>
