@@ -6,12 +6,8 @@ import {
   Platform,
   Modal,
   Animated,
+  SafeAreaView
 } from "react-native";
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-  SafeAreaProvider,
-} from "react-native-safe-area-context";
 import { useState, useEffect, useRef } from "react";
 import { Header, MessageList, Input, MenuModal } from "./components";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -109,12 +105,11 @@ export default function App() {
     }
   };
   return (
-    <SafeAreaProvider style={styles.container}>
-      <SafeAreaView>
-        <StatusBar animated={true} />
+    <SafeAreaView style={styles.container}>
+      <StatusBar animated={true} />
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={[styles.componentContainer]}
+          style={styles.componentContainer}
         >
           <Header setModalVisible={setModalVisible} setAnimate={setAnimate} />
           <MessageList data={result} />
@@ -132,8 +127,7 @@ export default function App() {
           animate={animate}
           setAnimate={setAnimate}
         />
-      </SafeAreaView>
-    </SafeAreaProvider>
+    </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
@@ -141,9 +135,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    flex: 1,
   },
   componentContainer: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    flex: 1,
   },
 });

@@ -7,7 +7,7 @@ export const MessageList = ({data}) => {
         inverted
         data={data}
         renderItem={({ item, index }) => <Message item={item} />}
-        style={{ paddingHorizontal: 24}}
+        style={{ paddingHorizontal: 24,}}
         keyExtractor={(item) => {
           return item.result.id;
         }}

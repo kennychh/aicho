@@ -51,8 +51,8 @@ export const MenuModal = ({
           }, 200);
         }}
       >
-        <Animated.View style={[styles.centeredView, { opacity: fadeAnim }]}>
-          <View style={styles.modalView}>
+        <Animated.View style={[styles.centeredView, { opacity: fadeAnim }]}/>
+        <Animated.View style={styles.modalView}>
             <Text style={styles.modalText}>Hello World!</Text>
             <Pressable
               style={[styles.button, styles.buttonClose]}
@@ -65,8 +65,7 @@ export const MenuModal = ({
             >
               <Text style={styles.textStyle}>Hide Modal</Text>
             </Pressable>
-          </View>
-        </Animated.View>
+          </Animated.View>
       </Modal>
     </View>
   );
@@ -85,6 +84,8 @@ const styles = StyleSheet.create({
     padding: 35,
     alignItems: "center",
     width: "100%",
+    position: 'absolute',
+    bottom: 0
   },
   button: {
     borderRadius: 20,
