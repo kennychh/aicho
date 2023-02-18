@@ -30,7 +30,7 @@ export const MenuModal = ({
             child={
               <View style={styles.modalOption}>
                 <Refresh />
-                <Text style={styles.modalOptionText}>Refresh Response</Text>
+                <Text style={styles.modalOptionText}>Regenerate Response</Text>
               </View>
             }
           />
