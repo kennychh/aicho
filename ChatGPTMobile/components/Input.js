@@ -1,4 +1,5 @@
 import { StyleSheet, View, TouchableOpacity, TextInput } from "react-native";
+import { BlurView } from "expo-blur";
 import { Send } from "../icons";
 export const Input = ({
   input,
@@ -10,30 +11,34 @@ export const Input = ({
 }) => {
   return (
     <View>
-      <View style={[styles.inputBottomBackground, {height: height/2}]} />
+      <View style={[styles.inputBottomBackground, { height: height / 2 }]} />
       <View style={styles.container} onLayout={(event) => onLayout(event)}>
-        <View style={styles.inputContainer}>
-          <View style={{ flex: 1 }}>
-            <TextInput
-              placeholder="Enter prompt"
-              style={styles.input}
-              multiline={true}
-              value={input}
-              onChangeText={(s) => setInput(s)}
-            />
-          </View>
-          <TouchableOpacity
-            onPress={() => {
-              onSubmit();
-            }}
-            style={[
-              styles.button,
-              !isResultValid ? { backgroundColor: "#A3A3A3" } : {},
-            ]}
-            disabled={!isResultValid}
-          >
-            <Send width="18px" height="18px" stroke="#fff" />
-          </TouchableOpacity>
+        <View style={{ overflow: "hidden", borderRadius: 32 }}>
+          <BlurView>
+            <View style={styles.inputContainer}>
+              <View style={{ flex: 1 }}>
+                <TextInput
+                  placeholder="Enter prompt"
+                  style={styles.input}
+                  multiline={true}
+                  value={input}
+                  onChangeText={(s) => setInput(s)}
+                />
+              </View>
+              <TouchableOpacity
+                onPress={() => {
+                  onSubmit();
+                }}
+                style={[
+                  styles.button,
+                  !isResultValid ? { backgroundColor: "#A3A3A3" } : {},
+                ]}
+                disabled={!isResultValid}
+              >
+                <Send width="18px" height="18px" stroke="#fff" />
+              </TouchableOpacity>
+            </View>
+          </BlurView>
         </View>
       </View>
     </View>
@@ -53,7 +58,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: "100%",
     bottom: 0,
-    // backgroundColor: "red",
+    overflow: "hidden",
   },
   inputContainer: {
     flexDirection: "row",
@@ -61,8 +66,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingRight: 6,
     paddingVertical: 6,
-    backgroundColor: "#F6F6F6",
-    borderRadius: 32,
+    backgroundColor: "rgba(235, 235, 235,0.45)",
+    flex: 1,
   },
   button: {
     backgroundColor: "#10a37f",
