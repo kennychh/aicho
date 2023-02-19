@@ -1,41 +1,69 @@
-import { StyleSheet, View, Pressable, TextInput } from "react-native";
+import { StyleSheet, View, TouchableOpacity, TextInput } from "react-native";
 import { Send } from "../icons";
-export const Input = ({ input, setInput, onSubmit, isResultValid }) => {
+export const Input = ({
+  input,
+  setInput,
+  onSubmit,
+  isResultValid,
+  onLayout,
+  height,
+}) => {
   return (
-    <View style={styles.inputContainer}>
-      <TextInput
-        placeholder="Enter prompt"
-        style={styles.input}
-        value={input}
-        onChangeText={(s) => setInput(s)}
-      />
-      <View style={styles.buttonContainer}>
-        <Pressable
-          onPress={() => {
-            onSubmit();
-          }}
-          style={[
-            styles.button,
-            !isResultValid ? { backgroundColor: "#A3A3A3" } : {},
-          ]}
-          disabled={!isResultValid}
-        >
-          <Send width="18px" height="18px" stroke="#fff" />
-        </Pressable>
+    <View>
+      <View style={[styles.inputBottomBackground, {height: height/2}]} />
+      <View style={styles.container} onLayout={(event) => onLayout(event)}>
+        <View style={styles.inputContainer}>
+          <View style={{ flex: 1 }}>
+            <TextInput
+              placeholder="Enter prompt"
+              style={styles.input}
+              multiline={true}
+              value={input}
+              onChangeText={(s) => setInput(s)}
+            />
+          </View>
+          <TouchableOpacity
+            onPress={() => {
+              onSubmit();
+            }}
+            style={[
+              styles.button,
+              !isResultValid ? { backgroundColor: "#A3A3A3" } : {},
+            ]}
+            disabled={!isResultValid}
+          >
+            <Send width="18px" height="18px" stroke="#fff" />
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  inputBottomBackground: {
+    position: "absolute",
+    width: "100%",
+    backgroundColor: "white",
+    bottom: 0,
+  },
+  container: {
+    paddingVertical: 16,
+    paddingHorizontal: 24,
+    position: "absolute",
+    width: "100%",
+    bottom: 0,
+    // backgroundColor: "red",
+  },
   inputContainer: {
     flexDirection: "row",
-    paddingVertical: 16,
+    justifyContent: "flex-end",
     alignItems: "center",
-    paddingHorizontal: 24,
-    justifyContent: "center",
+    paddingRight: 6,
+    paddingVertical: 6,
+    backgroundColor: "#F6F6F6",
+    borderRadius: 32,
   },
-  buttonContainer: { marginLeft: "auto" },
   button: {
     backgroundColor: "#10a37f",
     borderRadius: "50%",
@@ -43,19 +71,14 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     justifyContent: "center",
-    marginRight: 6,
-    marginVertical: 6,
   },
   input: {
     fontSize: 16,
-    backgroundColor: "#F6F6F6",
-    borderRadius: 32,
-    paddingVertical: 12,
-    paddingLeft: 16,
-    paddingRight: 42,
-    flexGrow: 1,
-    width: "100%",
-    flex: 1,
-    position: "absolute",
+    marginRight: 6,
+    marginLeft: 16,
+    alignItems: "center",
+    paddingTop: 0,
+    paddingBottom: 0,
+    paddingRight: 0,
   },
 });
