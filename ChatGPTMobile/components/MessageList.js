@@ -7,9 +7,12 @@ export const MessageList = ({ data, inputOffset }) => {
         inverted
         data={data}
         onScrollBeginDrag={Keyboard.dismiss}
-        contentContainerStyle={{ paddingTop: inputOffset }}
         renderItem={({ item, index }) => <Message item={item} index={index} />}
-        style={{ paddingHorizontal: 24 }}
+        style={{
+          paddingHorizontal: 24,
+          overflow: "visible",
+          marginBottom: inputOffset,
+        }}
         keyExtractor={(item) => {
           return item.result.id;
         }}

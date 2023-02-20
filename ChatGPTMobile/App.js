@@ -140,7 +140,7 @@ export default function App() {
           style={styles.componentContainer}
         >
           <Header onOpen={onOpen} />
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1, overflow: 'hidden' }}>
             <MessageList data={result} inputOffset={inputHeight} />
             <Input
               input={input}
@@ -163,8 +163,7 @@ export default function App() {
 }
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
-    paddingBottom: 0,
+    backgroundColor: "white",
     alignItems: "center",
     justifyContent: "center",
     flex: 1,

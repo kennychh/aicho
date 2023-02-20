@@ -1,4 +1,10 @@
-import { StyleSheet, View, TouchableOpacity, TextInput } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  TextInput,
+  Dimensions,
+} from "react-native";
 import { BlurView } from "expo-blur";
 import { Send } from "../icons";
 export const Input = ({
@@ -9,9 +15,15 @@ export const Input = ({
   onLayout,
   height,
 }) => {
+  const windowWidth = Dimensions.get("window").width;
   return (
     <View>
-      <View style={[styles.inputBottomBackground, { height: height / 2 }]} />
+      <View
+        style={[
+          styles.inputBottomBackground,
+          { height: height / 2, width: windowWidth - 16 },
+        ]}
+      />
       <View style={styles.container} onLayout={(event) => onLayout(event)}>
         <View style={{ overflow: "hidden", borderRadius: 32 }}>
           <BlurView>
@@ -48,7 +60,6 @@ export const Input = ({
 const styles = StyleSheet.create({
   inputBottomBackground: {
     position: "absolute",
-    width: "100%",
     backgroundColor: "white",
     bottom: 0,
   },

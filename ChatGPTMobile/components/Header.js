@@ -49,5 +49,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     alignContent: "space-between",
     paddingHorizontal: 24,
+    zIndex: 1
   },
 });
