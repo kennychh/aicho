@@ -28,23 +28,23 @@ export const Message = ({ item, index }) => {
     }
   };
 
-  const [expandMessage, setExpandMessage] = useState(false);
+  const [expandMessage, setExpandMessage] = useState(index != 0);
 
   const toggleExpandMessage = () => {
     LayoutAnimation.configureNext({
       duration: 200,
-      create: {type: 'easeInEaseOut', property: 'opacity'},
-      update: { type: "easeInEaseOut" },
-      delete: {type: 'easeInEaseOut', property: 'opacity'},
+      create: {type: 'linear', property: 'opacity'},
+      update: {type: 'spring', springDamping: 1},
     });
     setExpandMessage(true);
   };
 
   useEffect(() => {
     if (index == 0) {
-      setTimeout(toggleExpandMessage, 100);
+      setTimeout(toggleExpandMessage, 50);
     }
   }, [containerHeight]);
+
   return (
     <View
       onLayout={(event) => onLayout(event)}
@@ -52,7 +52,7 @@ export const Message = ({ item, index }) => {
         styles.itemContainer,
         {
           maxWidth: windowWidth - 120,
-          bottom: containerHeight,
+          bottom: 32,
         },
         expandMessage ? styles.movedItemContainer : null,
         isInput
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   itemContainer: {
-    backgroundColor: "#F7F7F8",
+    backgroundColor: "#F7F7F7",
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderRadius: 24,

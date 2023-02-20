@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingRight: 6,
     paddingVertical: 6,
-    backgroundColor: "rgba(235, 235, 235,0.45)",
+    backgroundColor: "rgba(235, 235, 235,0.4)",
     flex: 1,
   },
   button: {
