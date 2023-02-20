@@ -20,16 +20,8 @@ export const Message = ({ item, index }) => {
   const text = item.result?.text || "";
   const isInput = item.isInput;
   const windowWidth = Dimensions.get("window").width;
-  const [containerHeight, setContainerHeight] = useState(0);
-  const onLayout = (event) => {
-    const { x, y, height, width } = event.nativeEvent.layout;
-    if (index == 0) {
-      setContainerHeight(height);
-    }
-  };
 
   const [expandMessage, setExpandMessage] = useState(index != 0);
-
   const toggleExpandMessage = () => {
     LayoutAnimation.configureNext({
       duration: 300,
@@ -40,15 +32,13 @@ export const Message = ({ item, index }) => {
   };
 
   useEffect(() => {
-    console.log(containerHeight);
     if (index == 0) {
       setTimeout(toggleExpandMessage, 30);
     }
-  }, [containerHeight]);
+  });
 
   return (
     <View
-      onLayout={index == 0 ? (event) => onLayout(event) : null}
       style={[
         styles.itemContainer,
         {
