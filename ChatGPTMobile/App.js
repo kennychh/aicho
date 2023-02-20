@@ -81,14 +81,27 @@ export default function App() {
     storeData(result);
   }, [result]);
 
+  const generateInputId = () => {
+    const char =
+      "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890";
+    const random = Array.from(
+      { length: 6 },
+      () => char[Math.floor(Math.random() * char.length)]
+    );
+    const randomString = random.join("");
+    return randomString;
+  };
+
   const onSubmit = async () => {
     if (loading) {
       return;
     }
     setLoading(true);
+    const inputId = generateInputId();
     const inputText = {
       result: {
         text: input,
+        id: inputId,
       },
       isInput: true,
     };
@@ -117,7 +130,10 @@ export default function App() {
   };
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={styles.container} edges={['top', 'left', 'right', 'bottom']}>
+      <SafeAreaView
+        style={styles.container}
+        edges={["top", "left", "right", "bottom"]}
+      >
         <StatusBar animated={true} />
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}

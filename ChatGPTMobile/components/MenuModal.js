@@ -61,10 +61,8 @@ const styles = StyleSheet.create({
   },
   modalOption: {
     width: "100%",
-    justifyContent: "center",
     padding: 16,
     flexDirection: "row",
-    justifyContent: "flex-start",
     alignItems: "center",
   },
   modalOptionsContainer: {
