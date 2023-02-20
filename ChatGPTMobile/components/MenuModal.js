@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { Delete, Refresh } from "../icons";
+import { Delete, Refresh, Save } from "../icons";
 import { Modalize } from "react-native-modalize";
 export const MenuModal = ({ deleteConvo, modalizeRef, onClose }) => {
   return (
@@ -15,7 +15,14 @@ export const MenuModal = ({ deleteConvo, modalizeRef, onClose }) => {
         <TouchableOpacity onPress={onClose}>
           <View style={styles.modalOption}>
             <Refresh />
-            <Text style={styles.modalOptionText}>Regenerate Response</Text>
+            <Text style={styles.modalOptionText}>Regenerate response</Text>
+          </View>
+        </TouchableOpacity>
+        <View style={styles.modalOptionDivider} />
+        <TouchableOpacity onPress={onClose}>
+          <View style={styles.modalOption}>
+            <Save />
+            <Text style={styles.modalOptionText}>Pin conversation</Text>
           </View>
         </TouchableOpacity>
         <View style={styles.modalOptionDivider} />
@@ -28,7 +35,7 @@ export const MenuModal = ({ deleteConvo, modalizeRef, onClose }) => {
           <View style={styles.modalOption}>
             <Delete stroke={"#FF0000"} />
             <Text style={[styles.modalOptionText, { color: "#FF0000" }]}>
-              Delete Conversation
+              Delete conversation
             </Text>
           </View>
         </TouchableOpacity>
@@ -57,7 +64,7 @@ const styles = StyleSheet.create({
   modalOptionDivider: {
     width: "100%",
     height: 1,
-    backgroundColor: "#e0e0e0",
+    backgroundColor: "#DBDBDB",
   },
   modalOption: {
     width: "100%",
@@ -68,7 +75,7 @@ const styles = StyleSheet.create({
   modalOptionsContainer: {
     marginTop: 40,
     marginBottom: 52,
-    backgroundColor: "#F6F6F6",
+    backgroundColor: "#EFEFEF",
     width: "100%",
     borderRadius: 16,
   },

@@ -52,7 +52,7 @@ export const Message = ({ item, index }) => {
         styles.itemContainer,
         {
           maxWidth: windowWidth - 120,
-          bottom: containerHeight + 20,
+          bottom: containerHeight,
         },
         expandMessage ? styles.movedItemContainer : null,
         isInput
