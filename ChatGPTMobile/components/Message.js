@@ -23,7 +23,7 @@ export const Message = ({ item, index }) => {
   const [containerHeight, setContainerHeight] = useState(0);
   const onLayout = (event) => {
     const { x, y, height, width } = event.nativeEvent.layout;
-    if (index == 0){
+    if (index == 0) {
       setContainerHeight(height);
     }
   };
@@ -32,22 +32,23 @@ export const Message = ({ item, index }) => {
 
   const toggleExpandMessage = () => {
     LayoutAnimation.configureNext({
-      duration: 200,
-      create: {type: 'linear', property: 'opacity'},
-      update: {type: 'spring', springDamping: 1},
+      duration: 300,
+      create: { type: "linear", property: "opacity" },
+      update: { type: "spring", springDamping: 1 },
     });
     setExpandMessage(true);
   };
 
   useEffect(() => {
+    console.log(containerHeight);
     if (index == 0) {
-      setTimeout(toggleExpandMessage, 50);
+      setTimeout(toggleExpandMessage, 30);
     }
   }, [containerHeight]);
 
   return (
     <View
-      onLayout={(event) => onLayout(event)}
+      onLayout={index == 0 ? (event) => onLayout(event) : null}
       style={[
         styles.itemContainer,
         {

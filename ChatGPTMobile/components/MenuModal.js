@@ -25,7 +25,13 @@ export const MenuModal = ({ deleteConvo, modalizeRef, onClose }) => {
             <Text style={styles.modalOptionText}>Pin conversation</Text>
           </View>
         </TouchableOpacity>
-        <View style={styles.modalOptionDivider} />
+      </View>
+      <View
+        style={[
+          styles.modalOptionsContainer,
+          { marginTop: 16, marginBottom: 52 },
+        ]}
+      >
         <TouchableOpacity
           onPress={() => {
             deleteConvo();
@@ -74,7 +80,6 @@ const styles = StyleSheet.create({
   },
   modalOptionsContainer: {
     marginTop: 40,
-    marginBottom: 52,
     backgroundColor: "#EFEFEF",
     width: "100%",
     borderRadius: 16,
