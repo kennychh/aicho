@@ -7,16 +7,18 @@ import {
   Easing,
   LayoutAnimation,
   UIManager,
+  TouchableOpacity,
 } from "react-native";
+import * as Haptics from "expo-haptics";
 import { useEffect, useRef, useState } from "react";
-
+import { MessageModal } from "./MessageModal";
 if (
   Platform.OS === "android" &&
   UIManager.setLayoutAnimationEnabledExperimental
 ) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
-export const Message = ({ item, index }) => {
+export const Message = ({ item, index, setMessage }) => {
   const text = item.result?.text || "";
   const isInput = item.isInput;
   const windowWidth = Dimensions.get("window").width;
@@ -29,22 +31,36 @@ export const Message = ({ item, index }) => {
       update: { type: "spring", springDamping: 1 },
       delete: { type: "linear", property: "opacity" },
     });
-    setExpandMessage(true);
   };
 
+  const toggleExpandMessage2 = () => {
+    LayoutAnimation.configureNext({
+      duration: 300,
+      create: { type: "linear", property: "opacity" },
+      update: { type: "spring", springDamping: 1 },
+      delete: { type: "linear", property: "opacity" },
+    });
+    setExpandMessage(true);
+  };
   useEffect(() => {
     if (index == 0) {
       toggleExpandMessage();
+      setTimeout(toggleExpandMessage2, 30);
     }
-  });
+  }, []);
 
   return (
-    <View
+    <TouchableOpacity
+      onLongPress={() => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+        setMessage(item);
+      }}
+      delayLongPress={300}
       style={[
         styles.itemContainer,
         {
           maxWidth: windowWidth - 120,
-          bottom: 32,
+          bottom: 64,
         },
         expandMessage ? styles.movedItemContainer : null,
         isInput
@@ -66,7 +82,7 @@ export const Message = ({ item, index }) => {
           {text}
         </Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

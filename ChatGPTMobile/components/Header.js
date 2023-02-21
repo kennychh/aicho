@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View, Image, Keyboard } from "react-native";
 import { More, Menu } from "../icons";
 import { HeaderButton } from "./HeaderButton";
-export const Header = ({ onOpen }) => {
+export const Header = ({ onOpen, modalizeRef }) => {
   const onPress = () => {
     Keyboard.dismiss();
-    onOpen();
+    onOpen(modalizeRef);
   };
   return (
     <View style={styles.bar}>

@@ -8,7 +8,13 @@ import {
 } from "react-native";
 import { useState, useEffect, useRef } from "react";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { Header, MessageList, Input, MenuModal } from "./components";
+import {
+  Header,
+  MessageList,
+  Input,
+  MenuModal,
+  MessageModal,
+} from "./components";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function App() {
@@ -16,20 +22,22 @@ export default function App() {
   const [input, setInput] = useState("");
   const [result, setResult] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(null);
   const [isResultValid, setResultValid] = useState(false);
   const [inputHeight, setInputHeight] = useState(0);
   const modalizeRef = useRef(null);
+  const messageModalizeRef = useRef(null);
 
   const onLayout = (event) => {
     const { x, y, height, width } = event.nativeEvent.layout;
     setInputHeight(height);
   };
 
-  const onOpen = () => {
+  const onOpen = (modalizeRef) => {
     modalizeRef.current?.open();
   };
 
-  const onClose = () => {
+  const onClose = (modalizeRef) => {
     modalizeRef.current?.close();
   };
 
@@ -80,6 +88,13 @@ export default function App() {
   useEffect(() => {
     storeData(result);
   }, [result]);
+
+  useEffect(() => {
+    console.log(message)
+    if (message) {
+      onOpen(messageModalizeRef);
+    }
+  }, [message]);
 
   const generateInputId = () => {
     const char =
@@ -139,9 +154,13 @@ export default function App() {
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={styles.componentContainer}
         >
-          <Header onOpen={onOpen} />
-          <View style={{ flex: 1, overflow: 'hidden' }}>
-            <MessageList data={result} inputOffset={inputHeight} />
+          <Header onOpen={onOpen} modalizeRef={modalizeRef} />
+          <View style={{ flex: 1, overflow: "hidden" }}>
+            <MessageList
+              data={result}
+              inputOffset={inputHeight}
+              setMessage={setMessage}
+            />
             <Input
               input={input}
               setInput={setInput}
@@ -156,6 +175,12 @@ export default function App() {
           deleteConvo={removeData}
           modalizeRef={modalizeRef}
           onClose={onClose}
+        />
+        <MessageModal
+          message={message}
+          modalizeRef={messageModalizeRef}
+          onClose={onClose}
+          setMessage={setMessage}
         />
       </SafeAreaView>
     </SafeAreaProvider>

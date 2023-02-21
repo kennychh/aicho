@@ -1,7 +1,8 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { Delete, Refresh, Save } from "../icons";
+import { Copy, Edit } from "../icons";
 import { Modalize } from "react-native-modalize";
-export const MenuModal = ({ deleteConvo, modalizeRef, onClose }) => {
+export const MessageModal = ({ message, modalizeRef, onClose, setMessage }) => {
+  const isInput = message?.isInput;
   return (
     <Modalize
       ref={modalizeRef}
@@ -10,41 +11,36 @@ export const MenuModal = ({ deleteConvo, modalizeRef, onClose }) => {
       handlePosition={"inside"}
       childrenStyle={styles.childrenStyle}
       adjustToContentHeight={true}
+      onClose={() => setMessage(null)}
     >
-      <View style={styles.modalOptionsContainer}>
-        <TouchableOpacity onPress={() => onClose(modalizeRef)}>
-          <View style={styles.modalOption}>
-            <Refresh />
-            <Text style={styles.modalOptionText}>Regenerate response</Text>
-          </View>
-        </TouchableOpacity>
-        <View style={styles.modalOptionDivider} />
-        <TouchableOpacity onPress={() => onClose(modalizeRef)}>
-          <View style={styles.modalOption}>
-            <Save />
-            <Text style={styles.modalOptionText}>Pin conversation</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-      <View
-        style={[
-          styles.modalOptionsContainer,
-          { marginTop: 16, marginBottom: 52 },
-        ]}
-      >
+      <View style={[styles.modalOptionsContainer, { marginBottom: 52 }]}>
         <TouchableOpacity
           onPress={() => {
-            deleteConvo();
             onClose(modalizeRef);
+            setMessage(null);
           }}
         >
           <View style={styles.modalOption}>
-            <Delete stroke={"#FF0000"} />
-            <Text style={[styles.modalOptionText, { color: "#FF0000" }]}>
-              Delete conversation
-            </Text>
+            <Copy />
+            <Text style={styles.modalOptionText}>Copy</Text>
           </View>
         </TouchableOpacity>
+        {isInput && (
+          <View>
+            <View style={styles.modalOptionDivider} />
+            <TouchableOpacity
+              onPress={() => {
+                onClose(modalizeRef);
+                setMessage(null);
+              }}
+            >
+              <View style={styles.modalOption}>
+                <Edit />
+                <Text style={styles.modalOptionText}>Edit</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     </Modalize>
   );
