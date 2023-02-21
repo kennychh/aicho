@@ -27,13 +27,14 @@ export const Message = ({ item, index }) => {
       duration: 300,
       create: { type: "linear", property: "opacity" },
       update: { type: "spring", springDamping: 1 },
+      delete: { type: "linear", property: "opacity" },
     });
     setExpandMessage(true);
   };
 
   useEffect(() => {
     if (index == 0) {
-      setTimeout(toggleExpandMessage, 30);
+      toggleExpandMessage();
     }
   });
 
