@@ -51,11 +51,12 @@ export const Message = ({ item, index, setMessage }) => {
 
   return (
     <TouchableOpacity
+      delayPressIn={150}
       onLongPress={() => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
         setMessage(item);
       }}
-      delayLongPress={300}
+      delayLongPress={150}
       style={[
         styles.itemContainer,
         {
