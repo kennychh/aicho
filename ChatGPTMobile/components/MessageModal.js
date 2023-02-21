@@ -3,13 +3,22 @@ import { Copy, Edit, Refresh } from "../icons";
 import { Modalize } from "react-native-modalize";
 import * as Clipboard from "expo-clipboard";
 
-export const MessageModal = ({ message, modalizeRef, onClose, setMessage }) => {
+export const MessageModal = ({
+  message,
+  modalizeRef,
+  onClose,
+  setMessage,
+  setRetry,
+}) => {
   const isInput = message?.isInput;
   const isError = message?.isError;
   const text = message?.result?.text || "";
-
   const copyToClipboard = async () => {
     await Clipboard.setStringAsync(text);
+  };
+  const retryInput = {
+    ...message,
+    isError: false,
   };
   return (
     <Modalize
@@ -22,11 +31,12 @@ export const MessageModal = ({ message, modalizeRef, onClose, setMessage }) => {
       onClose={() => setMessage(null)}
     >
       <View style={[styles.modalOptionsContainer, { marginBottom: 52 }]}>
-        {isInput && (
+        {isError && (
           <View>
             <TouchableOpacity
               onPress={() => {
                 onClose(modalizeRef);
+                setRetry(retryInput);
                 setMessage(null);
               }}
             >

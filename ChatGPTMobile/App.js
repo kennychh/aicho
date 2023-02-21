@@ -24,6 +24,7 @@ export default function App() {
   const [result, setResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
+  const [retry, setRetry] = useState(null);
   const [isResultValid, setResultValid] = useState(false);
   const [inputHeight, setInputHeight] = useState(0);
   const modalizeRef = useRef(null);
@@ -57,10 +58,8 @@ export default function App() {
       await AsyncStorage.removeItem("@storage_Key");
       setResult([]);
     } catch (e) {
-      // remove error
+      Alert.alert("Failed to remove conversation", e.message);
     }
-
-    console.log("Done.");
   };
 
   useEffect(() => {
@@ -100,6 +99,16 @@ export default function App() {
     setResult((oldResult) => [errorInput, ...oldResult.slice(1)]);
   }, [errorInput]);
 
+  useEffect(() => {
+    if (retry != null) {
+      setResult((oldResult) => [
+        ...oldResult.filter((message) => message.result.id !== retry.result.id),
+      ]);
+      onSubmit();
+      setRetry(null);
+    }
+  }, [retry]);
+
   const generateInputId = () => {
     const char =
       "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890";
@@ -117,13 +126,16 @@ export default function App() {
     }
     setLoading(true);
     const inputId = generateInputId();
-    const inputText = {
-      result: {
-        text: input,
-        id: inputId,
-      },
-      isInput: true,
-    };
+    const inputText =
+      retry != null
+        ? retry
+        : {
+            result: {
+              text: input,
+              id: inputId,
+            },
+            isInput: true,
+          };
     setInput("");
     const res = result[0];
     setResult((oldResult) => [inputText, ...oldResult]);
@@ -134,7 +146,7 @@ export default function App() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          input: input,
+          input: retry != null ? retry.result?.text : input,
           conversationId: res?.result?.conversationId,
           id: res?.result?.id,
         }),
@@ -143,8 +155,8 @@ export default function App() {
       if (data.error) {
         console.log(data.error.message);
         const errorInputText = {
-          isError: true,
           ...inputText,
+          isError: true,
         };
         setErrorInput(errorInputText);
       } else {
@@ -194,6 +206,7 @@ export default function App() {
           modalizeRef={messageModalizeRef}
           onClose={onClose}
           setMessage={setMessage}
+          setRetry={setRetry}
         />
       </SafeAreaView>
     </SafeAreaProvider>
