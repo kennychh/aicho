@@ -90,7 +90,6 @@ export default function App() {
   }, [result]);
 
   useEffect(() => {
-    console.log(message)
     if (message) {
       onOpen(messageModalizeRef);
     }

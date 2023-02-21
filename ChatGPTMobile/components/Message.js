@@ -60,7 +60,7 @@ export const Message = ({ item, index, setMessage }) => {
         styles.itemContainer,
         {
           maxWidth: windowWidth - 120,
-          bottom: 64,
+          bottom: 32,
         },
         expandMessage ? styles.movedItemContainer : null,
         isInput

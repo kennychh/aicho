@@ -1,8 +1,15 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Copy, Edit } from "../icons";
 import { Modalize } from "react-native-modalize";
+import * as Clipboard from "expo-clipboard";
+
 export const MessageModal = ({ message, modalizeRef, onClose, setMessage }) => {
   const isInput = message?.isInput;
+  const text = message?.result?.text || "";
+
+  const copyToClipboard = async () => {
+    await Clipboard.setStringAsync(text);
+  };
   return (
     <Modalize
       ref={modalizeRef}
@@ -16,6 +23,7 @@ export const MessageModal = ({ message, modalizeRef, onClose, setMessage }) => {
       <View style={[styles.modalOptionsContainer, { marginBottom: 52 }]}>
         <TouchableOpacity
           onPress={() => {
+            copyToClipboard();
             onClose(modalizeRef);
             setMessage(null);
           }}
