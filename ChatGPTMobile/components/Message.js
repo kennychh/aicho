@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import * as Haptics from "expo-haptics";
 import { useEffect, useRef, useState } from "react";
-import { MessageModal } from "./MessageModal";
+import { Alert } from "../icons";
 if (
   Platform.OS === "android" &&
   UIManager.setLayoutAnimationEnabledExperimental
@@ -21,9 +21,11 @@ if (
 export const Message = ({ item, index, setMessage }) => {
   const text = item.result?.text || "";
   const isInput = item.isInput;
+  const isError = item.isError;
   const windowWidth = Dimensions.get("window").width;
 
   const [expandMessage, setExpandMessage] = useState(index != 0);
+
   const toggleExpandMessage = () => {
     LayoutAnimation.configureNext({
       duration: 300,
@@ -58,36 +60,56 @@ export const Message = ({ item, index, setMessage }) => {
       }}
       delayLongPress={150}
       style={[
-        styles.itemContainer,
-        {
-          maxWidth: windowWidth - 120,
-          bottom: 32,
-        },
+        styles.messageContainer,
+        { bottom: 32 },
         expandMessage ? styles.movedItemContainer : null,
-        isInput
-          ? {
-              marginLeft: "auto",
-              backgroundColor: "#10a37f",
-              fontColor: "white",
-            }
-          : { marginRight: "auto" },
       ]}
     >
-      <View>
-        <Text
-          style={[
-            styles.text,
-            isInput ? { color: "white" } : { fontColor: "black" },
-          ]}
-        >
-          {text}
-        </Text>
+      <View
+        style={[
+          styles.itemContainer,
+          {
+            maxWidth: windowWidth - 120,
+          },
+          isInput
+            ? {
+                marginLeft: "auto",
+                backgroundColor: "#10a37f",
+                fontColor: "white",
+              }
+            : { marginRight: "auto" },
+        ]}
+      >
+        <View>
+          <Text
+            style={[
+              styles.text,
+              isInput ? { color: "white" } : { fontColor: "black" },
+            ]}
+          >
+            {text}
+          </Text>
+        </View>
       </View>
+      {isError && (
+        <View style={styles.alertIcon}>
+          <Alert />
+        </View>
+      )}
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
+  alertIcon: {
+    marginTop: 16,
+    marginLeft: 8,
+  },
+  messageContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   text: {
     fontSize: 16,
   },
@@ -103,5 +125,8 @@ const styles = StyleSheet.create({
   },
   movedItemContainer: {
     bottom: 0,
+  },
+  movedErrorContainer: {
+    right: 0,
   },
 });

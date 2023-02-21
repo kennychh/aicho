@@ -21,7 +21,7 @@ export const MessageList = ({ data, inputOffset, setMessage }) => {
           marginBottom: inputOffset,
         }}
         keyExtractor={(item) => {
-          return item.result.id;
+          return item.result?.id;
         }}
       />
     </View>

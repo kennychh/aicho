@@ -9,7 +9,7 @@ export const Header = ({ onOpen, modalizeRef }) => {
   return (
     <View style={styles.bar}>
       <View style={styles.barIcon}>
-        <HeaderButton icon={<Menu />} onPress={Keyboard.dismiss} />
+        <HeaderButton icon={<Menu stroke={'transparent'}/>} onPress={Keyboard.dismiss} />
       </View>
       <View style={{ flex: 1, alignItems: "center" }}>
         <Image

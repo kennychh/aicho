@@ -20,6 +20,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function App() {
   const API_URL = "https://chatgpt-api-blue.vercel.app/api";
   const [input, setInput] = useState("");
+  const [errorInput, setErrorInput] = useState("");
   const [result, setResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
@@ -95,6 +96,10 @@ export default function App() {
     }
   }, [message]);
 
+  useEffect(() => {
+    setResult((oldResult) => [errorInput, ...oldResult.slice(1)]);
+  }, [errorInput]);
+
   const generateInputId = () => {
     const char =
       "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890";
@@ -130,14 +135,23 @@ export default function App() {
         },
         body: JSON.stringify({
           input: input,
-          conversationId: res?.result.conversationId,
-          id: res?.result.id,
+          conversationId: res?.result?.conversationId,
+          id: res?.result?.id,
         }),
       });
       const data = await response.json();
-      setResult((oldResult) => [data, ...oldResult]);
+      if (data.error) {
+        console.log(data.error.message);
+        const errorInputText = {
+          isError: true,
+          ...inputText,
+        };
+        setErrorInput(errorInputText);
+      } else {
+        setResult((oldResult) => [data, ...oldResult]);
+      }
     } catch (e) {
-      Alert.alert("Couldn't generate ideas", e.message);
+      Alert.alert("Error occured", e.message);
     } finally {
       setLoading(false);
     }
