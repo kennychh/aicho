@@ -28,7 +28,7 @@ export const Input = ({
         <View style={{ overflow: "hidden", borderRadius: 32 }}>
           <BlurView>
             <View style={styles.inputContainer}>
-              <View style={{ flex: 1 }}>
+              <View style={{ flex: 1, paddingTop: 12, paddingBottom: 12 }}>
                 <TextInput
                   placeholder="Enter prompt"
                   style={styles.input}
@@ -76,9 +76,9 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     alignItems: "center",
     paddingRight: 6,
-    paddingVertical: 6,
     backgroundColor: "rgba(235, 235, 235,0.4)",
     flex: 1,
+    maxHeight: 160,
   },
   button: {
     backgroundColor: "#10a37f",
@@ -95,6 +95,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 0,
     paddingBottom: 0,
-    paddingRight: 0,
+    paddingRight: 6,
   },
 });
