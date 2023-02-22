@@ -90,11 +90,10 @@ const styles = StyleSheet.create({
   },
   input: {
     fontSize: 16,
-    marginRight: 6,
     marginLeft: 16,
     alignItems: "center",
     paddingTop: 0,
     paddingBottom: 0,
-    paddingRight: 6,
+    paddingRight: 6
   },
 });

@@ -164,6 +164,11 @@ export default function App() {
       }
     } catch (e) {
       Alert.alert("Error occured", e.message);
+      const errorInputText = {
+        ...inputText,
+        isError: true,
+      };
+      setErrorInput(errorInputText);
     } finally {
       setLoading(false);
     }

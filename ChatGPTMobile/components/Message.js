@@ -28,7 +28,7 @@ export const Message = ({ item, index, setMessage }) => {
 
   const toggleExpandMessage = () => {
     LayoutAnimation.configureNext({
-      duration: 300,
+      duration: 400,
       create: { type: "linear", property: "opacity" },
       update: { type: "spring", springDamping: 1 },
       delete: { type: "linear", property: "opacity" },
@@ -37,7 +37,7 @@ export const Message = ({ item, index, setMessage }) => {
 
   const toggleExpandMessage2 = () => {
     LayoutAnimation.configureNext({
-      duration: 300,
+      duration: 400,
       create: { type: "linear", property: "opacity" },
       update: { type: "spring", springDamping: 1 },
       delete: { type: "linear", property: "opacity" },
@@ -47,7 +47,7 @@ export const Message = ({ item, index, setMessage }) => {
   useEffect(() => {
     if (index == 0) {
       toggleExpandMessage();
-      setTimeout(toggleExpandMessage2, 30);
+      setTimeout(toggleExpandMessage2, 10);
     }
   }, []);
 
