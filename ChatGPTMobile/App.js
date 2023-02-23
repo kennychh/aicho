@@ -20,7 +20,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function App() {
   const API_URL = "https://chatgpt-api-blue.vercel.app/api";
   const [input, setInput] = useState("");
-  const [errorInput, setErrorInput] = useState("");
   const [result, setResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
@@ -96,10 +95,6 @@ export default function App() {
   }, [message]);
 
   useEffect(() => {
-    setResult((oldResult) => [errorInput, ...oldResult.slice(1)]);
-  }, [errorInput]);
-
-  useEffect(() => {
     if (retry != null) {
       setResult((oldResult) => [
         ...oldResult.filter((message) => message.result.id !== retry.result.id),
@@ -137,7 +132,7 @@ export default function App() {
             isInput: true,
           };
     setInput("");
-    const res = result[0];
+    const res = retry && result.length > 1 ? result[1] : result[0];
     setResult((oldResult) => [inputText, ...oldResult]);
     try {
       const response = await fetch(`${API_URL}/generate`, {
@@ -158,7 +153,7 @@ export default function App() {
           ...inputText,
           isError: true,
         };
-        setErrorInput(errorInputText);
+        setResult((oldResult) => [errorInputText, ...oldResult.slice(1)]);
       } else {
         setResult((oldResult) => [data, ...oldResult]);
       }
@@ -168,7 +163,7 @@ export default function App() {
         ...inputText,
         isError: true,
       };
-      setErrorInput(errorInputText);
+      setResult((oldResult) => [errorInputText, ...oldResult.slice(1)]);
     } finally {
       setLoading(false);
     }
