@@ -8,3 +8,4 @@ export * from "./Save";
 export * from "./Copy";
 export * from "./Edit";
 export * from "./Alert";
+export * from "./Plus";

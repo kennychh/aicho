@@ -22,6 +22,7 @@ export default function App() {
   const [input, setInput] = useState("");
   const [result, setResult] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const [message, setMessage] = useState(null);
   const [retry, setRetry] = useState(null);
   const [isResultValid, setResultValid] = useState(false);
@@ -154,6 +155,7 @@ export default function App() {
           isError: true,
         };
         setResult((oldResult) => [errorInputText, ...oldResult.slice(1)]);
+        setError(true);
       } else {
         setResult((oldResult) => [data, ...oldResult]);
       }
@@ -164,6 +166,7 @@ export default function App() {
         isError: true,
       };
       setResult((oldResult) => [errorInputText, ...oldResult.slice(1)]);
+      setError(true);
     } finally {
       setLoading(false);
     }
@@ -193,6 +196,7 @@ export default function App() {
               isResultValid={isResultValid}
               onLayout={onLayout}
               height={inputHeight}
+              error={error}
             />
           </View>
         </KeyboardAvoidingView>
@@ -207,6 +211,7 @@ export default function App() {
           onClose={onClose}
           setMessage={setMessage}
           setRetry={setRetry}
+          setError={setError}
         />
       </SafeAreaView>
     </SafeAreaProvider>

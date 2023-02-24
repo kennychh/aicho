@@ -14,6 +14,7 @@ export const Input = ({
   isResultValid,
   onLayout,
   height,
+  error,
 }) => {
   const windowWidth = Dimensions.get("window").width;
   return (
@@ -43,9 +44,9 @@ export const Input = ({
                 }}
                 style={[
                   styles.button,
-                  !isResultValid ? { backgroundColor: "#A3A3A3" } : {},
+                  !isResultValid || error ? { backgroundColor: "#A3A3A3" } : {},
                 ]}
-                disabled={!isResultValid}
+                disabled={!isResultValid || error}
               >
                 <Send width="18px" height="18px" stroke="#fff" />
               </TouchableOpacity>
@@ -94,6 +95,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 0,
     paddingBottom: 0,
-    paddingRight: 6
+    paddingRight: 6,
   },
 });

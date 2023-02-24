@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { Delete, Refresh, Save } from "../icons";
+import { Delete, Plus, Save } from "../icons";
 import { Modalize } from "react-native-modalize";
 export const MenuModal = ({ deleteConvo, modalizeRef, onClose }) => {
   return (
@@ -14,8 +14,8 @@ export const MenuModal = ({ deleteConvo, modalizeRef, onClose }) => {
       <View style={styles.modalOptionsContainer}>
         <TouchableOpacity onPress={() => onClose(modalizeRef)}>
           <View style={styles.modalOption}>
-            <Refresh />
-            <Text style={styles.modalOptionText}>Regenerate response</Text>
+            <Plus />
+            <Text style={styles.modalOptionText}>New chat</Text>
           </View>
         </TouchableOpacity>
         <View style={styles.modalOptionDivider} />
