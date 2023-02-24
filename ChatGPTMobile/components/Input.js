@@ -6,17 +6,58 @@ import {
   Dimensions,
 } from "react-native";
 import { BlurView } from "expo-blur";
-import { Send } from "../icons";
+import { Send, Refresh, Loading } from "../icons";
 export const Input = ({
   input,
   setInput,
   onSubmit,
+  loading,
   isResultValid,
   onLayout,
   height,
   error,
+  result,
 }) => {
   const windowWidth = Dimensions.get("window").width;
+  const showSendIcon = isResultValid;
+  const showRefreshIcon =
+    (!isResultValid && !loading && result.length > 0) || error;
+  const showLoadingIcon = loading;
+
+  const showInputIcon = () => {
+    if (showRefreshIcon) {
+      return <Refresh width="18px" height="18px" stroke="#fff" />;
+    } else if (showLoadingIcon) {
+      return <Loading width="18px" height="18px" stroke="#fff" />;
+    } else if (showSendIcon) {
+      return <Send width="18px" height="18px" stroke="#fff" />;
+    }
+    return <Send width="18px" height="18px" stroke="#fff" />;
+  };
+  const getInputIconColor = () => {
+    if (showLoadingIcon || (result.length == 0 && !isResultValid)) {
+      return { backgroundColor: "#A3A3A3" };
+    } else if (showRefreshIcon || showSendIcon) {
+      return {};
+    }
+    return {};
+  };
+
+  const getInputDisabled = () => {
+    if (showLoadingIcon || error) {
+      return true;
+    } else if (showRefreshIcon || showSendIcon) {
+      return false;
+    }
+    return false;
+  };
+
+  const getInputOnPress = () => {
+    if (isResultValid) {
+      onSubmit();
+    }
+  };
+
   return (
     <View>
       <View
@@ -27,7 +68,7 @@ export const Input = ({
       />
       <View style={styles.container} onLayout={(event) => onLayout(event)}>
         <View style={{ overflow: "hidden", borderRadius: 32 }}>
-          <BlurView>
+          <BlurView style={{ flexDirection: "row", alignItems: "center" }}>
             <View style={styles.inputContainer}>
               <View style={{ flex: 1, paddingTop: 12, paddingBottom: 12 }}>
                 <TextInput
@@ -40,15 +81,12 @@ export const Input = ({
               </View>
               <TouchableOpacity
                 onPress={() => {
-                  onSubmit();
+                  getInputOnPress();
                 }}
-                style={[
-                  styles.button,
-                  !isResultValid || error ? { backgroundColor: "#A3A3A3" } : {},
-                ]}
-                disabled={!isResultValid || error}
+                style={[styles.button, getInputIconColor()]}
+                disabled={getInputDisabled()}
               >
-                <Send width="18px" height="18px" stroke="#fff" />
+                {showInputIcon()}
               </TouchableOpacity>
             </View>
           </BlurView>
@@ -80,6 +118,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(235, 235, 235,0.4)",
     flex: 1,
     maxHeight: 160,
+    borderRadius: "50%",
   },
   button: {
     backgroundColor: "#10a37f",
@@ -88,6 +127,14 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     justifyContent: "center",
+  },
+  regenerateButton: {
+    borderRadius: "50%",
+    alignItems: "center",
+    width: 44,
+    height: 44,
+    justifyContent: "center",
+    // backgroundColor: "rgba(235, 235, 235,0.4)",
   },
   input: {
     fontSize: 16,

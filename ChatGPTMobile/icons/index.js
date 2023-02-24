@@ -9,3 +9,4 @@ export * from "./Copy";
 export * from "./Edit";
 export * from "./Alert";
 export * from "./Plus";
+export * from "./Loading";

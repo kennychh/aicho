@@ -62,25 +62,8 @@ export const MessageModal = ({
             <Text style={styles.modalOptionText}>Copy</Text>
           </View>
         </TouchableOpacity>
-        {!isInput && (
-          <View>
-            <View style={styles.modalOptionDivider} />
-            <TouchableOpacity
-              onPress={() => {
-                onClose(modalizeRef);
-                setMessage(null);
-              }}
-            >
-              <View style={styles.modalOption}>
-                <Refresh />
-                <Text style={styles.modalOptionText}>Regenerate Response</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        )}
         {isInput && (
           <View>
-            <View style={styles.modalOptionDivider} />
             <TouchableOpacity
               onPress={() => {
                 onClose(modalizeRef);

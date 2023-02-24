@@ -194,10 +194,12 @@ export default function App() {
               input={input}
               setInput={setInput}
               onSubmit={onSubmit}
+              loading={loading}
               isResultValid={isResultValid}
               onLayout={onLayout}
               height={inputHeight}
               error={error}
+              result={result}
             />
           </View>
         </KeyboardAvoidingView>
