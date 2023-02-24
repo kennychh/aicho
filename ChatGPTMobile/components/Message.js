@@ -29,18 +29,18 @@ export const Message = ({ item, index, setMessage }) => {
   const toggleExpandMessage = () => {
     LayoutAnimation.configureNext({
       duration: 400,
-      create: { type: "linear", property: "opacity" },
+      create: { type: "easeInEaseOut", property: "opacity" },
       update: { type: "spring", springDamping: 1 },
-      delete: { type: "linear", property: "opacity" },
+      delete: { type: "easeInEaseOut", property: "opacity" },
     });
   };
 
   const toggleExpandMessage2 = () => {
     LayoutAnimation.configureNext({
       duration: 400,
-      create: { type: "linear", property: "opacity" },
+      create: { type: "easeInEaseOut", property: "opacity" },
       update: { type: "spring", springDamping: 1 },
-      delete: { type: "linear", property: "opacity" },
+      delete: { type: "easeInEaseOut", property: "opacity" },
     });
     setExpandMessage(true);
   };

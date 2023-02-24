@@ -57,6 +57,7 @@ export default function App() {
     try {
       await AsyncStorage.removeItem("@storage_Key");
       setResult([]);
+      setError(false);
     } catch (e) {
       Alert.alert("Failed to remove conversation", e.message);
     }
