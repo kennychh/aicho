@@ -6,7 +6,7 @@ import {
   Dimensions,
 } from "react-native";
 import { BlurView } from "expo-blur";
-import { Send, Refresh, Loading } from "../icons";
+import { Send, Refresh, Loading, Close } from "../icons";
 export const Input = ({
   input,
   setInput,
@@ -81,6 +81,9 @@ export const Input = ({
         <View style={{ overflow: "hidden", borderRadius: 32 }}>
           <BlurView style={{ flexDirection: "row", alignItems: "center" }}>
             <View style={styles.inputContainer}>
+              {/* <TouchableOpacity style={styles.closeIcon}>
+                <Close width="18px" height="18px" />
+              </TouchableOpacity> */}
               <View style={{ flex: 1, paddingTop: 12, paddingBottom: 12 }}>
                 <TextInput
                   placeholder={error ? "Regenerate response" : "Enter prompt"}
@@ -140,13 +143,10 @@ const styles = StyleSheet.create({
     height: 32,
     justifyContent: "center",
   },
-  regenerateButton: {
+  closeIcon: {
     borderRadius: "50%",
     alignItems: "center",
-    width: 44,
-    height: 44,
-    justifyContent: "center",
-    // backgroundColor: "rgba(235, 235, 235,0.4)",
+    marginLeft: 12,
   },
   input: {
     fontSize: 16,
