@@ -19,9 +19,9 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 export const Message = ({ item, index, setMessage }) => {
-  const text = item.result?.text || "";
-  const isInput = item.isInput;
-  const isError = item.isError;
+  const text = item?.result?.text || "";
+  const isInput = item?.isInput;
+  const isError = item?.isError;
   const windowWidth = Dimensions.get("window").width;
 
   const [expandMessage, setExpandMessage] = useState(index != 0);
@@ -31,7 +31,6 @@ export const Message = ({ item, index, setMessage }) => {
       duration: 400,
       create: { type: "easeInEaseOut", property: "opacity" },
       update: { type: "spring", springDamping: 1 },
-      delete: { type: "easeInEaseOut", property: "opacity" },
     });
   };
 
@@ -40,7 +39,6 @@ export const Message = ({ item, index, setMessage }) => {
       duration: 400,
       create: { type: "easeInEaseOut", property: "opacity" },
       update: { type: "spring", springDamping: 1 },
-      delete: { type: "easeInEaseOut", property: "opacity" },
     });
     setExpandMessage(true);
   };
@@ -65,6 +63,11 @@ export const Message = ({ item, index, setMessage }) => {
         expandMessage ? styles.movedItemContainer : null,
       ]}
     >
+      {isError && !isInput && (
+        <View style={[styles.alertIcon, { marginLeft: 0, marginRight: 8 }]}>
+          <Alert />
+        </View>
+      )}
       <View
         style={[
           styles.itemContainer,
@@ -91,7 +94,7 @@ export const Message = ({ item, index, setMessage }) => {
           </Text>
         </View>
       </View>
-      {isError && (
+      {isError && isInput && (
         <View style={styles.alertIcon}>
           <Alert />
         </View>

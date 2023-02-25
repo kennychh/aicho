@@ -25,6 +25,7 @@ export default function App() {
   const [error, setError] = useState(false);
   const [message, setMessage] = useState(null);
   const [retry, setRetry] = useState(null);
+  const [regen, setRegen] = useState(false);
   const [isResultValid, setResultValid] = useState(false);
   const [inputHeight, setInputHeight] = useState(0);
   const modalizeRef = useRef(null);
@@ -88,6 +89,7 @@ export default function App() {
 
   useEffect(() => {
     storeData(result);
+    setError(result[0]?.isError);
   }, [result]);
 
   useEffect(() => {
@@ -106,6 +108,13 @@ export default function App() {
     }
   }, [retry]);
 
+  useEffect(() => {
+    if (regen) {
+      onSubmit();
+      setRegen(false);
+    }
+  }, [regen]);
+
   const generateInputId = () => {
     const char =
       "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890";
@@ -117,25 +126,43 @@ export default function App() {
     return randomString;
   };
 
+  const getResult = (result) => {
+    if (regen && result.length > 1) {
+      return result[1];
+    } else if (retry && result.length > 1) {
+      return result[1];
+    }
+    return result[0];
+  };
+
+  const getInput = (res) => {
+    const inputId = generateInputId();
+    if (regen) {
+      return res;
+    } else if (retry != null) {
+      return retry;
+    }
+    return {
+      result: {
+        text: input,
+        id: inputId,
+      },
+      isInput: true,
+    };
+  };
+
   const onSubmit = async () => {
     if (loading) {
       return;
     }
     setLoading(true);
-    const inputId = generateInputId();
-    const inputText =
-      retry != null
-        ? retry
-        : {
-            result: {
-              text: input,
-              id: inputId,
-            },
-            isInput: true,
-          };
+    const res = getResult(result);
+    const inputText = getInput(res);
+    if (!regen) {
+      setResult((oldResult) => [inputText, ...oldResult]);
+    }
+    regenId = result.length > 2 ? result[2]?.result?.id : null;
     setInput("");
-    const res = retry && result.length > 1 ? result[1] : result[0];
-    setResult((oldResult) => [inputText, ...oldResult]);
     try {
       const response = await fetch(`${API_URL}/generate`, {
         method: "POST",
@@ -143,22 +170,49 @@ export default function App() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          input: retry != null ? retry.result?.text : input,
+          input:
+            retry != null
+              ? retry.result?.text
+              : regen
+              ? inputText.result?.text
+              : input,
           conversationId: res?.result?.conversationId,
-          id: res?.result?.id,
+          id: regen ? regenId : res?.result?.id,
         }),
       });
       const data = await response.json();
       if (data.error) {
-        console.log(data.error.message);
         const errorInputText = {
           ...inputText,
           isError: true,
         };
-        setResult((oldResult) => [errorInputText, ...oldResult.slice(1)]);
+        if (!regen) {
+          setResult((oldResult) => [errorInputText, ...oldResult.slice(1)]);
+        } else {
+          setResult((oldResult) => [
+            { ...oldResult[0], isError: true },
+            inputText,
+            ...oldResult.slice(2),
+          ]);
+        }
         setError(true);
       } else {
-        setResult((oldResult) => [data, ...oldResult]);
+        if (!error && regen) {
+          setResult((oldResult) => [
+            data,
+            { ...oldResult[1], isError: false },
+            ...oldResult.slice(2),
+          ]);
+        } else if (regen) {
+          print("regen", "error: ", error);
+          setResult((oldResult) => [
+            data,
+            { ...oldResult[1], isError: false },
+            ...oldResult,
+          ]);
+        } else {
+          setResult((oldResult) => [data, ...oldResult]);
+        }
       }
     } catch (e) {
       Alert.alert("Error occured", e.message);
@@ -166,7 +220,15 @@ export default function App() {
         ...inputText,
         isError: true,
       };
-      setResult((oldResult) => [errorInputText, ...oldResult.slice(1)]);
+      if (!regen) {
+        setResult((oldResult) => [errorInputText, ...oldResult.slice(1)]);
+      } else {
+        setResult((oldResult) => [
+          { ...oldResult[0], isError: true },
+          inputText,
+          ...oldResult.slice(2),
+        ]);
+      }
       setError(true);
     } finally {
       setLoading(false);
@@ -200,6 +262,9 @@ export default function App() {
               height={inputHeight}
               error={error}
               result={result}
+              setRegen={setRegen}
+              setError={setError}
+              setRetry={setRetry}
             />
           </View>
         </KeyboardAvoidingView>

@@ -1,7 +1,7 @@
 import { FlatList, View, Keyboard } from "react-native";
 import { useRef } from "react";
 import { Message } from "./Message";
-export const MessageList = ({ data, inputOffset, setMessage }) => {
+export const MessageList = ({ data, inputOffset, setMessage, regen }) => {
   return (
     <View style={{ flex: 1, width: "100%" }}>
       <FlatList
@@ -13,6 +13,7 @@ export const MessageList = ({ data, inputOffset, setMessage }) => {
             item={item}
             index={index}
             setMessage={setMessage}
+            regen={regen}
           />
         )}
         style={{
@@ -21,7 +22,7 @@ export const MessageList = ({ data, inputOffset, setMessage }) => {
           marginBottom: inputOffset,
         }}
         keyExtractor={(item) => {
-          return item.result?.id;
+          return item?.result?.id;
         }}
       />
     </View>

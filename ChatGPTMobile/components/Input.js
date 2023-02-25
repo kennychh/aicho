@@ -17,6 +17,9 @@ export const Input = ({
   height,
   error,
   result,
+  setRegen,
+  setError,
+  setRetry,
 }) => {
   const windowWidth = Dimensions.get("window").width;
   const showSendIcon = isResultValid;
@@ -44,7 +47,9 @@ export const Input = ({
   };
 
   const getInputDisabled = () => {
-    if (showLoadingIcon || error) {
+    if (showRefreshIcon && error) {
+      return false;
+    } else if (showLoadingIcon || error) {
       return true;
     } else if (showRefreshIcon || showSendIcon) {
       return false;
@@ -53,7 +58,13 @@ export const Input = ({
   };
 
   const getInputOnPress = () => {
-    if (isResultValid) {
+    if (showRefreshIcon && !result[0]?.isInput) {
+      setRegen(true);
+      setError(false);
+    } else if (showRefreshIcon) {
+      setRetry({ ...result[0], isError: false });
+      setError(false);
+    } else if (isResultValid) {
       onSubmit();
     }
   };
@@ -72,10 +83,11 @@ export const Input = ({
             <View style={styles.inputContainer}>
               <View style={{ flex: 1, paddingTop: 12, paddingBottom: 12 }}>
                 <TextInput
-                  placeholder="Enter prompt"
+                  placeholder={error ? "Regenerate response" : "Enter prompt"}
                   style={styles.input}
                   multiline={true}
                   value={input}
+                  editable={!error}
                   onChangeText={(s) => setInput(s)}
                 />
               </View>

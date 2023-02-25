@@ -32,7 +32,7 @@ export const MessageModal = ({
       onClose={() => setMessage(null)}
     >
       <View style={[styles.modalOptionsContainer, { marginBottom: 52 }]}>
-        {isError && (
+        {/* {isError && (
           <View>
             <TouchableOpacity
               onPress={() => {
@@ -49,7 +49,7 @@ export const MessageModal = ({
             </TouchableOpacity>
             <View style={styles.modalOptionDivider} />
           </View>
-        )}
+        )} */}
         <TouchableOpacity
           onPress={() => {
             copyToClipboard();
@@ -64,6 +64,7 @@ export const MessageModal = ({
         </TouchableOpacity>
         {isInput && (
           <View>
+            <View style={styles.modalOptionDivider} />
             <TouchableOpacity
               onPress={() => {
                 onClose(modalizeRef);
