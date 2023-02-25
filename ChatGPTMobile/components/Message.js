@@ -8,6 +8,7 @@ import {
   LayoutAnimation,
   UIManager,
   TouchableOpacity,
+  Keyboard,
 } from "react-native";
 import * as Haptics from "expo-haptics";
 import { useEffect, useRef, useState } from "react";
@@ -53,6 +54,7 @@ export const Message = ({ item, index, setMessage }) => {
     <TouchableOpacity
       delayPressIn={150}
       onLongPress={() => {
+        Keyboard.dismiss();
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
         setMessage(item);
       }}

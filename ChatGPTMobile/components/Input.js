@@ -6,13 +6,16 @@ import {
   Dimensions,
 } from "react-native";
 import { BlurView } from "expo-blur";
+import { useEffect } from "react";
 import { Send, Refresh, Loading, Close } from "../icons";
 export const Input = ({
+  textInputRef,
   input,
   setInput,
   onSubmit,
   loading,
   isResultValid,
+  editMessage,
   onLayout,
   height,
   error,
@@ -20,6 +23,7 @@ export const Input = ({
   setRegen,
   setError,
   setRetry,
+  setEditMessage,
 }) => {
   const windowWidth = Dimensions.get("window").width;
   const showSendIcon = isResultValid;
@@ -81,11 +85,20 @@ export const Input = ({
         <View style={{ overflow: "hidden", borderRadius: 32 }}>
           <BlurView style={{ flexDirection: "row", alignItems: "center" }}>
             <View style={styles.inputContainer}>
-              {/* <TouchableOpacity style={styles.closeIcon}>
-                <Close width="18px" height="18px" />
-              </TouchableOpacity> */}
+              {editMessage && (
+                <TouchableOpacity
+                  style={styles.closeIcon}
+                  onPress={() => {
+                    setEditMessage(null);
+                    setInput("");
+                  }}
+                >
+                  <Close width="18px" height="18px" />
+                </TouchableOpacity>
+              )}
               <View style={{ flex: 1, paddingTop: 12, paddingBottom: 12 }}>
                 <TextInput
+                  ref={textInputRef}
                   placeholder={error ? "Regenerate response" : "Enter prompt"}
                   style={styles.input}
                   multiline={true}
@@ -97,6 +110,7 @@ export const Input = ({
               <TouchableOpacity
                 onPress={() => {
                   getInputOnPress();
+                  setEditMessage(null);
                 }}
                 style={[styles.button, getInputIconColor()]}
                 disabled={getInputDisabled()}

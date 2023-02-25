@@ -27,9 +27,11 @@ export default function App() {
   const [retry, setRetry] = useState(null);
   const [regen, setRegen] = useState(false);
   const [isResultValid, setResultValid] = useState(false);
+  const [editMessage, setEditMessage] = useState(null);
   const [inputHeight, setInputHeight] = useState(0);
   const modalizeRef = useRef(null);
   const messageModalizeRef = useRef(null);
+  const textInputRef = useRef(null);
 
   const onLayout = (event) => {
     const { x, y, height, width } = event.nativeEvent.layout;
@@ -141,6 +143,14 @@ export default function App() {
       return res;
     } else if (retry != null) {
       return retry;
+    } else if (editMessage != null) {
+      return {
+        result: {
+          text: input,
+          id: editMessage?.result?.id,
+        },
+        isInput: true,
+      };
     }
     return {
       result: {
@@ -158,7 +168,15 @@ export default function App() {
     setLoading(true);
     const res = getResult(result);
     const inputText = getInput(res);
-    if (!regen) {
+    if (editMessage != null) {
+      editMessageIndex = result.findIndex(
+        (message) => message.result?.id == inputText?.result?.id
+      );
+      setResult((oldResult) => [
+        inputText,
+        ...oldResult.slice(editMessageIndex + 1),
+      ]);
+    } else if (!regen) {
       setResult((oldResult) => [inputText, ...oldResult]);
     }
     regenId = result.length > 2 ? result[2]?.result?.id : null;
@@ -253,8 +271,8 @@ export default function App() {
               setMessage={setMessage}
             />
             <Input
+              textInputRef={textInputRef}
               input={input}
-              setInput={setInput}
               onSubmit={onSubmit}
               loading={loading}
               isResultValid={isResultValid}
@@ -262,9 +280,12 @@ export default function App() {
               height={inputHeight}
               error={error}
               result={result}
+              editMessage={editMessage}
               setRegen={setRegen}
               setError={setError}
               setRetry={setRetry}
+              setEditMessage={setEditMessage}
+              setInput={setInput}
             />
           </View>
         </KeyboardAvoidingView>
@@ -278,8 +299,9 @@ export default function App() {
           modalizeRef={messageModalizeRef}
           onClose={onClose}
           setMessage={setMessage}
-          setRetry={setRetry}
-          setError={setError}
+          setEditMessage={setEditMessage}
+          textInputRef={textInputRef}
+          setInput={setInput}
         />
       </SafeAreaView>
     </SafeAreaProvider>

@@ -4,12 +4,13 @@ import { Modalize } from "react-native-modalize";
 import * as Clipboard from "expo-clipboard";
 
 export const MessageModal = ({
+  textInputRef,
   message,
   modalizeRef,
   onClose,
   setMessage,
-  setRetry,
-  setError,
+  setEditMessage,
+  setInput,
 }) => {
   const isInput = message?.isInput;
   const isError = message?.isError;
@@ -68,7 +69,10 @@ export const MessageModal = ({
             <TouchableOpacity
               onPress={() => {
                 onClose(modalizeRef);
+                textInputRef.current.focus();
                 setMessage(null);
+                setEditMessage(message);
+                setInput(text);
               }}
             >
               <View style={styles.modalOption}>

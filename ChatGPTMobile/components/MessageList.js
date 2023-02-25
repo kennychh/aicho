@@ -7,6 +7,7 @@ export const MessageList = ({ data, inputOffset, setMessage, regen }) => {
       <FlatList
         inverted
         data={data}
+        keyboardShouldPersistTaps="always"
         onScrollBeginDrag={Keyboard.dismiss}
         renderItem={({ item, index }) => (
           <Message
