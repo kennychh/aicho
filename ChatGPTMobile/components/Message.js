@@ -74,7 +74,7 @@ export const Message = ({ item, index, setMessage }) => {
         style={[
           styles.itemContainer,
           {
-            maxWidth: windowWidth - 120,
+            maxWidth: windowWidth - 100,
           },
           isInput
             ? {

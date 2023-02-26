@@ -100,7 +100,7 @@ export const Input = ({
                 <TextInput
                   ref={textInputRef}
                   placeholder={error ? "Regenerate response" : "Enter prompt"}
-                  style={styles.input}
+                  style={[styles.input, editMessage ? {marginLeft: 8} : {}]}
                   multiline={true}
                   value={input}
                   editable={!error}
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
   },
   container: {
     paddingVertical: 16,
-    paddingHorizontal: 24,
+    paddingHorizontal: 16,
     position: "absolute",
     width: "100%",
     bottom: 0,
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     paddingRight: 6,
     backgroundColor: "rgba(235, 235, 235,0.4)",
     flex: 1,
-    maxHeight: 160,
+    maxHeight: 120,
     borderRadius: "50%",
   },
   button: {

@@ -18,7 +18,7 @@ export const MessageList = ({ data, inputOffset, setMessage, regen }) => {
           />
         )}
         style={{
-          paddingHorizontal: 24,
+          paddingHorizontal: 16,
           overflow: "visible",
           marginBottom: inputOffset,
         }}

@@ -108,7 +108,7 @@ export const DrawerContent = ({
 const styles = StyleSheet.create({
   drawerOptions: {
     padding: 16,
-    marginRight: 12,
+    marginRight: 16,
     marginBottom: 8,
     flexDirection: "row",
     flex: 1,
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   drawerDivider: {
     height: 1,
     backgroundColor: "#DBDBDB",
-    marginRight: 12,
+    marginRight: 16,
   },
   drawerConversationsTitle: {
     fontSize: 18,
@@ -139,12 +139,12 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: "white",
-    marginVertical: 12,
-    marginLeft: 12,
+    marginVertical: 16,
+    marginLeft: 16,
   },
   componentContainer: {
     width: "100%",
     height: "100%",
-    paddingRight: 12,
+    paddingRight: 16,
   },
 });
