@@ -44,10 +44,10 @@ https://user-images.githubusercontent.com/48639878/221440407-e34dfb8b-e3fb-4c7c-
 
 Provide an error warning and the ability to regnererate your response.
 
-https://user-images.githubusercontent.com/48639878/221440516-21b33696-12f8-4025-ac2f-9b3d4e3c8e31.mp4
-
-
-https://user-images.githubusercontent.com/48639878/221440579-3ff412b5-0e4d-40df-b726-bf63d0a0ca38.mp4
+<p float="left">
+  <img src="https://user-images.githubusercontent.com/48639878/221440516-21b33696-12f8-4025-ac2f-9b3d4e3c8e31.mp4"/>
+  <img src="https://user-images.githubusercontent.com/48639878/221440579-3ff412b5-0e4d-40df-b726-bf63d0a0ca38.mp4"/>
+</p>
 
 ## Beautiful UI 
 
