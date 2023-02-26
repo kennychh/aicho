@@ -28,7 +28,7 @@ export const Input = ({
   const windowWidth = Dimensions.get("window").width;
   const showSendIcon = isResultValid;
   const showRefreshIcon =
-    (!isResultValid && !loading && result.length > 0) || error;
+    (!isResultValid && !loading && result?.length > 0) || error;
   const showLoadingIcon = loading;
 
   const showInputIcon = () => {
@@ -42,7 +42,7 @@ export const Input = ({
     return <Send width="18px" height="18px" stroke="#fff" />;
   };
   const getInputIconColor = () => {
-    if (showLoadingIcon || (result.length == 0 && !isResultValid)) {
+    if (showLoadingIcon || (result?.length == 0 && !isResultValid)) {
       return { backgroundColor: "#A3A3A3" };
     } else if (showRefreshIcon || showSendIcon) {
       return {};

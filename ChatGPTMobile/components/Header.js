@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Image, Keyboard } from "react-native";
 import { More, Menu } from "../icons";
 import { HeaderButton } from "./HeaderButton";
-export const Header = ({ onOpen, modalizeRef }) => {
+export const Header = ({ onOpen, modalizeRef, navigation }) => {
   const onPress = () => {
     Keyboard.dismiss();
     onOpen(modalizeRef);
@@ -9,7 +9,7 @@ export const Header = ({ onOpen, modalizeRef }) => {
   return (
     <View style={styles.bar}>
       <View style={styles.barIcon}>
-        <HeaderButton icon={<Menu stroke={'transparent'}/>} onPress={Keyboard.dismiss} />
+        <HeaderButton icon={<Menu />} onPress={() => navigation.openDrawer()} />
       </View>
       <View style={{ flex: 1, alignItems: "center" }}>
         <Image
@@ -49,6 +49,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     alignContent: "space-between",
     paddingHorizontal: 24,
-    zIndex: 1
+    zIndex: 1,
   },
 });

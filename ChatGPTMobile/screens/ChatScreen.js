@@ -17,10 +17,19 @@ import {
 } from "../components";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const ChatScreen = () => {
+export const ChatScreen = ({
+  navigation,
+  chats,
+  index,
+  chatValue,
+  chatIndex,
+  setChatIndex,
+  setChatValue,
+  clearConversation,
+}) => {
   const API_URL = "https://chatgpt-api-blue.vercel.app/api";
   const [input, setInput] = useState("");
-  const [result, setResult] = useState([]);
+  const result = chats[index];
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [message, setMessage] = useState(null);
@@ -56,30 +65,31 @@ export const ChatScreen = () => {
     }
   };
 
-  const removeData = async () => {
-    try {
-      await AsyncStorage.removeItem("@storage_Key");
-      setResult([]);
-      setError(false);
-    } catch (e) {
-      Alert.alert("Failed to remove conversation", e.message);
-    }
+  const removeData = () => {
+    clearConversation(chatIndex);
+    // try {
+    //   await AsyncStorage.removeItem("@storage_Key");
+    //   setChatValue([]);
+    //   setError(false);
+    // } catch (e) {
+    //   Alert.alert("Failed to remove conversation", e.message);
+    // }
   };
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const jsonValue = await AsyncStorage.getItem("@storage_Key");
-        const storedRes = jsonValue != null ? JSON.parse(jsonValue) : [];
-        setResult(storedRes);
-      } catch (e) {
-        // error reading value
-        Alert.alert("Couldn't retrieve results", e.message);
-      }
-    };
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     try {
+  //       const jsonValue = await AsyncStorage.getItem("@storage_Key");
+  //       const storedRes = jsonValue != null ? JSON.parse(jsonValue) : [];
+  //       setChatValue(storedRes);
+  //     } catch (e) {
+  //       // error reading value
+  //       Alert.alert("Couldn't retrieve results", e.message);
+  //     }
+  //   };
 
-    getData();
-  }, []);
+  //   getData();
+  // }, []);
 
   useEffect(() => {
     if (input.replace(/\s+/g, "") != "") {
@@ -90,11 +100,6 @@ export const ChatScreen = () => {
   }, [input]);
 
   useEffect(() => {
-    storeData(result);
-    setError(result[0]?.isError);
-  }, [result]);
-
-  useEffect(() => {
     if (message) {
       onOpen(messageModalizeRef);
     }
@@ -102,7 +107,7 @@ export const ChatScreen = () => {
 
   useEffect(() => {
     if (retry != null) {
-      setResult((oldResult) => [
+      setChatValue((oldResult) => [
         ...oldResult.filter((message) => message.result.id !== retry.result.id),
       ]);
       onSubmit();
@@ -134,9 +139,9 @@ export const ChatScreen = () => {
           (message) => message.result?.id == editMessage?.result?.id
         )
       : 0;
-    if (regen && result.length > 1) {
+    if (regen && result?.length > 1) {
       return result[1];
-    } else if (retry && result.length > 1) {
+    } else if (retry && result?.length > 1) {
       return result[1];
     } else if (editMessage != null && editMessageIndex >= 1) {
       result[editMessageIndex + 1];
@@ -181,14 +186,14 @@ export const ChatScreen = () => {
     const res = getResult(result);
     const inputText = getInput(res);
     if (editMessage != null) {
-      setResult((oldResult) => [
+      setChatValue((oldResult) => [
         inputText,
         ...oldResult.slice(editMessageIndex + 1),
       ]);
     } else if (!regen) {
-      setResult((oldResult) => [inputText, ...oldResult]);
+      setChatValue((oldResult) => [inputText, ...oldResult]);
     }
-    regenId = result.length > 2 ? result[2]?.result?.id : null;
+    regenId = result?.length > 2 ? result[2]?.result?.id : null;
     setInput("");
     try {
       const response = await fetch(`${API_URL}/generate`, {
@@ -214,9 +219,9 @@ export const ChatScreen = () => {
           isError: true,
         };
         if (!regen) {
-          setResult((oldResult) => [errorInputText, ...oldResult.slice(1)]);
+          setChatValue((oldResult) => [errorInputText, ...oldResult.slice(1)]);
         } else {
-          setResult((oldResult) => [
+          setChatValue((oldResult) => [
             { ...oldResult[0], isError: true },
             inputText,
             ...oldResult.slice(2),
@@ -225,20 +230,20 @@ export const ChatScreen = () => {
         setError(true);
       } else {
         if (!error && regen) {
-          setResult((oldResult) => [
+          setChatValue((oldResult) => [
             data,
             { ...oldResult[1], isError: false },
             ...oldResult.slice(2),
           ]);
         } else if (regen) {
           print("regen", "error: ", error);
-          setResult((oldResult) => [
+          setChatValue((oldResult) => [
             data,
             { ...oldResult[1], isError: false },
             ...oldResult,
           ]);
         } else {
-          setResult((oldResult) => [data, ...oldResult]);
+          setChatValue((oldResult) => [data, ...oldResult]);
         }
       }
     } catch (e) {
@@ -248,9 +253,9 @@ export const ChatScreen = () => {
         isError: true,
       };
       if (!regen) {
-        setResult((oldResult) => [errorInputText, ...oldResult.slice(1)]);
+        setChatValue((oldResult) => [errorInputText, ...oldResult.slice(1)]);
       } else {
-        setResult((oldResult) => [
+        setChatValue((oldResult) => [
           { ...oldResult[0], isError: true },
           inputText,
           ...oldResult.slice(2),
@@ -272,7 +277,11 @@ export const ChatScreen = () => {
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={styles.componentContainer}
         >
-          <Header onOpen={onOpen} modalizeRef={modalizeRef} />
+          <Header
+            onOpen={onOpen}
+            modalizeRef={modalizeRef}
+            navigation={navigation}
+          />
           <View style={{ flex: 1, overflow: "hidden" }}>
             <MessageList
               data={result}
