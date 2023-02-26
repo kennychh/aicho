@@ -84,10 +84,10 @@ export const DrawerContent = ({
           <Moon style={styles.chatItemIcon} />
           <Text style={styles.chatItemText}>Dark mode</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.drawerOptions}>
+        {/* <TouchableOpacity style={styles.drawerOptions}>
           <Settings style={styles.chatItemIcon} />
           <Text style={styles.chatItemText}>Settings</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity
           style={styles.drawerOptions}
           onPress={() => {
