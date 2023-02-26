@@ -151,7 +151,7 @@ export const ChatScreen = ({
     } else if (retry && result?.length > 1) {
       return result[1];
     } else if (editMessage != null && editMessageIndex >= 1) {
-      result[editMessageIndex + 1];
+      return result[editMessageIndex + 1];
     }
     return result[0];
   };
