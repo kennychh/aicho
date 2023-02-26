@@ -78,6 +78,7 @@ export default function App() {
             setChatIndex={setChatIndex}
             chatIndex={chatIndex}
             setChats={setChats}
+            setDeleteChat={setDeleteChat}
           />
         )}
         initialRouteName="Chat"

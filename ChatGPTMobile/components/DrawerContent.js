@@ -15,6 +15,7 @@ export const DrawerContent = ({
   setChatIndex,
   chatIndex,
   setChats,
+  setDeleteChat,
 }) => {
   const navigation = props.navigation;
   const [selectedItem, setSelectedItem] = useState(chatIndex);
@@ -47,7 +48,7 @@ export const DrawerContent = ({
       scrollEnabled={false}
     >
       <View style={styles.drawerConversationsTitleContainer}>
-        <Text style={styles.drawerConversationsTitle}>Conversations</Text>
+        <Text style={styles.drawerConversationsTitle}>ChatGPT</Text>
       </View>
       <View style={{ maxHeight: 400 }}>
         <FlatList
@@ -90,6 +91,7 @@ export const DrawerContent = ({
         <TouchableOpacity
           style={styles.drawerOptions}
           onPress={() => {
+            setDeleteChat(true);
             setChats([[]]);
             setChatIndex(0);
             navigation.closeDrawer();
@@ -120,7 +122,7 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   drawerConversationsTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "500",
   },
   drawerConversationsTitleContainer: {
@@ -131,7 +133,7 @@ const styles = StyleSheet.create({
   chatItemIcon: { marginRight: 16 },
   chatItem: {
     padding: 16,
-    borderRadius: 8,
+    borderRadius: 16,
     marginBottom: 8,
     flexDirection: "row",
     flex: 1,
