@@ -33,21 +33,17 @@ https://user-images.githubusercontent.com/48639878/221440366-d9eb6bdf-64c3-41aa-
 
 It will even retain previous information!
 
-https://user-images.githubusercontent.com/48639878/221440322-efb86880-60d0-49c8-8eb3-587348d18c7a.mp4
-
-
-
-https://user-images.githubusercontent.com/48639878/221440407-e34dfb8b-e3fb-4c7c-a6b1-fbf848ef1978.mp4
+Edit input | Edit with retained info
+--- | ---
+<video src="https://user-images.githubusercontent.com/48639878/221440322-efb86880-60d0-49c8-8eb3-587348d18c7a.mp4"/> | <video src="https://user-images.githubusercontent.com/48639878/221440407-e34dfb8b-e3fb-4c7c-a6b1-fbf848ef1978.mp4"/>
 
 
 ### Error/Network handling
 
 Provide an error warning and the ability to regnererate your response.
-
-<p float="left">
-  <img src="https://user-images.githubusercontent.com/48639878/221440516-21b33696-12f8-4025-ac2f-9b3d4e3c8e31.mp4"/>
-  <img src="https://user-images.githubusercontent.com/48639878/221440579-3ff412b5-0e4d-40df-b726-bf63d0a0ca38.mp4"/>
-</p>
+Regenerate response error | Input error
+--- | ---
+<video src="https://user-images.githubusercontent.com/48639878/221440516-21b33696-12f8-4025-ac2f-9b3d4e3c8e31.mp4"/> | <video src="https://user-images.githubusercontent.com/48639878/221440579-3ff412b5-0e4d-40df-b726-bf63d0a0ca38.mp4"/>
 
 ## Beautiful UI 
 
