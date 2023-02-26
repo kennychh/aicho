@@ -129,10 +129,17 @@ export default function App() {
   };
 
   const getResult = (result) => {
+    const editMessageIndex = editMessage
+      ? result.findIndex(
+          (message) => message.result?.id == editMessage?.result?.id
+        )
+      : 0;
     if (regen && result.length > 1) {
       return result[1];
     } else if (retry && result.length > 1) {
       return result[1];
+    } else if (editMessage != null && editMessageIndex >= 1) {
+      result[editMessageIndex + 1];
     }
     return result[0];
   };
@@ -166,12 +173,14 @@ export default function App() {
       return;
     }
     setLoading(true);
+    const editMessageIndex = editMessage
+      ? result.findIndex(
+          (message) => message.result?.id == editMessage?.result?.id
+        )
+      : 0;
     const res = getResult(result);
     const inputText = getInput(res);
     if (editMessage != null) {
-      editMessageIndex = result.findIndex(
-        (message) => message.result?.id == inputText?.result?.id
-      );
       setResult((oldResult) => [
         inputText,
         ...oldResult.slice(editMessageIndex + 1),
