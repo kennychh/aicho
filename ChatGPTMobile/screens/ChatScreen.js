@@ -26,6 +26,7 @@ export const ChatScreen = ({
   setChatIndex,
   setChatValue,
   clearConversation,
+  setChats,
 }) => {
   const API_URL = "https://chatgpt-api-blue.vercel.app/api";
   const [input, setInput] = useState("");
@@ -69,7 +70,7 @@ export const ChatScreen = ({
     clearConversation(chatIndex);
     // try {
     //   await AsyncStorage.removeItem("@storage_Key");
-    //   setChatValue([]);
+    //   setChats([]);
     //   setError(false);
     // } catch (e) {
     //   Alert.alert("Failed to remove conversation", e.message);
@@ -81,7 +82,7 @@ export const ChatScreen = ({
   //     try {
   //       const jsonValue = await AsyncStorage.getItem("@storage_Key");
   //       const storedRes = jsonValue != null ? JSON.parse(jsonValue) : [];
-  //       setChatValue(storedRes);
+  //       setChats(storedRes);
   //     } catch (e) {
   //       // error reading value
   //       Alert.alert("Couldn't retrieve results", e.message);
@@ -107,8 +108,14 @@ export const ChatScreen = ({
 
   useEffect(() => {
     if (retry != null) {
-      setChatValue((oldResult) => [
-        ...oldResult.filter((message) => message.result.id !== retry.result.id),
+      setChats((oldResult) => [
+        ...oldResult?.slice(0, index),
+        [
+          ...oldResult[index].filter(
+            (message) => message.result.id !== retry.result.id
+          ),
+          ...oldResult?.slice(index + 1),
+        ],
       ]);
       onSubmit();
       setRetry(null);
@@ -186,12 +193,17 @@ export const ChatScreen = ({
     const res = getResult(result);
     const inputText = getInput(res);
     if (editMessage != null) {
-      setChatValue((oldResult) => [
-        inputText,
-        ...oldResult.slice(editMessageIndex + 1),
+      setChats((oldResult) => [
+        ...oldResult?.slice(0, index),
+        [inputText, ...oldResult[index].slice(editMessageIndex + 1)],
+        ...oldResult?.slice(index + 1),
       ]);
     } else if (!regen) {
-      setChatValue((oldResult) => [inputText, ...oldResult]);
+      setChats((oldResult) => [
+        ...oldResult?.slice(0, index),
+        [inputText, ...oldResult[index]],
+        ...oldResult?.slice(index + 1),
+      ]);
     }
     regenId = result?.length > 2 ? result[2]?.result?.id : null;
     setInput("");
@@ -219,31 +231,50 @@ export const ChatScreen = ({
           isError: true,
         };
         if (!regen) {
-          setChatValue((oldResult) => [errorInputText, ...oldResult.slice(1)]);
+          setChats((oldResult) => [
+            ...oldResult?.slice(0, index),
+            [errorInputText, ...oldResult[index].slice(1)],
+            ...oldResult?.slice(index + 1),
+          ]);
         } else {
-          setChatValue((oldResult) => [
-            { ...oldResult[0], isError: true },
-            inputText,
-            ...oldResult.slice(2),
+          setChats((oldResult) => [
+            ...oldResult?.slice(0, index),
+            [
+              { ...oldResult[index][0], isError: true },
+              inputText,
+              ...oldResult[index].slice(2),
+            ],
+            ...oldResult?.slice(index + 1),
           ]);
         }
         setError(true);
       } else {
         if (!error && regen) {
-          setChatValue((oldResult) => [
-            data,
-            { ...oldResult[1], isError: false },
-            ...oldResult.slice(2),
+          setChats((oldResult) => [
+            ...oldResult?.slice(0, index),
+            [
+              data,
+              { ...oldResult[index][1], isError: false },
+              ...oldResult[index].slice(2),
+            ],
+            ...oldResult?.slice(index + 1),
           ]);
         } else if (regen) {
-          print("regen", "error: ", error);
-          setChatValue((oldResult) => [
-            data,
-            { ...oldResult[1], isError: false },
-            ...oldResult,
+          setChats((oldResult) => [
+            ...oldResult?.slice(0, index),
+            [
+              data,
+              { ...oldResult[index][1], isError: false },
+              ...oldResult[index],
+            ],
+            ...oldResult?.slice(index + 1),
           ]);
         } else {
-          setChatValue((oldResult) => [data, ...oldResult]);
+          setChats((oldResult) => [
+            ...oldResult?.slice(0, index),
+            [data, ...oldResult[index]],
+            ...oldResult?.slice(index + 1),
+          ]);
         }
       }
     } catch (e) {
@@ -253,12 +284,20 @@ export const ChatScreen = ({
         isError: true,
       };
       if (!regen) {
-        setChatValue((oldResult) => [errorInputText, ...oldResult.slice(1)]);
+        setChats((oldResult) => [
+          ...oldResult?.slice(0, index),
+          [errorInputText, ...oldResult[index].slice(1)],
+          ...oldResult?.slice(index + 1),
+        ]);
       } else {
-        setChatValue((oldResult) => [
-          { ...oldResult[0], isError: true },
-          inputText,
-          ...oldResult.slice(2),
+        setChats((oldResult) => [
+          ...oldResult?.slice(0, index),
+          [
+            { ...oldResult[index][0], isError: true },
+            inputText,
+            ...oldResult[index].slice(2),
+          ],
+          ...oldResult?.slice(index + 1),
         ]);
       }
       setError(true);
@@ -281,6 +320,7 @@ export const ChatScreen = ({
             onOpen={onOpen}
             modalizeRef={modalizeRef}
             navigation={navigation}
+            headerTitle={`Chat ${index + 1}`}
           />
           <View style={{ flex: 1, overflow: "hidden" }}>
             <MessageList
@@ -311,6 +351,7 @@ export const ChatScreen = ({
           deleteConvo={removeData}
           modalizeRef={modalizeRef}
           onClose={onClose}
+          setChats={setChats}
         />
         <MessageModal
           message={message}

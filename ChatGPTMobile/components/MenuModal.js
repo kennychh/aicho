@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { Delete, Plus, Save } from "../icons";
+import { Delete, Plus, Save, Edit } from "../icons";
 import { Modalize } from "react-native-modalize";
-export const MenuModal = ({ deleteConvo, modalizeRef, onClose }) => {
+export const MenuModal = ({ deleteConvo, modalizeRef, onClose, setChats }) => {
   return (
     <Modalize
       ref={modalizeRef}
@@ -12,10 +12,15 @@ export const MenuModal = ({ deleteConvo, modalizeRef, onClose }) => {
       adjustToContentHeight={true}
     >
       <View style={styles.modalOptionsContainer}>
-        <TouchableOpacity onPress={() => onClose(modalizeRef)}>
+        <TouchableOpacity
+          onPress={() => {
+            onClose(modalizeRef);
+            setChats((oldChats) => [...oldChats, []]);
+          }}
+        >
           <View style={styles.modalOption}>
-            <Plus />
-            <Text style={styles.modalOptionText}>New chat</Text>
+            <Edit />
+            <Text style={styles.modalOptionText}>Edit title</Text>
           </View>
         </TouchableOpacity>
         <View style={styles.modalOptionDivider} />
@@ -66,6 +71,7 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     fontSize: 16,
     alignSelf: "center",
+    
   },
   modalOptionDivider: {
     width: "100%",

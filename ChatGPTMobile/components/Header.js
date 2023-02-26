@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Image, Keyboard } from "react-native";
 import { More, Menu } from "../icons";
 import { HeaderButton } from "./HeaderButton";
-export const Header = ({ onOpen, modalizeRef, navigation }) => {
+export const Header = ({ onOpen, modalizeRef, navigation, headerTitle }) => {
   const onPress = () => {
     Keyboard.dismiss();
     onOpen(modalizeRef);
@@ -16,7 +16,7 @@ export const Header = ({ onOpen, modalizeRef, navigation }) => {
           source={require("../assets/chat-gpt-logo.jpg")}
           style={styles.icon}
         />
-        <Text style={styles.barText}>ChatGPT</Text>
+        <Text style={styles.barText}>{headerTitle}</Text>
       </View>
       <View style={styles.barIcon}>
         <HeaderButton icon={<More />} onPress={onPress} />

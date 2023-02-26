@@ -10,3 +10,6 @@ export * from "./Edit";
 export * from "./Alert";
 export * from "./Plus";
 export * from "./Loading";
+export * from "./Message";
+export * from "./Moon";
+export * from "./Settings";

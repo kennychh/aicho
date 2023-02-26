@@ -1,9 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ChatScreen } from "./screens";
+import { DrawerContent } from "./components";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import { Alert } from "react-native";
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+} from "@react-navigation/drawer";
+import { Alert, FlatList, Text } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function App() {
@@ -14,12 +20,10 @@ export default function App() {
   const [chatValue, setChatValue] = useState([]);
   const [deleteChat, setDeleteChat] = useState(false);
 
-  const storeChats = async (value, index) => {
+  const storeChats = async () => {
     try {
-      const newChats = [value, ...chats.slice(index+1)];
-      setChats(newChats);
       setDeleteChat(false);
-      const jsonValue = JSON.stringify(newChats);
+      const jsonValue = JSON.stringify(chats);
       await AsyncStorage.setItem("@chatgpt", jsonValue);
     } catch (e) {
       // saving error
@@ -28,17 +32,24 @@ export default function App() {
   };
 
   const clearConversation = (index) => {
-    setChatIndex(index);
-    setChatValue([]);
+    setChatIndex(index == 0 ? 0 : index - 1);
     setDeleteChat(true);
-    setChats([[]])
+    if (chats.length == 1) {
+      setChats([[]]);
+    } else {
+      setChats((oldChats) => [
+        ...oldChats.slice(0, index),
+        ...oldChats.slice(index + 1),
+      ]);
+    }
   };
 
   useEffect(() => {
-    if (chatValue.length > 0 || deleteChat) {
-      storeChats(chatValue, chatIndex);
+    const dontStoreChat = chats.length == 1 && chats[0].length == 0;
+    if (!dontStoreChat || deleteChat) {
+      storeChats();
     }
-  }, [chatValue, deleteChat]);
+  }, [chats, chatIndex]);
 
   useEffect(() => {
     const getData = async () => {
@@ -47,7 +58,7 @@ export default function App() {
         const storedRes = jsonValue != null ? JSON.parse(jsonValue) : [[]];
         if (storedRes) {
           setChats(storedRes);
-          setChatValue(storedRes[0])
+          setChatIndex(storedRes.length - 1);
         }
       } catch (e) {
         // error reading value
@@ -56,9 +67,19 @@ export default function App() {
     };
     getData();
   }, []);
+
   return (
     <NavigationContainer>
       <Drawer.Navigator
+        drawerContent={(props) => (
+          <DrawerContent
+            props={props}
+            chats={chats}
+            setChatIndex={setChatIndex}
+            chatIndex={chatIndex}
+            setChats={setChats}
+          />
+        )}
         initialRouteName="Chat"
         screenOptions={{
           headerShown: false,
@@ -73,8 +94,8 @@ export default function App() {
               chatValue={chatValue}
               chatIndex={chatIndex}
               setChatIndex={setChatIndex}
-              setChatValue={setChatValue}
               clearConversation={clearConversation}
+              setChats={setChats}
             />
           )}
         </Drawer.Screen>
