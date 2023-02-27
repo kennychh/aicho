@@ -17,7 +17,7 @@ export default function App() {
   const Drawer = createDrawerNavigator();
   const [chats, setChats] = useState([[]]);
   const [chatIndex, setChatIndex] = useState(0);
-  const [chatValue, setChatValue] = useState([]);
+  const [chatTitles, setChatTitles] = useState([]);
   const [deleteChat, setDeleteChat] = useState(false);
 
   const storeChats = async () => {
@@ -25,6 +25,16 @@ export default function App() {
       setDeleteChat(false);
       const jsonValue = JSON.stringify(chats);
       await AsyncStorage.setItem("@chatgpt", jsonValue);
+    } catch (e) {
+      // saving error
+      Alert.alert("Couldn't store results", e.message);
+    }
+  };
+
+  const storeChatTitles = async () => {
+    try {
+      const chatTitlesJson = JSON.stringify(chatTitles);
+      await AsyncStorage.setItem("@chatTitles", chatTitlesJson);
     } catch (e) {
       // saving error
       Alert.alert("Couldn't store results", e.message);
@@ -41,6 +51,10 @@ export default function App() {
         ...oldChats.slice(0, index),
         ...oldChats.slice(index + 1),
       ]);
+      setChatTitles((oldChatTitles) => [
+        ...oldChatTitles.slice(0, index),
+        ...oldChatTitles.slice(index + 1),
+      ]);
     }
   };
 
@@ -52,11 +66,21 @@ export default function App() {
   }, [chats, chatIndex]);
 
   useEffect(() => {
+    if (chatTitles[0] != null) {
+      storeChatTitles();
+    }
+  }, [chatTitles]);
+
+  useEffect(() => {
     const getData = async () => {
       try {
         const jsonValue = await AsyncStorage.getItem("@chatgpt");
+        const chatTitlesJson = await AsyncStorage.getItem("@chatTitles");
+        const storedChatTitles =
+          chatTitlesJson != null ? JSON.parse(chatTitlesJson) : ["New chat"];
         const storedRes = jsonValue != null ? JSON.parse(jsonValue) : [[]];
         if (storedRes) {
+          setChatTitles(storedChatTitles);
           setChats(storedRes);
           setChatIndex(storedRes.length - 1);
         }
@@ -79,6 +103,8 @@ export default function App() {
             chatIndex={chatIndex}
             setChats={setChats}
             setDeleteChat={setDeleteChat}
+            chatTitles={chatTitles}
+            setChatTitles={setChatTitles}
           />
         )}
         initialRouteName="Chat"
@@ -92,11 +118,10 @@ export default function App() {
               {...props}
               chats={chats}
               index={chatIndex}
-              chatValue={chatValue}
               chatIndex={chatIndex}
-              setChatIndex={setChatIndex}
               clearConversation={clearConversation}
               setChats={setChats}
+              chatTitles={chatTitles}
             />
           )}
         </Drawer.Screen>

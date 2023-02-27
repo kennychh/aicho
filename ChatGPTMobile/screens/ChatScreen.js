@@ -21,12 +21,10 @@ export const ChatScreen = ({
   navigation,
   chats,
   index,
-  chatValue,
   chatIndex,
-  setChatIndex,
-  setChatValue,
   clearConversation,
   setChats,
+  chatTitles,
 }) => {
   const API_URL = "https://chatgpt-api-blue.vercel.app/api";
   const [input, setInput] = useState("");
@@ -56,41 +54,9 @@ export const ChatScreen = ({
     modalizeRef.current?.close();
   };
 
-  const storeData = async (value) => {
-    try {
-      const jsonValue = JSON.stringify(value);
-      await AsyncStorage.setItem("@storage_Key", jsonValue);
-    } catch (e) {
-      // saving error
-      Alert.alert("Couldn't store results", e.message);
-    }
-  };
-
   const removeData = () => {
     clearConversation(chatIndex);
-    // try {
-    //   await AsyncStorage.removeItem("@storage_Key");
-    //   setChats([]);
-    //   setError(false);
-    // } catch (e) {
-    //   Alert.alert("Failed to remove conversation", e.message);
-    // }
   };
-
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     try {
-  //       const jsonValue = await AsyncStorage.getItem("@storage_Key");
-  //       const storedRes = jsonValue != null ? JSON.parse(jsonValue) : [];
-  //       setChats(storedRes);
-  //     } catch (e) {
-  //       // error reading value
-  //       Alert.alert("Couldn't retrieve results", e.message);
-  //     }
-  //   };
-
-  //   getData();
-  // }, []);
 
   useEffect(() => {
     if (input.replace(/\s+/g, "") != "") {
@@ -320,7 +286,7 @@ export const ChatScreen = ({
             onOpen={onOpen}
             modalizeRef={modalizeRef}
             navigation={navigation}
-            headerTitle={`Chat ${index + 1}`}
+            headerTitle={`${chatTitles[chatIndex]}`}
           />
           <View style={{ flex: 1, overflow: "hidden" }}>
             <MessageList

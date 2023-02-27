@@ -16,6 +16,8 @@ export const DrawerContent = ({
   chatIndex,
   setChats,
   setDeleteChat,
+  chatTitles,
+  setChatTitles = { setChatTitles },
 }) => {
   const navigation = props.navigation;
   const [selectedItem, setSelectedItem] = useState(chatIndex);
@@ -33,7 +35,7 @@ export const DrawerContent = ({
         ]}
       >
         <Message style={styles.chatItemIcon} />
-        <Text style={styles.chatItemText}>Chat {index + 1}</Text>
+        <Text style={styles.chatItemText}>{chatTitles[index]}</Text>
       </TouchableOpacity>
     );
   };
@@ -74,6 +76,11 @@ export const DrawerContent = ({
           onPress={() => {
             setChats((oldChats) => [...oldChats, []]);
             setChatIndex(chats.length);
+            setChatTitles((oldChatTitles) => [
+              ...oldChatTitles.slice(0, chats.length),
+              `New chat`,
+              ...oldChatTitles.slice(chats.length + 1),
+            ]);
             navigation.closeDrawer();
           }}
         >
@@ -94,6 +101,7 @@ export const DrawerContent = ({
             setDeleteChat(true);
             setChats([[]]);
             setChatIndex(0);
+            setChatTitles(["New chat"]);
             navigation.closeDrawer();
           }}
         >
