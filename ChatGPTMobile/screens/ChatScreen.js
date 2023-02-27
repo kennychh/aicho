@@ -26,9 +26,10 @@ export const ChatScreen = ({
   setChats,
   chatTitles,
   setChatTitles,
+  input,
+  setInput,
 }) => {
   const API_URL = "https://chatgpt-api-blue.vercel.app/api";
-  const [input, setInput] = useState("");
   const result = chats[index];
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -74,6 +75,13 @@ export const ChatScreen = ({
       onOpen(messageModalizeRef);
     }
   }, [message]);
+
+  useEffect(() => {
+    const errorFound = chats[chatIndex][0]?.isError;
+    if (errorFound != error) {
+      setError(errorFound);
+    }
+  }, [chats, chatIndex]);
 
   useEffect(() => {
     if (retry != null) {
@@ -157,6 +165,7 @@ export const ChatScreen = ({
           id: editMessage?.result?.id,
         },
         isInput: true,
+        isError: false,
       };
     }
     return {
@@ -193,7 +202,7 @@ export const ChatScreen = ({
         ...oldResult?.slice(index + 1),
       ]);
     }
-    regenId = result?.length > 2 ? result[2]?.result?.id : null;
+    const regenId = result?.length > 2 ? result[2]?.result?.id : null;
     setInput("");
     try {
       const response = await fetch(`${API_URL}/generate`, {

@@ -57,7 +57,7 @@ export const Header = ({
 
 const styles = StyleSheet.create({
   barText: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "500",
   },
   icon: {

@@ -17,7 +17,8 @@ export const DrawerContent = ({
   setChats,
   setDeleteChat,
   chatTitles,
-  setChatTitles = { setChatTitles },
+  setChatTitles,
+  setInput,
 }) => {
   const navigation = props.navigation;
   const [selectedItem, setSelectedItem] = useState(chatIndex);
@@ -27,6 +28,7 @@ export const DrawerContent = ({
         onPress={() => {
           setSelectedItem(index);
           setChatIndex(index);
+          setInput("");
           navigation.closeDrawer();
         }}
         style={[

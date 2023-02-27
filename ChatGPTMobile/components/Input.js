@@ -4,9 +4,10 @@ import {
   TouchableOpacity,
   TextInput,
   Dimensions,
+  Keyboard,
 } from "react-native";
 import { BlurView } from "expo-blur";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Send, Refresh, Loading, Close } from "../icons";
 export const Input = ({
   textInputRef,
@@ -30,12 +31,15 @@ export const Input = ({
   const showRefreshIcon =
     (!isResultValid && !loading && result?.length > 0) || error;
   const showLoadingIcon = loading;
+  const [editable, setEditable] = useState(!error);
 
   const showInputIcon = () => {
-    if (showRefreshIcon) {
-      return <Refresh width="18px" height="18px" stroke="#fff" />;
-    } else if (showLoadingIcon) {
+    if (showLoadingIcon) {
       return <Loading width="18px" height="18px" stroke="#fff" />;
+    } else if (editMessage) {
+      return <Send width="18px" height="18px" stroke="#fff" />;
+    } else if (showRefreshIcon) {
+      return <Refresh width="18px" height="18px" stroke="#fff" />;
     } else if (showSendIcon) {
       return <Send width="18px" height="18px" stroke="#fff" />;
     }
@@ -51,7 +55,9 @@ export const Input = ({
   };
 
   const getInputDisabled = () => {
-    if (showRefreshIcon && error) {
+    if (editMessage) {
+      return false;
+    } else if (showRefreshIcon && error) {
       return false;
     } else if (showLoadingIcon || error) {
       return true;
@@ -62,16 +68,21 @@ export const Input = ({
   };
 
   const getInputOnPress = () => {
-    if (showRefreshIcon && !result[0]?.isInput) {
+    if (editMessage) {
+      onSubmit();
+    } else if (showRefreshIcon && !result[0]?.isInput) {
       setRegen(true);
-      setError(false);
     } else if (showRefreshIcon) {
       setRetry({ ...result[0], isError: false });
-      setError(false);
     } else if (isResultValid) {
       onSubmit();
     }
+    setError(false);
   };
+
+  useEffect(() => {
+    setEditable(!!editMessage || !error);
+  }, [editMessage, error]);
 
   return (
     <View>
@@ -99,11 +110,13 @@ export const Input = ({
               <View style={{ flex: 1, paddingTop: 12, paddingBottom: 12 }}>
                 <TextInput
                   ref={textInputRef}
-                  placeholder={error ? "Regenerate response" : "Enter prompt"}
-                  style={[styles.input, editMessage ? {marginLeft: 8} : {}]}
+                  placeholder={
+                    editable ? "Enter prompt" : "Regenerate response"
+                  }
+                  style={[styles.input, editMessage ? { marginLeft: 8 } : {}]}
                   multiline={true}
                   value={input}
-                  editable={!error}
+                  editable={editable}
                   onChangeText={(s) => setInput(s)}
                 />
               </View>
