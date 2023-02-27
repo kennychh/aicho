@@ -117,13 +117,20 @@ export const ChatScreen = ({
       "keyboardDidHide",
       () => {
         setIsHeaderEditable(false); // or some other action
+        if (chatTitles[chatIndex] == "") {
+          setChatTitles((oldChatTitles) => [
+            ...oldChatTitles.slice(0, chatIndex),
+            "New chat",
+            ...oldChatTitles.slice(chatIndex + 1),
+          ]);
+        }
       }
     );
 
     return () => {
       keyboardDidHideListener.remove();
     };
-  }, []);
+  }, [chatTitles]);
 
   const generateInputId = () => {
     const char =
