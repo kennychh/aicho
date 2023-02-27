@@ -93,7 +93,7 @@ export const Input = ({
         ]}
       />
       <View style={styles.container} onLayout={(event) => onLayout(event)}>
-        <View style={{ overflow: "hidden", borderRadius: 32 }}>
+        <View style={{ overflow: "hidden", borderRadius: 24 }}>
           <BlurView style={{ flexDirection: "row", alignItems: "center" }}>
             <View style={styles.inputContainer}>
               {editMessage && (
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(235, 235, 235,0.4)",
     flex: 1,
     maxHeight: 120,
-    borderRadius: "50%",
+    borderRadius: 24,
   },
   button: {
     backgroundColor: "#10a37f",
