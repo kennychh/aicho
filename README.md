@@ -1,6 +1,8 @@
 # ChatGPT Mobile (React Native/Expo)
 
-https://user-images.githubusercontent.com/48639878/221440202-74dd2b21-fcb5-46b6-842e-9f90f4bd6ccc.mp4
+
+https://user-images.githubusercontent.com/48639878/221500266-f6c509e5-7f9a-4278-9fa3-4fff33d10355.mp4
+
 
 A personal project that mimics ChatGPT in a RN mobile app. This utilizes the [Node.js client for the unofficial ChatGPT API](https://github.com/transitive-bullshit/chatgpt-api), and [OpenAI API Quickstart](https://github.com/openai/openai-quickstart-node). 
 
@@ -36,6 +38,12 @@ It will even retain previous information!
 Edit input | Edit with retained info
 --- | ---
 <video src="https://user-images.githubusercontent.com/48639878/221440322-efb86880-60d0-49c8-8eb3-587348d18c7a.mp4"/> | <video src="https://user-images.githubusercontent.com/48639878/221440407-e34dfb8b-e3fb-4c7c-a6b1-fbf848ef1978.mp4"/>
+
+### Edit chat title
+
+Organize chats with editable chat titles.
+
+https://user-images.githubusercontent.com/48639878/221499775-0d2942d5-07c1-4028-8073-c1bbdbf27ad0.mp4
 
 
 ### Error/Network handling
