@@ -37,6 +37,12 @@ Edit input | Edit with retained info
 --- | ---
 <video src="https://user-images.githubusercontent.com/48639878/221440322-efb86880-60d0-49c8-8eb3-587348d18c7a.mp4"/> | <video src="https://user-images.githubusercontent.com/48639878/221440407-e34dfb8b-e3fb-4c7c-a6b1-fbf848ef1978.mp4"/>
 
+### Edit chat title
+
+Organize chats with editable chat titles.
+
+https://user-images.githubusercontent.com/48639878/221499775-0d2942d5-07c1-4028-8073-c1bbdbf27ad0.mp4
+
 
 ### Error/Network handling
 
