@@ -81,7 +81,7 @@ export const ChatScreen = ({
         ...oldResult?.slice(0, index),
         [
           ...oldResult[index].filter(
-            (message) => message.result.id !== retry.result.id
+            (message) => message?.result?.id !== retry?.result?.id
           ),
           ...oldResult?.slice(index + 1),
         ],
