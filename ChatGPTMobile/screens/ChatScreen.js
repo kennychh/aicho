@@ -5,6 +5,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   View,
+  Keyboard,
 } from "react-native";
 import { useState, useEffect, useRef } from "react";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -15,7 +16,6 @@ import {
   MenuModal,
   MessageModal,
 } from "../components";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const ChatScreen = ({
   navigation,
@@ -25,6 +25,7 @@ export const ChatScreen = ({
   clearConversation,
   setChats,
   chatTitles,
+  setChatTitles,
 }) => {
   const API_URL = "https://chatgpt-api-blue.vercel.app/api";
   const [input, setInput] = useState("");
@@ -37,9 +38,11 @@ export const ChatScreen = ({
   const [isResultValid, setResultValid] = useState(false);
   const [editMessage, setEditMessage] = useState(null);
   const [inputHeight, setInputHeight] = useState(0);
+  const [isHeaderEditable, setIsHeaderEditable] = useState(false);
   const modalizeRef = useRef(null);
   const messageModalizeRef = useRef(null);
   const textInputRef = useRef(null);
+  const headerTextInputRef = useRef(null);
 
   const onLayout = (event) => {
     const { x, y, height, width } = event.nativeEvent.layout;
@@ -94,6 +97,25 @@ export const ChatScreen = ({
       setRegen(false);
     }
   }, [regen]);
+
+  useEffect(() => {
+    if (isHeaderEditable) {
+      headerTextInputRef.current.focus();
+    }
+  }, [isHeaderEditable]);
+
+  useEffect(() => {
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setIsHeaderEditable(false); // or some other action
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+    };
+  }, []);
 
   const generateInputId = () => {
     const char =
@@ -287,6 +309,12 @@ export const ChatScreen = ({
             modalizeRef={modalizeRef}
             navigation={navigation}
             headerTitle={`${chatTitles[chatIndex]}`}
+            textInputRef={headerTextInputRef}
+            setChatTitles={setChatTitles}
+            chatTitles={chatTitles}
+            chatIndex={chatIndex}
+            isHeaderEditable={isHeaderEditable}
+            setIsHeaderEditable={setIsHeaderEditable}
           />
           <View style={{ flex: 1, overflow: "hidden" }}>
             <MessageList
@@ -318,6 +346,8 @@ export const ChatScreen = ({
           modalizeRef={modalizeRef}
           onClose={onClose}
           setChats={setChats}
+          headerTextInputRef={headerTextInputRef}
+          setIsHeaderEditable={setIsHeaderEditable}
         />
         <MessageModal
           message={message}

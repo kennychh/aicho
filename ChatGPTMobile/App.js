@@ -122,6 +122,7 @@ export default function App() {
               clearConversation={clearConversation}
               setChats={setChats}
               chatTitles={chatTitles}
+              setChatTitles={setChatTitles}
             />
           )}
         </Drawer.Screen>

@@ -1,43 +1,72 @@
-import { StyleSheet, Text, View, Image, Keyboard } from "react-native";
+import { StyleSheet, TextInput, View, Image, Keyboard } from "react-native";
 import { More, Menu } from "../icons";
 import { HeaderButton } from "./HeaderButton";
-export const Header = ({ onOpen, modalizeRef, navigation, headerTitle }) => {
+export const Header = ({
+  onOpen,
+  modalizeRef,
+  navigation,
+  headerTitle,
+  textInputRef,
+  setChatTitles,
+  chatTitles,
+  chatIndex,
+  isHeaderEditable,
+  setIsHeaderEditable,
+}) => {
   const onPress = () => {
     Keyboard.dismiss();
     onOpen(modalizeRef);
   };
   return (
     <View style={styles.bar}>
-      <View style={styles.barIcon}>
-        <HeaderButton icon={<Menu />} onPress={() => navigation.openDrawer()} />
-      </View>
-      <View style={{ flex: 1, alignItems: "center" }}>
+      <HeaderButton icon={<Menu />} onPress={() => navigation.openDrawer()} />
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          flexDirection: "row",
+        }}
+      >
         <Image
-          source={require("../assets/chat-gpt-logo.jpg")}
+          source={require("../assets/chat-gpt-logo.png")}
           style={styles.icon}
         />
-        <Text style={styles.barText}>{headerTitle}</Text>
+        <TextInput
+          ref={textInputRef}
+          style={styles.barText}
+          value={headerTitle}
+          editable={isHeaderEditable}
+          returnKeyType={"done"}
+          maxLength={25}
+          onChangeText={(s) => {
+            setChatTitles((oldChatTitles) => [
+              ...oldChatTitles.slice(0, chatIndex),
+              s,
+              ...oldChatTitles.slice(chatIndex + 1),
+            ]);
+          }}
+          onSubmitEditing={() => {
+            setIsHeaderEditable(false);
+          }}
+        />
       </View>
-      <View style={styles.barIcon}>
-        <HeaderButton icon={<More />} onPress={onPress} />
-      </View>
+      <HeaderButton icon={<More />} onPress={onPress} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  barIcon: {
-    width: 24,
-    height: 24,
-  },
   barText: {
-    fontSize: 12,
-    marginVertical: 8,
+    fontSize: 18,
+    fontWeight: "500",
   },
   icon: {
-    width: 48,
-    height: 48,
+    width: 36,
+    height: 36,
     borderRadius: "50%",
+    alignSelf: "center",
+    marginLeft: 16,
+    marginRight: 8,
   },
   bar: {
     alignItems: "center",
@@ -48,7 +77,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     backgroundColor: "white",
     alignContent: "space-between",
-    paddingHorizontal: 24,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
     zIndex: 1,
   },
 });
