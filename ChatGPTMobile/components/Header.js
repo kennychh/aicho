@@ -1,5 +1,5 @@
 import { StyleSheet, TextInput, View, Image, Keyboard } from "react-native";
-import { More, Menu } from "../icons";
+import { More, Menu, Close } from "../icons";
 import { HeaderButton } from "./HeaderButton";
 export const Header = ({
   onOpen,

@@ -166,9 +166,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#10a37f",
     borderRadius: "50%",
     alignItems: "center",
-    width: 32,
-    height: 32,
     justifyContent: "center",
+    padding: 8,
   },
   closeIcon: {
     borderRadius: "50%",
