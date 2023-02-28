@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-end",
     alignItems: "center",
-    paddingRight: 6,
+    paddingRight: 4,
     backgroundColor: "rgba(235, 235, 235,0.4)",
     flex: 1,
     maxHeight: 120,
@@ -167,7 +167,8 @@ const styles = StyleSheet.create({
     borderRadius: "50%",
     alignItems: "center",
     justifyContent: "center",
-    padding: 8,
+    width: 36,
+    height: 36,
   },
   closeIcon: {
     borderRadius: "50%",
