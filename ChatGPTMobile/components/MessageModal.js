@@ -69,7 +69,6 @@ export const MessageModal = ({
             <TouchableOpacity
               onPress={() => {
                 onClose(modalizeRef);
-                textInputRef.current.focus();
                 setMessage(null);
                 setEditMessage(message);
                 setInput(text);

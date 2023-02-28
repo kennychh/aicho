@@ -19,6 +19,7 @@ export const DrawerContent = ({
   chatTitles,
   setChatTitles,
   setInput,
+  setEditMessage,
 }) => {
   const navigation = props.navigation;
   const [selectedItem, setSelectedItem] = useState(chatIndex);
@@ -29,6 +30,7 @@ export const DrawerContent = ({
           setSelectedItem(index);
           setChatIndex(index);
           setInput("");
+          setEditMessage(null);
           navigation.closeDrawer();
         }}
         style={[
@@ -83,6 +85,8 @@ export const DrawerContent = ({
               `New chat`,
               ...oldChatTitles.slice(chats.length + 1),
             ]);
+            setInput("");
+            setEditMessage(null);
             navigation.closeDrawer();
           }}
         >
@@ -104,6 +108,8 @@ export const DrawerContent = ({
             setChats([[]]);
             setChatIndex(0);
             setChatTitles(["New chat"]);
+            setInput("");
+            setEditMessage(null);
             navigation.closeDrawer();
           }}
         >

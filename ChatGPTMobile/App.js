@@ -19,6 +19,7 @@ export default function App() {
   const [chatIndex, setChatIndex] = useState(0);
   const [chatTitles, setChatTitles] = useState([]);
   const [deleteChat, setDeleteChat] = useState(false);
+  const [editMessage, setEditMessage] = useState(null);
   const [input, setInput] = useState("");
 
   const storeChats = async () => {
@@ -107,6 +108,7 @@ export default function App() {
             chatTitles={chatTitles}
             setChatTitles={setChatTitles}
             setInput={setInput}
+            setEditMessage={setEditMessage}
           />
         )}
         initialRouteName="Chat"
@@ -127,6 +129,8 @@ export default function App() {
               setChatTitles={setChatTitles}
               input={input}
               setInput={setInput}
+              editMessage={editMessage}
+              setEditMessage={setEditMessage}
             />
           )}
         </Drawer.Screen>

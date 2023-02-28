@@ -84,6 +84,12 @@ export const Input = ({
     setEditable(!!editMessage || !error);
   }, [editMessage, error]);
 
+  useEffect(() => {
+    if (editable && !!editMessage) {
+      textInputRef.current.focus();
+    }
+  }, [editable, editMessage]);
+
   return (
     <View>
       <View

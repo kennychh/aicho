@@ -28,6 +28,8 @@ export const ChatScreen = ({
   setChatTitles,
   input,
   setInput,
+  editMessage,
+  setEditMessage,
 }) => {
   const API_URL = "https://chatgpt-api-blue.vercel.app/api";
   const result = chats[index];
@@ -37,7 +39,6 @@ export const ChatScreen = ({
   const [retry, setRetry] = useState(null);
   const [regen, setRegen] = useState(false);
   const [isResultValid, setResultValid] = useState(false);
-  const [editMessage, setEditMessage] = useState(null);
   const [inputHeight, setInputHeight] = useState(0);
   const [isHeaderEditable, setIsHeaderEditable] = useState(false);
   const modalizeRef = useRef(null);
