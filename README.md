@@ -1,7 +1,7 @@
 # ChatGPT Mobile (React Native/Expo)
 
 
-https://user-images.githubusercontent.com/48639878/221500266-f6c509e5-7f9a-4278-9fa3-4fff33d10355.mp4
+https://user-images.githubusercontent.com/48639878/221728998-2476e97c-be57-4431-abe5-715f6cbcb2a4.mp4
 
 
 A personal project that mimics ChatGPT in a RN mobile app. This utilizes the [Node.js client for the unofficial ChatGPT API](https://github.com/transitive-bullshit/chatgpt-api), and [OpenAI API Quickstart](https://github.com/openai/openai-quickstart-node). 
