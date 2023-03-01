@@ -29,7 +29,7 @@ export const DrawerContent = ({
 }) => {
   const navigation = props.navigation;
   const [selectedItem, setSelectedItem] = useState(chatIndex);
-  const isDarkMode = theme === getTheme("dark")
+  const isDarkMode = theme === getTheme("dark");
   const ChatsItem = ({ item, index }) => {
     return (
       <TouchableOpacity
@@ -110,7 +110,6 @@ export const DrawerContent = ({
           style={styles.drawerOptions}
           onPress={() => {
             darkModeModalizeRef.current?.open();
-            console.log(darkModeModalizeRef);
           }}
         >
           {!isDarkMode ? (
