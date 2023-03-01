@@ -9,21 +9,17 @@ import {
   UIManager,
   TouchableOpacity,
   Keyboard,
-  useColorScheme,
 } from "react-native";
 import * as Haptics from "expo-haptics";
 import { useEffect, useRef, useState } from "react";
 import { Alert } from "../icons";
-import { getTheme } from "../theme";
 if (
   Platform.OS === "android" &&
   UIManager.setLayoutAnimationEnabledExperimental
 ) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
-export const Message = ({ item, index, setMessage }) => {
-  const colorScheme = useColorScheme();
-  const theme = getTheme(colorScheme);
+export const Message = ({ item, index, setMessage, theme }) => {
   const text = item?.result?.text || "";
   const isInput = item?.isInput;
   const isError = item?.isError;

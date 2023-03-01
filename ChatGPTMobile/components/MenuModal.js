@@ -1,13 +1,6 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  useColorScheme,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Delete, Plus, Save, Edit } from "../icons";
 import { Modalize } from "react-native-modalize";
-import { getTheme } from "../theme";
 export const MenuModal = ({
   deleteConvo,
   modalizeRef,
@@ -15,9 +8,8 @@ export const MenuModal = ({
   setChats,
   headerTextInputRef,
   setIsHeaderEditable,
+  theme,
 }) => {
-  const colorScheme = useColorScheme();
-  const theme = getTheme(colorScheme);
   return (
     <Modalize
       ref={modalizeRef}

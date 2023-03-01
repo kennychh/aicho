@@ -1,14 +1,7 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  useColorScheme,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Copy, Edit, Refresh } from "../icons";
 import { Modalize } from "react-native-modalize";
 import * as Clipboard from "expo-clipboard";
-import { getTheme } from "../theme";
 
 export const MessageModal = ({
   textInputRef,
@@ -18,9 +11,8 @@ export const MessageModal = ({
   setMessage,
   setEditMessage,
   setInput,
+  theme,
 }) => {
-  const colorScheme = useColorScheme();
-  const theme = getTheme(colorScheme);
   const isInput = message?.isInput;
   const isError = message?.isError;
   const text = message?.result?.text || "";

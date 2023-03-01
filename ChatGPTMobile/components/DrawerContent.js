@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { DrawerContentScrollView } from "@react-navigation/drawer";
 import {
   FlatList,
@@ -7,10 +7,10 @@ import {
   StyleSheet,
   View,
   ScrollView,
-  useColorScheme,
 } from "react-native";
+import { DarkModeModel } from "./DarkModeModel";
 import { Message, Delete, Moon, Plus, Settings } from "../icons";
-import { getTheme } from "../theme";
+
 export const DrawerContent = ({
   props,
   chats,
@@ -22,9 +22,10 @@ export const DrawerContent = ({
   setChatTitles,
   setInput,
   setEditMessage,
+  theme,
+  setTheme,
+  darkModeModalizeRef,
 }) => {
-  const colorScheme = useColorScheme();
-  const theme = getTheme(colorScheme);
   const navigation = props.navigation;
   const [selectedItem, setSelectedItem] = useState(chatIndex);
   const ChatsItem = ({ item, index }) => {
@@ -103,7 +104,13 @@ export const DrawerContent = ({
           <Plus style={styles.chatItemIcon} stroke={theme.iconColor} />
           <Text style={styles.chatItemText(theme)}>New chat</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.drawerOptions}>
+        <TouchableOpacity
+          style={styles.drawerOptions}
+          onPress={() => {
+            darkModeModalizeRef.current?.open();
+            console.log(darkModeModalizeRef)
+          }}
+        >
           <Moon style={styles.chatItemIcon} stroke={theme.iconColor} />
           <Text style={styles.chatItemText(theme)}>Dark mode</Text>
         </TouchableOpacity>

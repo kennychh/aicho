@@ -4,12 +4,10 @@ import {
   TouchableOpacity,
   TextInput,
   Dimensions,
-  useColorScheme,
 } from "react-native";
 import { BlurView } from "expo-blur";
 import { useEffect, useState } from "react";
 import { Send, Refresh, Loading, Close } from "../icons";
-import { getTheme } from "../theme";
 export const Input = ({
   textInputRef,
   input,
@@ -26,9 +24,8 @@ export const Input = ({
   setError,
   setRetry,
   setEditMessage,
+  theme,
 }) => {
-  const colorScheme = useColorScheme();
-  const theme = getTheme(colorScheme);
   const windowWidth = Dimensions.get("window").width;
   const showSendIcon = isResultValid;
   const showRefreshIcon =

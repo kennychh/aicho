@@ -1,14 +1,6 @@
-import {
-  StyleSheet,
-  TextInput,
-  View,
-  Image,
-  Keyboard,
-  useColorScheme,
-} from "react-native";
+import { StyleSheet, TextInput, View, Image, Keyboard } from "react-native";
 import { More, Menu, Close } from "../icons";
 import { HeaderButton } from "./HeaderButton";
-import { getTheme } from "../theme";
 export const Header = ({
   onOpen,
   modalizeRef,
@@ -20,9 +12,8 @@ export const Header = ({
   chatIndex,
   isHeaderEditable,
   setIsHeaderEditable,
+  theme,
 }) => {
-  const colorScheme = useColorScheme();
-  const theme = getTheme(colorScheme);
   const onPress = () => {
     Keyboard.dismiss();
     onOpen(modalizeRef);

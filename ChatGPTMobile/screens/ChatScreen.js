@@ -6,7 +6,6 @@ import {
   Platform,
   View,
   Keyboard,
-  useColorScheme,
 } from "react-native";
 import { useState, useEffect, useRef } from "react";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -32,9 +31,8 @@ export const ChatScreen = ({
   setInput,
   editMessage,
   setEditMessage,
+  theme,
 }) => {
-  const colorScheme = useColorScheme();
-  const theme = getTheme(colorScheme);
   const API_URL = "https://chatgpt-api-blue.vercel.app/api";
   const result = chats[index];
   const [loading, setLoading] = useState(false);
@@ -320,7 +318,10 @@ export const ChatScreen = ({
         style={styles.container(theme)}
         edges={["top", "left", "right", "bottom"]}
       >
-        <StatusBar animated={true} />
+        <StatusBar
+          animated={true}
+          style={theme === getTheme("dark") ? "light" : "dark"}
+        />
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={styles.componentContainer}
@@ -336,12 +337,14 @@ export const ChatScreen = ({
             chatIndex={chatIndex}
             isHeaderEditable={isHeaderEditable}
             setIsHeaderEditable={setIsHeaderEditable}
+            theme={theme}
           />
           <View style={{ flex: 1, overflow: "hidden" }}>
             <MessageList
               data={result}
               inputOffset={inputHeight}
               setMessage={setMessage}
+              theme={theme}
             />
             <Input
               textInputRef={textInputRef}
@@ -359,6 +362,7 @@ export const ChatScreen = ({
               setRetry={setRetry}
               setEditMessage={setEditMessage}
               setInput={setInput}
+              theme={theme}
             />
           </View>
         </KeyboardAvoidingView>
@@ -369,6 +373,7 @@ export const ChatScreen = ({
           setChats={setChats}
           headerTextInputRef={headerTextInputRef}
           setIsHeaderEditable={setIsHeaderEditable}
+          theme={theme}
         />
         <MessageModal
           message={message}
@@ -378,6 +383,7 @@ export const ChatScreen = ({
           setEditMessage={setEditMessage}
           textInputRef={textInputRef}
           setInput={setInput}
+          theme={theme}
         />
       </SafeAreaView>
     </SafeAreaProvider>

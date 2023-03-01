@@ -9,7 +9,8 @@ import {
   DrawerItemList,
   DrawerItem,
 } from "@react-navigation/drawer";
-import { Alert, FlatList, Text, useColorScheme } from "react-native";
+import { DarkModeModel } from "./components";
+import { Alert, FlatList, Text, useColorScheme, View } from "react-native";
 import { getTheme } from "./theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -23,8 +24,8 @@ export default function App() {
   const [editMessage, setEditMessage] = useState(null);
   const [input, setInput] = useState("");
   const colorScheme = useColorScheme();
-  const theme = getTheme(colorScheme);
-
+  const [theme, setTheme] = useState(getTheme(colorScheme));
+  const darkModeModalizeRef = useRef(null);
   const storeChats = async () => {
     try {
       setDeleteChat(false);
@@ -97,6 +98,10 @@ export default function App() {
     getData();
   }, []);
 
+  useEffect(() => {
+    setTheme(getTheme(colorScheme));
+  }, [colorScheme]);
+
   return (
     <NavigationContainer>
       <Drawer.Navigator
@@ -112,6 +117,9 @@ export default function App() {
             setChatTitles={setChatTitles}
             setInput={setInput}
             setEditMessage={setEditMessage}
+            theme={theme}
+            setTheme={setTheme}
+            darkModeModalizeRef={darkModeModalizeRef}
           />
         )}
         initialRouteName="Chat"
@@ -137,10 +145,16 @@ export default function App() {
               setInput={setInput}
               editMessage={editMessage}
               setEditMessage={setEditMessage}
+              theme={theme}
             />
           )}
         </Drawer.Screen>
       </Drawer.Navigator>
+      <DarkModeModel
+        theme={theme}
+        setTheme={setTheme}
+        modalizeRef={darkModeModalizeRef}
+      />
     </NavigationContainer>
   );
 }
