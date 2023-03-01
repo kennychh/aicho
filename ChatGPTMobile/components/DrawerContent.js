@@ -29,7 +29,7 @@ export const DrawerContent = ({
 }) => {
   const navigation = props.navigation;
   const [selectedItem, setSelectedItem] = useState(chatIndex);
-  const isDarkMode = theme === getTheme("dark");
+  const isDarkMode = theme === getTheme("dark")
   const ChatsItem = ({ item, index }) => {
     return (
       <TouchableOpacity
@@ -113,8 +113,12 @@ export const DrawerContent = ({
             console.log(darkModeModalizeRef);
           }}
         >
-          <Moon style={styles.chatItemIcon} stroke={theme.iconColor} />
-          <Text style={styles.chatItemText(theme)}>Dark mode</Text>
+          {!isDarkMode ? (
+            <Sun style={styles.chatItemIcon} stroke={theme.iconColor} />
+          ) : (
+            <Moon style={styles.chatItemIcon} stroke={theme.iconColor} />
+          )}
+          <Text style={styles.chatItemText(theme)}>Appearance</Text>
         </TouchableOpacity>
         {/* <TouchableOpacity style={styles.drawerOptions}>
           <Settings style={styles.chatItemIcon} />
