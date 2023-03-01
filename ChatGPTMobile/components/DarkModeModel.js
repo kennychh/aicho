@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
   modalOptionText: (theme) => ({
     fontSize: 16,
     alignSelf: "center",
+    fontWeight: "500",
     color: theme.fontColor,
   }),
   modalOptionDivider: (theme) => ({
