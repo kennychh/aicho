@@ -9,7 +9,8 @@ import {
   DrawerItemList,
   DrawerItem,
 } from "@react-navigation/drawer";
-import { Alert, FlatList, Text } from "react-native";
+import { Alert, FlatList, Text, useColorScheme } from "react-native";
+import { getTheme } from "./theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function App() {
@@ -21,6 +22,8 @@ export default function App() {
   const [deleteChat, setDeleteChat] = useState(false);
   const [editMessage, setEditMessage] = useState(null);
   const [input, setInput] = useState("");
+  const colorScheme = useColorScheme();
+  const theme = getTheme(colorScheme);
 
   const storeChats = async () => {
     try {
@@ -114,6 +117,9 @@ export default function App() {
         initialRouteName="Chat"
         screenOptions={{
           headerShown: false,
+          drawerStyle: {
+            backgroundColor: theme.drawerContent.backgroundColor,
+          },
         }}
       >
         <Drawer.Screen name="Chat">

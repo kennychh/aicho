@@ -4,11 +4,12 @@ import {
   TouchableOpacity,
   TextInput,
   Dimensions,
-  Keyboard,
+  useColorScheme,
 } from "react-native";
 import { BlurView } from "expo-blur";
 import { useEffect, useState } from "react";
 import { Send, Refresh, Loading, Close } from "../icons";
+import { getTheme } from "../theme";
 export const Input = ({
   textInputRef,
   input,
@@ -26,6 +27,8 @@ export const Input = ({
   setRetry,
   setEditMessage,
 }) => {
+  const colorScheme = useColorScheme();
+  const theme = getTheme(colorScheme);
   const windowWidth = Dimensions.get("window").width;
   const showSendIcon = isResultValid;
   const showRefreshIcon =
@@ -47,7 +50,7 @@ export const Input = ({
   };
   const getInputIconColor = () => {
     if (showLoadingIcon || (result?.length == 0 && !isResultValid)) {
-      return { backgroundColor: "#A3A3A3" };
+      return { backgroundColor: theme.input.button.disabled.backgroundColor };
     } else if (showRefreshIcon || showSendIcon) {
       return {};
     }
@@ -94,14 +97,14 @@ export const Input = ({
     <View>
       <View
         style={[
-          styles.inputBottomBackground,
+          styles.inputBottomBackground(theme),
           { height: height / 2, width: windowWidth - 16 },
         ]}
       />
       <View style={styles.container} onLayout={(event) => onLayout(event)}>
         <View style={{ overflow: "hidden", borderRadius: 24 }}>
           <BlurView style={{ flexDirection: "row", alignItems: "center" }}>
-            <View style={styles.inputContainer}>
+            <View style={styles.inputContainer(theme)}>
               {editMessage && (
                 <TouchableOpacity
                   style={styles.closeIcon}
@@ -119,7 +122,11 @@ export const Input = ({
                   placeholder={
                     editable ? "Enter prompt" : "Regenerate response"
                   }
-                  style={[styles.input, editMessage ? { marginLeft: 8 } : {}]}
+                  placeholderTextColor={theme.input.placeholderFontColor}
+                  style={[
+                    styles.input(theme),
+                    editMessage ? { marginLeft: 8 } : {},
+                  ]}
                   multiline={true}
                   value={input}
                   editable={editable}
@@ -145,11 +152,11 @@ export const Input = ({
 };
 
 const styles = StyleSheet.create({
-  inputBottomBackground: {
+  inputBottomBackground: (theme) => ({
     position: "absolute",
-    backgroundColor: "white",
+    backgroundColor: theme.backgroundColor,
     bottom: 0,
-  },
+  }),
   container: {
     paddingVertical: 16,
     paddingHorizontal: 16,
@@ -158,15 +165,15 @@ const styles = StyleSheet.create({
     bottom: 0,
     overflow: "hidden",
   },
-  inputContainer: {
+  inputContainer: (theme) => ({
     flexDirection: "row",
     justifyContent: "flex-end",
     alignItems: "center",
-    backgroundColor: "rgba(235, 235, 235,0.4)",
+    backgroundColor: theme.input.backgroundColor,
     flex: 1,
     maxHeight: 120,
     borderRadius: 24,
-  },
+  }),
   button: {
     backgroundColor: "#10a37f",
     borderRadius: "50%",
@@ -182,12 +189,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginLeft: 12,
   },
-  input: {
+  input: (theme) => ({
     fontSize: 16,
     marginLeft: 16,
     alignItems: "center",
     paddingTop: 0,
     paddingBottom: 0,
     paddingRight: 6,
-  },
+    color: theme.input.fontColor,
+  }),
 });

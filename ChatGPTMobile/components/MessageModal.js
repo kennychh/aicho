@@ -1,7 +1,14 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  useColorScheme,
+} from "react-native";
 import { Copy, Edit, Refresh } from "../icons";
 import { Modalize } from "react-native-modalize";
 import * as Clipboard from "expo-clipboard";
+import { getTheme } from "../theme";
 
 export const MessageModal = ({
   textInputRef,
@@ -12,6 +19,8 @@ export const MessageModal = ({
   setEditMessage,
   setInput,
 }) => {
+  const colorScheme = useColorScheme();
+  const theme = getTheme(colorScheme);
   const isInput = message?.isInput;
   const isError = message?.isError;
   const text = message?.result?.text || "";
@@ -25,14 +34,14 @@ export const MessageModal = ({
   return (
     <Modalize
       ref={modalizeRef}
-      modalStyle={styles.modalStyle}
-      handleStyle={styles.handleStyle}
+      modalStyle={styles.modalStyle(theme)}
+      handleStyle={styles.handleStyle(theme)}
       handlePosition={"inside"}
       childrenStyle={styles.childrenStyle}
       adjustToContentHeight={true}
       onClose={() => setMessage(null)}
     >
-      <View style={[styles.modalOptionsContainer, { marginBottom: 52 }]}>
+      <View style={[styles.modalOptionsContainer(theme), { marginBottom: 52 }]}>
         {/* {isError && (
           <View>
             <TouchableOpacity
@@ -59,13 +68,13 @@ export const MessageModal = ({
           }}
         >
           <View style={styles.modalOption}>
-            <Copy />
-            <Text style={styles.modalOptionText}>Copy</Text>
+            <Copy stroke={theme.iconColor} />
+            <Text style={styles.modalOptionText(theme)}>Copy</Text>
           </View>
         </TouchableOpacity>
         {isInput && (
           <View>
-            <View style={styles.modalOptionDivider} />
+            <View style={styles.modalOptionDivider(theme)} />
             <TouchableOpacity
               onPress={() => {
                 onClose(modalizeRef);
@@ -75,8 +84,8 @@ export const MessageModal = ({
               }}
             >
               <View style={styles.modalOption}>
-                <Edit />
-                <Text style={styles.modalOptionText}>Edit</Text>
+                <Edit stroke={theme.iconColor} />
+                <Text style={styles.modalOptionText(theme)}>Edit</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -88,36 +97,38 @@ export const MessageModal = ({
 
 const styles = StyleSheet.create({
   childrenStyle: {},
-  handleStyle: {
+  handleStyle: (theme) => ({
     width: 40,
     height: 4,
-    backgroundColor: "#D9D9D9",
-  },
-  modalStyle: {
+    backgroundColor: theme.modal.divider.backgroundColor,
+  }),
+  modalStyle: (theme) => ({
     paddingHorizontal: 16,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
-  },
-  modalOptionText: {
+    backgroundColor: theme.modal.backgroundColor,
+  }),
+  modalOptionText: (theme) => ({
     paddingLeft: 16,
     fontSize: 16,
     alignSelf: "center",
-  },
-  modalOptionDivider: {
+    color: theme.fontColor,
+  }),
+  modalOptionDivider: (theme) => ({
     width: "100%",
     height: 1,
-    backgroundColor: "#DBDBDB",
-  },
+    backgroundColor: theme.modal.divider.backgroundColor,
+  }),
   modalOption: {
     width: "100%",
     padding: 16,
     flexDirection: "row",
     alignItems: "center",
   },
-  modalOptionsContainer: {
+  modalOptionsContainer: (theme) => ({
     marginTop: 40,
-    backgroundColor: "#EFEFEF",
+    backgroundColor: theme.modal.container.backgroundColor,
     width: "100%",
     borderRadius: 16,
-  },
+  }),
 });

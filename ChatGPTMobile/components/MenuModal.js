@@ -1,6 +1,13 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  useColorScheme,
+} from "react-native";
 import { Delete, Plus, Save, Edit } from "../icons";
 import { Modalize } from "react-native-modalize";
+import { getTheme } from "../theme";
 export const MenuModal = ({
   deleteConvo,
   modalizeRef,
@@ -9,16 +16,18 @@ export const MenuModal = ({
   headerTextInputRef,
   setIsHeaderEditable,
 }) => {
+  const colorScheme = useColorScheme();
+  const theme = getTheme(colorScheme);
   return (
     <Modalize
       ref={modalizeRef}
-      modalStyle={styles.modalStyle}
-      handleStyle={styles.handleStyle}
+      modalStyle={styles.modalStyle(theme)}
+      handleStyle={styles.handleStyle(theme)}
       handlePosition={"inside"}
       childrenStyle={styles.childrenStyle}
       adjustToContentHeight={true}
     >
-      <View style={styles.modalOptionsContainer}>
+      <View style={styles.modalOptionsContainer(theme)}>
         <TouchableOpacity
           onPress={() => {
             setIsHeaderEditable(true);
@@ -26,21 +35,21 @@ export const MenuModal = ({
           }}
         >
           <View style={styles.modalOption}>
-            <Edit />
-            <Text style={styles.modalOptionText}>Edit title</Text>
+            <Edit stroke={theme.iconColor} />
+            <Text style={styles.modalOptionText(theme)}>Edit title</Text>
           </View>
         </TouchableOpacity>
-        <View style={styles.modalOptionDivider} />
+        <View style={styles.modalOptionDivider(theme)} />
         <TouchableOpacity onPress={() => onClose(modalizeRef)}>
           <View style={styles.modalOption}>
-            <Save />
-            <Text style={styles.modalOptionText}>Pin conversation</Text>
+            <Save stroke={theme.iconColor} />
+            <Text style={styles.modalOptionText(theme)}>Pin conversation</Text>
           </View>
         </TouchableOpacity>
       </View>
       <View
         style={[
-          styles.modalOptionsContainer,
+          styles.modalOptionsContainer(theme),
           { marginTop: 16, marginBottom: 52 },
         ]}
       >
@@ -52,7 +61,7 @@ export const MenuModal = ({
         >
           <View style={styles.modalOption}>
             <Delete stroke={"#FF0000"} />
-            <Text style={[styles.modalOptionText, { color: "#FF0000" }]}>
+            <Text style={[styles.modalOptionText(theme), { color: "#FF0000" }]}>
               Delete conversation
             </Text>
           </View>
@@ -64,36 +73,38 @@ export const MenuModal = ({
 
 const styles = StyleSheet.create({
   childrenStyle: {},
-  handleStyle: {
+  handleStyle: (theme) => ({
     width: 40,
     height: 4,
-    backgroundColor: "#D9D9D9",
-  },
-  modalStyle: {
+    backgroundColor: theme.modal.divider.backgroundColor,
+  }),
+  modalStyle: (theme) => ({
     paddingHorizontal: 16,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
-  },
-  modalOptionText: {
+    backgroundColor: theme.modal.backgroundColor,
+  }),
+  modalOptionText: (theme) => ({
     paddingLeft: 16,
     fontSize: 16,
     alignSelf: "center",
-  },
-  modalOptionDivider: {
+    color: theme.fontColor,
+  }),
+  modalOptionDivider: (theme) => ({
     width: "100%",
     height: 1,
-    backgroundColor: "#DBDBDB",
-  },
+    backgroundColor: theme.modal.divider.backgroundColor,
+  }),
   modalOption: {
     width: "100%",
     padding: 16,
     flexDirection: "row",
     alignItems: "center",
   },
-  modalOptionsContainer: {
+  modalOptionsContainer: (theme) => ({
     marginTop: 40,
-    backgroundColor: "#EFEFEF",
+    backgroundColor: theme.modal.container.backgroundColor,
     width: "100%",
     borderRadius: 16,
-  },
+  }),
 });

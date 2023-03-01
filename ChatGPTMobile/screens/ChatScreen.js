@@ -6,6 +6,7 @@ import {
   Platform,
   View,
   Keyboard,
+  useColorScheme,
 } from "react-native";
 import { useState, useEffect, useRef } from "react";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -16,6 +17,7 @@ import {
   MenuModal,
   MessageModal,
 } from "../components";
+import { getTheme } from "../theme";
 
 export const ChatScreen = ({
   navigation,
@@ -31,6 +33,8 @@ export const ChatScreen = ({
   editMessage,
   setEditMessage,
 }) => {
+  const colorScheme = useColorScheme();
+  const theme = getTheme(colorScheme);
   const API_URL = "https://chatgpt-api-blue.vercel.app/api";
   const result = chats[index];
   const [loading, setLoading] = useState(false);
@@ -313,7 +317,7 @@ export const ChatScreen = ({
   return (
     <SafeAreaProvider>
       <SafeAreaView
-        style={styles.container}
+        style={styles.container(theme)}
         edges={["top", "left", "right", "bottom"]}
       >
         <StatusBar animated={true} />
@@ -380,12 +384,12 @@ export const ChatScreen = ({
   );
 };
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "white",
+  container: (theme) => ({
+    backgroundColor: theme.backgroundColor,
     alignItems: "center",
     justifyContent: "center",
     flex: 1,
-  },
+  }),
   componentContainer: {
     width: "100%",
     flex: 1,

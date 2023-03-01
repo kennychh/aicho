@@ -1,6 +1,14 @@
-import { StyleSheet, TextInput, View, Image, Keyboard } from "react-native";
+import {
+  StyleSheet,
+  TextInput,
+  View,
+  Image,
+  Keyboard,
+  useColorScheme,
+} from "react-native";
 import { More, Menu, Close } from "../icons";
 import { HeaderButton } from "./HeaderButton";
+import { getTheme } from "../theme";
 export const Header = ({
   onOpen,
   modalizeRef,
@@ -13,13 +21,18 @@ export const Header = ({
   isHeaderEditable,
   setIsHeaderEditable,
 }) => {
+  const colorScheme = useColorScheme();
+  const theme = getTheme(colorScheme);
   const onPress = () => {
     Keyboard.dismiss();
     onOpen(modalizeRef);
   };
   return (
-    <View style={styles.bar}>
-      <HeaderButton icon={<Menu />} onPress={() => navigation.openDrawer()} />
+    <View style={styles.bar(theme)}>
+      <HeaderButton
+        icon={<Menu stroke={theme.iconColor} />}
+        onPress={() => navigation.openDrawer()}
+      />
       <View
         style={{
           flex: 1,
@@ -33,7 +46,7 @@ export const Header = ({
         />
         <TextInput
           ref={textInputRef}
-          style={styles.barText}
+          style={styles.barText(theme)}
           value={headerTitle}
           editable={isHeaderEditable}
           returnKeyType={"done"}
@@ -50,16 +63,20 @@ export const Header = ({
           }}
         />
       </View>
-      <HeaderButton icon={<More />} onPress={onPress} />
+      <HeaderButton
+        icon={<More stroke={theme.iconColor} />}
+        onPress={onPress}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  barText: {
+  barText: (theme) => ({
     fontSize: 16,
     fontWeight: "500",
-  },
+    color: theme.fontColor,
+  }),
   icon: {
     width: 36,
     height: 36,
@@ -68,17 +85,17 @@ const styles = StyleSheet.create({
     marginLeft: 16,
     marginRight: 8,
   },
-  bar: {
+  bar: (theme) => ({
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
     width: "100%",
-    borderBottomColor: "#F6F6F6",
+    borderBottomColor: theme.header.borderBottomColor,
     borderBottomWidth: 1,
-    backgroundColor: "white",
+    backgroundColor: theme.backgroundColor,
     alignContent: "space-between",
     paddingHorizontal: 16,
     paddingVertical: 8,
     zIndex: 1,
-  },
+  }),
 });

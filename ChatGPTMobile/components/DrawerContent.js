@@ -7,8 +7,10 @@ import {
   StyleSheet,
   View,
   ScrollView,
+  useColorScheme,
 } from "react-native";
 import { Message, Delete, Moon, Plus, Settings } from "../icons";
+import { getTheme } from "../theme";
 export const DrawerContent = ({
   props,
   chats,
@@ -21,6 +23,8 @@ export const DrawerContent = ({
   setInput,
   setEditMessage,
 }) => {
+  const colorScheme = useColorScheme();
+  const theme = getTheme(colorScheme);
   const navigation = props.navigation;
   const [selectedItem, setSelectedItem] = useState(chatIndex);
   const ChatsItem = ({ item, index }) => {
@@ -35,11 +39,16 @@ export const DrawerContent = ({
         }}
         style={[
           styles.chatItem,
-          selectedItem == index ? { backgroundColor: "#EFEFEF" } : {},
+          selectedItem == index
+            ? {
+                backgroundColor:
+                  theme.drawerContent.chatItem.selected.backgroundColor,
+              }
+            : {},
         ]}
       >
-        <Message style={styles.chatItemIcon} />
-        <Text style={styles.chatItemText}>{chatTitles[index]}</Text>
+        <Message style={styles.chatItemIcon} stroke={theme.iconColor} />
+        <Text style={styles.chatItemText(theme)}>{chatTitles[index]}</Text>
       </TouchableOpacity>
     );
   };
@@ -47,20 +56,21 @@ export const DrawerContent = ({
   useEffect(() => {
     setSelectedItem(chatIndex);
   }, [chatIndex]);
+
   return (
     <DrawerContentScrollView
       {...props}
-      contentContainerStyle={styles.container}
+      contentContainerStyle={styles.container(theme)}
       scrollEnabled={false}
     >
       <View style={styles.drawerConversationsTitleContainer}>
-        <Text style={styles.drawerConversationsTitle}>ChatGPT</Text>
+        <Text style={styles.drawerConversationsTitle(theme)}>ChatGPT</Text>
       </View>
       <View style={{ maxHeight: 400 }}>
         <FlatList
           inverted
           data={chats}
-          style={styles.componentContainer}
+          style={styles.componentContainer(theme)}
           contentContainerStyle={{
             flexGrow: 1,
             justifyContent: "flex-end",
@@ -73,7 +83,7 @@ export const DrawerContent = ({
           }}
         />
       </View>
-      <View style={styles.drawerDivider} />
+      <View style={styles.drawerDivider(theme)} />
       <ScrollView>
         <TouchableOpacity
           style={[styles.drawerOptions, { marginTop: 24 }]}
@@ -90,16 +100,16 @@ export const DrawerContent = ({
             navigation.closeDrawer();
           }}
         >
-          <Plus style={styles.chatItemIcon} />
-          <Text style={styles.chatItemText}>New chat</Text>
+          <Plus style={styles.chatItemIcon} stroke={theme.iconColor} />
+          <Text style={styles.chatItemText(theme)}>New chat</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.drawerOptions}>
-          <Moon style={styles.chatItemIcon} />
-          <Text style={styles.chatItemText}>Dark mode</Text>
+          <Moon style={styles.chatItemIcon} stroke={theme.iconColor} />
+          <Text style={styles.chatItemText(theme)}>Dark mode</Text>
         </TouchableOpacity>
         {/* <TouchableOpacity style={styles.drawerOptions}>
           <Settings style={styles.chatItemIcon} />
-          <Text style={styles.chatItemText}>Settings</Text>
+          <Text style={styles.chatItemText(theme)}>Settings</Text>
         </TouchableOpacity> */}
         <TouchableOpacity
           style={styles.drawerOptions}
@@ -113,8 +123,10 @@ export const DrawerContent = ({
             navigation.closeDrawer();
           }}
         >
-          <Delete style={styles.chatItemIcon} stroke={"#FF0000"} />
-          <Text style={[styles.chatItemText, { color: "#FF0000" }]}>
+          <Delete style={styles.chatItemIcon} stroke={theme.error.color} />
+          <Text
+            style={[styles.chatItemText(theme), { color: theme.error.color }]}
+          >
             Clear conversations
           </Text>
         </TouchableOpacity>
@@ -132,20 +144,25 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
   },
-  drawerDivider: {
+  drawerDivider: (theme) => ({
     height: 1,
-    backgroundColor: "#DBDBDB",
+    backgroundColor: theme.drawerContent.drawerDivider.backgroundColor,
     marginRight: 16,
-  },
-  drawerConversationsTitle: {
+  }),
+  drawerConversationsTitle: (theme) => ({
     fontSize: 20,
     fontWeight: "500",
-  },
+    color: theme.fontColor,
+  }),
   drawerConversationsTitleContainer: {
     marginBottom: 24,
     marginLeft: 16,
   },
-  chatItemText: { fontSize: 16, fontWeight: "500" },
+  chatItemText: (theme) => ({
+    fontSize: 16,
+    fontWeight: "500",
+    color: theme.fontColor,
+  }),
   chatItemIcon: { marginRight: 16 },
   chatItem: {
     padding: 16,
@@ -155,14 +172,15 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
   },
-  container: {
-    backgroundColor: "white",
+  container: (theme) => ({
+    backgroundColor: theme.drawerContent.backgroundColor,
     marginVertical: 16,
     marginLeft: 16,
-  },
-  componentContainer: {
+  }),
+  componentContainer: (theme) => ({
     width: "100%",
     height: "100%",
     paddingRight: 16,
-  },
+    backgroundColor: theme.drawerContent.backgroundColor,
+  }),
 });

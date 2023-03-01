@@ -9,10 +9,12 @@ import {
   UIManager,
   TouchableOpacity,
   Keyboard,
+  useColorScheme,
 } from "react-native";
 import * as Haptics from "expo-haptics";
 import { useEffect, useRef, useState } from "react";
 import { Alert } from "../icons";
+import { getTheme } from "../theme";
 if (
   Platform.OS === "android" &&
   UIManager.setLayoutAnimationEnabledExperimental
@@ -20,6 +22,8 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 export const Message = ({ item, index, setMessage }) => {
+  const colorScheme = useColorScheme();
+  const theme = getTheme(colorScheme);
   const text = item?.result?.text || "";
   const isInput = item?.isInput;
   const isError = item?.isError;
@@ -82,14 +86,17 @@ export const Message = ({ item, index, setMessage }) => {
                 backgroundColor: "#10a37f",
                 fontColor: "white",
               }
-            : { marginRight: "auto" },
+            : {
+                marginRight: "auto",
+                backgroundColor: theme.message.itemContainer.backgroundColor,
+              },
         ]}
       >
         <View>
           <Text
             style={[
               styles.text,
-              isInput ? { color: "white" } : { fontColor: "black" },
+              isInput ? { color: "white" } : { color: theme.message.fontColor },
             ]}
           >
             {text}
@@ -119,7 +126,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   itemContainer: {
-    backgroundColor: "#F7F7F7",
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderRadius: 24,
