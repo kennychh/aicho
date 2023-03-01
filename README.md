@@ -15,7 +15,7 @@ I made this project to not only expand my knowledge and skills in creating beati
 Use system settings, or set it to your own liking!
 
 
-https://user-images.githubusercontent.com/48639878/222040027-5fc9b26d-da05-4d73-902e-14f8a945252d.mp4
+https://user-images.githubusercontent.com/48639878/222041503-4aaa844f-d969-4d17-946c-a4ecabfd4e09.mp4
 
 
 ### Multi-conversations
