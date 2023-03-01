@@ -1,6 +1,8 @@
 import { FlatList, View, Keyboard } from "react-native";
 import { useRef } from "react";
 import { Message } from "./Message";
+import { getTheme } from "../theme";
+
 export const MessageList = ({
   data,
   inputOffset,
@@ -15,6 +17,7 @@ export const MessageList = ({
         data={data}
         keyboardShouldPersistTaps="always"
         onScrollBeginDrag={Keyboard.dismiss}
+        indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
         renderItem={({ item, index }) => (
           <Message
             item={item}

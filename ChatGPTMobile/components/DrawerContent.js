@@ -73,6 +73,7 @@ export const DrawerContent = ({
         <FlatList
           inverted
           data={chats}
+          indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
           style={styles.componentContainer(theme)}
           contentContainerStyle={{
             flexGrow: 1,
@@ -87,7 +88,9 @@ export const DrawerContent = ({
         />
       </View>
       <View style={styles.drawerDivider(theme)} />
-      <ScrollView>
+      <ScrollView
+        indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
+      >
         <TouchableOpacity
           style={[styles.drawerOptions, { marginTop: 24 }]}
           onPress={() => {
