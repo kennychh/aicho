@@ -10,12 +10,12 @@ I made this project to not only expand my knowledge and skills in creating beati
 
 ## Here are some cool features!
 
-### Dark mode
+### Change appearance
 
 Use system settings, or set it to your own liking!
 
 
-https://user-images.githubusercontent.com/48639878/222041503-4aaa844f-d969-4d17-946c-a4ecabfd4e09.mp4
+https://user-images.githubusercontent.com/48639878/222042733-b76a4b6e-6cbb-4528-a5b1-b2c9e98920d6.mp4
 
 
 ### Multi-conversations
