@@ -22,6 +22,9 @@ export default function App() {
   const [chatTitles, setChatTitles] = useState([]);
   const [deleteChat, setDeleteChat] = useState(false);
   const [editMessage, setEditMessage] = useState(null);
+  const [isDarkMode, setIsDarkMode] = useState(colorScheme === "dark");
+  const [useDeviceSettings, setUseDeviceSettings] = useState(true);
+  const [count, setCount] = useState(0);
   const [input, setInput] = useState("");
   const colorScheme = useColorScheme();
   const [theme, setTheme] = useState(getTheme(colorScheme));
@@ -77,19 +80,43 @@ export default function App() {
     }
   }, [chatTitles]);
 
+  const storeDarkMode = async () => {
+    try {
+      const darkModeJson = JSON.stringify(isDarkMode);
+      const useDeviceSettingsJson = JSON.stringify(useDeviceSettings);
+      await AsyncStorage.setItem("@darkMode", darkModeJson);
+      await AsyncStorage.setItem("@useDeviceSettings", useDeviceSettingsJson);
+    } catch (e) {
+      // saving error
+      Alert.alert("Couldn't store dark mode settings", e.message);
+    }
+  };
+
   useEffect(() => {
     const getData = async () => {
       try {
         const jsonValue = await AsyncStorage.getItem("@chatgpt");
         const chatTitlesJson = await AsyncStorage.getItem("@chatTitles");
+        const darkModeJsonValue = await AsyncStorage.getItem("@darkMode");
+        const useDeviceSettingsValue = await AsyncStorage.getItem(
+          "@useDeviceSettings"
+        );
         const storedChatTitles =
           chatTitlesJson != null ? JSON.parse(chatTitlesJson) : ["New chat"];
         const storedRes = jsonValue != null ? JSON.parse(jsonValue) : [[]];
+        const storedDarkMode =
+          darkModeJsonValue != null ? JSON.parse(darkModeJsonValue) : true;
+        const storedUseDeviceSettings =
+          useDeviceSettingsValue != null
+            ? JSON.parse(useDeviceSettingsValue)
+            : true;
         if (storedRes) {
           setChatTitles(storedChatTitles);
           setChats(storedRes);
           setChatIndex(storedRes.length - 1);
         }
+        setIsDarkMode(storedDarkMode);
+        setUseDeviceSettings(storedUseDeviceSettings);
       } catch (e) {
         // error reading value
         Alert.alert("Couldn't retrieve chats", e.message);
@@ -99,8 +126,25 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    setTheme(getTheme(colorScheme));
-  }, [colorScheme]);
+    if (useDeviceSettings) {
+      setTheme(getTheme(colorScheme));
+    } else {
+      setTheme(getTheme(isDarkMode ? "dark" : "light"));
+    }
+  }, [colorScheme, isDarkMode, useDeviceSettings]);
+
+  useEffect(() => {
+    if (useDeviceSettings) {
+      setTheme(getTheme(colorScheme));
+    } else {
+      setTheme(getTheme(isDarkMode ? "dark" : "light"));
+    }
+    if (count != 0) {
+      storeDarkMode();
+    } else {
+      setCount(1);
+    }
+  }, [isDarkMode, useDeviceSettings]);
 
   return (
     <NavigationContainer>
@@ -154,6 +198,11 @@ export default function App() {
         theme={theme}
         setTheme={setTheme}
         modalizeRef={darkModeModalizeRef}
+        isDarkMode={isDarkMode}
+        setIsDarkMode={setIsDarkMode}
+        useDeviceSettings={useDeviceSettings}
+        setUseDeviceSettings={setUseDeviceSettings}
+        storeDarkMode={storeDarkMode}
       />
     </NavigationContainer>
   );

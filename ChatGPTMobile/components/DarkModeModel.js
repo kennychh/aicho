@@ -1,34 +1,21 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Switch,
-  useColorScheme,
-} from "react-native";
-import { Copy, Edit, Refresh } from "../icons";
+import { View, Text, StyleSheet, Switch, useColorScheme } from "react-native";
 import { Modalize } from "react-native-modalize";
-import * as Clipboard from "expo-clipboard";
-import { useState, useEffect } from "react";
-import { getTheme } from "../theme";
 
-export const DarkModeModel = ({ theme, setTheme, modalizeRef }) => {
+export const DarkModeModel = ({
+  theme,
+  setTheme,
+  modalizeRef,
+  isDarkMode,
+  setIsDarkMode,
+  useDeviceSettings,
+  setUseDeviceSettings,
+  storeDarkMode,
+}) => {
   const colorScheme = useColorScheme();
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [useDeviceSettings, setUseDeviceSettings] = useState(true);
-  const toggleSwitch = () => setIsDarkMode((previousState) => !previousState);
+  const toggleSwitch = () => {
+    setIsDarkMode((previousState) => !previousState);
+  };
 
-  useEffect(() => {
-    setIsDarkMode(colorScheme === "dark");
-  }, [colorScheme]);
-
-  useEffect(() => {
-    if (useDeviceSettings) {
-      setTheme(getTheme(colorScheme));
-    } else {
-      setTheme(getTheme(isDarkMode ? "dark" : "light"));
-    }
-  }, [isDarkMode, useDeviceSettings]);
   return (
     <Modalize
       ref={modalizeRef}
@@ -42,7 +29,9 @@ export const DarkModeModel = ({ theme, setTheme, modalizeRef }) => {
         <View style={styles.modalOption}>
           <Text style={styles.modalOptionText(theme)}>Dark mode</Text>
           <Switch
-            onValueChange={toggleSwitch}
+            onValueChange={() => {
+              toggleSwitch();
+            }}
             disabled={useDeviceSettings}
             value={isDarkMode}
           />
@@ -51,9 +40,9 @@ export const DarkModeModel = ({ theme, setTheme, modalizeRef }) => {
         <View style={styles.modalOption}>
           <Text style={styles.modalOptionText(theme)}>Use device settings</Text>
           <Switch
-            onValueChange={() =>
-              setUseDeviceSettings((previousState) => !previousState)
-            }
+            onValueChange={() => {
+              setUseDeviceSettings((previousState) => !previousState);
+            }}
             value={useDeviceSettings}
           />
         </View>
