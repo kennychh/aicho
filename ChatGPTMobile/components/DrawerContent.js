@@ -9,7 +9,8 @@ import {
   ScrollView,
 } from "react-native";
 import { DarkModeModel } from "./DarkModeModel";
-import { Message, Delete, Moon, Plus, Settings } from "../icons";
+import { Message, Delete, Moon, Plus, Sun } from "../icons";
+import { getTheme } from "../theme";
 
 export const DrawerContent = ({
   props,
@@ -28,6 +29,7 @@ export const DrawerContent = ({
 }) => {
   const navigation = props.navigation;
   const [selectedItem, setSelectedItem] = useState(chatIndex);
+  const isDarkMode = theme === getTheme("dark");
   const ChatsItem = ({ item, index }) => {
     return (
       <TouchableOpacity
@@ -108,7 +110,7 @@ export const DrawerContent = ({
           style={styles.drawerOptions}
           onPress={() => {
             darkModeModalizeRef.current?.open();
-            console.log(darkModeModalizeRef)
+            console.log(darkModeModalizeRef);
           }}
         >
           <Moon style={styles.chatItemIcon} stroke={theme.iconColor} />
