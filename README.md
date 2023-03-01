@@ -10,6 +10,14 @@ I made this project to not only expand my knowledge and skills in creating beati
 
 ## Here are some cool features!
 
+### Dark mode
+
+Use system settings, or set it to your own liking!
+
+
+https://user-images.githubusercontent.com/48639878/222041503-4aaa844f-d969-4d17-946c-a4ecabfd4e09.mp4
+
+
 ### Multi-conversations
 
 Just like the web client, this project mimics this feature by allowing you to have multiple conversations with ChatGPT.
