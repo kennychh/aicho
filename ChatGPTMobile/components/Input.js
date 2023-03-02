@@ -46,7 +46,11 @@ export const Input = ({
     return <Send width="18px" height="18px" stroke="#fff" />;
   };
   const getInputIconColor = () => {
-    if (showLoadingIcon || (result?.length == 0 && !isResultValid)) {
+    if (
+      showLoadingIcon ||
+      (result?.length == 0 && !isResultValid) ||
+      (editMessage && !isResultValid)
+    ) {
       return { backgroundColor: theme.input.button.disabled.backgroundColor };
     } else if (showRefreshIcon || showSendIcon) {
       return {};
@@ -56,7 +60,7 @@ export const Input = ({
 
   const getInputDisabled = () => {
     if (editMessage) {
-      return false;
+      return !isResultValid;
     } else if (showRefreshIcon && error) {
       return false;
     } else if (showLoadingIcon || error) {
@@ -110,7 +114,7 @@ export const Input = ({
                     setInput("");
                   }}
                 >
-                  <Close width="18px" height="18px" />
+                  <Close width="18px" height="18px" stroke={theme.iconColor} />
                 </TouchableOpacity>
               )}
               <View style={{ flex: 1, paddingTop: 12, paddingBottom: 12 }}>
