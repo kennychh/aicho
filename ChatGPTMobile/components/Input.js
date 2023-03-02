@@ -114,7 +114,7 @@ export const Input = ({
                     setInput("");
                   }}
                 >
-                  <Close width="20px" height="20px" stroke={theme.iconColor} />
+                  <Close width="18px" height="18px" stroke={theme.iconColor} />
                 </TouchableOpacity>
               )}
               <View style={{ flex: 1, paddingTop: 12, paddingBottom: 12 }}>
