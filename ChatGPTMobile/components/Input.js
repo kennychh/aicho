@@ -8,6 +8,7 @@ import {
 import { BlurView } from "expo-blur";
 import { useEffect, useState } from "react";
 import { Send, Refresh, Loading, Close } from "../icons";
+import { getTheme } from "../theme";
 export const Input = ({
   textInputRef,
   input,
@@ -120,6 +121,9 @@ export const Input = ({
               <View style={{ flex: 1, paddingTop: 12, paddingBottom: 12 }}>
                 <TextInput
                   ref={textInputRef}
+                  keyboardAppearance={
+                    theme === getTheme("dark") ? "dark" : "light"
+                  }
                   placeholder={
                     editable ? "Enter prompt" : "Regenerate response"
                   }

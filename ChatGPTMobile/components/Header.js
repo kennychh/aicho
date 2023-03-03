@@ -1,6 +1,7 @@
 import { StyleSheet, TextInput, View, Image, Keyboard } from "react-native";
 import { More, Menu, Close } from "../icons";
 import { HeaderButton } from "./HeaderButton";
+import { getTheme } from "../theme";
 export const Header = ({
   onOpen,
   modalizeRef,
@@ -37,6 +38,7 @@ export const Header = ({
         />
         <TextInput
           ref={textInputRef}
+          keyboardAppearance={theme === getTheme("dark") ? "dark" : "light"}
           style={styles.barText(theme)}
           value={headerTitle}
           editable={isHeaderEditable}
