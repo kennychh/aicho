@@ -4,7 +4,7 @@ import {
   View,
   Dimensions,
   Animated,
-  Easing,
+  Platform,
   LayoutAnimation,
   UIManager,
   TouchableOpacity,
