@@ -68,6 +68,8 @@ export const Input = ({
       return true;
     } else if (showRefreshIcon || showSendIcon) {
       return false;
+    } else if (!isResultValid) {
+      return true;
     }
     return false;
   };
