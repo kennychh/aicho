@@ -132,7 +132,7 @@ export const Input = ({
                   placeholderTextColor={theme.input.placeholderFontColor}
                   style={[
                     styles.input(theme),
-                    editMessage ? { marginLeft: 8 } : {},
+                    editMessage ? { marginLeft: 4 } : {},
                   ]}
                   multiline={true}
                   value={input}
@@ -194,7 +194,10 @@ const styles = StyleSheet.create({
   closeIcon: {
     borderRadius: "50%",
     alignItems: "center",
-    marginLeft: 12,
+    justifyContent: "center",
+    marginLeft: 4,
+    width: 36,
+    height: 36,
   },
   input: (theme) => ({
     fontSize: 16,
@@ -202,7 +205,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 0,
     paddingBottom: 0,
-    paddingRight: 6,
+    paddingRight: 8,
     color: theme.input.fontColor,
   }),
 });
