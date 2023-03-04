@@ -108,8 +108,8 @@ export const Input = ({
       />
       <View style={styles.container} onLayout={(event) => onLayout(event)}>
         {editMessage && (
-          <View>
-            <View style={[styles.divider(theme), { width: windowWidth }]} />
+          <View style={{ width: windowWidth, marginHorizontal: -16 }}>
+            <View style={styles.divider(theme)} />
             <View
               style={{
                 width: windowWidth,
@@ -212,10 +212,11 @@ const styles = StyleSheet.create({
     marginRight: 4,
   },
   closeIcon: {
-    borderRadius: "50%",
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 16,
+    paddingLeft: 16,
+    paddingRight: 8,
   },
   text: (theme) => ({
     fontSize: 14,
