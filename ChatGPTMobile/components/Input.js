@@ -3,6 +3,7 @@ import {
   View,
   TouchableOpacity,
   TextInput,
+  Text,
   Dimensions,
 } from "react-native";
 import { BlurView } from "expo-blur";
@@ -106,20 +107,37 @@ export const Input = ({
         ]}
       />
       <View style={styles.container} onLayout={(event) => onLayout(event)}>
+        {editMessage && (
+          <View>
+            <View style={[styles.divider(theme), { width: windowWidth }]} />
+            <View
+              style={{
+                width: windowWidth,
+                backgroundColor: theme.backgroundColor,
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <TouchableOpacity
+                style={styles.closeIcon}
+                onPress={() => {
+                  setEditMessage(null);
+                  setInput("");
+                }}
+              >
+                <Close
+                  width="18px"
+                  height="18px"
+                  stroke={theme.secondaryIconColor}
+                />
+              </TouchableOpacity>
+              <Text style={styles.text(theme)}>Editing message</Text>
+            </View>
+          </View>
+        )}
         <View style={{ overflow: "hidden", borderRadius: 24 }}>
           <BlurView style={{ flexDirection: "row", alignItems: "center" }}>
             <View style={styles.inputContainer(theme)}>
-              {editMessage && (
-                <TouchableOpacity
-                  style={styles.closeIcon}
-                  onPress={() => {
-                    setEditMessage(null);
-                    setInput("");
-                  }}
-                >
-                  <Close width="18px" height="18px" stroke={theme.iconColor} />
-                </TouchableOpacity>
-              )}
               <View style={{ flex: 1, paddingTop: 12, paddingBottom: 12 }}>
                 <TextInput
                   ref={textInputRef}
@@ -130,10 +148,7 @@ export const Input = ({
                     editable ? "Enter prompt" : "Regenerate response"
                   }
                   placeholderTextColor={theme.input.placeholderFontColor}
-                  style={[
-                    styles.input(theme),
-                    editMessage ? { marginLeft: 4 } : {},
-                  ]}
+                  style={styles.input(theme)}
                   multiline={true}
                   value={input}
                   editable={editable}
@@ -159,6 +174,11 @@ export const Input = ({
 };
 
 const styles = StyleSheet.create({
+  divider: (theme) => ({
+    height: 1,
+    marginHorizontal: -16,
+    backgroundColor: theme.divider.color,
+  }),
   inputBottomBackground: (theme) => ({
     position: "absolute",
     backgroundColor: theme.backgroundColor,
@@ -195,10 +215,13 @@ const styles = StyleSheet.create({
     borderRadius: "50%",
     alignItems: "center",
     justifyContent: "center",
-    marginLeft: 4,
-    width: 36,
-    height: 36,
+    paddingVertical: 16,
   },
+  text: (theme) => ({
+    fontSize: 14,
+    color: theme.input.placeholderFontColor,
+    marginLeft: 8,
+  }),
   input: (theme) => ({
     fontSize: 16,
     marginLeft: 16,

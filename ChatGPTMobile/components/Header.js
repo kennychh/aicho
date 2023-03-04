@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flexDirection: "row",
     width: "100%",
-    borderBottomColor: theme.header.borderBottomColor,
+    borderBottomColor: theme.divider.color,
     borderBottomWidth: 1,
     backgroundColor: theme.backgroundColor,
     alignContent: "space-between",

@@ -1,10 +1,11 @@
 const lightTheme = {
   backgroundColor: "white",
-  header: {
-    borderBottomColor: "#F6F6F6",
+  divider: {
+    color: "#F6F6F6",
   },
   fontColor: "#000",
   iconColor: "black",
+  secondaryIconColor: "#707070",
   error: {
     color: "#FF0000",
   },
@@ -50,11 +51,12 @@ const lightTheme = {
 
 const darkTheme = {
   backgroundColor: "#000",
-  header: {
-    borderBottomColor: "#262626",
+  divider: {
+    color: "#262626",
   },
   fontColor: "white",
   iconColor: "white",
+  secondaryIconColor: "#A5A5A5",
   error: {
     color: "#FF0000",
   },
