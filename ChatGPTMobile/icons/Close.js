@@ -1,5 +1,5 @@
 import * as React from "react";
-import Svg, { Path } from "react-native-svg";
+import Svg, { Circle, Path } from "react-native-svg"
 
 export const Close = (props) => {
   return (
@@ -13,11 +13,12 @@ export const Close = (props) => {
       strokeWidth={2}
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="feather feather-x"
+      className="feather feather-x-circle"
       {...props}
     >
-      <Path d="M18 6L6 18" />
-      <Path d="M6 6L18 18" />
+      <Circle cx={12} cy={12} r={10} />
+      <Path d="M15 9L9 15" />
+      <Path d="M9 9L15 15" />
     </Svg>
   );
 };
