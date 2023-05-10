@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ChatScreen } from "./screens";
 import { DrawerContent } from "./components";
-import { NavigationContainer } from "@react-navigation/native";
+import {
+  NavigationContainer,
+  useNavigationContainerRef,
+} from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
   createDrawerNavigator,
@@ -9,7 +12,7 @@ import {
   DrawerItemList,
   DrawerItem,
 } from "@react-navigation/drawer";
-import { DarkModeModel } from "./components";
+import { DarkModeModel, ConfirmDeleteConvosModel } from "./components";
 import { Alert, FlatList, Text, useColorScheme, View } from "react-native";
 import { getTheme } from "./theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -29,6 +32,8 @@ export default function App() {
   const colorScheme = useColorScheme();
   const [theme, setTheme] = useState(getTheme(colorScheme));
   const darkModeModalizeRef = useRef(null);
+  const confirmDeleteConvosModalizeRef = useRef(null);
+  const navigationRef = useNavigationContainerRef();
   const storeChats = async () => {
     try {
       setDeleteChat(false);
@@ -147,7 +152,7 @@ export default function App() {
   }, [isDarkMode, useDeviceSettings]);
 
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <Drawer.Navigator
         drawerContent={(props) => (
           <DrawerContent
@@ -164,6 +169,7 @@ export default function App() {
             theme={theme}
             setTheme={setTheme}
             darkModeModalizeRef={darkModeModalizeRef}
+            confirmDeleteConvosModalizeRef={confirmDeleteConvosModalizeRef}
           />
         )}
         initialRouteName="Chat"
@@ -204,6 +210,17 @@ export default function App() {
         setUseDeviceSettings={setUseDeviceSettings}
         storeDarkMode={storeDarkMode}
       />
+      <ConfirmDeleteConvosModel
+        props={navigationRef}
+        setChatIndex={setChatIndex}
+        setChats={setChats}
+        setDeleteChat={setDeleteChat}
+        setChatTitles={setChatTitles}
+        setInput={setInput}
+        setEditMessage={setEditMessage}
+        theme={theme}
+        modalizeRef={confirmDeleteConvosModalizeRef}
+      ></ConfirmDeleteConvosModel>
     </NavigationContainer>
   );
 }

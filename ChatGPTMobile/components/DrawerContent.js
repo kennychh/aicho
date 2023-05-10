@@ -9,7 +9,7 @@ import {
   ScrollView,
 } from "react-native";
 import { DarkModeModel } from "./DarkModeModel";
-import { Message, Delete, Moon, Plus, Sun } from "../icons";
+import { Message, Delete, Moon, Plus, Sun, Settings } from "../icons";
 import { getTheme } from "../theme";
 
 export const DrawerContent = ({
@@ -26,6 +26,7 @@ export const DrawerContent = ({
   theme,
   setTheme,
   darkModeModalizeRef,
+  confirmDeleteConvosModalizeRef,
 }) => {
   const navigation = props.navigation;
   const [selectedItem, setSelectedItem] = useState(chatIndex);
@@ -122,20 +123,14 @@ export const DrawerContent = ({
           )}
           <Text style={styles.chatItemText(theme)}>Appearance</Text>
         </TouchableOpacity>
-        {/* <TouchableOpacity style={styles.drawerOptions}>
-          <Settings style={styles.chatItemIcon} />
+        <TouchableOpacity style={styles.drawerOptions}>
+          <Settings style={styles.chatItemIcon} stroke={theme.iconColor} />
           <Text style={styles.chatItemText(theme)}>Settings</Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
         <TouchableOpacity
           style={styles.drawerOptions}
           onPress={() => {
-            setDeleteChat(true);
-            setChats([[]]);
-            setChatIndex(0);
-            setChatTitles(["New chat"]);
-            setInput("");
-            setEditMessage(null);
-            navigation.closeDrawer();
+            confirmDeleteConvosModalizeRef.current?.open();
           }}
         >
           <Delete style={styles.chatItemIcon} stroke={theme.error.color} />
