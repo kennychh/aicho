@@ -123,7 +123,12 @@ export const DrawerContent = ({
           )}
           <Text style={styles.chatItemText(theme)}>Appearance</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.drawerOptions}>
+        <TouchableOpacity
+          style={styles.drawerOptions}
+          onPress={() => {
+            navigation.navigate("Settings");
+          }}
+        >
           <Settings style={styles.chatItemIcon} stroke={theme.iconColor} />
           <Text style={styles.chatItemText(theme)}>Settings</Text>
         </TouchableOpacity>

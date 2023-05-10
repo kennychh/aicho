@@ -9,7 +9,6 @@ import {
 import { Modalize } from "react-native-modalize";
 
 export const ConfirmDeleteConvosModel = ({
-  props,
   setChatIndex,
   setChats,
   setDeleteChat,
@@ -19,7 +18,6 @@ export const ConfirmDeleteConvosModel = ({
   theme,
   modalizeRef,
 }) => {
-  const navigation = props.navigation;
   return (
     <Modalize
       ref={modalizeRef}

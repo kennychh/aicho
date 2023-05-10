@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { ChatScreen } from "./screens";
+import { HomeScreen, SettingsScreen } from "./screens";
 import { DrawerContent } from "./components";
 import {
   NavigationContainer,
@@ -153,53 +153,33 @@ export default function App() {
 
   return (
     <NavigationContainer ref={navigationRef}>
-      <Drawer.Navigator
-        drawerContent={(props) => (
-          <DrawerContent
-            props={props}
-            chats={chats}
-            setChatIndex={setChatIndex}
-            chatIndex={chatIndex}
-            setChats={setChats}
-            setDeleteChat={setDeleteChat}
-            chatTitles={chatTitles}
-            setChatTitles={setChatTitles}
-            setInput={setInput}
-            setEditMessage={setEditMessage}
-            theme={theme}
-            setTheme={setTheme}
-            darkModeModalizeRef={darkModeModalizeRef}
-            confirmDeleteConvosModalizeRef={confirmDeleteConvosModalizeRef}
-          />
-        )}
-        initialRouteName="Chat"
-        screenOptions={{
-          headerShown: false,
-          drawerStyle: {
-            backgroundColor: theme.drawerContent.backgroundColor,
-          },
-        }}
-      >
-        <Drawer.Screen name="Chat">
+      <Stack.Navigator>
+        <Stack.Screen name="HomeScreen" options={{ headerShown: false }}>
           {(props) => (
-            <ChatScreen
-              {...props}
+            <HomeScreen
+              props={props}
               chats={chats}
-              index={chatIndex}
+              setChatIndex={setChatIndex}
               chatIndex={chatIndex}
-              clearConversation={clearConversation}
               setChats={setChats}
+              setDeleteChat={setDeleteChat}
               chatTitles={chatTitles}
               setChatTitles={setChatTitles}
-              input={input}
               setInput={setInput}
-              editMessage={editMessage}
               setEditMessage={setEditMessage}
               theme={theme}
+              setTheme={setTheme}
+              darkModeModalizeRef={darkModeModalizeRef}
+              confirmDeleteConvosModalizeRef={confirmDeleteConvosModalizeRef}
+              index={chatIndex}
+              clearConversation={clearConversation}
+              input={input}
+              editMessage={editMessage}
             />
           )}
-        </Drawer.Screen>
-      </Drawer.Navigator>
+        </Stack.Screen>
+        <Stack.Screen name="Settings" component={SettingsScreen} />
+      </Stack.Navigator>
       <DarkModeModel
         theme={theme}
         setTheme={setTheme}
@@ -211,7 +191,6 @@ export default function App() {
         storeDarkMode={storeDarkMode}
       />
       <ConfirmDeleteConvosModel
-        props={navigationRef}
         setChatIndex={setChatIndex}
         setChats={setChats}
         setDeleteChat={setDeleteChat}
