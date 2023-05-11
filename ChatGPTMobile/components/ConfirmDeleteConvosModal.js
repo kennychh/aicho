@@ -7,8 +7,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Modalize } from "react-native-modalize";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-export const ConfirmDeleteConvosModel = ({
+export const ConfirmDeleteConvosModal = ({
   setChatIndex,
   setChats,
   setDeleteChat,
@@ -18,6 +19,7 @@ export const ConfirmDeleteConvosModel = ({
   theme,
   modalizeRef,
 }) => {
+  const insets = useSafeAreaInsets();
   return (
     <Modalize
       ref={modalizeRef}
@@ -34,7 +36,7 @@ export const ConfirmDeleteConvosModel = ({
         <View
           style={[
             styles.modalOptionsContainer(theme),
-            { marginTop: 32, marginBottom: 52 },
+            { marginTop: 32, marginBottom: insets.bottom + 8 },
           ]}
         >
           <TouchableOpacity

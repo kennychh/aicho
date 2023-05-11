@@ -10,7 +10,7 @@ import { Header, SettingsInput } from "../components";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { getTheme } from "../theme";
-import { SettingsOption } from "./../components/SettingsOption";
+import { TextButton } from "./../components";
 
 export const AccountScreen = ({ props, theme }) => {
   const navigation = props.navigation;
@@ -43,6 +43,9 @@ export const AccountScreen = ({ props, theme }) => {
           indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
           renderItem={({ item }) => item}
         />
+        <View style={{ marginBottom: 8 }}>
+          <TextButton text={"Save"} theme={theme} />
+        </View>
       </SafeAreaView>
     </SafeAreaProvider>
   );

@@ -1,6 +1,9 @@
 const lightTheme = {
   backgroundColor: "white",
-  onBackgroundColor: "#F7F7F7",
+  onBackgroundColor: "#EFEFEF",
+  button: {
+    color: "#EFEFEF",
+  },
   divider: {
     color: "#F6F6F6",
   },
@@ -34,7 +37,7 @@ const lightTheme = {
   },
   message: {
     itemContainer: {
-      backgroundColor: "#F7F7F7",
+      backgroundColor: "#EFEFEF",
     },
     fontColor: "black",
   },
@@ -54,6 +57,9 @@ const lightTheme = {
 const darkTheme = {
   backgroundColor: "#000",
   onBackgroundColor: "#262626",
+  button: {
+    color: "#262626",
+  },
   divider: {
     color: "#262626",
   },

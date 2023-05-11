@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Delete, Plus, Copy, Edit } from "../icons";
 import { Modalize } from "react-native-modalize";
 export const MenuModal = ({
@@ -10,6 +11,7 @@ export const MenuModal = ({
   setIsHeaderEditable,
   theme,
 }) => {
+  const insets = useSafeAreaInsets();
   return (
     <Modalize
       ref={modalizeRef}
@@ -42,7 +44,7 @@ export const MenuModal = ({
       <View
         style={[
           styles.modalOptionsContainer(theme),
-          { marginTop: 16, marginBottom: 52 },
+          { marginTop: 16, marginBottom: insets.bottom + 8 },
         ]}
       >
         <TouchableOpacity

@@ -1,17 +1,16 @@
 import { View, Text, StyleSheet, Switch, useColorScheme } from "react-native";
 import { Modalize } from "react-native-modalize";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-export const DarkModeModel = ({
+export const DarkModeModal = ({
   theme,
-  setTheme,
   modalizeRef,
   isDarkMode,
   setIsDarkMode,
   useDeviceSettings,
   setUseDeviceSettings,
-  storeDarkMode,
 }) => {
-  const colorScheme = useColorScheme();
+  const insets = useSafeAreaInsets();
   const toggleSwitch = () => {
     setIsDarkMode((previousState) => !previousState);
   };
@@ -25,7 +24,12 @@ export const DarkModeModel = ({
       childrenStyle={styles.childrenStyle}
       adjustToContentHeight={true}
     >
-      <View style={[styles.modalOptionsContainer(theme), { marginBottom: 52 }]}>
+      <View
+        style={[
+          styles.modalOptionsContainer(theme),
+          { marginBottom: insets.bottom + 8 },
+        ]}
+      >
         <View style={styles.modalOption}>
           <Text style={styles.modalOptionText(theme)}>Dark mode</Text>
           <Switch

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { HomeScreen, SettingsScreen, AccountScreen } from "./screens";
 import { DrawerContent } from "./components";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import {
   NavigationContainer,
   useNavigationContainerRef,
@@ -12,7 +13,7 @@ import {
   DrawerItemList,
   DrawerItem,
 } from "@react-navigation/drawer";
-import { DarkModeModel, ConfirmDeleteConvosModel } from "./components";
+import { DarkModeModal, ConfirmDeleteConvosModal } from "./components";
 import { Alert, FlatList, Text, useColorScheme, View } from "react-native";
 import { getTheme } from "./theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -152,59 +153,61 @@ export default function App() {
   }, [isDarkMode, useDeviceSettings]);
 
   return (
-    <NavigationContainer ref={navigationRef}>
-      <Stack.Navigator>
-        <Stack.Screen name="HomeScreen" options={{ headerShown: false }}>
-          {(props) => (
-            <HomeScreen
-              props={props}
-              chats={chats}
-              setChatIndex={setChatIndex}
-              chatIndex={chatIndex}
-              setChats={setChats}
-              setDeleteChat={setDeleteChat}
-              chatTitles={chatTitles}
-              setChatTitles={setChatTitles}
-              setInput={setInput}
-              setEditMessage={setEditMessage}
-              theme={theme}
-              setTheme={setTheme}
-              darkModeModalizeRef={darkModeModalizeRef}
-              confirmDeleteConvosModalizeRef={confirmDeleteConvosModalizeRef}
-              index={chatIndex}
-              clearConversation={clearConversation}
-              input={input}
-              editMessage={editMessage}
-            />
-          )}
-        </Stack.Screen>
-        <Stack.Screen name="Settings" options={{ headerShown: false }}>
-          {(props) => <SettingsScreen props={props} theme={theme} />}
-        </Stack.Screen>
-        <Stack.Screen name="Account" options={{ headerShown: false }}>
-          {(props) => <AccountScreen props={props} theme={theme} />}
-        </Stack.Screen>
-      </Stack.Navigator>
-      <DarkModeModel
-        theme={theme}
-        setTheme={setTheme}
-        modalizeRef={darkModeModalizeRef}
-        isDarkMode={isDarkMode}
-        setIsDarkMode={setIsDarkMode}
-        useDeviceSettings={useDeviceSettings}
-        setUseDeviceSettings={setUseDeviceSettings}
-        storeDarkMode={storeDarkMode}
-      />
-      <ConfirmDeleteConvosModel
-        setChatIndex={setChatIndex}
-        setChats={setChats}
-        setDeleteChat={setDeleteChat}
-        setChatTitles={setChatTitles}
-        setInput={setInput}
-        setEditMessage={setEditMessage}
-        theme={theme}
-        modalizeRef={confirmDeleteConvosModalizeRef}
-      ></ConfirmDeleteConvosModel>
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer ref={navigationRef}>
+        <Stack.Navigator>
+          <Stack.Screen name="HomeScreen" options={{ headerShown: false }}>
+            {(props) => (
+              <HomeScreen
+                props={props}
+                chats={chats}
+                setChatIndex={setChatIndex}
+                chatIndex={chatIndex}
+                setChats={setChats}
+                setDeleteChat={setDeleteChat}
+                chatTitles={chatTitles}
+                setChatTitles={setChatTitles}
+                setInput={setInput}
+                setEditMessage={setEditMessage}
+                theme={theme}
+                setTheme={setTheme}
+                darkModeModalizeRef={darkModeModalizeRef}
+                confirmDeleteConvosModalizeRef={confirmDeleteConvosModalizeRef}
+                index={chatIndex}
+                clearConversation={clearConversation}
+                input={input}
+                editMessage={editMessage}
+              />
+            )}
+          </Stack.Screen>
+          <Stack.Screen name="Settings" options={{ headerShown: false }}>
+            {(props) => <SettingsScreen props={props} theme={theme} />}
+          </Stack.Screen>
+          <Stack.Screen name="Account" options={{ headerShown: false }}>
+            {(props) => <AccountScreen props={props} theme={theme} />}
+          </Stack.Screen>
+        </Stack.Navigator>
+        <DarkModeModal
+          theme={theme}
+          setTheme={setTheme}
+          modalizeRef={darkModeModalizeRef}
+          isDarkMode={isDarkMode}
+          setIsDarkMode={setIsDarkMode}
+          useDeviceSettings={useDeviceSettings}
+          setUseDeviceSettings={setUseDeviceSettings}
+          storeDarkMode={storeDarkMode}
+        />
+        <ConfirmDeleteConvosModal
+          setChatIndex={setChatIndex}
+          setChats={setChats}
+          setDeleteChat={setDeleteChat}
+          setChatTitles={setChatTitles}
+          setInput={setInput}
+          setEditMessage={setEditMessage}
+          theme={theme}
+          modalizeRef={confirmDeleteConvosModalizeRef}
+        ></ConfirmDeleteConvosModal>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }

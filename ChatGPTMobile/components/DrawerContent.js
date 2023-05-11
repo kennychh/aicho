@@ -8,7 +8,6 @@ import {
   View,
   ScrollView,
 } from "react-native";
-import { DarkModeModel } from "./DarkModeModel";
 import { Message, Delete, Moon, Plus, Sun, Settings } from "../icons";
 import { getTheme } from "../theme";
 

@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Copy, Edit, Refresh } from "../icons";
 import { Modalize } from "react-native-modalize";
 import * as Clipboard from "expo-clipboard";
@@ -16,6 +17,7 @@ export const MessageModal = ({
   const isInput = message?.isInput;
   const isError = message?.isError;
   const text = message?.result?.text || "";
+  const insets = useSafeAreaInsets();
   const copyToClipboard = async () => {
     await Clipboard.setStringAsync(text);
   };
@@ -33,7 +35,12 @@ export const MessageModal = ({
       adjustToContentHeight={true}
       onClose={() => setMessage(null)}
     >
-      <View style={[styles.modalOptionsContainer(theme), { marginBottom: 52 }]}>
+      <View
+        style={[
+          styles.modalOptionsContainer(theme),
+          { marginBottom: insets.bottom + 8 },
+        ]}
+      >
         {/* {isError && (
           <View>
             <TouchableOpacity
