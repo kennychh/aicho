@@ -178,7 +178,9 @@ export default function App() {
             />
           )}
         </Stack.Screen>
-        <Stack.Screen name="Settings" component={SettingsScreen} />
+        <Stack.Screen name="Settings" options={{ headerShown: false }}>
+          {(props) => <SettingsScreen props={props} theme={theme} />}
+        </Stack.Screen>
       </Stack.Navigator>
       <DarkModeModel
         theme={theme}

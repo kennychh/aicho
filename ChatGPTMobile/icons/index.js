@@ -14,3 +14,4 @@ export * from "./Message";
 export * from "./Moon";
 export * from "./Settings";
 export * from "./Sun";
+export * from "./ArrowLeft";

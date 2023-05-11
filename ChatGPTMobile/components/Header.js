@@ -1,5 +1,12 @@
-import { StyleSheet, TextInput, View, Image, Keyboard } from "react-native";
-import { More, Menu, Close } from "../icons";
+import {
+  StyleSheet,
+  TextInput,
+  Text,
+  View,
+  Image,
+  Keyboard,
+} from "react-native";
+import { More, Menu, ArrowLeft } from "../icons";
 import { HeaderButton } from "./HeaderButton";
 import { getTheme } from "../theme";
 export const Header = ({
@@ -9,57 +16,85 @@ export const Header = ({
   headerTitle,
   textInputRef,
   setChatTitles,
-  chatTitles,
   chatIndex,
   isHeaderEditable,
   setIsHeaderEditable,
   theme,
+  isSettingsHeader = false,
 }) => {
-  const onPress = () => {
-    Keyboard.dismiss();
-    onOpen(modalizeRef);
-  };
+  const chatGptTitle = (
+    <View
+      style={{
+        flex: 1,
+        alignItems: "center",
+        flexDirection: "row",
+      }}
+    >
+      <Image
+        source={require("../assets/chat-gpt-logo.png")}
+        style={styles.icon}
+      />
+      <TextInput
+        ref={textInputRef}
+        keyboardAppearance={theme === getTheme("dark") ? "dark" : "light"}
+        style={styles.barText(theme)}
+        value={headerTitle}
+        editable={isHeaderEditable}
+        returnKeyType={"done"}
+        maxLength={25}
+        onChangeText={(s) => {
+          setChatTitles((oldChatTitles) => [
+            ...oldChatTitles.slice(0, chatIndex),
+            s,
+            ...oldChatTitles.slice(chatIndex + 1),
+          ]);
+        }}
+        onSubmitEditing={() => {
+          setIsHeaderEditable(false);
+        }}
+      />
+    </View>
+  );
+
+  const settingsTitle = (
+    <View
+      style={{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        flexDirection: "row",
+      }}
+    >
+      <Text style={[styles.barText(theme), { fontWeight: "700" }]}>
+        {headerTitle}
+      </Text>
+    </View>
+  );
   return (
     <View style={styles.bar(theme)}>
-      <HeaderButton
-        icon={<Menu stroke={theme.iconColor} />}
-        onPress={() => navigation.openDrawer()}
-      />
-      <View
-        style={{
-          flex: 1,
-          alignItems: "center",
-          flexDirection: "row",
-        }}
-      >
-        <Image
-          source={require("../assets/chat-gpt-logo.png")}
-          style={styles.icon}
+      {isSettingsHeader ? (
+        <HeaderButton
+          icon={<ArrowLeft stroke={theme.iconColor} />}
+          onPress={() => navigation.goBack()}
         />
-        <TextInput
-          ref={textInputRef}
-          keyboardAppearance={theme === getTheme("dark") ? "dark" : "light"}
-          style={styles.barText(theme)}
-          value={headerTitle}
-          editable={isHeaderEditable}
-          returnKeyType={"done"}
-          maxLength={25}
-          onChangeText={(s) => {
-            setChatTitles((oldChatTitles) => [
-              ...oldChatTitles.slice(0, chatIndex),
-              s,
-              ...oldChatTitles.slice(chatIndex + 1),
-            ]);
-          }}
-          onSubmitEditing={() => {
-            setIsHeaderEditable(false);
+      ) : (
+        <HeaderButton
+          icon={<Menu stroke={theme.iconColor} />}
+          onPress={() => navigation.openDrawer()}
+        />
+      )}
+      {isSettingsHeader ? settingsTitle : chatGptTitle}
+      {!isSettingsHeader ? (
+        <HeaderButton
+          icon={<More stroke={theme.iconColor} />}
+          onPress={() => {
+            Keyboard.dismiss();
+            onOpen(modalizeRef);
           }}
         />
-      </View>
-      <HeaderButton
-        icon={<More stroke={theme.iconColor} />}
-        onPress={onPress}
-      />
+      ) : (
+        <More stroke={theme.backgroundColor} />
+      )}
     </View>
   );
 };
@@ -90,5 +125,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
     zIndex: 1,
+    height: 52,
   }),
 });

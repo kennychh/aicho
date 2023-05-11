@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
   }),
   drawerConversationsTitle: (theme) => ({
     fontSize: 20,
-    fontWeight: "600",
+    fontWeight: "700",
     color: theme.fontColor,
   }),
   drawerConversationsTitleContainer: {
