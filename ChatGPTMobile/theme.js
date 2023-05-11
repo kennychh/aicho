@@ -1,5 +1,6 @@
 const lightTheme = {
   backgroundColor: "white",
+  onBackgroundColor: "#F7F7F7",
   divider: {
     color: "#F6F6F6",
   },
@@ -52,6 +53,7 @@ const lightTheme = {
 
 const darkTheme = {
   backgroundColor: "#000",
+  onBackgroundColor: "#262626",
   divider: {
     color: "#262626",
   },

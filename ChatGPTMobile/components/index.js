@@ -8,3 +8,4 @@ export * from "./DrawerContent";
 export * from "./DarkModeModel";
 export * from "./ConfirmDeleteConvosModel";
 export * from "./SettingsOption";
+export * from "./SettingsInput";

@@ -1,9 +1,18 @@
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
-import { NavArrowRight, User, Message, About, Heart, Flag, Privacy, Language } from "../icons";
+import {
+  NavArrowRight,
+  User,
+  Message,
+  About,
+  Heart,
+  Flag,
+  Privacy,
+  Language,
+} from "../icons";
 
 export const SettingsOption = ({ title, onPress, theme }) => {
   return (
-    <TouchableOpacity style={styles.settingOption(theme)}>
+    <TouchableOpacity style={styles.settingOption(theme)} onPress={onPress}>
       {title == "Account" ? (
         <User stroke={theme.secondaryIconColor} style={styles.leftIcon} />
       ) : title == "Chat Preferences" ? (

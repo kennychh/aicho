@@ -1,13 +1,76 @@
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, FlatList } from "react-native";
 import { Header } from "../components";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { getTheme } from "../theme";
-import { NavArrowRight } from "../icons";
 import { SettingsOption } from "./../components/SettingsOption";
 
 export const SettingsScreen = ({ props, theme }) => {
   const navigation = props.navigation;
+  const data = [
+    {
+      title: "User",
+      style: styles.text(theme),
+    },
+    {
+      title: "Account",
+      onPress: () => {
+        navigation.navigate("Account");
+      },
+    },
+    {
+      title: "Privacy",
+      onPress: () => {
+        navigation.navigate("Account");
+      },
+    },
+    {
+      title: "Content",
+      style: [styles.text(theme), { paddingTop: 24 }],
+    },
+    {
+      title: "Chat Preferences",
+      onPress: () => {
+        navigation.navigate("Account");
+      },
+    },
+    {
+      title: "Language",
+      onPress: () => {
+        navigation.navigate("Account");
+      },
+    },
+    {
+      title: "More",
+      style: [styles.text(theme), { paddingTop: 24 }],
+    },
+    {
+      title: "Report a problem",
+      onPress: () => {
+        navigation.navigate("Account");
+      },
+    },
+    {
+      title: "About",
+      onPress: () => {
+        navigation.navigate("Account");
+      },
+    },
+    {
+      title: "Support me",
+      onPress: () => {
+        navigation.navigate("Account");
+      },
+    },
+  ];
+
+  const SettingsItem = ({ item }) => {
+    return ["User", "Content", "More"].indexOf(item.title) > -1 ? (
+      <Text style={item.style}>{item.title}</Text>
+    ) : (
+      <SettingsOption title={item.title} theme={theme} onPress={item.onPress} />
+    );
+  };
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container(theme)}>
@@ -21,18 +84,15 @@ export const SettingsScreen = ({ props, theme }) => {
           theme={theme}
           isSettingsHeader={true}
         />
-        <View style={{ flex: 1, paddingTop: 32 }}>
-          <Text style={styles.text(theme)}>Account</Text>
-          <SettingsOption title={"Account"} theme={theme} />
-          <SettingsOption title={"Privacy"} theme={theme} />
-          <Text style={[styles.text(theme), { paddingTop: 24 }]}>Content</Text>
-          <SettingsOption title={"Chat Preferences"} theme={theme} />
-          <SettingsOption title={"Language"} theme={theme} />
-          <Text style={[styles.text(theme), { paddingTop: 24 }]}>More</Text>
-          <SettingsOption title={"Report a problem"} theme={theme} />
-          <SettingsOption title={"About"} theme={theme} />
-          <SettingsOption title={"Support me"} theme={theme} />
-        </View>
+        <FlatList
+          data={data}
+          indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
+          style={{ flex: 1, paddingTop: 32 }}
+          renderItem={({ item }) => <SettingsItem item={item} />}
+          keyExtractor={(item, index) => {
+            return index;
+          }}
+        />
       </SafeAreaView>
     </SafeAreaProvider>
   );

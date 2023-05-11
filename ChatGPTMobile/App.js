@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { HomeScreen, SettingsScreen } from "./screens";
+import { HomeScreen, SettingsScreen, AccountScreen } from "./screens";
 import { DrawerContent } from "./components";
 import {
   NavigationContainer,
@@ -180,6 +180,9 @@ export default function App() {
         </Stack.Screen>
         <Stack.Screen name="Settings" options={{ headerShown: false }}>
           {(props) => <SettingsScreen props={props} theme={theme} />}
+        </Stack.Screen>
+        <Stack.Screen name="Account" options={{ headerShown: false }}>
+          {(props) => <AccountScreen props={props} theme={theme} />}
         </Stack.Screen>
       </Stack.Navigator>
       <DarkModeModel
