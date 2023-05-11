@@ -48,6 +48,7 @@ export const HomeScreen = ({
         drawerStyle: {
           backgroundColor: theme.drawerContent.backgroundColor,
         },
+        // overlayColor: theme.drawerContent.overlayColor,
       }}
     >
       <Drawer.Screen name="Chat">

@@ -28,7 +28,6 @@ export const SettingsOption = ({ title, onPress, theme }) => {
 const styles = StyleSheet.create({
   text: (theme) => ({
     flex: 1,
-    paddingVertical: 8,
     paddingLeft: 16,
     fontSize: 16,
     fontWeight: "500",
@@ -45,7 +44,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignContent: "space-between",
     alignItems: "center",
-    paddingVertical: 8,
+    paddingVertical: 16,
     backgroundColor: theme.backgroundColor,
   }),
 });

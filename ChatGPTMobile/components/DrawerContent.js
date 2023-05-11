@@ -152,9 +152,9 @@ export const DrawerContent = ({
 
 const styles = StyleSheet.create({
   drawerOptions: {
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
     marginRight: 16,
-    marginBottom: 8,
     flexDirection: "row",
     flex: 1,
     alignItems: "center",

@@ -11,6 +11,7 @@ const lightTheme = {
   },
   drawerContent: {
     backgroundColor: "white",
+    overlayColor: "rgba(0, 0, 0, 0.5)",
     drawerDivider: {
       backgroundColor: "#DBDBDB",
     },
@@ -62,6 +63,7 @@ const darkTheme = {
   },
   drawerContent: {
     backgroundColor: "#262626",
+    overlayColor: "rgba(255, 255, 255, 0.10)",
     drawerDivider: {
       backgroundColor: "#555555",
     },
