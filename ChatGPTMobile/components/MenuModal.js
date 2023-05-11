@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { Delete, Plus, Save, Edit } from "../icons";
+import { Delete, Plus, Copy, Edit } from "../icons";
 import { Modalize } from "react-native-modalize";
 export const MenuModal = ({
   deleteConvo,
@@ -34,8 +34,8 @@ export const MenuModal = ({
         <View style={styles.modalOptionDivider(theme)} />
         <TouchableOpacity onPress={() => onClose(modalizeRef)}>
           <View style={styles.modalOption}>
-            <Save stroke={theme.iconColor} />
-            <Text style={styles.modalOptionText(theme)}>Pin conversation</Text>
+            <Copy stroke={theme.iconColor} />
+            <Text style={styles.modalOptionText(theme)}>Copy conversation</Text>
           </View>
         </TouchableOpacity>
       </View>

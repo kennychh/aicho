@@ -7,3 +7,4 @@ export * from "./MessageModal";
 export * from "./DrawerContent";
 export * from "./DarkModeModel";
 export * from "./ConfirmDeleteConvosModel";
+export * from "./SettingsOption";
