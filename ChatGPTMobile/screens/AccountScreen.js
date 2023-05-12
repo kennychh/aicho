@@ -5,23 +5,34 @@ import {
   TextInput,
   FlatList,
   Keyboard,
+  TouchableOpacity,
 } from "react-native";
 import { Header, SettingsInput } from "../components";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { getTheme } from "../theme";
 import { TextButton } from "./../components";
+import { useState } from "react";
 
-export const AccountScreen = ({ props, theme }) => {
+export const AccountScreen = ({ props, theme, setKey, apiKey }) => {
   const navigation = props.navigation;
+  const [tempKey, setTempKey] = useState(apiKey);
   const data = [
     <Text style={styles.text(theme)}>OpenAI API key</Text>,
     <SettingsInput
-      placeholder={"Enter API key"}
+      placeholder={tempKey == "" ? "Enter API key" : tempKey}
       theme={theme}
-      value={""}
-      setValue={null}
+      value={tempKey}
+      setValue={setTempKey}
     />,
+    <View style={styles.subTextContainer}>
+      <Text style={styles.subtext(theme)}>
+        Login to OpenAI to access your API key.
+      </Text>
+      <TouchableOpacity>
+        <Text style={styles.subtextCTA(theme)}>{" Learn more"}</Text>
+      </TouchableOpacity>
+    </View>,
   ];
   return (
     <SafeAreaProvider>
@@ -44,7 +55,15 @@ export const AccountScreen = ({ props, theme }) => {
           renderItem={({ item }) => item}
         />
         <View style={{ marginBottom: 8 }}>
-          <TextButton text={"Save"} theme={theme} />
+          <TextButton
+            text={"Save"}
+            theme={theme}
+            disabled={tempKey == ""}
+            onPress={() => {
+              setKey(tempKey);
+              navigation.goBack();
+            }}
+          />
         </View>
       </SafeAreaView>
     </SafeAreaProvider>
@@ -63,6 +82,22 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "700",
     color: theme.secondaryIconColor,
+  }),
+  subTextContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "flex-end",
+  },
+  subtext: (theme) => ({
+    paddingTop: 16,
+    fontSize: 12,
+    fontWeight: "500",
+    color: theme.secondaryIconColor,
+  }),
+  subtextCTA: (theme) => ({
+    fontSize: 12,
+    fontWeight: "500",
+    color: theme.iconColor,
   }),
   container: (theme) => ({
     backgroundColor: theme.backgroundColor,

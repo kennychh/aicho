@@ -32,6 +32,7 @@ export const ChatScreen = ({
   editMessage,
   setEditMessage,
   theme,
+  apiKey,
 }) => {
   const API_URL = "https://chatgpt-api-blue.vercel.app/api";
   const result = chats[index];
@@ -215,10 +216,12 @@ export const ChatScreen = ({
     const regenId = result?.length > 2 ? result[2]?.result?.id : null;
     setInput("");
     try {
+      const bearer = `Bearer ${apiKey}`;
       const response = await fetch(`${API_URL}/generate`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: bearer,
         },
         body: JSON.stringify({
           input:

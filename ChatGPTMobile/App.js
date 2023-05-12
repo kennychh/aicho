@@ -35,6 +35,17 @@ export default function App() {
   const darkModeModalizeRef = useRef(null);
   const confirmDeleteConvosModalizeRef = useRef(null);
   const navigationRef = useNavigationContainerRef();
+  const [key, setKey] = useState("");
+  const storeKey = async (value) => {
+    try {
+      setKey(value);
+      const jsonValue = JSON.stringify(key);
+      await AsyncStorage.setItem("@key", jsonValue);
+    } catch (e) {
+      // saving error
+      Alert.alert("Couldn't store API key", e.message);
+    }
+  };
   const storeChats = async () => {
     try {
       setDeleteChat(false);
@@ -81,6 +92,12 @@ export default function App() {
   }, [chats, chatIndex]);
 
   useEffect(() => {
+    if (key != "") {
+      storeKey(key);
+    }
+  }, [key]);
+
+  useEffect(() => {
     if (chatTitles[0] != null) {
       storeChatTitles();
     }
@@ -107,8 +124,10 @@ export default function App() {
         const useDeviceSettingsValue = await AsyncStorage.getItem(
           "@useDeviceSettings"
         );
+        const keyJsonValue = await AsyncStorage.getItem("@key");
         const storedChatTitles =
           chatTitlesJson != null ? JSON.parse(chatTitlesJson) : ["New chat"];
+        const storedKey = keyJsonValue != null ? JSON.parse(keyJsonValue) : "";
         const storedRes = jsonValue != null ? JSON.parse(jsonValue) : [[]];
         const storedDarkMode =
           darkModeJsonValue != null ? JSON.parse(darkModeJsonValue) : true;
@@ -120,6 +139,9 @@ export default function App() {
           setChatTitles(storedChatTitles);
           setChats(storedRes);
           setChatIndex(storedRes.length - 1);
+        }
+        if (storedKey != "") {
+          setKey(storedKey);
         }
         setIsDarkMode(storedDarkMode);
         setUseDeviceSettings(storedUseDeviceSettings);
@@ -177,6 +199,7 @@ export default function App() {
                 clearConversation={clearConversation}
                 input={input}
                 editMessage={editMessage}
+                apiKey={key}
               />
             )}
           </Stack.Screen>
@@ -184,7 +207,14 @@ export default function App() {
             {(props) => <SettingsScreen props={props} theme={theme} />}
           </Stack.Screen>
           <Stack.Screen name="Account" options={{ headerShown: false }}>
-            {(props) => <AccountScreen props={props} theme={theme} />}
+            {(props) => (
+              <AccountScreen
+                props={props}
+                theme={theme}
+                setKey={setKey}
+                apiKey={key}
+              />
+            )}
           </Stack.Screen>
         </Stack.Navigator>
         <DarkModeModal
