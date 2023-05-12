@@ -21,12 +21,12 @@ export const SettingsScreen = ({ props, theme }) => {
     {
       title: "Privacy",
       onPress: () => {
-        navigation.navigate("Account");
+        navigation.navigate("Privacy");
       },
     },
     {
       title: "Content",
-      style: [styles.text(theme), { paddingTop: 24 }],
+      style: [styles.text(theme), { paddingTop: 32 }],
     },
     {
       title: "Chat Preferences",
@@ -42,7 +42,7 @@ export const SettingsScreen = ({ props, theme }) => {
     },
     {
       title: "More",
-      style: [styles.text(theme), { paddingTop: 24 }],
+      style: [styles.text(theme), { paddingTop: 32 }],
     },
     {
       title: "Report a problem",

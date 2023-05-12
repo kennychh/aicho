@@ -1,5 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { HomeScreen, SettingsScreen, AccountScreen } from "./screens";
+import {
+  HomeScreen,
+  SettingsScreen,
+  AccountScreen,
+  PrivacyScreen,
+} from "./screens";
 import { DrawerContent } from "./components";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import {
@@ -17,6 +22,7 @@ import { DarkModeModal, ConfirmDeleteConvosModal } from "./components";
 import { Alert, FlatList, Text, useColorScheme, View } from "react-native";
 import { getTheme } from "./theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SecureStore from "expo-secure-store";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -35,12 +41,12 @@ export default function App() {
   const darkModeModalizeRef = useRef(null);
   const confirmDeleteConvosModalizeRef = useRef(null);
   const navigationRef = useNavigationContainerRef();
-  const [key, setKey] = useState("");
+  const [key, setKey] = useState("test");
   const storeKey = async (value) => {
     try {
-      setKey(value);
-      const jsonValue = JSON.stringify(key);
-      await AsyncStorage.setItem("@key", jsonValue);
+      await SecureStore.setItemAsync("key", value);
+      // const jsonValue = JSON.stringify(key);
+      // await AsyncStorage.setItem("@key", jsonValue);
     } catch (e) {
       // saving error
       Alert.alert("Couldn't store API key", e.message);
@@ -92,7 +98,7 @@ export default function App() {
   }, [chats, chatIndex]);
 
   useEffect(() => {
-    if (key != "") {
+    if (key != "test") {
       storeKey(key);
     }
   }, [key]);
@@ -124,10 +130,10 @@ export default function App() {
         const useDeviceSettingsValue = await AsyncStorage.getItem(
           "@useDeviceSettings"
         );
-        const keyJsonValue = await AsyncStorage.getItem("@key");
+        const keyJsonValue = await SecureStore.getItemAsync("key");
         const storedChatTitles =
           chatTitlesJson != null ? JSON.parse(chatTitlesJson) : ["New chat"];
-        const storedKey = keyJsonValue != null ? JSON.parse(keyJsonValue) : "";
+        const storedKey = keyJsonValue != null ? keyJsonValue : "test";
         const storedRes = jsonValue != null ? JSON.parse(jsonValue) : [[]];
         const storedDarkMode =
           darkModeJsonValue != null ? JSON.parse(darkModeJsonValue) : true;
@@ -215,6 +221,9 @@ export default function App() {
                 apiKey={key}
               />
             )}
+          </Stack.Screen>
+          <Stack.Screen name="Privacy" options={{ headerShown: false }}>
+            {(props) => <PrivacyScreen props={props} theme={theme} />}
           </Stack.Screen>
         </Stack.Navigator>
         <DarkModeModal
