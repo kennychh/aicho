@@ -4,6 +4,7 @@ import {
   SettingsScreen,
   AccountScreen,
   PrivacyScreen,
+  ChatPreferencesScreen,
 } from "./screens";
 import { DrawerContent } from "./components";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -224,6 +225,12 @@ export default function App() {
           </Stack.Screen>
           <Stack.Screen name="Privacy" options={{ headerShown: false }}>
             {(props) => <PrivacyScreen props={props} theme={theme} />}
+          </Stack.Screen>
+          <Stack.Screen
+            name="Chat Preferences"
+            options={{ headerShown: false }}
+          >
+            {(props) => <ChatPreferencesScreen props={props} theme={theme} />}
           </Stack.Screen>
         </Stack.Navigator>
         <DarkModeModal

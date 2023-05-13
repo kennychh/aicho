@@ -31,7 +31,7 @@ export const SettingsScreen = ({ props, theme }) => {
     {
       title: "Chat Preferences",
       onPress: () => {
-        navigation.navigate("Account");
+        navigation.navigate("Chat Preferences");
       },
     },
     {

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import {
   NavArrowRight,
   User,
@@ -10,7 +10,7 @@ import {
   Language,
 } from "../icons";
 
-export const SettingsOption = ({ title, onPress, theme }) => {
+export const SettingsOption = ({ title, onPress, theme, value = "" }) => {
   return (
     <TouchableOpacity style={styles.settingOption(theme)} onPress={onPress}>
       {title == "Account" ? (
@@ -25,10 +25,13 @@ export const SettingsOption = ({ title, onPress, theme }) => {
         <Language stroke={theme.secondaryIconColor} style={styles.leftIcon} />
       ) : title == "Privacy" ? (
         <Privacy stroke={theme.secondaryIconColor} style={styles.leftIcon} />
-      ) : (
+      ) : title == "Support me" ? (
         <Heart stroke={theme.secondaryIconColor} style={styles.leftIcon} />
+      ) : (
+        <View />
       )}
       <Text style={styles.text(theme)}>{title}</Text>
+      {value && <Text style={styles.valueText(theme)}>{value}</Text>}
       <NavArrowRight stroke={theme.secondaryIconColor} style={styles.icon} />
     </TouchableOpacity>
   );
@@ -41,6 +44,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "500",
     color: theme.fontColor,
+  }),
+  valueText: (theme) => ({
+    marginRight: 16,
+    fontSize: 14,
+    fontWeight: "500",
+    color: theme.secondaryIconColor,
   }),
   leftIcon: {
     marginLeft: 16,

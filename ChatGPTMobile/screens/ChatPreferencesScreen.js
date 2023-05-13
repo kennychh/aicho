@@ -6,29 +6,36 @@ import {
   FlatList,
   Keyboard,
   TouchableOpacity,
-  Image,
 } from "react-native";
-import { Header, SettingsInput } from "../components";
+import { Header, SettingsInput, SettingsOption } from "../components";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { getTheme } from "../theme";
-import { TextButton } from "./../components";
+import { TextButton } from "../components";
 import { useState } from "react";
 
-export const PrivacyScreen = ({ props, theme }) => {
+export const ChatPreferencesScreen = ({ props, theme }) => {
   const navigation = props.navigation;
   const data = [
-    <Image
-      source={require("../assets/chat-gpt-logo.png")}
-      style={styles.icon}
+    <Text style={styles.text(theme)}>Model parameters</Text>,
+    <SettingsOption
+      title={"Model"}
+      onPress={null}
+      theme={theme}
+      value={"gpt-3.5-turbo"}
     />,
-    <Text style={styles.text(theme)}>Your privacy matters</Text>,
-    <View style={styles.subTextContainer}>
-      <Text style={styles.subtext(theme)}>
-        All data is stored on your device's storage. Specifically, your API key
-        is encrypted and securely stored locally on your device.
-      </Text>
-    </View>,
+    <SettingsOption
+      title={"Max tokens"}
+      onPress={null}
+      theme={theme}
+      value={800}
+    />,
+    <SettingsOption
+      title={"Timeout"}
+      onPress={null}
+      theme={theme}
+      value={60}
+    />,
   ];
   return (
     <SafeAreaProvider>
@@ -39,7 +46,7 @@ export const PrivacyScreen = ({ props, theme }) => {
         />
         <Header
           navigation={navigation}
-          headerTitle={"Privacy"}
+          headerTitle={"Chat Preferences"}
           theme={theme}
           isSettingsHeader={true}
         />
@@ -68,12 +75,11 @@ const styles = StyleSheet.create({
     backgroundColor: theme.divider.color,
   }),
   text: (theme) => ({
-    paddingTop: 16,
-    paddingHorizontal: 16,
-    fontSize: 16,
-    alignSelf: "center",
+    paddingBottom: 8,
+    paddingLeft: 16,
+    fontSize: 14,
     fontWeight: "700",
-    color: theme.iconColor,
+    color: theme.secondaryIconColor,
   }),
   subTextContainer: {
     flexDirection: "row",
