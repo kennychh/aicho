@@ -33,6 +33,7 @@ export const DarkModeModal = ({
         <View style={styles.modalOption}>
           <Text style={styles.modalOptionText(theme)}>Dark mode</Text>
           <Switch
+            style={{ marginVertical: -16 }}
             onValueChange={() => {
               toggleSwitch();
             }}
@@ -44,6 +45,7 @@ export const DarkModeModal = ({
         <View style={styles.modalOption}>
           <Text style={styles.modalOptionText(theme)}>Use device settings</Text>
           <Switch
+            style={{ marginVertical: -16 }}
             onValueChange={() => {
               setUseDeviceSettings((previousState) => !previousState);
             }}
