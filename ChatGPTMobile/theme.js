@@ -2,7 +2,10 @@ const lightTheme = {
   backgroundColor: "white",
   onBackgroundColor: "#EFEFEF",
   button: {
-    color: "#EFEFEF",
+    disabledColor: "#EFEFEF",
+    disabledFontColor: "#707070",
+    color: "#10a37f",
+    fontColor: "white",
   },
   divider: {
     color: "#F6F6F6",
@@ -58,7 +61,10 @@ const darkTheme = {
   backgroundColor: "#000",
   onBackgroundColor: "#262626",
   button: {
-    color: "#262626",
+    disabledColor: "#262626",
+    disabledFontColor: "#A5A5A5",
+    color: "#10a37f",
+    fontColor: "white",
   },
   divider: {
     color: "#262626",

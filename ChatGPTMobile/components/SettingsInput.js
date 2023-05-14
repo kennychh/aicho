@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: theme.input.fontColor,
     borderColor: theme.onBackgroundColor,
-    borderWidth: 2,
+    borderWidth: 1,
     borderRadius: 16,
   }),
 });

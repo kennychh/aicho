@@ -5,24 +5,24 @@ export const TextButton = ({ text, onPress, theme, disabled }) => {
     <TouchableOpacity
       onPress={() => (onPress ? onPress() : null)}
       disabled={disabled}
-      style={styles.button(theme)}
+      style={styles.button(theme, disabled)}
     >
-      <Text style={styles.text(theme)}>{text}</Text>
+      <Text style={styles.text(theme, disabled)}>{text}</Text>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  button: (theme) => ({
-    backgroundColor: theme.button.color,
+  button: (theme, disabled) => ({
+    backgroundColor: disabled ? theme.button.disabledColor : theme.button.color,
     alignItems: "center",
     paddingVertical: 16,
     marginHorizontal: 16,
     borderRadius: 16,
   }),
-  text: (theme) => ({
+  text: (theme, disabled) => ({
     fontSize: 16,
     fontWeight: "500",
-    color: theme.fontColor,
+    color: disabled ? theme.button.disabledFontColor : theme.button.fontColor,
   }),
 });
