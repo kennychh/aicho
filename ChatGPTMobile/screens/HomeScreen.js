@@ -22,6 +22,8 @@ export const HomeScreen = ({
   input,
   editMessage,
   apiKey,
+  keyChanged,
+  setKeyChanged,
 }) => {
   return (
     <Drawer.Navigator
@@ -69,6 +71,8 @@ export const HomeScreen = ({
             setEditMessage={setEditMessage}
             theme={theme}
             apiKey={apiKey}
+            keyChanged={keyChanged}
+            setKeyChanged={setKeyChanged}
           />
         )}
       </Drawer.Screen>

@@ -33,6 +33,8 @@ export const ChatScreen = ({
   setEditMessage,
   theme,
   apiKey,
+  keyChanged,
+  setKeyChanged,
 }) => {
   const API_URL = "https://chatgpt-api-blue.vercel.app/api";
   const result = chats[index];
@@ -232,9 +234,11 @@ export const ChatScreen = ({
               : input,
           conversationId: res?.result?.conversationId,
           id: regen ? regenId : res?.result?.id,
+          keyChanged: keyChanged,
         }),
       });
       const data = await response.json();
+      setKeyChanged(false);
       if (data.error) {
         const errorInputText = {
           ...inputText,
@@ -288,6 +292,7 @@ export const ChatScreen = ({
         }
       }
     } catch (e) {
+      setKeyChanged(false);
       Alert.alert("Error occured", e.message);
       const errorInputText = {
         ...inputText,

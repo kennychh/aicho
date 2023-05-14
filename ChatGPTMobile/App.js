@@ -43,6 +43,7 @@ export default function App() {
   const confirmDeleteConvosModalizeRef = useRef(null);
   const navigationRef = useNavigationContainerRef();
   const [key, setKey] = useState("test");
+  const [keyChanged, setKeyChanged] = useState(false);
   const storeKey = async (value) => {
     try {
       await SecureStore.setItemAsync("key", value);
@@ -207,6 +208,8 @@ export default function App() {
                 input={input}
                 editMessage={editMessage}
                 apiKey={key}
+                keyChanged={keyChanged}
+                setKeyChanged={setKeyChanged}
               />
             )}
           </Stack.Screen>
@@ -220,6 +223,7 @@ export default function App() {
                 theme={theme}
                 setKey={setKey}
                 apiKey={key}
+                setKeyChanged={setKeyChanged}
               />
             )}
           </Stack.Screen>

@@ -14,30 +14,34 @@ import { getTheme } from "../theme";
 import { TextButton } from "./../components";
 import { useState } from "react";
 
-export const AccountScreen = ({
+export const InputScreen = ({
   props,
   theme,
-  setKey,
-  apiKey,
-  setKeyChanged,
+  setValue,
+  value,
+  title,
+  description,
+  placeholder,
+  headerTitle,
+  buttonText,
 }) => {
   const navigation = props.navigation;
-  const [tempKey, setTempKey] = useState(apiKey);
+  const [tempValue, setTempValue] = useState(value);
   const data = [
-    <Text style={styles.text(theme)}>OpenAI API key</Text>,
+    <Text style={styles.text(theme)}>{title}</Text>,
     <SettingsInput
-      placeholder={tempKey == "" ? "Enter API key" : tempKey}
+      placeholder={tempValue == "" ? placeholder : tempValue}
       theme={theme}
-      value={tempKey}
-      setValue={setTempKey}
+      value={tempValue}
+      setValue={setTempValue}
     />,
     <View style={styles.subTextContainer}>
-      <Text style={styles.subtext(theme)}>
-        Login to OpenAI to access your API key.
-      </Text>
-      <TouchableOpacity>
-        <Text style={styles.subtextCTA(theme)}>{" Learn more"}</Text>
-      </TouchableOpacity>
+      <Text style={styles.subtext(theme)}>{description}</Text>
+      {headerTitle == "Account" && (
+        <TouchableOpacity>
+          <Text style={styles.subtextCTA(theme)}>{" Learn more"}</Text>
+        </TouchableOpacity>
+      )}
     </View>,
   ];
   return (
@@ -49,7 +53,7 @@ export const AccountScreen = ({
         />
         <Header
           navigation={navigation}
-          headerTitle={"Account"}
+          headerTitle={headerTitle}
           theme={theme}
           isSettingsHeader={true}
         />
@@ -62,12 +66,11 @@ export const AccountScreen = ({
         />
         <View style={{ marginBottom: 8 }}>
           <TextButton
-            text={"Save"}
+            text={buttonText}
             theme={theme}
-            disabled={tempKey == ""}
+            disabled={tempValue == ""}
             onPress={() => {
-              setKey(tempKey);
-              setKeyChanged(true);
+              setValue(tempValue);
               navigation.goBack();
             }}
           />

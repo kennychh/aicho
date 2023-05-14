@@ -7,6 +7,7 @@ export const SettingsInput = ({ placeholder, theme, value, setValue }) => {
       style={styles.textInput(theme)}
       placeholderTextColor={theme.input.placeholderFontColor}
       value={value}
+      scrollEnabled
       onChangeText={(s) => setValue(s)}
     />
   );
@@ -14,13 +15,15 @@ export const SettingsInput = ({ placeholder, theme, value, setValue }) => {
 
 const styles = StyleSheet.create({
   textInput: (theme) => ({
-    backgroundColor: theme.onBackgroundColor,
-    paddingVertical: 8,
+    backgroundColor: theme.backgroundColor,
+    paddingVertical: 16,
     paddingHorizontal: 16,
     marginTop: 16,
     marginHorizontal: 16,
     fontSize: 16,
     color: theme.input.fontColor,
-    borderRadius: 10,
+    borderColor: theme.onBackgroundColor,
+    borderWidth: 2,
+    borderRadius: 16,
   }),
 });
