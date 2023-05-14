@@ -5,3 +5,4 @@ export * from "./AccountScreen";
 export * from "./PrivacyScreen";
 export * from "./ChatPreferencesScreen";
 export * from "./InputScreen";
+export * from "./TimeoutScreen";

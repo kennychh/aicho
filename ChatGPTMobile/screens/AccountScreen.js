@@ -19,7 +19,9 @@ export const AccountScreen = ({
       }}
       value={apiKey}
       title={"OpenAI API key"}
-      description={"Login to OpenAI to access your API key."}
+      description={
+        "Set your OpenAI API key to start a conversation! Login to OpenAI to access your API key."
+      }
       placeholder={"Enter API key"}
       headerTitle={"Account"}
       buttonText={"Save"}

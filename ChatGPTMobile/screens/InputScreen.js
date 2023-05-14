@@ -33,7 +33,7 @@ export const InputScreen = ({
   const data = [
     <Text style={styles.text(theme)}>{title}</Text>,
     <SettingsInput
-      placeholder={!tempValue ? placeholder : tempValue}
+      placeholder={placeholder}
       theme={theme}
       value={tempValue}
       setValue={setTempValue}
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   }),
   subTextContainer: {
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "flex-end",
     paddingHorizontal: 16,
   },

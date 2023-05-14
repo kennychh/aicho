@@ -31,7 +31,7 @@ export const SettingsOption = ({ title, onPress, theme, value = "" }) => {
         <View />
       )}
       <Text style={styles.text(theme)}>{title}</Text>
-      {value && <Text style={styles.valueText(theme)}>{value}</Text>}
+      {value != null && <Text style={styles.valueText(theme)}>{value}</Text>}
       <NavArrowRight stroke={theme.secondaryIconColor} style={styles.icon} />
     </TouchableOpacity>
   );

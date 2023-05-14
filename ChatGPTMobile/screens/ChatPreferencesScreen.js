@@ -14,7 +14,13 @@ import { getTheme } from "../theme";
 import { TextButton } from "../components";
 import { useState } from "react";
 
-export const ChatPreferencesScreen = ({ props, theme, maxTokens }) => {
+export const ChatPreferencesScreen = ({
+  props,
+  theme,
+  maxTokens,
+  timeout,
+  model,
+}) => {
   const navigation = props.navigation;
   const data = [
     <Text style={styles.text(theme)}>Model parameters</Text>,
@@ -22,7 +28,7 @@ export const ChatPreferencesScreen = ({ props, theme, maxTokens }) => {
       title={"Model"}
       onPress={null}
       theme={theme}
-      value={"gpt-3.5-turbo"}
+      value={model}
     />,
     <SettingsOption
       title={"Max tokens"}
@@ -34,9 +40,11 @@ export const ChatPreferencesScreen = ({ props, theme, maxTokens }) => {
     />,
     <SettingsOption
       title={"Timeout"}
-      onPress={null}
+      onPress={() => {
+        navigation.navigate("Timeout");
+      }}
       theme={theme}
-      value={60}
+      value={timeout}
     />,
   ];
   return (

@@ -12,7 +12,7 @@ export const SettingsInput = ({
       placeholder={placeholder}
       style={styles.textInput(theme)}
       placeholderTextColor={theme.input.placeholderFontColor}
-      value={value}
+      value={`${value}`}
       scrollEnabled
       onChangeText={(s) => setValue(s)}
       keyboardType={keyboardType}

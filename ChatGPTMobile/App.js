@@ -5,6 +5,7 @@ import {
   AccountScreen,
   PrivacyScreen,
   ChatPreferencesScreen,
+  TimeoutScreen,
 } from "./screens";
 import { DrawerContent } from "./components";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -43,9 +44,11 @@ export default function App() {
   const darkModeModalizeRef = useRef(null);
   const confirmDeleteConvosModalizeRef = useRef(null);
   const navigationRef = useNavigationContainerRef();
-  const [key, setKey] = useState("test");
-  const [keyChanged, setKeyChanged] = useState(false);
+  const [key, setKey] = useState("");
+  const [keyChanged, setKeyChanged] = useState(true);
   const [maxTokens, setMaxTokens] = useState(0);
+  const [model, setModel] = useState("");
+  const [timeout, setTimeout] = useState(0);
   const storeKey = async (value) => {
     try {
       await SecureStore.setItemAsync("key", value);
@@ -63,6 +66,26 @@ export default function App() {
     } catch (e) {
       // saving error
       Alert.alert("Couldn't store max tokens", e.message);
+    }
+  };
+
+  const storeTimeout = async () => {
+    try {
+      const jsonValue = JSON.stringify(timeout);
+      await AsyncStorage.setItem("@timeout", jsonValue);
+    } catch (e) {
+      // saving error
+      Alert.alert("Couldn't store timeout", e.message);
+    }
+  };
+
+  const storeModel = async () => {
+    try {
+      const jsonValue = JSON.stringify(model);
+      await AsyncStorage.setItem("@model", jsonValue);
+    } catch (e) {
+      // saving error
+      Alert.alert("Couldn't store model", e.message);
     }
   };
   const storeChats = async () => {
@@ -111,7 +134,7 @@ export default function App() {
   }, [chats, chatIndex]);
 
   useEffect(() => {
-    if (key != "test") {
+    if (key != "") {
       storeKey(key);
     }
   }, [key]);
@@ -121,6 +144,18 @@ export default function App() {
       storeMaxTokens();
     }
   }, [maxTokens]);
+
+  useEffect(() => {
+    if (timeout != 0) {
+      storeTimeout();
+    }
+  }, [timeout]);
+
+  useEffect(() => {
+    if (model != "") {
+      storeModel();
+    }
+  }, [model]);
 
   useEffect(() => {
     if (chatTitles[0] != null) {
@@ -147,6 +182,8 @@ export default function App() {
         const chatTitlesJson = await AsyncStorage.getItem("@chatTitles");
         const darkModeJsonValue = await AsyncStorage.getItem("@darkMode");
         const maxTokensJsonValue = await AsyncStorage.getItem("@maxTokens");
+        const timeoutJsonValue = await AsyncStorage.getItem("@timeout");
+        const modelJsonValue = await AsyncStorage.getItem("@model");
         const useDeviceSettingsValue = await AsyncStorage.getItem(
           "@useDeviceSettings"
         );
@@ -156,7 +193,11 @@ export default function App() {
         const storedKey = keyJsonValue != null ? keyJsonValue : "test";
         const storedRes = jsonValue != null ? JSON.parse(jsonValue) : [[]];
         const storedMaxTokens =
-          maxTokensJsonValue != null ? JSON.parse(maxTokensJsonValue) : 0;
+          maxTokensJsonValue != null ? JSON.parse(maxTokensJsonValue) : 4096;
+        const storedTimeout =
+          timeoutJsonValue != null ? JSON.parse(timeoutJsonValue) : 10;
+        const storedModel =
+          modelJsonValue != null ? JSON.parse(modelJsonValue) : "gpt-3.5-turbo";
         const storedDarkMode =
           darkModeJsonValue != null ? JSON.parse(darkModeJsonValue) : true;
         const storedUseDeviceSettings =
@@ -171,8 +212,14 @@ export default function App() {
         if (storedKey != "") {
           setKey(storedKey);
         }
+        if (storedModel != "") {
+          setModel(storedModel);
+        }
         if (storedMaxTokens != 0) {
           setMaxTokens(storedMaxTokens);
+        }
+        if (storedTimeout != 0) {
+          setTimeout(storedTimeout);
         }
         setIsDarkMode(storedDarkMode);
         setUseDeviceSettings(storedUseDeviceSettings);
@@ -262,6 +309,8 @@ export default function App() {
                 props={props}
                 theme={theme}
                 maxTokens={maxTokens}
+                timeout={timeout}
+                model={model}
               />
             )}
           </Stack.Screen>
@@ -272,6 +321,16 @@ export default function App() {
                 theme={theme}
                 maxTokens={maxTokens}
                 setMaxTokens={setMaxTokens}
+              />
+            )}
+          </Stack.Screen>
+          <Stack.Screen name="Timeout" options={{ headerShown: false }}>
+            {(props) => (
+              <TimeoutScreen
+                props={props}
+                theme={theme}
+                timeout={timeout}
+                setTimeout={setTimeout}
               />
             )}
           </Stack.Screen>
