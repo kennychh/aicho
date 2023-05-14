@@ -25,8 +25,8 @@ export const PrivacyScreen = ({ props, theme }) => {
     <Text style={styles.text(theme)}>Your privacy matters</Text>,
     <View style={styles.subTextContainer}>
       <Text style={styles.subtext(theme)}>
-        All data is stored on your device's storage. Specifically, your API key
-        is encrypted and securely stored locally on your device.
+        All data, such as your conversations, are stored on your device.
+        Specifically, your API key is encrypted and securely stored locally.
       </Text>
     </View>,
   ];

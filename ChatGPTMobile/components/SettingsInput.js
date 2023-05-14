@@ -1,6 +1,12 @@
 import { StyleSheet, TextInput } from "react-native";
 
-export const SettingsInput = ({ placeholder, theme, value, setValue }) => {
+export const SettingsInput = ({
+  placeholder,
+  theme,
+  value,
+  setValue,
+  keyboardType = "default",
+}) => {
   return (
     <TextInput
       placeholder={placeholder}
@@ -9,6 +15,7 @@ export const SettingsInput = ({ placeholder, theme, value, setValue }) => {
       value={value}
       scrollEnabled
       onChangeText={(s) => setValue(s)}
+      keyboardType={keyboardType}
     />
   );
 };

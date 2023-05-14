@@ -24,10 +24,11 @@ import { Alert, FlatList, Text, useColorScheme, View } from "react-native";
 import { getTheme } from "./theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SecureStore from "expo-secure-store";
+import { MaxTokensScreen } from "./screens/MaxTokensScreen";
+import { max } from "react-native-reanimated";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
-  const Drawer = createDrawerNavigator();
   const [chats, setChats] = useState([[]]);
   const [chatIndex, setChatIndex] = useState(0);
   const [chatTitles, setChatTitles] = useState([]);
@@ -44,6 +45,7 @@ export default function App() {
   const navigationRef = useNavigationContainerRef();
   const [key, setKey] = useState("test");
   const [keyChanged, setKeyChanged] = useState(false);
+  const [maxTokens, setMaxTokens] = useState(0);
   const storeKey = async (value) => {
     try {
       await SecureStore.setItemAsync("key", value);
@@ -52,6 +54,15 @@ export default function App() {
     } catch (e) {
       // saving error
       Alert.alert("Couldn't store API key", e.message);
+    }
+  };
+  const storeMaxTokens = async () => {
+    try {
+      const jsonValue = JSON.stringify(maxTokens);
+      await AsyncStorage.setItem("@maxTokens", jsonValue);
+    } catch (e) {
+      // saving error
+      Alert.alert("Couldn't store max tokens", e.message);
     }
   };
   const storeChats = async () => {
@@ -106,6 +117,12 @@ export default function App() {
   }, [key]);
 
   useEffect(() => {
+    if (maxTokens != 0) {
+      storeMaxTokens();
+    }
+  }, [maxTokens]);
+
+  useEffect(() => {
     if (chatTitles[0] != null) {
       storeChatTitles();
     }
@@ -129,6 +146,7 @@ export default function App() {
         const jsonValue = await AsyncStorage.getItem("@chatgpt");
         const chatTitlesJson = await AsyncStorage.getItem("@chatTitles");
         const darkModeJsonValue = await AsyncStorage.getItem("@darkMode");
+        const maxTokensJsonValue = await AsyncStorage.getItem("@maxTokens");
         const useDeviceSettingsValue = await AsyncStorage.getItem(
           "@useDeviceSettings"
         );
@@ -137,6 +155,8 @@ export default function App() {
           chatTitlesJson != null ? JSON.parse(chatTitlesJson) : ["New chat"];
         const storedKey = keyJsonValue != null ? keyJsonValue : "test";
         const storedRes = jsonValue != null ? JSON.parse(jsonValue) : [[]];
+        const storedMaxTokens =
+          maxTokensJsonValue != null ? JSON.parse(maxTokensJsonValue) : 0;
         const storedDarkMode =
           darkModeJsonValue != null ? JSON.parse(darkModeJsonValue) : true;
         const storedUseDeviceSettings =
@@ -150,6 +170,9 @@ export default function App() {
         }
         if (storedKey != "") {
           setKey(storedKey);
+        }
+        if (storedMaxTokens != 0) {
+          setMaxTokens(storedMaxTokens);
         }
         setIsDarkMode(storedDarkMode);
         setUseDeviceSettings(storedUseDeviceSettings);
@@ -234,7 +257,23 @@ export default function App() {
             name="Chat Preferences"
             options={{ headerShown: false }}
           >
-            {(props) => <ChatPreferencesScreen props={props} theme={theme} />}
+            {(props) => (
+              <ChatPreferencesScreen
+                props={props}
+                theme={theme}
+                maxTokens={maxTokens}
+              />
+            )}
+          </Stack.Screen>
+          <Stack.Screen name="Max Tokens" options={{ headerShown: false }}>
+            {(props) => (
+              <MaxTokensScreen
+                props={props}
+                theme={theme}
+                maxTokens={maxTokens}
+                setMaxTokens={setMaxTokens}
+              />
+            )}
           </Stack.Screen>
         </Stack.Navigator>
         <DarkModeModal

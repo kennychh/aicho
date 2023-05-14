@@ -17,31 +17,30 @@ import { useState } from "react";
 export const InputScreen = ({
   props,
   theme,
-  setValue,
+  onPress,
   value,
+  setValue,
   title,
   description,
   placeholder,
   headerTitle,
   buttonText,
+  keyboardType,
 }) => {
   const navigation = props.navigation;
   const [tempValue, setTempValue] = useState(value);
+  const disableButton = headerTitle == "Max tokens" && tempValue <= 0;
   const data = [
     <Text style={styles.text(theme)}>{title}</Text>,
     <SettingsInput
-      placeholder={tempValue == "" ? placeholder : tempValue}
+      placeholder={!tempValue ? placeholder : tempValue}
       theme={theme}
       value={tempValue}
       setValue={setTempValue}
+      keyboardType={keyboardType}
     />,
     <View style={styles.subTextContainer}>
       <Text style={styles.subtext(theme)}>{description}</Text>
-      {headerTitle == "Account" && (
-        <TouchableOpacity>
-          <Text style={styles.subtextCTA(theme)}>{" Learn more"}</Text>
-        </TouchableOpacity>
-      )}
     </View>,
   ];
   return (
@@ -68,10 +67,12 @@ export const InputScreen = ({
           <TextButton
             text={buttonText}
             theme={theme}
-            disabled={tempValue == ""}
+            disabled={!tempValue || disableButton}
             onPress={() => {
+              if (onPress) {
+                onPress();
+              }
               setValue(tempValue);
-              navigation.goBack();
             }}
           />
         </View>
@@ -97,6 +98,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "flex-end",
+    paddingHorizontal: 16,
   },
   subtext: (theme) => ({
     paddingTop: 16,
