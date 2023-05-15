@@ -13,7 +13,7 @@ export const TimeoutScreen = ({ props, theme, setTimeout, timeout }) => {
       value={timeout}
       title={"Timeout"}
       description={
-        "Control the amount of time allowed (in seconds) for a given request."
+        "Control the amount of time allowed (in seconds) for a given request. The maximum execution timeout is 10 seconds."
       }
       placeholder={"Enter timeout"}
       headerTitle={"Timeout"}

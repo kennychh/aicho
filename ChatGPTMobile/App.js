@@ -56,6 +56,7 @@ export default function App() {
     try {
       const jsonValue = JSON.stringify(maxTokens);
       await AsyncStorage.setItem("@maxTokens", jsonValue);
+      setKeyChanged(true);
     } catch (e) {
       // saving error
       Alert.alert("Couldn't store max tokens", e.message);
@@ -66,6 +67,7 @@ export default function App() {
     try {
       const jsonValue = JSON.stringify(timeout);
       await AsyncStorage.setItem("@timeout", jsonValue);
+      setKeyChanged(true);
     } catch (e) {
       // saving error
       Alert.alert("Couldn't store timeout", e.message);
@@ -76,6 +78,7 @@ export default function App() {
     try {
       const jsonValue = JSON.stringify(model);
       await AsyncStorage.setItem("@model", jsonValue);
+      setKeyChanged(true);
     } catch (e) {
       // saving error
       Alert.alert("Couldn't store model", e.message);
@@ -186,7 +189,7 @@ export default function App() {
         const storedKey = keyJsonValue != null ? keyJsonValue : "test";
         const storedRes = jsonValue != null ? JSON.parse(jsonValue) : [[]];
         const storedMaxTokens =
-          maxTokensJsonValue != null ? JSON.parse(maxTokensJsonValue) : 4096;
+          maxTokensJsonValue != null ? JSON.parse(maxTokensJsonValue) : 1000;
         const storedTimeout =
           timeoutJsonValue != null ? JSON.parse(timeoutJsonValue) : 10;
         const storedModel =
@@ -273,6 +276,9 @@ export default function App() {
                 apiKey={key}
                 keyChanged={keyChanged}
                 setKeyChanged={setKeyChanged}
+                timeout={timeout}
+                model={model}
+                maxTokens={maxTokens}
               />
             )}
           </Stack.Screen>

@@ -13,7 +13,7 @@ export const MaxTokensScreen = ({ props, theme, setMaxTokens, maxTokens }) => {
       value={maxTokens}
       title={"Max tokens"}
       description={
-        "Control the length of your completion with the max tokens setting."
+        "Depending on the model used, requests can use up to 4097 tokens shared between prompt and completion."
       }
       placeholder={"Enter max tokens"}
       headerTitle={"Max tokens"}

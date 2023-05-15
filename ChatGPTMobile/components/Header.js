@@ -31,7 +31,7 @@ export const Header = ({
       }}
     >
       <Image
-        source={require("../assets/chat-gpt-logo.png")}
+        source={require("../assets/circle-icon.png")}
         style={styles.icon}
       />
       <TextInput

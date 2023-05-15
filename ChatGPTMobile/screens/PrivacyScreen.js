@@ -19,7 +19,7 @@ export const PrivacyScreen = ({ props, theme }) => {
   const navigation = props.navigation;
   const data = [
     <Image
-      source={require("../assets/chat-gpt-logo.png")}
+      source={require("../assets/circle-icon.png")}
       style={styles.icon}
     />,
     <Text style={styles.text(theme)}>Your privacy matters</Text>,
@@ -59,7 +59,6 @@ const styles = StyleSheet.create({
   icon: {
     width: 80,
     height: 80,
-    borderRadius: "100%",
     alignSelf: "center",
   },
   divider: (theme) => ({

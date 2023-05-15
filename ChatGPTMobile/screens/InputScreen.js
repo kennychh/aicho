@@ -29,7 +29,14 @@ export const InputScreen = ({
 }) => {
   const navigation = props.navigation;
   const [tempValue, setTempValue] = useState(value);
-  const disableButton = headerTitle == "Max tokens" && tempValue <= 0;
+  const maxTokensDisable = tempValue <= 0 || tempValue > 4097;
+  const timeoutDisable = tempValue <= 0 || tempValue > 10;
+  const disableButton =
+    headerTitle == "Max tokens"
+      ? maxTokensDisable
+      : headerTitle == "Timeout"
+      ? timeoutDisable
+      : false;
   const data = [
     <Text style={styles.text(theme)}>{title}</Text>,
     <SettingsInput

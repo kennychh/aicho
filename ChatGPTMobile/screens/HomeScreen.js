@@ -24,6 +24,9 @@ export const HomeScreen = ({
   apiKey,
   keyChanged,
   setKeyChanged,
+  timeout,
+  model,
+  maxTokens,
 }) => {
   return (
     <Drawer.Navigator
@@ -73,6 +76,9 @@ export const HomeScreen = ({
             apiKey={apiKey}
             keyChanged={keyChanged}
             setKeyChanged={setKeyChanged}
+            timeout={timeout}
+            model={model}
+            maxTokens={maxTokens}
           />
         )}
       </Drawer.Screen>

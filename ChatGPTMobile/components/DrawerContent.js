@@ -67,7 +67,7 @@ export const DrawerContent = ({
       scrollEnabled={false}
     >
       <View style={styles.drawerConversationsTitleContainer}>
-        <Text style={styles.drawerConversationsTitle(theme)}>ChatGPT</Text>
+        <Text style={styles.drawerConversationsTitle(theme)}>AIcho</Text>
       </View>
       <View style={{ maxHeight: 400 }}>
         <FlatList
