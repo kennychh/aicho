@@ -6,48 +6,34 @@ import {
   FlatList,
   Keyboard,
   TouchableOpacity,
+  Image,
 } from "react-native";
-import { Header, SettingsInput, SettingsOption } from "../components";
+import {
+  Header,
+  RadioButtonList,
+  SettingsInput,
+  TextButton,
+} from "../components";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { getTheme } from "../theme";
-import { TextButton } from "../components";
 import { useState } from "react";
 
-export const ChatPreferencesScreen = ({
-  props,
-  theme,
-  maxTokens,
-  timeout,
-  model,
-}) => {
+export const ModelScreen = ({ props, theme, model, setModel }) => {
   const navigation = props.navigation;
+  const [selected, setSelected] = useState(model);
+  const radioButtonListData = [{ value: "gpt-3.5-turbo" }, { value: "gpt-4" }];
   const data = [
-    <Text style={styles.text(theme)}>Model parameters</Text>,
-    <SettingsOption
-      title={"Model"}
-      onPress={() => {
-        navigation.navigate("Model");
-      }}
+    <Text style={styles.text(theme)}>Model</Text>,
+    <RadioButtonList
       theme={theme}
-      value={model}
+      selected={selected}
+      setSelected={setSelected}
+      data={radioButtonListData}
     />,
-    <SettingsOption
-      title={"Max tokens"}
-      onPress={() => {
-        navigation.navigate("Max Tokens");
-      }}
-      theme={theme}
-      value={maxTokens}
-    />,
-    <SettingsOption
-      title={"Timeout"}
-      onPress={() => {
-        navigation.navigate("Timeout");
-      }}
-      theme={theme}
-      value={timeout}
-    />,
+    <View style={styles.subTextContainer}>
+      <Text style={styles.subtext(theme)}>Select which model to use.</Text>
+    </View>,
   ];
   return (
     <SafeAreaProvider>
@@ -58,7 +44,7 @@ export const ChatPreferencesScreen = ({
         />
         <Header
           navigation={navigation}
-          headerTitle={"Chat Preferences"}
+          headerTitle={"Model"}
           theme={theme}
           isSettingsHeader={true}
         />
@@ -69,6 +55,17 @@ export const ChatPreferencesScreen = ({
           indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
           renderItem={({ item }) => item}
         />
+        <View style={{ marginBottom: 8 }}>
+          <TextButton
+            text={"Save"}
+            theme={theme}
+            disabled={selected == model}
+            onPress={() => {
+              setModel(selected);
+              navigation.goBack();
+            }}
+          />
+        </View>
       </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -95,12 +92,12 @@ const styles = StyleSheet.create({
   }),
   subTextContainer: {
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "flex-end",
+    paddingHorizontal: 16,
   },
   subtext: (theme) => ({
     paddingTop: 16,
-    paddingHorizontal: 16,
     fontSize: 12,
     fontWeight: "500",
     color: theme.secondaryIconColor,

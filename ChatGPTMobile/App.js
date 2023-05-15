@@ -7,26 +7,19 @@ import {
   ChatPreferencesScreen,
   TimeoutScreen,
 } from "./screens";
-import { DrawerContent } from "./components";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import {
   NavigationContainer,
   useNavigationContainerRef,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import {
-  createDrawerNavigator,
-  DrawerContentScrollView,
-  DrawerItemList,
-  DrawerItem,
-} from "@react-navigation/drawer";
 import { DarkModeModal, ConfirmDeleteConvosModal } from "./components";
-import { Alert, FlatList, Text, useColorScheme, View } from "react-native";
+import { Alert, useColorScheme } from "react-native";
 import { getTheme } from "./theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SecureStore from "expo-secure-store";
 import { MaxTokensScreen } from "./screens/MaxTokensScreen";
-import { max } from "react-native-reanimated";
+import { ModelScreen } from "./screens/ModelScreen";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -331,6 +324,16 @@ export default function App() {
                 theme={theme}
                 timeout={timeout}
                 setTimeout={setTimeout}
+              />
+            )}
+          </Stack.Screen>
+          <Stack.Screen name="Model" options={{ headerShown: false }}>
+            {(props) => (
+              <ModelScreen
+                props={props}
+                theme={theme}
+                model={model}
+                setModel={setModel}
               />
             )}
           </Stack.Screen>
