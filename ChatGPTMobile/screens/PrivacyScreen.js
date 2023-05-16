@@ -18,15 +18,15 @@ import { useState } from "react";
 export const PrivacyScreen = ({ props, theme }) => {
   const navigation = props.navigation;
   const data = [
-    <Image
-      source={require("../assets/circle-icon.png")}
-      style={styles.icon}
-    />,
+    <Image source={require("../assets/circle-icon.png")} style={styles.icon} />,
     <Text style={styles.text(theme)}>Your privacy matters</Text>,
     <View style={styles.subTextContainer}>
       <Text style={styles.subtext(theme)}>
-        All data, such as your conversations, are stored on your device.
-        Specifically, your API key is encrypted and securely stored locally.
+        Your conversations and app settings are stored on your device. To
+        enhance your experience, ChatGPT outputs are stored in a secure database
+        enabling seamless continuity and contextual understanding of your
+        previous conversations. Your API key is never shared outside of your
+        device's storage, and is encrypted and securely stored locally.
       </Text>
     </View>,
   ];
