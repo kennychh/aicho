@@ -22,3 +22,5 @@ export * from "./Heart";
 export * from "./Flag";
 export * from "./Privacy";
 export * from "./Language";
+export * from "./Pro";
+export * from "./ChatPref";

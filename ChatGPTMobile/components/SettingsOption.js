@@ -2,9 +2,9 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import {
   NavArrowRight,
   User,
-  Message,
+  ChatPref,
   About,
-  Heart,
+  Pro,
   Flag,
   Privacy,
   Language,
@@ -16,7 +16,7 @@ export const SettingsOption = ({ title, onPress, theme, value = "" }) => {
       {title == "Account" ? (
         <User stroke={theme.secondaryIconColor} style={styles.leftIcon} />
       ) : title == "Chat Preferences" ? (
-        <Message stroke={theme.secondaryIconColor} style={styles.leftIcon} />
+        <ChatPref stroke={theme.secondaryIconColor} style={styles.leftIcon} />
       ) : title == "About" ? (
         <About stroke={theme.secondaryIconColor} style={styles.leftIcon} />
       ) : title == "Report a problem" ? (
@@ -25,8 +25,8 @@ export const SettingsOption = ({ title, onPress, theme, value = "" }) => {
         <Language stroke={theme.secondaryIconColor} style={styles.leftIcon} />
       ) : title == "Privacy" ? (
         <Privacy stroke={theme.secondaryIconColor} style={styles.leftIcon} />
-      ) : title == "Support me" ? (
-        <Heart stroke={theme.secondaryIconColor} style={styles.leftIcon} />
+      ) : title == "AIcho Pro" ? (
+        <Pro stroke={theme.secondaryIconColor} style={styles.leftIcon} />
       ) : (
         <View />
       )}

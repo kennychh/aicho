@@ -4,9 +4,14 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { getTheme } from "../theme";
 import { SettingsOption } from "./../components/SettingsOption";
+import * as WebBrowser from "expo-web-browser";
 
 export const SettingsScreen = ({ props, theme }) => {
   const navigation = props.navigation;
+  const handleOpenBrowserPress = async () => {
+    await WebBrowser.openBrowserAsync("https://forms.gle/3GC4GSN9aVirATC8A");
+  };
+  
   const data = [
     {
       title: "User",
@@ -45,7 +50,7 @@ export const SettingsScreen = ({ props, theme }) => {
       style: [styles.text(theme), { paddingTop: 32 }],
     },
     {
-      title: "Report a problem",
+      title: "AIcho Pro",
       onPress: () => {
         navigation.navigate("Account");
       },
@@ -57,9 +62,9 @@ export const SettingsScreen = ({ props, theme }) => {
       },
     },
     {
-      title: "Support me",
+      title: "Report a problem",
       onPress: () => {
-        navigation.navigate("Account");
+        handleOpenBrowserPress();
       },
     },
   ];
