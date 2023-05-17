@@ -21,7 +21,7 @@ export const SettingsOption = ({ title, onPress, theme, value = "" }) => {
         <About stroke={theme.secondaryIconColor} style={styles.leftIcon} />
       ) : title == "Report a problem" ? (
         <Flag stroke={theme.secondaryIconColor} style={styles.leftIcon} />
-      ) : title == "Appearance" ? (
+      ) : title == "Display" ? (
         <Palette stroke={theme.secondaryIconColor} style={styles.leftIcon} />
       ) : title == "Privacy" ? (
         <Privacy stroke={theme.secondaryIconColor} style={styles.leftIcon} />

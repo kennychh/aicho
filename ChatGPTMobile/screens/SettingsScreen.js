@@ -40,7 +40,7 @@ export const SettingsScreen = ({ props, theme }) => {
       },
     },
     {
-      title: "Appearance",
+      title: "Display",
       onPress: () => {
         navigation.navigate("Account");
       },
