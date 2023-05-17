@@ -17,25 +17,63 @@ import {
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { getTheme } from "../theme";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export const ModelScreen = ({ props, theme, model, setModel }) => {
+export const DisplayScreen = ({
+  props,
+  theme,
+  isDarkMode,
+  setIsDarkMode,
+  useDeviceSettings,
+  setUseDeviceSettings,
+}) => {
   const navigation = props.navigation;
-  const [selected, setSelected] = useState(model);
-  const radioButtonListData = [{ value: "gpt-3.5-turbo" }, { value: "gpt-4" }];
+  const [selected, setSelected] = useState(
+    useDeviceSettings ? "System" : isDarkMode ? "Dark" : "Light"
+  );
+  const radioButtonListData = [
+    { value: "Light" },
+    { value: "Dark" },
+    { value: "System" },
+  ];
+
+  useEffect(() => {
+    if (selected == "System") {
+      setUseDeviceSettings(true);
+    } else if (selected == "Dark") {
+      setUseDeviceSettings(false);
+      setIsDarkMode(true);
+    } else {
+      setUseDeviceSettings(false);
+      setIsDarkMode(false);
+    }
+  }, [selected]);
   const data = [
-    <Text style={styles.text(theme)}>Model</Text>,
-    <View style={styles.radioButtonListContainer(theme)}>
+    <Text style={styles.text(theme)}>Appearance</Text>,
+    <View style={styles.appearanceContainer(theme)}>
+      <View style={styles.themeImagesContainer}>
+        <Image
+          source={require("../assets/light-theme.png")}
+          style={styles.themeImage}
+        />
+        <Image
+          source={require("../assets/dark-theme.png")}
+          style={styles.themeImage}
+        />
+        <Image
+          source={require("../assets/system-theme.png")}
+          style={styles.themeImage}
+        />
+      </View>
       <RadioButtonList
         theme={theme}
         selected={selected}
         setSelected={setSelected}
         data={radioButtonListData}
-        showDividerItems={["gpt-3.5-turbo"]}
+        style={styles.radioButtonListStyle}
+        itemStyle={styles.radioButtonItem}
+        textStyle={styles.radioButtonText(theme)}
       />
-    </View>,
-    <View style={styles.subTextContainer}>
-      <Text style={styles.subtext(theme)}>Select which model to use.</Text>
     </View>,
   ];
   return (
@@ -47,7 +85,7 @@ export const ModelScreen = ({ props, theme, model, setModel }) => {
         />
         <Header
           navigation={navigation}
-          headerTitle={"Model"}
+          headerTitle={"Display"}
           theme={theme}
           isSettingsHeader={true}
         />
@@ -58,17 +96,6 @@ export const ModelScreen = ({ props, theme, model, setModel }) => {
           indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
           renderItem={({ item }) => item}
         />
-        <View style={{ marginBottom: 8 }}>
-          <TextButton
-            text={"Save"}
-            theme={theme}
-            disabled={selected == model}
-            onPress={() => {
-              setModel(selected);
-              navigation.goBack();
-            }}
-          />
-        </View>
       </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -80,6 +107,37 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: "100%",
     alignSelf: "center",
+  },
+  themeImage: {
+    height: 100,
+    width: 52,
+    resizeMode: "contain",
+    aspectRatio: 0.52,
+  },
+  appearanceContainer: (theme) => ({
+    backgroundColor: theme.onBackgroundColor,
+    paddingVertical: 32,
+    marginHorizontal: 16,
+    borderRadius: 16,
+  }),
+  themeImagesContainer: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+  },
+  radioButtonText: (theme) => ({
+    fontSize: 12,
+    fontWeight: "500",
+    color: theme.fontColor,
+    paddingBottom: 16,
+  }),
+  radioButtonListStyle: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+  },
+  radioButtonItem: {
+    paddingVertical: 16,
+    alignItems: "center",
+    width: 52,
   },
   divider: (theme) => ({
     width: "100%",
@@ -97,7 +155,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "flex-end",
-    paddingHorizontal: 32,
+    paddingHorizontal: 16,
   },
   subtext: (theme) => ({
     paddingTop: 16,
@@ -113,11 +171,6 @@ const styles = StyleSheet.create({
   container: (theme) => ({
     backgroundColor: theme.backgroundColor,
     flex: 1,
-  }),
-  radioButtonListContainer: (theme) => ({
-    backgroundColor: theme.onBackgroundColor,
-    marginHorizontal: 16,
-    borderRadius: 16,
   }),
   componentContainer: {
     width: "100%",

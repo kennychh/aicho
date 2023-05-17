@@ -31,6 +31,7 @@ export const ChatPreferencesScreen = ({
       }}
       theme={theme}
       value={model}
+      showDivider={true}
     />,
     <SettingsOption
       title={"Max tokens"}
@@ -39,6 +40,7 @@ export const ChatPreferencesScreen = ({
       }}
       theme={theme}
       value={maxTokens}
+      isMiddle={true}
     />,
     <SettingsOption
       title={"Timeout"}
@@ -47,6 +49,8 @@ export const ChatPreferencesScreen = ({
       }}
       theme={theme}
       value={timeout}
+      showDivider={false}
+      isMiddle={false}
     />,
   ];
   return (
@@ -87,8 +91,8 @@ const styles = StyleSheet.create({
     backgroundColor: theme.divider.color,
   }),
   text: (theme) => ({
-    paddingBottom: 8,
-    paddingLeft: 16,
+    paddingBottom: 16,
+    paddingLeft: 32,
     fontSize: 14,
     fontWeight: "700",
     color: theme.secondaryIconColor,

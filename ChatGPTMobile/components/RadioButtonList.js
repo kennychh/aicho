@@ -7,17 +7,37 @@ import {
 } from "react-native";
 import { getTheme } from "../theme";
 
-export const RadioButtonList = ({ theme, selected, setSelected, data }) => {
+export const RadioButtonList = ({
+  theme,
+  selected,
+  setSelected,
+  data,
+  style,
+  itemStyle,
+  textStyle,
+  showDividerItems = [],
+}) => {
   return (
-    <View>
+    <View style={style}>
       {data.map((item) => (
         <TouchableWithoutFeedback
           onPress={() => {
             setSelected(item.value);
           }}
         >
-          <View style={styles.radioButtonItem}>
-            <Text style={styles.text(theme)}>{item.value}</Text>
+          <View
+            style={
+              itemStyle
+                ? itemStyle
+                : styles.radioButtonItem(
+                    theme,
+                    showDividerItems.indexOf(item.value) > -1
+                  )
+            }
+          >
+            <Text style={textStyle ? textStyle : styles.text(theme)}>
+              {item.value}
+            </Text>
             <View
               style={
                 selected == item.value
@@ -33,21 +53,25 @@ export const RadioButtonList = ({ theme, selected, setSelected, data }) => {
 };
 
 const styles = StyleSheet.create({
-  radioButtonItem: {
+  radioButtonItem: (theme, showDivider) => ({
     flexDirection: "row",
     justifyContent: "space-between",
     padding: 16,
-  },
+    borderBottomWidth: showDivider ? 1 : 0,
+    borderBottomColor: showDivider
+      ? theme.modal.divider.backgroundColor
+      : "transparent",
+  }),
   radio: (theme) => ({
     backgroundColor: "white",
-    borderColor: theme.button.color,
+    borderColor: theme.radioButton.color,
     borderWidth: 8,
     width: 24,
     height: 24,
     borderRadius: 100,
   }),
   unselectedRadio: (theme) => ({
-    borderColor: theme.button.disabledColor,
+    borderColor: theme.radioButton.disabledColor,
     borderWidth: 2,
     width: 24,
     height: 24,

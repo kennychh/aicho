@@ -42,7 +42,7 @@ export const SettingsScreen = ({ props, theme }) => {
     {
       title: "Display",
       onPress: () => {
-        navigation.navigate("Account");
+        navigation.navigate("Display");
       },
     },
     {
@@ -70,10 +70,19 @@ export const SettingsScreen = ({ props, theme }) => {
   ];
 
   const SettingsItem = ({ item }) => {
+    const showDivider =
+      ["Account", "Chat Preferences", "AIcho Pro"].indexOf(item.title) > -1;
+    const isMiddle = ["About"].indexOf(item.title) > -1;
     return ["User", "Content & Display", "More"].indexOf(item.title) > -1 ? (
       <Text style={item.style}>{item.title}</Text>
     ) : (
-      <SettingsOption title={item.title} theme={theme} onPress={item.onPress} />
+      <SettingsOption
+        title={item.title}
+        theme={theme}
+        onPress={item.onPress}
+        showDivider={showDivider}
+        isMiddle={isMiddle}
+      />
     );
   };
   return (
@@ -110,8 +119,8 @@ const styles = StyleSheet.create({
     backgroundColor: theme.divider.color,
   }),
   text: (theme) => ({
-    paddingBottom: 8,
-    paddingLeft: 16,
+    paddingBottom: 16,
+    paddingLeft: 32,
     fontSize: 14,
     fontWeight: "700",
     color: theme.secondaryIconColor,

@@ -95,8 +95,8 @@ const styles = StyleSheet.create({
     backgroundColor: theme.divider.color,
   }),
   text: (theme) => ({
-    paddingBottom: 8,
-    paddingLeft: 16,
+    paddingBottom: 16,
+    paddingLeft: 32,
     fontSize: 14,
     fontWeight: "700",
     color: theme.secondaryIconColor,
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "flex-end",
-    paddingHorizontal: 16,
+    paddingHorizontal: 32,
   },
   subtext: (theme) => ({
     paddingTop: 16,

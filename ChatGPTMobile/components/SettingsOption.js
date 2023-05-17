@@ -10,30 +10,42 @@ import {
   Palette,
 } from "../icons";
 
-export const SettingsOption = ({ title, onPress, theme, value = "" }) => {
+export const SettingsOption = ({
+  title,
+  onPress,
+  theme,
+  value = "",
+  showDivider = true,
+  isMiddle,
+}) => {
   return (
-    <TouchableOpacity style={styles.settingOption(theme)} onPress={onPress}>
-      {title == "Account" ? (
-        <User stroke={theme.secondaryIconColor} style={styles.leftIcon} />
-      ) : title == "Chat Preferences" ? (
-        <ChatPref stroke={theme.secondaryIconColor} style={styles.leftIcon} />
-      ) : title == "About" ? (
-        <About stroke={theme.secondaryIconColor} style={styles.leftIcon} />
-      ) : title == "Report a problem" ? (
-        <Flag stroke={theme.secondaryIconColor} style={styles.leftIcon} />
-      ) : title == "Display" ? (
-        <Palette stroke={theme.secondaryIconColor} style={styles.leftIcon} />
-      ) : title == "Privacy" ? (
-        <Privacy stroke={theme.secondaryIconColor} style={styles.leftIcon} />
-      ) : title == "AIcho Pro" ? (
-        <Pro stroke={theme.secondaryIconColor} style={styles.leftIcon} />
-      ) : (
-        <View />
-      )}
-      <Text style={styles.text(theme)}>{title}</Text>
-      {value != null && <Text style={styles.valueText(theme)}>{value}</Text>}
-      <NavArrowRight stroke={theme.secondaryIconColor} style={styles.icon} />
-    </TouchableOpacity>
+    <View>
+      <TouchableOpacity
+        style={styles.settingOption(theme, showDivider, isMiddle)}
+        onPress={onPress}
+      >
+        {title == "Account" ? (
+          <User stroke={theme.secondaryIconColor} style={styles.leftIcon} />
+        ) : title == "Chat Preferences" ? (
+          <ChatPref stroke={theme.secondaryIconColor} style={styles.leftIcon} />
+        ) : title == "About" ? (
+          <About stroke={theme.secondaryIconColor} style={styles.leftIcon} />
+        ) : title == "Report a problem" ? (
+          <Flag stroke={theme.secondaryIconColor} style={styles.leftIcon} />
+        ) : title == "Display" ? (
+          <Palette stroke={theme.secondaryIconColor} style={styles.leftIcon} />
+        ) : title == "Privacy" ? (
+          <Privacy stroke={theme.secondaryIconColor} style={styles.leftIcon} />
+        ) : title == "AIcho Pro" ? (
+          <Pro stroke={theme.secondaryIconColor} style={styles.leftIcon} />
+        ) : (
+          <View />
+        )}
+        <Text style={styles.text(theme)}>{title}</Text>
+        {value != null && <Text style={styles.valueText(theme)}>{value}</Text>}
+        <NavArrowRight stroke={theme.secondaryIconColor} style={styles.icon} />
+      </TouchableOpacity>
+    </View>
   );
 };
 
@@ -57,12 +69,19 @@ const styles = StyleSheet.create({
   icon: {
     marginRight: 16,
   },
-  settingOption: (theme) => ({
+  settingOption: (theme, showDivider, isMiddle) => ({
     flexDirection: "row",
     justifyContent: "flex-start",
     alignContent: "space-between",
     alignItems: "center",
     paddingVertical: 16,
-    backgroundColor: theme.backgroundColor,
+    marginHorizontal: 16,
+    backgroundColor: theme.onBackgroundColor,
+    borderTopLeftRadius: showDivider && !isMiddle ? 16 : 0,
+    borderTopRightRadius: showDivider && !isMiddle ? 16 : 0,
+    borderBottomLeftRadius: showDivider || isMiddle ? 0 : 16,
+    borderBottomRightRadius: showDivider || isMiddle ? 0 : 16,
+    borderBottomWidth: showDivider || isMiddle ? 1 : 0,
+    borderColor: theme.modal.divider.backgroundColor,
   }),
 });

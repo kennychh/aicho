@@ -10,6 +10,10 @@ const lightTheme = {
   divider: {
     color: "#F6F6F6",
   },
+  radioButton: {
+    disabledColor: "#A3A3A3",
+    color: "#10a37f",
+  },
   fontColor: "#000",
   iconColor: "black",
   secondaryIconColor: "#707070",
@@ -59,15 +63,19 @@ const lightTheme = {
 
 const darkTheme = {
   backgroundColor: "#000",
-  onBackgroundColor: "#262626",
+  onBackgroundColor: "#1C1C1D",
   button: {
-    disabledColor: "#262626",
+    disabledColor: "#1C1C1D",
     disabledFontColor: "#A5A5A5",
     color: "#10a37f",
     fontColor: "white",
   },
+  radioButton: {
+    disabledColor: "#5A5A5E",
+    color: "#10a37f",
+  },
   divider: {
-    color: "#262626",
+    color: "#1C1C1D",
   },
   fontColor: "white",
   iconColor: "white",
@@ -76,21 +84,21 @@ const darkTheme = {
     color: "#FF0000",
   },
   drawerContent: {
-    backgroundColor: "#262626",
+    backgroundColor: "#1C1C1D",
     overlayColor: "rgba(255, 255, 255, 0.10)",
     drawerDivider: {
-      backgroundColor: "#555555",
+      backgroundColor: "#3A3A3C",
     },
     chatItem: {
       selected: {
-        backgroundColor: "#363636",
+        backgroundColor: "#2C2C2D",
       },
       backgroundColor: "black",
     },
   },
   message: {
     itemContainer: {
-      backgroundColor: "#262626",
+      backgroundColor: "#1C1C1D",
     },
     fontColor: "white",
   },
@@ -101,18 +109,18 @@ const darkTheme = {
     button: {
       backgroundColor: "#10a37f",
       disabled: {
-        backgroundColor: "#363636",
+        backgroundColor: "#2C2C2D",
       },
     },
   },
   modal: {
     fontColor: "white",
-    backgroundColor: "#262626",
+    backgroundColor: "#1C1C1D",
     container: {
-      backgroundColor: "#363636",
+      backgroundColor: "#2C2C2D",
     },
     divider: {
-      backgroundColor: "#555555",
+      backgroundColor: "#3A3A3C",
     },
   },
 };
