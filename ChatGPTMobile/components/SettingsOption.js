@@ -7,7 +7,7 @@ import {
   Pro,
   Flag,
   Privacy,
-  Language,
+  Palette,
 } from "../icons";
 
 export const SettingsOption = ({ title, onPress, theme, value = "" }) => {
@@ -21,8 +21,8 @@ export const SettingsOption = ({ title, onPress, theme, value = "" }) => {
         <About stroke={theme.secondaryIconColor} style={styles.leftIcon} />
       ) : title == "Report a problem" ? (
         <Flag stroke={theme.secondaryIconColor} style={styles.leftIcon} />
-      ) : title == "Language" ? (
-        <Language stroke={theme.secondaryIconColor} style={styles.leftIcon} />
+      ) : title == "Appearance" ? (
+        <Palette stroke={theme.secondaryIconColor} style={styles.leftIcon} />
       ) : title == "Privacy" ? (
         <Privacy stroke={theme.secondaryIconColor} style={styles.leftIcon} />
       ) : title == "AIcho Pro" ? (

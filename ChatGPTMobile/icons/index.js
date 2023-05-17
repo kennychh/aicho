@@ -24,3 +24,4 @@ export * from "./Privacy";
 export * from "./Language";
 export * from "./Pro";
 export * from "./ChatPref";
+export * from "./Palette";

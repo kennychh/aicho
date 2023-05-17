@@ -11,7 +11,7 @@ export const SettingsScreen = ({ props, theme }) => {
   const handleOpenBrowserPress = async () => {
     await WebBrowser.openBrowserAsync("https://forms.gle/3GC4GSN9aVirATC8A");
   };
-  
+
   const data = [
     {
       title: "User",
@@ -30,7 +30,7 @@ export const SettingsScreen = ({ props, theme }) => {
       },
     },
     {
-      title: "Content",
+      title: "Content & Display",
       style: [styles.text(theme), { paddingTop: 32 }],
     },
     {
@@ -40,7 +40,7 @@ export const SettingsScreen = ({ props, theme }) => {
       },
     },
     {
-      title: "Language",
+      title: "Appearance",
       onPress: () => {
         navigation.navigate("Account");
       },
@@ -70,7 +70,7 @@ export const SettingsScreen = ({ props, theme }) => {
   ];
 
   const SettingsItem = ({ item }) => {
-    return ["User", "Content", "More"].indexOf(item.title) > -1 ? (
+    return ["User", "Content & Display", "More"].indexOf(item.title) > -1 ? (
       <Text style={item.style}>{item.title}</Text>
     ) : (
       <SettingsOption title={item.title} theme={theme} onPress={item.onPress} />
