@@ -23,7 +23,7 @@ export const PrivacyScreen = ({ props, theme }) => {
     <View style={styles.subTextContainer}>
       <Text style={styles.subtext(theme)}>
         Your conversations and app settings are stored on your device. To
-        enhance your experience, ChatGPT outputs are stored in a secure database
+        enhance your experience, conversations are stored in a secure database
         enabling seamless continuity and contextual understanding of your
         previous conversations. Your API key is never shared outside of your
         device's storage, and is encrypted and securely stored locally.
