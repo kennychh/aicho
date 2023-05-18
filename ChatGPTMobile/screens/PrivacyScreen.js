@@ -2,21 +2,22 @@ import {
   StyleSheet,
   View,
   Text,
-  TextInput,
   FlatList,
   Keyboard,
-  TouchableOpacity,
   Image,
   Switch,
 } from "react-native";
-import { Header, SettingsInput } from "../components";
+import { Header } from "../components";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { getTheme } from "../theme";
-import { TextButton } from "./../components";
-import { useState } from "react";
 
-export const PrivacyScreen = ({ props, theme }) => {
+export const PrivacyScreen = ({
+  props,
+  theme,
+  retainContext,
+  setRetainContext,
+}) => {
   const navigation = props.navigation;
   const data = [
     <Image source={require("../assets/circle-icon.png")} style={styles.icon} />,
@@ -32,14 +33,16 @@ export const PrivacyScreen = ({ props, theme }) => {
       </Text>
       <Switch
         style={{ marginVertical: -16 }}
-        onValueChange={() => {}}
-        value={false}
+        onValueChange={() => {
+          setRetainContext(!retainContext);
+        }}
+        value={retainContext}
       />
     </View>,
     <Text style={styles.subtext(theme)}>
       To enhance your experience, conversations are stored in a database
       enabling contextual understanding of previous conversations. Conversation
-      data will be deleted after 24 hours.
+      data is not linked to you, and will be deleted after 24 hours.
     </Text>,
     <Text style={styles.text(theme)}>Security</Text>,
     <View style={styles.modalOption(theme)}>

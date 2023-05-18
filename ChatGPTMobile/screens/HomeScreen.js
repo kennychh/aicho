@@ -28,6 +28,7 @@ export const HomeScreen = ({
   model,
   maxTokens,
   color,
+  retainContext,
 }) => {
   return (
     <Drawer.Navigator
@@ -81,6 +82,7 @@ export const HomeScreen = ({
             model={model}
             maxTokens={maxTokens}
             color={color}
+            retainContext={retainContext}
           />
         )}
       </Drawer.Screen>

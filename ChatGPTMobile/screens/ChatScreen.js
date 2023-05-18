@@ -39,6 +39,7 @@ export const ChatScreen = ({
   model,
   maxTokens,
   color,
+  retainContext,
 }) => {
   const API_URL = "https://chatgpt-api-blue.vercel.app/api";
   const result = chats[index];
@@ -242,6 +243,7 @@ export const ChatScreen = ({
           timeout: parseInt(timeout),
           model: model,
           maxTokens: parseInt(maxTokens),
+          retainContext: retainContext,
         }),
       });
       const data = await response.json();

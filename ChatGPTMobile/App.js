@@ -44,6 +44,7 @@ export default function App() {
   const [model, setModel] = useState("");
   const [timeout, setTimeout] = useState(0);
   const [color, setColor] = useState("");
+  const [retainContext, setRetainContext] = useState();
   const storeKey = async (value) => {
     try {
       await SecureStore.setItemAsync("key", value);
@@ -62,6 +63,16 @@ export default function App() {
     } catch (e) {
       // saving error
       Alert.alert("Couldn't store max tokens", e.message);
+    }
+  };
+
+  const storeRetainContext = async () => {
+    try {
+      const jsonValue = JSON.stringify(retainContext);
+      await AsyncStorage.setItem("@retainContext", jsonValue);
+    } catch (e) {
+      // saving error
+      Alert.alert("Couldn't store retain context", e.message);
     }
   };
 
@@ -172,6 +183,18 @@ export default function App() {
   }, [model]);
 
   useEffect(() => {
+    if (model != "") {
+      storeModel();
+    }
+  }, [model]);
+
+  useEffect(() => {
+    if (retainContext != null) {
+      storeRetainContext(retainContext);
+    }
+  }, [retainContext]);
+
+  useEffect(() => {
     if (chatTitles[0] != null) {
       storeChatTitles();
     }
@@ -193,6 +216,9 @@ export default function App() {
     const getData = async () => {
       try {
         const jsonValue = await AsyncStorage.getItem("@chatgpt");
+        const retainContextJsonValue = await AsyncStorage.getItem(
+          "@retainContext"
+        );
         const chatTitlesJson = await AsyncStorage.getItem("@chatTitles");
         const darkModeJsonValue = await AsyncStorage.getItem("@darkMode");
         const maxTokensJsonValue = await AsyncStorage.getItem("@maxTokens");
@@ -204,6 +230,10 @@ export default function App() {
         );
         const keyJsonValue = await SecureStore.getItemAsync("key");
 
+        const storedRetainContext =
+          retainContextJsonValue != null
+            ? JSON.parse(retainContextJsonValue)
+            : true;
         const storedColor =
           colorJsonValue != null ? JSON.parse(colorJsonValue) : "#10a37f";
         const storedChatTitles =
@@ -241,6 +271,10 @@ export default function App() {
         }
         if (storedTimeout != 0) {
           setTimeout(storedTimeout);
+        }
+
+        if (storedRetainContext != null) {
+          setRetainContext(storedRetainContext);
         }
         setIsDarkMode(storedDarkMode);
         setUseDeviceSettings(storedUseDeviceSettings);
@@ -305,6 +339,7 @@ export default function App() {
                 model={model}
                 maxTokens={maxTokens}
                 color={color}
+                retainContext={retainContext}
               />
             )}
           </Stack.Screen>
@@ -324,7 +359,14 @@ export default function App() {
             )}
           </Stack.Screen>
           <Stack.Screen name="Privacy" options={{ headerShown: false }}>
-            {(props) => <PrivacyScreen props={props} theme={theme} />}
+            {(props) => (
+              <PrivacyScreen
+                props={props}
+                theme={theme}
+                retainContext={retainContext}
+                setRetainContext={setRetainContext}
+              />
+            )}
           </Stack.Screen>
           <Stack.Screen
             name="Chat Preferences"
