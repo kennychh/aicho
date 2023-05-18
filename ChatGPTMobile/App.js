@@ -7,6 +7,8 @@ import {
   ChatPreferencesScreen,
   TimeoutScreen,
   AppearanceScreen,
+  MaxTokensScreen,
+  ModelScreen,
 } from "./screens";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import {
@@ -19,8 +21,6 @@ import { Alert, useColorScheme } from "react-native";
 import { getTheme } from "./theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SecureStore from "expo-secure-store";
-import { MaxTokensScreen } from "./screens/MaxTokensScreen";
-import { ModelScreen } from "./screens/ModelScreen";
 
 export default function App() {
   const Stack = createNativeStackNavigator();

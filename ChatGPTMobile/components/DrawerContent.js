@@ -69,7 +69,7 @@ export const DrawerContent = ({
       <View style={styles.drawerConversationsTitleContainer}>
         <Text style={styles.drawerConversationsTitle(theme)}>AIcho</Text>
       </View>
-      <View style={{ maxHeight: 400 }}>
+      <View style={{ maxHeight: 464 }}>
         <FlatList
           inverted
           data={chats}

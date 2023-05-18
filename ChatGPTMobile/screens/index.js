@@ -7,3 +7,5 @@ export * from "./ChatPreferencesScreen";
 export * from "./InputScreen";
 export * from "./TimeoutScreen";
 export * from "./AppearanceScreen";
+export * from "./ModelScreen";
+export * from "./MaxTokensScreen";
