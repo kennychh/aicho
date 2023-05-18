@@ -6,7 +6,7 @@ import {
   PrivacyScreen,
   ChatPreferencesScreen,
   TimeoutScreen,
-  DisplayScreen,
+  AppearanceScreen,
 } from "./screens";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import {
@@ -415,9 +415,9 @@ export default function App() {
               />
             )}
           </Stack.Screen>
-          <Stack.Screen name="Display" options={{ headerShown: false }}>
+          <Stack.Screen name="Appearance" options={{ headerShown: false }}>
             {(props) => (
-              <DisplayScreen
+              <AppearanceScreen
                 props={props}
                 theme={theme}
                 isDarkMode={isDarkMode}

@@ -14,7 +14,7 @@ import { getTheme } from "../theme";
 import { useEffect, useState } from "react";
 import { Check } from "../icons";
 
-export const DisplayScreen = ({
+export const AppearanceScreen = ({
   props,
   theme,
   isDarkMode,
@@ -54,7 +54,7 @@ export const DisplayScreen = ({
     "#D32D49",
   ];
   const data = [
-    <Text style={styles.text(theme)}>Appearance</Text>,
+    <Text style={styles.text(theme)}>Theme</Text>,
     <View style={styles.appearanceContainer(theme)}>
       <View style={styles.themeImagesContainer}>
         <Image
@@ -81,7 +81,7 @@ export const DisplayScreen = ({
         color={color}
       />
     </View>,
-    <Text style={styles.text(theme)}>Theme</Text>,
+    <Text style={styles.text(theme)}>Accent color</Text>,
     <View style={styles.themeContainer(theme)}>
       {colorData.map((value) => (
         <TouchableOpacity
@@ -104,7 +104,7 @@ export const DisplayScreen = ({
         />
         <Header
           navigation={navigation}
-          headerTitle={"Display"}
+          headerTitle={"Appearance"}
           theme={theme}
           isSettingsHeader={true}
         />

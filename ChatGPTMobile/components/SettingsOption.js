@@ -32,7 +32,7 @@ export const SettingsOption = ({
           <About stroke={theme.iconColor} style={styles.leftIcon} />
         ) : title == "Report a problem" ? (
           <Flag stroke={theme.iconColor} style={styles.leftIcon} />
-        ) : title == "Display" ? (
+        ) : title == "Appearance" ? (
           <Palette stroke={theme.iconColor} style={styles.leftIcon} />
         ) : title == "Privacy & Security" ? (
           <Privacy stroke={theme.iconColor} style={styles.leftIcon} />

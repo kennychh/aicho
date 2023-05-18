@@ -6,4 +6,4 @@ export * from "./PrivacyScreen";
 export * from "./ChatPreferencesScreen";
 export * from "./InputScreen";
 export * from "./TimeoutScreen";
-export * from "./DisplayScreen";
+export * from "./AppearanceScreen";
