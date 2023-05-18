@@ -43,6 +43,7 @@ export default function App() {
   const [maxTokens, setMaxTokens] = useState(0);
   const [model, setModel] = useState("");
   const [timeout, setTimeout] = useState(0);
+  const [color, setColor] = useState("");
   const storeKey = async (value) => {
     try {
       await SecureStore.setItemAsync("key", value);
@@ -61,6 +62,16 @@ export default function App() {
     } catch (e) {
       // saving error
       Alert.alert("Couldn't store max tokens", e.message);
+    }
+  };
+
+  const storeColor = async () => {
+    try {
+      const jsonValue = JSON.stringify(color);
+      await AsyncStorage.setItem("@color", jsonValue);
+    } catch (e) {
+      // saving error
+      Alert.alert("Couldn't store color", e.message);
     }
   };
 
@@ -137,6 +148,12 @@ export default function App() {
   }, [key]);
 
   useEffect(() => {
+    if (color != "") {
+      storeColor(color);
+    }
+  }, [color]);
+
+  useEffect(() => {
     if (maxTokens != 0) {
       storeMaxTokens();
     }
@@ -181,10 +198,14 @@ export default function App() {
         const maxTokensJsonValue = await AsyncStorage.getItem("@maxTokens");
         const timeoutJsonValue = await AsyncStorage.getItem("@timeout");
         const modelJsonValue = await AsyncStorage.getItem("@model");
+        const colorJsonValue = await AsyncStorage.getItem("@color");
         const useDeviceSettingsValue = await AsyncStorage.getItem(
           "@useDeviceSettings"
         );
         const keyJsonValue = await SecureStore.getItemAsync("key");
+
+        const storedColor =
+          colorJsonValue != null ? JSON.parse(colorJsonValue) : "#10a37f";
         const storedChatTitles =
           chatTitlesJson != null ? JSON.parse(chatTitlesJson) : ["New chat"];
         const storedKey = keyJsonValue != null ? keyJsonValue : "test";
@@ -211,6 +232,9 @@ export default function App() {
         }
         if (storedModel != "") {
           setModel(storedModel);
+        }
+        if (storedColor != "") {
+          setColor(storedColor);
         }
         if (storedMaxTokens != 0) {
           setMaxTokens(storedMaxTokens);
@@ -280,6 +304,7 @@ export default function App() {
                 timeout={timeout}
                 model={model}
                 maxTokens={maxTokens}
+                color={color}
               />
             )}
           </Stack.Screen>
@@ -294,6 +319,7 @@ export default function App() {
                 setKey={setKey}
                 apiKey={key}
                 setKeyChanged={setKeyChanged}
+                color={color}
               />
             )}
           </Stack.Screen>
@@ -321,6 +347,7 @@ export default function App() {
                 theme={theme}
                 maxTokens={maxTokens}
                 setMaxTokens={setMaxTokens}
+                color={color}
               />
             )}
           </Stack.Screen>
@@ -331,6 +358,7 @@ export default function App() {
                 theme={theme}
                 timeout={timeout}
                 setTimeout={setTimeout}
+                color={color}
               />
             )}
           </Stack.Screen>
@@ -341,6 +369,7 @@ export default function App() {
                 theme={theme}
                 model={model}
                 setModel={setModel}
+                color={color}
               />
             )}
           </Stack.Screen>
@@ -353,6 +382,8 @@ export default function App() {
                 setIsDarkMode={setIsDarkMode}
                 useDeviceSettings={useDeviceSettings}
                 setUseDeviceSettings={setUseDeviceSettings}
+                color={color}
+                setColor={setColor}
               />
             )}
           </Stack.Screen>

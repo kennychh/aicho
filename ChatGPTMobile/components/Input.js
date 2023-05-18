@@ -27,6 +27,7 @@ export const Input = ({
   setRetry,
   setEditMessage,
   theme,
+  color,
 }) => {
   const windowWidth = Dimensions.get("window").width;
   const showSendIcon = isResultValid;
@@ -160,7 +161,7 @@ export const Input = ({
                   getInputOnPress();
                   setEditMessage(null);
                 }}
-                style={[styles.button, getInputIconColor()]}
+                style={[styles.button(color), getInputIconColor()]}
                 disabled={getInputDisabled()}
               >
                 {showInputIcon()}
@@ -202,8 +203,8 @@ const styles = StyleSheet.create({
     maxHeight: 120,
     borderRadius: 24,
   }),
-  button: {
-    backgroundColor: "#10a37f",
+  button: (color) => ({
+    backgroundColor: color,
     borderRadius: "50%",
     alignItems: "center",
     justifyContent: "center",
@@ -211,7 +212,7 @@ const styles = StyleSheet.create({
     height: 36,
     marginVertical: 4,
     marginRight: 4,
-  },
+  }),
   closeIcon: {
     alignItems: "center",
     justifyContent: "center",

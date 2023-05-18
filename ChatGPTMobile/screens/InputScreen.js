@@ -26,6 +26,7 @@ export const InputScreen = ({
   headerTitle,
   buttonText,
   keyboardType,
+  color,
 }) => {
   const navigation = props.navigation;
   const [tempValue, setTempValue] = useState(value);
@@ -72,6 +73,7 @@ export const InputScreen = ({
           <TextButton
             text={buttonText}
             theme={theme}
+            color={color}
             disabled={!tempValue || disableButton || tempValue == value}
             onPress={() => {
               if (onPress) {

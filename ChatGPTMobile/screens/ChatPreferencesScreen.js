@@ -11,8 +11,6 @@ import { Header, SettingsInput, SettingsOption } from "../components";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { getTheme } from "../theme";
-import { TextButton } from "../components";
-import { useState } from "react";
 
 export const ChatPreferencesScreen = ({
   props,

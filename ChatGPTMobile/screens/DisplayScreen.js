@@ -2,22 +2,17 @@ import {
   StyleSheet,
   View,
   Text,
-  TextInput,
   FlatList,
   Keyboard,
-  TouchableOpacity,
   Image,
+  TouchableOpacity,
 } from "react-native";
-import {
-  Header,
-  RadioButtonList,
-  SettingsInput,
-  TextButton,
-} from "../components";
+import { Header, RadioButtonList } from "../components";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { getTheme } from "../theme";
 import { useEffect, useState } from "react";
+import { Check } from "../icons";
 
 export const DisplayScreen = ({
   props,
@@ -26,6 +21,8 @@ export const DisplayScreen = ({
   setIsDarkMode,
   useDeviceSettings,
   setUseDeviceSettings,
+  color,
+  setColor,
 }) => {
   const navigation = props.navigation;
   const [selected, setSelected] = useState(
@@ -48,21 +45,29 @@ export const DisplayScreen = ({
       setIsDarkMode(false);
     }
   }, [selected]);
+  const colorData = [
+    "#10a37f",
+    "#3678DD",
+    "#ee2677",
+    "#8546D7",
+    "#E55631",
+    "#D32D49",
+  ];
   const data = [
     <Text style={styles.text(theme)}>Appearance</Text>,
     <View style={styles.appearanceContainer(theme)}>
       <View style={styles.themeImagesContainer}>
         <Image
           source={require("../assets/light-theme.png")}
-          style={styles.themeImage(theme)}
+          style={styles.themeImage(color)}
         />
         <Image
           source={require("../assets/dark-theme.png")}
-          style={styles.themeImage(theme)}
+          style={styles.themeImage(color)}
         />
         <Image
           source={require("../assets/system-theme.png")}
-          style={styles.themeImage(theme)}
+          style={styles.themeImage(color)}
         />
       </View>
       <RadioButtonList
@@ -73,10 +78,22 @@ export const DisplayScreen = ({
         style={styles.radioButtonListStyle}
         itemStyle={styles.radioButtonItem}
         textStyle={styles.radioButtonText(theme)}
+        color={color}
       />
     </View>,
     <Text style={styles.text(theme)}>Theme</Text>,
-    <View style={styles.appearanceContainer(theme)}></View>,
+    <View style={styles.themeContainer(theme)}>
+      {colorData.map((value) => (
+        <TouchableOpacity
+          style={[styles.circle, { backgroundColor: value }]}
+          onPress={() => {
+            setColor(value);
+          }}
+        >
+          {color == value && <Check stroke={"#fff"} />}
+        </TouchableOpacity>
+      ))}
+    </View>,
   ];
   return (
     <SafeAreaProvider>
@@ -110,12 +127,27 @@ const styles = StyleSheet.create({
     borderRadius: "100%",
     alignSelf: "center",
   },
-  themeImage: (theme) => ({
+  themeContainer: (theme) => ({
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: 16,
+    backgroundColor: theme.onBackgroundColor,
+    marginHorizontal: 16,
+    borderRadius: 16,
+  }),
+  circle: {
+    width: 40,
+    height: 40,
+    borderRadius: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  themeImage: (color) => ({
     height: 100,
     width: 52,
     resizeMode: "contain",
     aspectRatio: 0.52,
-    backgroundColor: theme.button.color,
+    backgroundColor: color,
     borderRadius: 8,
   }),
   appearanceContainer: (theme) => ({
@@ -139,7 +171,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   radioButtonItem: {
-    paddingVertical: 16,
+    paddingTop: 16,
     alignItems: "center",
     width: 52,
   },

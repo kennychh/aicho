@@ -19,7 +19,7 @@ if (
 ) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
-export const Message = ({ item, index, setMessage, theme }) => {
+export const Message = ({ item, index, setMessage, theme, color }) => {
   const text = item?.result?.text || "";
   const isInput = item?.isInput;
   const isError = item?.isError;
@@ -79,7 +79,7 @@ export const Message = ({ item, index, setMessage, theme }) => {
           isInput
             ? {
                 marginLeft: "auto",
-                backgroundColor: "#10a37f",
+                backgroundColor: color,
                 fontColor: "white",
               }
             : {

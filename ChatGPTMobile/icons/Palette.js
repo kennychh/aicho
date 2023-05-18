@@ -1,24 +1,26 @@
 import * as React from "react";
-import Svg, { Path } from "react-native-svg";
+import Svg, { Circle, Path } from "react-native-svg";
 
 export const Palette = (props) => {
   return (
     <Svg
-      width="24px"
-      height="24px"
-      strokeWidth={2}
+      xmlns="http://www.w3.org/2000/svg"
+      width={24}
+      height={24}
       viewBox="0 0 24 24"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
       stroke="#000"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="lucide lucide-palette"
       {...props}
     >
-      <Path d="M20.51 9.54a1.899 1.899 0 01-1 1.09A7 7 0 0015.37 17c.001.47.048.939.14 1.4a2.16 2.16 0 01-.31 1.65 1.79 1.79 0 01-1.21.8 9 9 0 01-10.62-9.13A9.05 9.05 0 0111.85 3h.51a9 9 0 018.06 5 2 2 0 01.09 1.52v.02z" />
-      <Path
-        d="M8 16.01l.01-.011M6 12.01l.01-.011M8 8.01l.01-.011M12 6.01l.01-.011M16 8.01l.01-.011"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <Circle cx={13.5} cy={6.5} r={0.5} />
+      <Circle cx={17.5} cy={10.5} r={0.5} />
+      <Circle cx={8.5} cy={7.5} r={0.5} />
+      <Circle cx={6.5} cy={12.5} r={0.5} />
+      <Path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 011.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z" />
     </Svg>
   );
 };

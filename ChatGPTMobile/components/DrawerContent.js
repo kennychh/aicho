@@ -109,7 +109,7 @@ export const DrawerContent = ({
           <Plus style={styles.chatItemIcon} stroke={theme.iconColor} />
           <Text style={styles.chatItemText(theme)}>New chat</Text>
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.drawerOptions}
           onPress={() => {
             darkModeModalizeRef.current?.open();
@@ -121,7 +121,7 @@ export const DrawerContent = ({
             <Moon style={styles.chatItemIcon} stroke={theme.iconColor} />
           )}
           <Text style={styles.chatItemText(theme)}>Appearance</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity
           style={styles.drawerOptions}
           onPress={() => {

@@ -6,6 +6,7 @@ export const AccountScreen = ({
   setKey,
   apiKey,
   setKeyChanged,
+  color,
 }) => {
   const navigation = props.navigation;
   return (
@@ -25,6 +26,7 @@ export const AccountScreen = ({
       placeholder={"Enter API key"}
       headerTitle={"Account"}
       buttonText={"Save"}
+      color={color}
     />
   );
 };

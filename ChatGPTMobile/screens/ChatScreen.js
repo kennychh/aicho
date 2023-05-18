@@ -38,6 +38,7 @@ export const ChatScreen = ({
   timeout,
   model,
   maxTokens,
+  color,
 }) => {
   const API_URL = "https://chatgpt-api-blue.vercel.app/api";
   const result = chats[index];
@@ -359,6 +360,7 @@ export const ChatScreen = ({
               inputOffset={inputHeight}
               setMessage={setMessage}
               theme={theme}
+              color={color}
             />
             <Input
               textInputRef={textInputRef}
@@ -377,6 +379,7 @@ export const ChatScreen = ({
               setEditMessage={setEditMessage}
               setInput={setInput}
               theme={theme}
+              color={color}
             />
           </View>
         </KeyboardAvoidingView>

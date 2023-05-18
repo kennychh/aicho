@@ -27,6 +27,7 @@ export const HomeScreen = ({
   timeout,
   model,
   maxTokens,
+  color,
 }) => {
   return (
     <Drawer.Navigator
@@ -79,6 +80,7 @@ export const HomeScreen = ({
             timeout={timeout}
             model={model}
             maxTokens={maxTokens}
+            color={color}
           />
         )}
       </Drawer.Screen>

@@ -19,7 +19,7 @@ import { StatusBar } from "expo-status-bar";
 import { getTheme } from "../theme";
 import { useState } from "react";
 
-export const ModelScreen = ({ props, theme, model, setModel }) => {
+export const ModelScreen = ({ props, theme, model, setModel, color }) => {
   const navigation = props.navigation;
   const [selected, setSelected] = useState(model);
   const radioButtonListData = [{ value: "gpt-3.5-turbo" }, { value: "gpt-4" }];
@@ -32,6 +32,7 @@ export const ModelScreen = ({ props, theme, model, setModel }) => {
         setSelected={setSelected}
         data={radioButtonListData}
         showDividerItems={["gpt-3.5-turbo"]}
+        color={color}
       />
     </View>,
     <Text style={styles.subtext(theme)}>Select which model to use.</Text>,
@@ -60,11 +61,13 @@ export const ModelScreen = ({ props, theme, model, setModel }) => {
           <TextButton
             text={"Save"}
             theme={theme}
+            color={color}
             disabled={selected == model}
             onPress={() => {
               setModel(selected);
               navigation.goBack();
             }}
+
           />
         </View>
       </SafeAreaView>

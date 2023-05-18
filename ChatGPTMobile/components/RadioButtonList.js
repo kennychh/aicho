@@ -16,6 +16,7 @@ export const RadioButtonList = ({
   itemStyle,
   textStyle,
   showDividerItems = [],
+  color,
 }) => {
   return (
     <View style={style}>
@@ -41,7 +42,7 @@ export const RadioButtonList = ({
             <View
               style={
                 selected == item.value
-                  ? styles.radio(theme)
+                  ? styles.radio(color)
                   : styles.unselectedRadio(theme)
               }
             />
@@ -62,9 +63,9 @@ const styles = StyleSheet.create({
       ? theme.modal.divider.backgroundColor
       : "transparent",
   }),
-  radio: (theme) => ({
+  radio: (color) => ({
     backgroundColor: "white",
-    borderColor: theme.radioButton.color,
+    borderColor: color,
     borderWidth: 8,
     width: 24,
     height: 24,

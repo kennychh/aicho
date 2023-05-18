@@ -1,6 +1,12 @@
 import { InputScreen } from "./InputScreen";
 
-export const MaxTokensScreen = ({ props, theme, setMaxTokens, maxTokens }) => {
+export const MaxTokensScreen = ({
+  props,
+  theme,
+  setMaxTokens,
+  maxTokens,
+  color,
+}) => {
   const navigation = props.navigation;
   return (
     <InputScreen
@@ -20,6 +26,7 @@ export const MaxTokensScreen = ({ props, theme, setMaxTokens, maxTokens }) => {
       buttonText={"Save"}
       keyboardType={"number-pad"}
       showSubtextCta={true}
+      color={color}
     />
   );
 };

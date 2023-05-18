@@ -1,6 +1,6 @@
 import { InputScreen } from "./InputScreen";
 
-export const TimeoutScreen = ({ props, theme, setTimeout, timeout }) => {
+export const TimeoutScreen = ({ props, theme, setTimeout, timeout, color }) => {
   const navigation = props.navigation;
   return (
     <InputScreen
@@ -19,6 +19,7 @@ export const TimeoutScreen = ({ props, theme, setTimeout, timeout }) => {
       headerTitle={"Timeout"}
       buttonText={"Save"}
       keyboardType={"number-pad"}
+      color={color}
     />
   );
 };

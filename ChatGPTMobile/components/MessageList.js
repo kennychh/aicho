@@ -9,6 +9,7 @@ export const MessageList = ({
   setMessage,
   regen,
   theme,
+  color,
 }) => {
   return (
     <View style={{ flex: 1, width: "100%" }}>
@@ -25,6 +26,7 @@ export const MessageList = ({
             setMessage={setMessage}
             regen={regen}
             theme={theme}
+            color={color}
           />
         )}
         style={{
