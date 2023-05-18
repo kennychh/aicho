@@ -24,7 +24,7 @@ export const SettingsScreen = ({ props, theme }) => {
       },
     },
     {
-      title: "Privacy",
+      title: "Privacy & Security",
       onPress: () => {
         navigation.navigate("Privacy");
       },

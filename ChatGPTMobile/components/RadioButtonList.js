@@ -94,29 +94,4 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     color: theme.iconColor,
   }),
-  subTextContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "flex-end",
-  },
-  subtext: (theme) => ({
-    paddingTop: 16,
-    paddingHorizontal: 16,
-    fontSize: 12,
-    fontWeight: "500",
-    color: theme.secondaryIconColor,
-  }),
-  subtextCTA: (theme) => ({
-    fontSize: 12,
-    fontWeight: "500",
-    color: theme.iconColor,
-  }),
-  container: (theme) => ({
-    backgroundColor: theme.backgroundColor,
-    flex: 1,
-  }),
-  componentContainer: {
-    width: "100%",
-    flex: 1,
-  },
 });

@@ -34,9 +34,7 @@ export const ModelScreen = ({ props, theme, model, setModel }) => {
         showDividerItems={["gpt-3.5-turbo"]}
       />
     </View>,
-    <View style={styles.subTextContainer}>
-      <Text style={styles.subtext(theme)}>Select which model to use.</Text>
-    </View>,
+    <Text style={styles.subtext(theme)}>Select which model to use.</Text>,
   ];
   return (
     <SafeAreaProvider>
@@ -93,16 +91,11 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: theme.secondaryIconColor,
   }),
-  subTextContainer: {
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    alignItems: "flex-end",
-    paddingHorizontal: 32,
-  },
   subtext: (theme) => ({
     paddingTop: 16,
+    paddingHorizontal: 32,
+    paddingBottom: 16,
     fontSize: 12,
-    fontWeight: "500",
     color: theme.secondaryIconColor,
   }),
   subtextCTA: (theme) => ({

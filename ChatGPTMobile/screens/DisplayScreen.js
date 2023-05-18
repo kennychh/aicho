@@ -54,15 +54,15 @@ export const DisplayScreen = ({
       <View style={styles.themeImagesContainer}>
         <Image
           source={require("../assets/light-theme.png")}
-          style={styles.themeImage}
+          style={styles.themeImage(theme)}
         />
         <Image
           source={require("../assets/dark-theme.png")}
-          style={styles.themeImage}
+          style={styles.themeImage(theme)}
         />
         <Image
           source={require("../assets/system-theme.png")}
-          style={styles.themeImage}
+          style={styles.themeImage(theme)}
         />
       </View>
       <RadioButtonList
@@ -75,6 +75,8 @@ export const DisplayScreen = ({
         textStyle={styles.radioButtonText(theme)}
       />
     </View>,
+    <Text style={styles.text(theme)}>Theme</Text>,
+    <View style={styles.appearanceContainer(theme)}></View>,
   ];
   return (
     <SafeAreaProvider>
@@ -92,7 +94,7 @@ export const DisplayScreen = ({
         <FlatList
           data={data}
           onScrollBeginDrag={Keyboard.dismiss}
-          style={{ flex: 1, paddingTop: 32 }}
+          style={{ flex: 1 }}
           indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
           renderItem={({ item }) => item}
         />
@@ -108,12 +110,14 @@ const styles = StyleSheet.create({
     borderRadius: "100%",
     alignSelf: "center",
   },
-  themeImage: {
+  themeImage: (theme) => ({
     height: 100,
     width: 52,
     resizeMode: "contain",
     aspectRatio: 0.52,
-  },
+    backgroundColor: theme.button.color,
+    borderRadius: 8,
+  }),
   appearanceContainer: (theme) => ({
     backgroundColor: theme.onBackgroundColor,
     paddingVertical: 32,
@@ -146,21 +150,17 @@ const styles = StyleSheet.create({
   }),
   text: (theme) => ({
     paddingBottom: 16,
+    paddingTop: 32,
     paddingLeft: 32,
     fontSize: 14,
     fontWeight: "700",
     color: theme.secondaryIconColor,
   }),
-  subTextContainer: {
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    alignItems: "flex-end",
-    paddingHorizontal: 16,
-  },
   subtext: (theme) => ({
     paddingTop: 16,
+    paddingHorizontal: 32,
+    paddingBottom: 16,
     fontSize: 12,
-    fontWeight: "500",
     color: theme.secondaryIconColor,
   }),
   subtextCTA: (theme) => ({

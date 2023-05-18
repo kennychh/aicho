@@ -25,19 +25,19 @@ export const SettingsOption = ({
         onPress={onPress}
       >
         {title == "Account" ? (
-          <User stroke={theme.secondaryIconColor} style={styles.leftIcon} />
+          <User stroke={theme.iconColor} style={styles.leftIcon} />
         ) : title == "Chat Preferences" ? (
-          <ChatPref stroke={theme.secondaryIconColor} style={styles.leftIcon} />
+          <ChatPref stroke={theme.iconColor} style={styles.leftIcon} />
         ) : title == "About" ? (
-          <About stroke={theme.secondaryIconColor} style={styles.leftIcon} />
+          <About stroke={theme.iconColor} style={styles.leftIcon} />
         ) : title == "Report a problem" ? (
-          <Flag stroke={theme.secondaryIconColor} style={styles.leftIcon} />
+          <Flag stroke={theme.iconColor} style={styles.leftIcon} />
         ) : title == "Display" ? (
-          <Palette stroke={theme.secondaryIconColor} style={styles.leftIcon} />
-        ) : title == "Privacy" ? (
-          <Privacy stroke={theme.secondaryIconColor} style={styles.leftIcon} />
+          <Palette stroke={theme.iconColor} style={styles.leftIcon} />
+        ) : title == "Privacy & Security" ? (
+          <Privacy stroke={theme.iconColor} style={styles.leftIcon} />
         ) : title == "AIcho Pro" ? (
-          <Pro stroke={theme.secondaryIconColor} style={styles.leftIcon} />
+          <Pro stroke={theme.iconColor} style={styles.leftIcon} />
         ) : (
           <View />
         )}

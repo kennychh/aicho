@@ -46,9 +46,7 @@ export const InputScreen = ({
       setValue={setTempValue}
       keyboardType={keyboardType}
     />,
-    <View style={styles.subTextContainer}>
-      <Text style={styles.subtext(theme)}>{description}</Text>
-    </View>,
+    <Text style={styles.subtext(theme)}>{description}</Text>,
   ];
   return (
     <SafeAreaProvider>
@@ -109,8 +107,9 @@ const styles = StyleSheet.create({
   },
   subtext: (theme) => ({
     paddingTop: 16,
+    paddingHorizontal: 32,
+    paddingBottom: 16,
     fontSize: 12,
-    fontWeight: "500",
     color: theme.secondaryIconColor,
   }),
   subtextCTA: (theme) => ({
