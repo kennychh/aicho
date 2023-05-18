@@ -72,7 +72,7 @@ export const InputScreen = ({
           <TextButton
             text={buttonText}
             theme={theme}
-            disabled={!tempValue || disableButton}
+            disabled={!tempValue || disableButton || tempValue == value}
             onPress={() => {
               if (onPress) {
                 onPress();
