@@ -38,9 +38,8 @@ export const PrivacyScreen = ({
       />
     </View>,
     <Text style={styles.subtext(theme)}>
-      When enabled, conversations are stored temporarily in a database to retain
-      previous context. This data is not linked to you and is deleted after 24
-      hours.
+      When enabled, conversations are temporarily stored remotely to retain
+      previous context. Data is not linked to you and is deleted after 24 hours.
     </Text>,
     <Text style={[styles.subtext(theme), { paddingTop: 0 }]}>
       Note: Refrain from providing personal details.
