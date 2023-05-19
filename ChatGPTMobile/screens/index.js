@@ -10,3 +10,4 @@ export * from "./AppearanceScreen";
 export * from "./ModelScreen";
 export * from "./MaxTokensScreen";
 export * from "./AboutScreen";
+export * from "./AuthenticateScreen";

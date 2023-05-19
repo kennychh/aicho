@@ -1,13 +1,23 @@
 import { StyleSheet, TouchableOpacity, Text } from "react-native";
 
-export const TextButton = ({ text, onPress, theme, disabled, color }) => {
+export const TextButton = ({
+  text,
+  onPress,
+  theme,
+  disabled,
+  color,
+  buttonStyle,
+  textStyle,
+}) => {
   return (
     <TouchableOpacity
       onPress={() => (onPress ? onPress() : null)}
       disabled={disabled}
-      style={styles.button(theme, disabled, color)}
+      style={buttonStyle ? buttonStyle : styles.button(theme, disabled, color)}
     >
-      <Text style={styles.text(theme, disabled, color)}>{text}</Text>
+      <Text style={textStyle ? textStyle : styles.text(theme, disabled, color)}>
+        {text}
+      </Text>
     </TouchableOpacity>
   );
 };

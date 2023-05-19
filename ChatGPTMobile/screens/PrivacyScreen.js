@@ -17,6 +17,8 @@ export const PrivacyScreen = ({
   theme,
   retainContext,
   setRetainContext,
+  authenticate,
+  setAuthenticate,
 }) => {
   const navigation = props.navigation;
   const data = [
@@ -51,8 +53,10 @@ export const PrivacyScreen = ({
       </Text>
       <Switch
         style={{ marginVertical: -16 }}
-        onValueChange={() => {}}
-        value={false}
+        onValueChange={() => {
+          setAuthenticate(!authenticate);
+        }}
+        value={authenticate}
       />
     </View>,
     <Text style={styles.subtext(theme)}>Lock this app upon closing it.</Text>,

@@ -11,6 +11,14 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "plugins": [
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Allow AIcho to use Face ID."
+        }
+      ]
+    ],
     "updates": {
       "fallbackToCacheTimeout": 0
     },

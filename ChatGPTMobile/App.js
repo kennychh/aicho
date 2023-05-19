@@ -10,6 +10,7 @@ import {
   MaxTokensScreen,
   ModelScreen,
   AboutScreen,
+  AuthenticateScreen,
 } from "./screens";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import {
@@ -18,10 +19,11 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { DarkModeModal, ConfirmDeleteConvosModal } from "./components";
-import { Alert, useColorScheme } from "react-native";
+import { Alert, Text, useColorScheme, View } from "react-native";
 import { getTheme } from "./theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SecureStore from "expo-secure-store";
+import * as LocalAuthentication from "expo-local-authentication";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -41,11 +43,13 @@ export default function App() {
   const navigationRef = useNavigationContainerRef();
   const [key, setKey] = useState("");
   const [keyChanged, setKeyChanged] = useState(true);
+  const [authenticate, setAuthenticate] = useState();
   const [maxTokens, setMaxTokens] = useState(0);
   const [model, setModel] = useState("");
   const [timeout, setTimeout] = useState(0);
   const [color, setColor] = useState("");
   const [retainContext, setRetainContext] = useState();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const storeKey = async (value) => {
     try {
       await SecureStore.setItemAsync("key", value);
@@ -64,6 +68,17 @@ export default function App() {
     } catch (e) {
       // saving error
       Alert.alert("Couldn't store max tokens", e.message);
+    }
+  };
+
+  const storeAuthenticate = async () => {
+    try {
+      const jsonValue = JSON.stringify(authenticate);
+      await AsyncStorage.setItem("@authenticate", jsonValue);
+      setKeyChanged(true);
+    } catch (e) {
+      // saving error
+      Alert.alert("Couldn't store authenticate", e.message);
     }
   };
 
@@ -146,6 +161,16 @@ export default function App() {
     }
   };
 
+  function onAuthenticate() {
+    const auth = LocalAuthentication.authenticateAsync({
+      promptMessage: "Authenticate with Touch ID",
+      fallbackLabel: "Enter Password",
+    });
+    auth.then((result) => {
+      setIsAuthenticated(result.success);
+    });
+  }
+
   useEffect(() => {
     const dontStoreChat = chats.length == 1 && chats[0].length == 0;
     if (!dontStoreChat || deleteChat) {
@@ -201,6 +226,12 @@ export default function App() {
     }
   }, [chatTitles]);
 
+  useEffect(() => {
+    if (authenticate != null) {
+      storeAuthenticate();
+    }
+  }, [authenticate]);
+
   const storeDarkMode = async () => {
     try {
       const darkModeJson = JSON.stringify(isDarkMode);
@@ -230,6 +261,9 @@ export default function App() {
           "@useDeviceSettings"
         );
         const keyJsonValue = await SecureStore.getItemAsync("key");
+        const authenticateJsonValue = await AsyncStorage.getItem(
+          "@authenticate"
+        );
 
         const storedRetainContext =
           retainContextJsonValue != null
@@ -253,6 +287,11 @@ export default function App() {
           useDeviceSettingsValue != null
             ? JSON.parse(useDeviceSettingsValue)
             : true;
+        const storedAuthenticate =
+          authenticateJsonValue != null
+            ? JSON.parse(authenticateJsonValue)
+            : false;
+
         if (storedRes) {
           setChatTitles(storedChatTitles);
           setChats(storedRes);
@@ -276,6 +315,9 @@ export default function App() {
 
         if (storedRetainContext != null) {
           setRetainContext(storedRetainContext);
+        }
+        if (storedAuthenticate != null) {
+          setAuthenticate(storedAuthenticate);
         }
         setIsDarkMode(storedDarkMode);
         setUseDeviceSettings(storedUseDeviceSettings);
@@ -310,6 +352,14 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
+      {!isAuthenticated && authenticate && (
+        <AuthenticateScreen
+          theme={theme}
+          onAuthenticate={onAuthenticate}
+          color={color}
+          isDarkMode={isDarkMode}
+        />
+      )}
       <NavigationContainer ref={navigationRef}>
         <Stack.Navigator>
           <Stack.Screen name="HomeScreen" options={{ headerShown: false }}>
@@ -366,13 +416,12 @@ export default function App() {
                 theme={theme}
                 retainContext={retainContext}
                 setRetainContext={setRetainContext}
+                authenticate={authenticate}
+                setAuthenticate={setAuthenticate}
               />
             )}
           </Stack.Screen>
-          <Stack.Screen
-            name="Chat Parameters"
-            options={{ headerShown: false }}
-          >
+          <Stack.Screen name="Chat Parameters" options={{ headerShown: false }}>
             {(props) => (
               <ChatParametersScreen
                 props={props}
