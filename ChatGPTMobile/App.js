@@ -166,7 +166,7 @@ export default function App() {
 
   function onAuthenticate() {
     const auth = LocalAuthentication.authenticateAsync({
-      promptMessage: "Authenticate with Touch ID",
+      promptMessage: "Authenticate with Face ID",
       fallbackLabel: "Enter Password",
     });
     auth.then((result) => {
