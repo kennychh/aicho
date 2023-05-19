@@ -19,7 +19,7 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { DarkModeModal, ConfirmDeleteConvosModal } from "./components";
-import { Alert, Text, useColorScheme, View } from "react-native";
+import { Alert, AppState, Text, useColorScheme, View } from "react-native";
 import { getTheme } from "./theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SecureStore from "expo-secure-store";
@@ -50,6 +50,9 @@ export default function App() {
   const [color, setColor] = useState("");
   const [retainContext, setRetainContext] = useState();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const appState = useRef(AppState.currentState);
+  const [_, setAppStateVisible] = useState(appState.current);
+  const [authenticateSuccess, setAuthenticateSuccess] = useState(false);
   const storeKey = async (value) => {
     try {
       await SecureStore.setItemAsync("key", value);
@@ -105,7 +108,7 @@ export default function App() {
   const storeTimeout = async () => {
     try {
       const jsonValue = JSON.stringify(timeout);
-      await AsyncStorage.setItem("@timeout", jsonValue);
+      await AsyncStorage.setItem("@chatTimeout", jsonValue);
       setKeyChanged(true);
     } catch (e) {
       // saving error
@@ -168,6 +171,7 @@ export default function App() {
     });
     auth.then((result) => {
       setIsAuthenticated(result.success);
+      setAuthenticateSuccess(true);
     });
   }
 
@@ -197,7 +201,7 @@ export default function App() {
   }, [maxTokens]);
 
   useEffect(() => {
-    if (timeout != 0) {
+    if (timeout != null && timeout != 0) {
       storeTimeout();
     }
   }, [timeout]);
@@ -245,6 +249,29 @@ export default function App() {
   };
 
   useEffect(() => {
+    const subscription = AppState.addEventListener("change", (nextAppState) => {
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextAppState === "active" &&
+        !authenticateSuccess
+      ) {
+        setIsAuthenticated(false);
+      }
+      appState.current = nextAppState;
+      setAppStateVisible(appState.current);
+      setTimeout(() => {
+        if (appState.current.match(/inactive|background/)) {
+          setAuthenticateSuccess(false);
+        }
+      }, 1000);
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, [authenticateSuccess]);
+
+  useEffect(() => {
     const getData = async () => {
       try {
         const jsonValue = await AsyncStorage.getItem("@chatgpt");
@@ -254,7 +281,7 @@ export default function App() {
         const chatTitlesJson = await AsyncStorage.getItem("@chatTitles");
         const darkModeJsonValue = await AsyncStorage.getItem("@darkMode");
         const maxTokensJsonValue = await AsyncStorage.getItem("@maxTokens");
-        const timeoutJsonValue = await AsyncStorage.getItem("@timeout");
+        const timeoutJsonValue = await AsyncStorage.getItem("@chatTimeout");
         const modelJsonValue = await AsyncStorage.getItem("@model");
         const colorJsonValue = await AsyncStorage.getItem("@color");
         const useDeviceSettingsValue = await AsyncStorage.getItem(
@@ -306,10 +333,10 @@ export default function App() {
         if (storedColor != "") {
           setColor(storedColor);
         }
-        if (storedMaxTokens != 0) {
+        if (storedMaxTokens != null) {
           setMaxTokens(storedMaxTokens);
         }
-        if (storedTimeout != 0) {
+        if (storedTimeout != null) {
           setTimeout(storedTimeout);
         }
 
