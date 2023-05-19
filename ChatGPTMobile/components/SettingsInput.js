@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.onBackgroundColor,
     paddingVertical: 16,
     paddingLeft: 16,
-    paddingRight: 48,
+    paddingRight: 56,
     fontSize: 16,
     color: theme.input.fontColor,
     borderRadius: 16,
