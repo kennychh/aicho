@@ -22,6 +22,7 @@ export const RadioButtonList = ({
     <View style={style}>
       {data.map((item) => (
         <TouchableWithoutFeedback
+          key={item.value}
           onPress={() => {
             setSelected(item.value);
           }}

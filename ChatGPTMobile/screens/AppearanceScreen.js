@@ -82,6 +82,7 @@ export const AppearanceScreen = ({
     <View style={styles.themeContainer(theme)}>
       {colorData.map((value) => (
         <TouchableOpacity
+          key={value}
           style={[styles.circle, { backgroundColor: value }]}
           onPress={() => {
             setColor(value);
