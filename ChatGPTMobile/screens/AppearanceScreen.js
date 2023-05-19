@@ -141,8 +141,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   themeImage: (color) => ({
-    height: 100,
-    width: 52,
+    // height: 100,
+    width: 56,
     resizeMode: "contain",
     aspectRatio: 0.52,
     backgroundColor: color,
