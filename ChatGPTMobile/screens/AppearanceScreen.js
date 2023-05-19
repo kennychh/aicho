@@ -12,7 +12,7 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { getTheme } from "../theme";
 import { useEffect, useState } from "react";
-import { Check } from "../icons";
+import { Check, DarkTheme, LightTheme, SystemTheme } from "../icons";
 
 export const AppearanceScreen = ({
   props,
@@ -57,18 +57,15 @@ export const AppearanceScreen = ({
     <Text style={styles.text(theme)}>Theme</Text>,
     <View style={styles.appearanceContainer(theme)}>
       <View style={styles.themeImagesContainer}>
-        <Image
-          source={require("../assets/light-theme.png")}
-          style={styles.themeImage(color)}
-        />
-        <Image
-          source={require("../assets/dark-theme.png")}
-          style={styles.themeImage(color)}
-        />
-        <Image
-          source={require("../assets/system-theme.png")}
-          style={styles.themeImage(color)}
-        />
+        <View style={styles.themeImage(color)}>
+          <LightTheme />
+        </View>
+        <View style={styles.themeImage(color)}>
+          <DarkTheme />
+        </View>
+        <View style={styles.themeImage(color)}>
+          <SystemTheme />
+        </View>
       </View>
       <RadioButtonList
         theme={theme}

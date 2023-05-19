@@ -6,7 +6,7 @@ import {
   Image,
   Keyboard,
 } from "react-native";
-import { More, Menu, ArrowLeft } from "../icons";
+import { More, Menu, ArrowLeft, CircleIconTransparent } from "../icons";
 import { HeaderButton } from "./HeaderButton";
 import { getTheme } from "../theme";
 export const Header = ({
@@ -31,10 +31,10 @@ export const Header = ({
         flexDirection: "row",
       }}
     >
-      <Image
-        source={require("../assets/circle-icon-transparent.png")}
-        style={[styles.icon, { backgroundColor: color }]}
-      />
+      <View style={[styles.icon, { backgroundColor: color }]}>
+        <CircleIconTransparent width={32} height={32} />
+      </View>
+
       <TextInput
         ref={textInputRef}
         keyboardAppearance={theme === getTheme("dark") ? "dark" : "light"}
