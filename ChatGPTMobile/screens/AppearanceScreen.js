@@ -47,11 +47,11 @@ export const AppearanceScreen = ({
   }, [selected]);
   const colorData = [
     "#10a37f",
-    "#3678DD",
-    "#ee2677",
-    "#8546D7",
-    "#E55631",
+    "#8d7ce6",
+    "#EA55A2",
+    "#f25c54",
     "#D32D49",
+    "#4361ee",
   ];
   const data = [
     <Text style={styles.text(theme)}>Theme</Text>,
@@ -83,7 +83,13 @@ export const AppearanceScreen = ({
       {colorData.map((value) => (
         <TouchableOpacity
           key={value}
-          style={[styles.circle, { backgroundColor: value }]}
+          style={[
+            styles.circle,
+            {
+              backgroundColor: value,
+              marginRight: value === "#4361ee" ? 0 : 8,
+            },
+          ]}
           onPress={() => {
             setColor(value);
           }}
@@ -129,13 +135,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     padding: 16,
+    alignItems: "center",
     backgroundColor: theme.onBackgroundColor,
     marginHorizontal: 16,
     borderRadius: 16,
+    height: 72,
   }),
   circle: {
-    width: 40,
-    height: 40,
+    maxWidth: 40,
+    aspectRatio: 1,
+    flex: 1,
     borderRadius: "100%",
     justifyContent: "center",
     alignItems: "center",
