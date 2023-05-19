@@ -58,7 +58,7 @@ export const SettingsScreen = ({ props, theme }) => {
     {
       title: "About",
       onPress: () => {
-        navigation.navigate("Account");
+        navigation.navigate("About");
       },
     },
     {

@@ -21,6 +21,7 @@ export const Header = ({
   setIsHeaderEditable,
   theme,
   isSettingsHeader = false,
+  color,
 }) => {
   const chatGptTitle = (
     <View
@@ -31,8 +32,8 @@ export const Header = ({
       }}
     >
       <Image
-        source={require("../assets/circle-icon.png")}
-        style={styles.icon}
+        source={require("../assets/circle-icon-transparent.png")}
+        style={[styles.icon, { backgroundColor: color }]}
       />
       <TextInput
         ref={textInputRef}
@@ -106,8 +107,8 @@ const styles = StyleSheet.create({
     color: theme.fontColor,
   }),
   icon: {
-    width: 36,
-    height: 36,
+    width: 32,
+    height: 32,
     borderRadius: "50%",
     alignSelf: "center",
     marginLeft: 16,
@@ -125,6 +126,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
     zIndex: 1,
-    height: 52,
+    height: 56,
   }),
 });

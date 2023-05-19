@@ -355,6 +355,7 @@ export const ChatScreen = ({
             isHeaderEditable={isHeaderEditable}
             setIsHeaderEditable={setIsHeaderEditable}
             theme={theme}
+            color={color}
           />
           <View style={{ flex: 1, overflow: "hidden" }}>
             <MessageList

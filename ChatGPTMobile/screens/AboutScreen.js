@@ -2,42 +2,31 @@ import {
   StyleSheet,
   View,
   Text,
-  TextInput,
   FlatList,
   Keyboard,
-  TouchableOpacity,
   Image,
+  Switch,
 } from "react-native";
-import {
-  Header,
-  RadioButtonList,
-  SettingsInput,
-  TextButton,
-} from "../components";
+import { Header } from "../components";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { getTheme } from "../theme";
-import { useState } from "react";
 
-export const ModelScreen = ({ props, theme, model, setModel, color }) => {
+export const AboutScreen = ({ props, theme }) => {
   const navigation = props.navigation;
-  const [selected, setSelected] = useState(model);
-  const radioButtonListData = [{ value: "gpt-3.5-turbo" }, { value: "gpt-4" }];
   const data = [
-    <Text style={styles.text(theme)}>Model</Text>,
-    <View style={styles.radioButtonListContainer(theme)}>
-      <RadioButtonList
-        theme={theme}
-        selected={selected}
-        setSelected={setSelected}
-        data={radioButtonListData}
-        showDividerItems={["gpt-3.5-turbo"]}
-        color={color}
-      />
-    </View>,
+    <Image source={require("../assets/circle-icon.png")} style={styles.icon} />,
+    <Text style={styles.title(theme)}>Hi, I'm AIcho!</Text>,
     <Text style={styles.subtext(theme)}>
-      Access to certain models may depend on your account, and pricing may vary
-      depending on the model.
+      AIcho is an AI chat bot that uses the official ChatGPT API powered by
+      OpenAI. Experience the power of AI and ChatGPT in a beautiful and
+      intuitive mobile app!
+    </Text>,
+    <Text style={[styles.subtext(theme), { paddingTop: 0 }]}>
+      This app has a variety of features of the official ChatGPT, such as
+      multiple conversations, context retention, and editing messages. It also
+      includes features by including the ability to tweak ChatGPT parameters, and
+      app themes!
     </Text>,
   ];
   return (
@@ -49,7 +38,7 @@ export const ModelScreen = ({ props, theme, model, setModel, color }) => {
         />
         <Header
           navigation={navigation}
-          headerTitle={"Model"}
+          headerTitle={"About"}
           theme={theme}
           isSettingsHeader={true}
         />
@@ -60,28 +49,31 @@ export const ModelScreen = ({ props, theme, model, setModel, color }) => {
           indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
           renderItem={({ item }) => item}
         />
-        <View style={{ marginBottom: 8 }}>
-          <TextButton
-            text={"Save"}
-            theme={theme}
-            color={color}
-            disabled={selected == model}
-            onPress={() => {
-              setModel(selected);
-              navigation.goBack();
-            }}
-          />
-        </View>
       </SafeAreaView>
     </SafeAreaProvider>
   );
 };
 
 const styles = StyleSheet.create({
+  modalOption: (theme) => ({
+    padding: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: theme.onBackgroundColor,
+    marginHorizontal: 16,
+    marginTop: 16,
+    borderRadius: 16,
+  }),
+  modalOptionText: (theme) => ({
+    fontSize: 16,
+    alignSelf: "center",
+    fontWeight: "500",
+    color: theme.fontColor,
+  }),
   icon: {
     width: 80,
     height: 80,
-    borderRadius: "100%",
     alignSelf: "center",
   },
   divider: (theme) => ({
@@ -90,12 +82,25 @@ const styles = StyleSheet.create({
     backgroundColor: theme.divider.color,
   }),
   text: (theme) => ({
-    paddingBottom: 16,
+    paddingTop: 16,
     paddingLeft: 32,
     fontSize: 14,
     fontWeight: "700",
     color: theme.secondaryIconColor,
   }),
+  title: (theme) => ({
+    paddingTop: 16,
+    paddingHorizontal: 16,
+    fontSize: 16,
+    alignSelf: "center",
+    fontWeight: "700",
+    color: theme.iconColor,
+  }),
+  subTextContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "flex-end",
+  },
   subtext: (theme) => ({
     paddingTop: 16,
     paddingHorizontal: 32,
@@ -111,11 +116,6 @@ const styles = StyleSheet.create({
   container: (theme) => ({
     backgroundColor: theme.backgroundColor,
     flex: 1,
-  }),
-  radioButtonListContainer: (theme) => ({
-    backgroundColor: theme.onBackgroundColor,
-    marginHorizontal: 16,
-    borderRadius: 16,
   }),
   componentContainer: {
     width: "100%",

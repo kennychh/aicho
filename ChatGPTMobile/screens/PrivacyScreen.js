@@ -20,8 +20,6 @@ export const PrivacyScreen = ({
 }) => {
   const navigation = props.navigation;
   const data = [
-    <Image source={require("../assets/circle-icon.png")} style={styles.icon} />,
-    <Text style={styles.title(theme)}>Managing your privacy</Text>,
     <Text style={styles.subtext(theme)}>
       Your conversations and settings are stored on your device. Your API key is
       never shared, and is encrypted and securely stored locally.
@@ -40,9 +38,12 @@ export const PrivacyScreen = ({
       />
     </View>,
     <Text style={styles.subtext(theme)}>
-      To enhance your experience, conversations are stored in a database
-      enabling contextual understanding of previous conversations. Conversation
-      data is not linked to you, and will be deleted after 24 hours.
+      When enabled, conversations are stored temporarily in a database to retain
+      previous context. This data is not linked to you and is deleted after 24
+      hours.
+    </Text>,
+    <Text style={[styles.subtext(theme), { paddingTop: 0 }]}>
+      Note: Refrain from providing personal details.
     </Text>,
     <Text style={styles.text(theme)}>Security</Text>,
     <View style={styles.modalOption(theme)}>
@@ -55,9 +56,7 @@ export const PrivacyScreen = ({
         value={false}
       />
     </View>,
-    <Text style={styles.subtext(theme)}>
-      Lock your conversations when you close the app.
-    </Text>,
+    <Text style={styles.subtext(theme)}>Lock this app upon closing it.</Text>,
   ];
   return (
     <SafeAreaProvider>
@@ -75,7 +74,7 @@ export const PrivacyScreen = ({
         <FlatList
           data={data}
           onScrollBeginDrag={Keyboard.dismiss}
-          style={{ flex: 1, paddingTop: 32 }}
+          style={{ flex: 1, paddingTop: 16 }}
           indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
           renderItem={({ item }) => item}
         />

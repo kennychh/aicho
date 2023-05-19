@@ -9,6 +9,7 @@ import {
   AppearanceScreen,
   MaxTokensScreen,
   ModelScreen,
+  AboutScreen,
 } from "./screens";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import {
@@ -428,6 +429,9 @@ export default function App() {
                 setColor={setColor}
               />
             )}
+          </Stack.Screen>
+          <Stack.Screen name="About" options={{ headerShown: false }}>
+            {(props) => <AboutScreen props={props} theme={theme} />}
           </Stack.Screen>
         </Stack.Navigator>
         <DarkModeModal
