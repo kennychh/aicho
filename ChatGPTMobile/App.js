@@ -4,7 +4,7 @@ import {
   SettingsScreen,
   AccountScreen,
   PrivacyScreen,
-  ChatPreferencesScreen,
+  ChatParametersScreen,
   TimeoutScreen,
   AppearanceScreen,
   MaxTokensScreen,
@@ -370,11 +370,11 @@ export default function App() {
             )}
           </Stack.Screen>
           <Stack.Screen
-            name="Chat Preferences"
+            name="Chat Parameters"
             options={{ headerShown: false }}
           >
             {(props) => (
-              <ChatPreferencesScreen
+              <ChatParametersScreen
                 props={props}
                 theme={theme}
                 maxTokens={maxTokens}

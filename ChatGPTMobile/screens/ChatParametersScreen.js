@@ -12,7 +12,7 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { getTheme } from "../theme";
 
-export const ChatPreferencesScreen = ({
+export const ChatParametersScreen = ({
   props,
   theme,
   maxTokens,
@@ -60,7 +60,7 @@ export const ChatPreferencesScreen = ({
         />
         <Header
           navigation={navigation}
-          headerTitle={"Chat Preferences"}
+          headerTitle={"Chat Parameters"}
           theme={theme}
           isSettingsHeader={true}
         />

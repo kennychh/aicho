@@ -3,7 +3,7 @@ export * from "./HomeScreen";
 export * from "./SettingsScreen";
 export * from "./AccountScreen";
 export * from "./PrivacyScreen";
-export * from "./ChatPreferencesScreen";
+export * from "./ChatParametersScreen";
 export * from "./InputScreen";
 export * from "./TimeoutScreen";
 export * from "./AppearanceScreen";

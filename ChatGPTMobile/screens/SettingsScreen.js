@@ -34,9 +34,9 @@ export const SettingsScreen = ({ props, theme }) => {
       style: [styles.text(theme), { paddingTop: 32 }],
     },
     {
-      title: "Chat Preferences",
+      title: "Chat Parameters",
       onPress: () => {
-        navigation.navigate("Chat Preferences");
+        navigation.navigate("Chat Parameters");
       },
     },
     {
@@ -71,7 +71,7 @@ export const SettingsScreen = ({ props, theme }) => {
 
   const SettingsItem = ({ item }) => {
     const showDivider =
-      ["Account", "Chat Preferences", "AIcho Pro"].indexOf(item.title) > -1;
+      ["Account", "Chat Parameters", "AIcho Pro"].indexOf(item.title) > -1;
     const isMiddle = ["About"].indexOf(item.title) > -1;
     return ["User", "Content & Display", "More"].indexOf(item.title) > -1 ? (
       <Text style={item.style}>{item.title}</Text>
