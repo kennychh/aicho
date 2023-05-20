@@ -25,7 +25,7 @@ export const SettingsInput = ({
           setValue("");
         }}
       >
-        <Close stroke={theme.button.disabledFontColor} />
+        <Close stroke={theme.button.disabledFontColor} width={20} height={20} />
       </TouchableOpacity>
     </View>
   );
@@ -36,10 +36,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginHorizontal: 16,
+    flexDirection: "row",
   },
   clearTextButton: {
     position: "absolute",
-    right: 16,
+    right: 12,
+    // backgroundColor: 'red',
+    padding: 4
   },
   textInput: (theme) => ({
     width: "100%",

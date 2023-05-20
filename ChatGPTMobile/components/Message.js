@@ -129,6 +129,7 @@ const styles = StyleSheet.create({
     alignSelf: "left",
     alignItems: "center",
     justifyContent: "center",
+    minHeight: 40
   },
   movedItemContainer: {
     bottom: 0,

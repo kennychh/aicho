@@ -32,7 +32,7 @@ export const Header = ({
       }}
     >
       <View style={[styles.icon, { backgroundColor: color }]}>
-        <CircleIconTransparent width={32} height={32} />
+        <CircleIconTransparent width={40} height={40} />
       </View>
 
       <TextInput
@@ -107,8 +107,8 @@ const styles = StyleSheet.create({
     color: theme.fontColor,
   }),
   icon: {
-    width: 32,
-    height: 32,
+    width: 40,
+    height: 40,
     borderRadius: "50%",
     alignSelf: "center",
     marginLeft: 16,

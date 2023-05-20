@@ -38,15 +38,15 @@ export const Input = ({
 
   const showInputIcon = () => {
     if (showLoadingIcon) {
-      return <Loading width="18px" height="18px" stroke="#fff" />;
+      return <Loading width="20px" height="20px" stroke="#fff" />;
     } else if (editMessage) {
-      return <Send width="18px" height="18px" stroke="#fff" />;
+      return <Send width="20px" height="20px" stroke="#fff" />;
     } else if (showRefreshIcon) {
-      return <Refresh width="18px" height="18px" stroke="#fff" />;
+      return <Refresh width="20px" height="20px" stroke="#fff" />;
     } else if (showSendIcon) {
-      return <Send width="18px" height="18px" stroke="#fff" />;
+      return <Send width="20px" height="20px" stroke="#fff" />;
     }
-    return <Send width="18px" height="18px" stroke="#fff" />;
+    return <Send width="20px" height="20px" stroke="#fff" />;
   };
   const getInputIconColor = () => {
     if (
@@ -127,8 +127,8 @@ export const Input = ({
                 }}
               >
                 <Close
-                  width="18px"
-                  height="18px"
+                  width="20px"
+                  height="20px"
                   stroke={theme.secondaryIconColor}
                 />
               </TouchableOpacity>
@@ -208,8 +208,8 @@ const styles = StyleSheet.create({
     borderRadius: "50%",
     alignItems: "center",
     justifyContent: "center",
-    width: 36,
-    height: 36,
+    width: 40,
+    height: 40,
     marginVertical: 4,
     marginRight: 4,
   }),
