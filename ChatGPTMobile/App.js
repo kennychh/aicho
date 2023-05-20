@@ -46,7 +46,7 @@ export default function App() {
   const [authenticate, setAuthenticate] = useState();
   const [maxTokens, setMaxTokens] = useState(0);
   const [model, setModel] = useState("");
-  const [timeout, setTimeout] = useState(0);
+  const [timeout, setChatTimeOut] = useState();
   const [color, setColor] = useState("");
   const [retainContext, setRetainContext] = useState();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -201,7 +201,7 @@ export default function App() {
   }, [maxTokens]);
 
   useEffect(() => {
-    if (timeout != null && timeout != 0) {
+    if (timeout != null) {
       storeTimeout();
     }
   }, [timeout]);
@@ -306,8 +306,9 @@ export default function App() {
         const storedRes = jsonValue != null ? JSON.parse(jsonValue) : [[]];
         const storedMaxTokens =
           maxTokensJsonValue != null ? JSON.parse(maxTokensJsonValue) : 1000;
-        const storedTimeout =
-          timeoutJsonValue != null ? JSON.parse(timeoutJsonValue) : 10;
+        const storedTimeout = timeoutJsonValue
+          ? JSON.parse(timeoutJsonValue)
+          : 10;
         const storedModel =
           modelJsonValue != null ? JSON.parse(modelJsonValue) : "gpt-3.5-turbo";
         const storedDarkMode =
@@ -339,7 +340,7 @@ export default function App() {
           setMaxTokens(storedMaxTokens);
         }
         if (storedTimeout != null) {
-          setTimeout(storedTimeout);
+          setChatTimeOut(storedTimeout);
         }
 
         if (storedRetainContext != null) {
@@ -356,7 +357,7 @@ export default function App() {
       }
     };
     getData();
-    onAuthenticate();
+    authenticate && onAuthenticate();
   }, []);
 
   useEffect(() => {
@@ -479,7 +480,7 @@ export default function App() {
                 props={props}
                 theme={theme}
                 timeout={timeout}
-                setTimeout={setTimeout}
+                setTimeout={setChatTimeOut}
                 color={color}
               />
             )}
