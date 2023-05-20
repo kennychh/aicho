@@ -256,7 +256,7 @@ export default function App() {
         !authenticateSuccess
       ) {
         setIsAuthenticated(false);
-        onAuthenticate();
+        authenticate && onAuthenticate();
       }
       appState.current = nextAppState;
       setAppStateVisible(appState.current);
