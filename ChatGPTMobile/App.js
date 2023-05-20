@@ -348,6 +348,9 @@ export default function App() {
         }
         if (storedAuthenticate != null) {
           setAuthenticate(storedAuthenticate);
+          if (storedAuthenticate) {
+            onAuthenticate();
+          }
         }
         setIsDarkMode(storedDarkMode);
         setUseDeviceSettings(storedUseDeviceSettings);
@@ -357,7 +360,6 @@ export default function App() {
       }
     };
     getData();
-    authenticate && onAuthenticate();
   }, []);
 
   useEffect(() => {
