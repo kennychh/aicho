@@ -260,7 +260,7 @@ export default function App() {
       appState.current = nextAppState;
       setAppStateVisible(appState.current);
       setTimeout(() => {
-        if (appState.current.match(/inactive|background/)) {
+        if (appState.current.match(/background/)) {
           setAuthenticateSuccess(false);
           setIsAuthenticated(false);
         }
