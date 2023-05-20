@@ -256,6 +256,7 @@ export default function App() {
         !authenticateSuccess
       ) {
         setIsAuthenticated(false);
+        onAuthenticate();
       }
       appState.current = nextAppState;
       setAppStateVisible(appState.current);
@@ -355,6 +356,7 @@ export default function App() {
       }
     };
     getData();
+    onAuthenticate();
   }, []);
 
   useEffect(() => {
