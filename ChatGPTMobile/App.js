@@ -262,6 +262,7 @@ export default function App() {
       setTimeout(() => {
         if (appState.current.match(/inactive|background/)) {
           setAuthenticateSuccess(false);
+          setIsAuthenticated(false);
         }
       }, 1000);
     });
