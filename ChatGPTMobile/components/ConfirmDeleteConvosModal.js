@@ -39,6 +39,9 @@ export const ConfirmDeleteConvosModal = ({
       theme={theme}
       title={"Delete conversations?"}
       buttonText={"Delete"}
+      subtext={
+        "This will delete all conversations from your device."
+      }
     />
   );
 };

@@ -1,5 +1,6 @@
-import { Modal, StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import Modal from "react-native-modal";
 
 export const AlertModal = ({
   visible,
@@ -7,43 +8,39 @@ export const AlertModal = ({
   onPress,
   theme,
   title,
+  subtext,
   buttonText,
 }) => {
   return (
-    visible && (
-      <View style={styles.centeredView}>
-        <Modal
-          animationType="fade"
-          transparent={true}
-          visible={visible}
-          onRequestClose={() => {
-            setVisible(false);
-          }}
-        >
-          <View style={styles.modal}>
-            <View style={styles.container(theme)}>
-              <Text style={[styles.title(theme)]}>{title}</Text>
-              <TouchableOpacity onPress={onPress}>
-                <View style={styles.button(theme)}>
-                  <Text style={[styles.text(theme), { color: "#FF0000" }]}>
-                    {buttonText}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  setVisible(false);
-                }}
-              >
-                <View style={styles.button(theme)}>
-                  <Text style={styles.text(theme)}>Cancel</Text>
-                </View>
-              </TouchableOpacity>
+    <Modal
+      isVisible={visible}
+      animationIn={"fadeIn"}
+      animationOut={"fadeOut"}
+      backdropTransitionOutTiming={0}
+    >
+      <View style={styles.modal}>
+        <View style={styles.container(theme)}>
+          <Text style={[styles.title(theme)]}>{title}</Text>
+          <Text style={styles.subtext(theme)}>{subtext}</Text>
+          <TouchableOpacity onPress={onPress}>
+            <View style={styles.button(theme)}>
+              <Text style={[styles.text(theme), { color: "#FF0000" }]}>
+                {buttonText}
+              </Text>
             </View>
-          </View>
-        </Modal>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              setVisible(false);
+            }}
+          >
+            <View style={styles.button(theme)}>
+              <Text style={styles.text(theme)}>Cancel</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
-    )
+    </Modal>
   );
 };
 
@@ -66,17 +63,24 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     color: theme.fontColor,
   }),
+  subtext: (theme) => ({
+    fontSize: 14,
+    alignSelf: "center",
+    color: theme.secondaryIconColor,
+    paddingHorizontal: 16,
+    paddingBottom: 32,
+    textAlign: "center",
+  }),
   title: (theme) => ({
     fontSize: 16,
     alignSelf: "center",
-    fontWeight: "500",
+    fontWeight: "700",
     color: theme.fontColor,
-    paddingBottom: 32,
+    paddingBottom: 16,
   }),
   button: (theme) => ({
     width: "100%",
     paddingVertical: 16,
-    paddingHorizontal: 64,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
@@ -87,6 +91,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.modal.container.backgroundColor,
     borderRadius: 16,
     paddingTop: 32,
+    width: 296,
   }),
   modal: {
     position: "absolute",
@@ -107,6 +112,5 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
     margin: "auto",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
 });

@@ -14,6 +14,7 @@ export const ConfirmResetDataModal = ({
       theme={theme}
       title={"Reset data?"}
       buttonText={"Reset"}
+      subtext={"This will reset your conversation and preference data."}
     />
   );
 };
