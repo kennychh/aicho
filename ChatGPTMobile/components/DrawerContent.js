@@ -25,7 +25,7 @@ export const DrawerContent = ({
   theme,
   setTheme,
   darkModeModalizeRef,
-  confirmDeleteConvosModalizeRef,
+  setConfirmDeleteVisible,
 }) => {
   const navigation = props.navigation;
   const [selectedItem, setSelectedItem] = useState(chatIndex);
@@ -134,14 +134,14 @@ export const DrawerContent = ({
         <TouchableOpacity
           style={styles.drawerOptions}
           onPress={() => {
-            confirmDeleteConvosModalizeRef.current?.open();
+            setConfirmDeleteVisible(true);
           }}
         >
           <Delete style={styles.chatItemIcon} stroke={theme.error.color} />
           <Text
             style={[styles.chatItemText(theme), { color: theme.error.color }]}
           >
-            Clear conversations
+            Delete conversations
           </Text>
         </TouchableOpacity>
       </ScrollView>

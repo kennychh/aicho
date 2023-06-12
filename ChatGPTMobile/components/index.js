@@ -11,3 +11,5 @@ export * from "./SettingsOption";
 export * from "./SettingsInput";
 export * from "./TextButton";
 export * from "./RadioButtonList";
+export * from "./AlertModal";
+export * from "./ConfirmResetDataModal";

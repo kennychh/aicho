@@ -18,7 +18,11 @@ import {
   useNavigationContainerRef,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { DarkModeModal, ConfirmDeleteConvosModal } from "./components";
+import {
+  DarkModeModal,
+  ConfirmDeleteConvosModal,
+  ConfirmResetDataModal,
+} from "./components";
 import { Alert, AppState, Text, useColorScheme, View } from "react-native";
 import { getTheme } from "./theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -39,7 +43,6 @@ export default function App() {
   const colorScheme = useColorScheme();
   const [theme, setTheme] = useState(getTheme(colorScheme));
   const darkModeModalizeRef = useRef(null);
-  const confirmDeleteConvosModalizeRef = useRef(null);
   const navigationRef = useNavigationContainerRef();
   const [key, setKey] = useState("");
   const [keyChanged, setKeyChanged] = useState(true);
@@ -50,6 +53,8 @@ export default function App() {
   const [color, setColor] = useState("");
   const [retainContext, setRetainContext] = useState();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
+  const [confirmResetVisible, setConfirmResetVisible] = useState(false);
   const appState = useRef(AppState.currentState);
   const [_, setAppStateVisible] = useState(appState.current);
   const [authenticateSuccess, setAuthenticateSuccess] = useState(false);
@@ -162,6 +167,24 @@ export default function App() {
         ...oldChatTitles.slice(index + 1),
       ]);
     }
+  };
+
+  const resetData = () => {
+    setDeleteChat(true);
+    setChats([[]]);
+    setChatIndex(0);
+    setChatTitles(["New chat"]);
+    setInput("");
+    setEditMessage(null);
+    setKey("test");
+    setModel("gpt-3.5-turbo");
+    setColor("#10a37f");
+    setMaxTokens(1000);
+    setChatTimeOut(10);
+    setRetainContext(true);
+    setIsDarkMode(true);
+    setUseDeviceSettings(true);
+    setConfirmResetVisible(false);
   };
 
   function onAuthenticate() {
@@ -411,7 +434,6 @@ export default function App() {
                 theme={theme}
                 setTheme={setTheme}
                 darkModeModalizeRef={darkModeModalizeRef}
-                confirmDeleteConvosModalizeRef={confirmDeleteConvosModalizeRef}
                 index={chatIndex}
                 clearConversation={clearConversation}
                 input={input}
@@ -424,11 +446,18 @@ export default function App() {
                 maxTokens={maxTokens}
                 color={color}
                 retainContext={retainContext}
+                setConfirmDeleteVisible={setConfirmDeleteVisible}
               />
             )}
           </Stack.Screen>
           <Stack.Screen name="Settings" options={{ headerShown: false }}>
-            {(props) => <SettingsScreen props={props} theme={theme} />}
+            {(props) => (
+              <SettingsScreen
+                props={props}
+                theme={theme}
+                setConfirmResetVisible={setConfirmResetVisible}
+              />
+            )}
           </Stack.Screen>
           <Stack.Screen name="Account" options={{ headerShown: false }}>
             {(props) => (
@@ -534,8 +563,15 @@ export default function App() {
           setInput={setInput}
           setEditMessage={setEditMessage}
           theme={theme}
-          modalizeRef={confirmDeleteConvosModalizeRef}
+          confirmDeleteVisible={confirmDeleteVisible}
+          setConfirmDeleteVisible={setConfirmDeleteVisible}
         ></ConfirmDeleteConvosModal>
+        <ConfirmResetDataModal
+          onPress={resetData}
+          theme={theme}
+          visible={confirmResetVisible}
+          setVisible={setConfirmResetVisible}
+        ></ConfirmResetDataModal>
       </NavigationContainer>
     </SafeAreaProvider>
   );

@@ -5,8 +5,9 @@ import { StatusBar } from "expo-status-bar";
 import { getTheme } from "../theme";
 import { SettingsOption } from "./../components/SettingsOption";
 import * as WebBrowser from "expo-web-browser";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-export const SettingsScreen = ({ props, theme }) => {
+export const SettingsScreen = ({ props, theme, setConfirmResetVisible }) => {
   const navigation = props.navigation;
   const handleOpenBrowserPress = async () => {
     await WebBrowser.openBrowserAsync("https://forms.gle/3GC4GSN9aVirATC8A");
@@ -67,12 +68,18 @@ export const SettingsScreen = ({ props, theme }) => {
         handleOpenBrowserPress();
       },
     },
+    {
+      title: "Reset data",
+      onPress: () => {
+        setConfirmResetVisible(true);
+      },
+    },
   ];
 
   const SettingsItem = ({ item }) => {
     const showDivider =
       ["Account", "Chat Parameters", "AIcho Pro"].indexOf(item.title) > -1;
-    const isMiddle = ["About"].indexOf(item.title) > -1;
+    const isMiddle = ["About", "Report a problem"].indexOf(item.title) > -1;
     return ["User", "Content & Display", "More"].indexOf(item.title) > -1 ? (
       <Text style={item.style}>{item.title}</Text>
     ) : (
@@ -125,6 +132,12 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: theme.secondaryIconColor,
   }),
+  textButton: {
+    paddingTop: 16,
+    paddingLeft: 32,
+    fontSize: 16,
+    color: "#FF0000",
+  },
   container: (theme) => ({
     backgroundColor: theme.backgroundColor,
     flex: 1,

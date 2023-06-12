@@ -17,7 +17,6 @@ export const HomeScreen = ({
   theme,
   setTheme,
   darkModeModalizeRef,
-  confirmDeleteConvosModalizeRef,
   clearConversation,
   input,
   editMessage,
@@ -29,6 +28,7 @@ export const HomeScreen = ({
   maxTokens,
   color,
   retainContext,
+  setConfirmDeleteVisible,
 }) => {
   return (
     <Drawer.Navigator
@@ -47,7 +47,7 @@ export const HomeScreen = ({
           theme={theme}
           setTheme={setTheme}
           darkModeModalizeRef={darkModeModalizeRef}
-          confirmDeleteConvosModalizeRef={confirmDeleteConvosModalizeRef}
+          setConfirmDeleteVisible={setConfirmDeleteVisible}
         />
       )}
       initialRouteName="Chat"

@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { Modalize } from "react-native-modalize";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { AlertModal } from "./AlertModal";
 
 export const ConfirmDeleteConvosModal = ({
   setChatIndex,
@@ -18,49 +19,27 @@ export const ConfirmDeleteConvosModal = ({
   setEditMessage,
   theme,
   modalizeRef,
+  confirmDeleteVisible,
+  setConfirmDeleteVisible,
 }) => {
   const insets = useSafeAreaInsets();
   return (
-    <Modalize
-      ref={modalizeRef}
-      modalStyle={styles.modalStyle(theme)}
-      handleStyle={styles.handleStyle(theme)}
-      handlePosition={"inside"}
-      childrenStyle={styles.childrenStyle}
-      adjustToContentHeight={true}
-    >
-      <View style={{ marginTop: 32 }}>
-        <Text style={[styles.modalOptionTitleText(theme)]}>
-          Delete all conversations?
-        </Text>
-        <View
-          style={[
-            styles.modalOptionsContainer(theme),
-            { marginTop: 32, marginBottom: insets.bottom + 8 },
-          ]}
-        >
-          <TouchableOpacity
-            onPress={() => {
-              setDeleteChat(true);
-              setChats([[]]);
-              setChatIndex(0);
-              setChatTitles(["New chat"]);
-              setInput("");
-              setEditMessage(null);
-              modalizeRef.current?.close();
-            }}
-          >
-            <View style={styles.modalOption}>
-              <Text
-                style={[styles.modalOptionText(theme), { color: "#FF0000" }]}
-              >
-                Delete
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </Modalize>
+    <AlertModal
+      visible={confirmDeleteVisible}
+      setVisible={setConfirmDeleteVisible}
+      onPress={() => {
+        setDeleteChat(true);
+        setChats([[]]);
+        setChatIndex(0);
+        setChatTitles(["New chat"]);
+        setInput("");
+        setEditMessage(null);
+        setConfirmDeleteVisible(false);
+      }}
+      theme={theme}
+      title={"Delete conversations?"}
+      buttonText={"Delete"}
+    />
   );
 };
 

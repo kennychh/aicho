@@ -8,6 +8,7 @@ import {
   Flag,
   Privacy,
   Palette,
+  Undo,
 } from "../icons";
 
 export const SettingsOption = ({
@@ -38,10 +39,19 @@ export const SettingsOption = ({
           <Privacy stroke={theme.iconColor} style={styles.leftIcon} />
         ) : title == "AIcho Pro" ? (
           <Pro stroke={theme.iconColor} style={styles.leftIcon} />
+        ) : title == "Reset data" ? (
+          <Undo stroke={"#FF0000"} style={styles.leftIcon} />
         ) : (
           <View />
         )}
-        <Text style={styles.text(theme)}>{title}</Text>
+        <Text
+          style={[
+            styles.text(theme),
+            { color: title == "Reset data" ? "#FF0000" : theme.fontColor },
+          ]}
+        >
+          {title}
+        </Text>
         {value != null && <Text style={styles.valueText(theme)}>{value}</Text>}
         <NavArrowRight stroke={theme.secondaryIconColor} style={styles.icon} />
       </TouchableOpacity>
@@ -55,7 +65,6 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     fontSize: 16,
     fontWeight: "500",
-    color: theme.fontColor,
   }),
   valueText: (theme) => ({
     marginRight: 16,
