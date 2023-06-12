@@ -18,11 +18,12 @@ export const SettingsOption = ({
   value = "",
   showDivider = true,
   isMiddle,
+  isSingle = false,
 }) => {
   return (
     <View>
       <TouchableOpacity
-        style={styles.settingOption(theme, showDivider, isMiddle)}
+        style={styles.settingOption(theme, showDivider, isMiddle, isSingle)}
         onPress={onPress}
       >
         {title == "Account" ? (
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
   icon: {
     marginRight: 16,
   },
-  settingOption: (theme, showDivider, isMiddle) => ({
+  settingOption: (theme, showDivider, isMiddle, isSingle) => ({
     flexDirection: "row",
     justifyContent: "flex-start",
     alignContent: "space-between",
@@ -86,11 +87,11 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     marginHorizontal: 16,
     backgroundColor: theme.onBackgroundColor,
-    borderTopLeftRadius: showDivider && !isMiddle ? 16 : 0,
-    borderTopRightRadius: showDivider && !isMiddle ? 16 : 0,
-    borderBottomLeftRadius: showDivider || isMiddle ? 0 : 16,
-    borderBottomRightRadius: showDivider || isMiddle ? 0 : 16,
-    borderBottomWidth: showDivider || isMiddle ? 1 : 0,
+    borderTopLeftRadius: (showDivider && !isMiddle) || isSingle ? 16 : 0,
+    borderTopRightRadius: (showDivider && !isMiddle) || isSingle ? 16 : 0,
+    borderBottomLeftRadius: (showDivider || isMiddle) && !isSingle ? 0 : 16,
+    borderBottomRightRadius: (showDivider || isMiddle) && !isSingle ? 0 : 16,
+    borderBottomWidth: (showDivider || isMiddle) && !isSingle ? 1 : 0,
     borderColor: theme.modal.divider.backgroundColor,
   }),
 });

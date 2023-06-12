@@ -32,7 +32,7 @@ export const SettingsScreen = ({ props, theme, setConfirmResetVisible }) => {
     },
     {
       title: "Content & Display",
-      style: [styles.text(theme), { paddingTop: 32 }],
+      style: [styles.text(theme), { paddingTop: 24 }],
     },
     {
       title: "Chat Parameters",
@@ -47,8 +47,8 @@ export const SettingsScreen = ({ props, theme, setConfirmResetVisible }) => {
       },
     },
     {
-      title: "More",
-      style: [styles.text(theme), { paddingTop: 32 }],
+      title: "More info and support",
+      style: [styles.text(theme), { paddingTop: 24 }],
     },
     {
       title: "AIcho Pro",
@@ -69,6 +69,10 @@ export const SettingsScreen = ({ props, theme, setConfirmResetVisible }) => {
       },
     },
     {
+      title: "Data",
+      style: [styles.text(theme), { paddingTop: 24 }],
+    },
+    {
       title: "Reset data",
       onPress: () => {
         setConfirmResetVisible(true);
@@ -79,8 +83,13 @@ export const SettingsScreen = ({ props, theme, setConfirmResetVisible }) => {
   const SettingsItem = ({ item }) => {
     const showDivider =
       ["Account", "Chat Parameters", "AIcho Pro"].indexOf(item.title) > -1;
-    const isMiddle = ["About", "Report a problem"].indexOf(item.title) > -1;
-    return ["User", "Content & Display", "More"].indexOf(item.title) > -1 ? (
+    const isMiddle = ["About"].indexOf(item.title) > -1;
+    return [
+      "User",
+      "Content & Display",
+      "More info and support",
+      "Data",
+    ].indexOf(item.title) > -1 ? (
       <Text style={item.style}>{item.title}</Text>
     ) : (
       <SettingsOption
@@ -89,12 +98,16 @@ export const SettingsScreen = ({ props, theme, setConfirmResetVisible }) => {
         onPress={item.onPress}
         showDivider={showDivider}
         isMiddle={isMiddle}
+        isSingle={item.title == "Reset data"}
       />
     );
   };
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={styles.container(theme)}>
+      <SafeAreaView
+        style={styles.container(theme)}
+        edges={["top", "left", "right",]}
+      >
         <StatusBar
           animated={true}
           style={theme === getTheme("dark") ? "light" : "dark"}
