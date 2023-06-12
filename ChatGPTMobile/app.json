@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "ChatGPTMobile",
-    "slug": "ChatGPTMobile",
+    "name": "AIcho",
+    "slug": "AIcho",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
