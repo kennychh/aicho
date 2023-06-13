@@ -106,7 +106,7 @@ export const SettingsScreen = ({ props, theme, setConfirmResetVisible }) => {
     <SafeAreaProvider>
       <SafeAreaView
         style={styles.container(theme)}
-        edges={["top", "left", "right",]}
+        edges={["top", "left", "right"]}
       >
         <StatusBar
           animated={true}

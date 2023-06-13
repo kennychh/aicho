@@ -15,6 +15,7 @@ import {
   Input,
   MenuModal,
   MessageModal,
+  BottomToast,
 } from "../components";
 import { getTheme } from "../theme";
 
@@ -302,7 +303,6 @@ export const ChatScreen = ({
       }
     } catch (e) {
       setKeyChanged(false);
-      Alert.alert("Error occured", e.message);
       const errorInputText = {
         ...inputText,
         isError: true,
@@ -405,6 +405,7 @@ export const ChatScreen = ({
           setInput={setInput}
           theme={theme}
         />
+        {error && <BottomToast theme={theme} />}
       </SafeAreaView>
     </SafeAreaProvider>
   );

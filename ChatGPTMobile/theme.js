@@ -59,6 +59,9 @@ const lightTheme = {
       },
     },
   },
+  toast: {
+    backgroundColor: "rgba(239, 239, 239,0.9)",
+  },
 };
 
 const darkTheme = {
@@ -122,6 +125,9 @@ const darkTheme = {
     divider: {
       backgroundColor: "#3A3A3C",
     },
+  },
+  toast: {
+    backgroundColor: "rgba(28, 28, 29, 0.9)",
   },
 };
 

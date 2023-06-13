@@ -31,3 +31,4 @@ export * from "./SystemTheme";
 export * from "./DarkTheme";
 export * from "./LightTheme";
 export * from "./Undo";
+export * from "./Close2";

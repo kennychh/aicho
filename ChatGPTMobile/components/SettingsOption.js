@@ -54,7 +54,12 @@ export const SettingsOption = ({
           {title}
         </Text>
         {value != null && <Text style={styles.valueText(theme)}>{value}</Text>}
-        <NavArrowRight stroke={theme.secondaryIconColor} style={styles.icon} />
+        {title != "Reset data" && (
+          <NavArrowRight
+            stroke={theme.secondaryIconColor}
+            style={styles.icon}
+          />
+        )}
       </TouchableOpacity>
     </View>
   );
