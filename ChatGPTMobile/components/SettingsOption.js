@@ -28,7 +28,7 @@ export const SettingsOption = ({
       >
         {title == "Account" ? (
           <User stroke={theme.iconColor} style={styles.leftIcon} />
-        ) : title == "Chat Parameters" ? (
+        ) : title == "Chat Preferences" ? (
           <ChatPref stroke={theme.iconColor} style={styles.leftIcon} />
         ) : title == "About" ? (
           <About stroke={theme.iconColor} style={styles.leftIcon} />
