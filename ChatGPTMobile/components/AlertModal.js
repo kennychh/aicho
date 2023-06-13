@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
   }),
   container: (theme) => ({
-    backgroundColor: theme.modal.container.backgroundColor,
+    backgroundColor: theme.modal.backgroundColor,
     borderRadius: 16,
     paddingTop: 32,
     width: 296,
