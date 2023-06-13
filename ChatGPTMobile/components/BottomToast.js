@@ -14,13 +14,11 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { About, Alert, Close2 } from "../icons";
 import { useKeyboardVisible } from "./../hooks/useKeyboardVisible";
 
-export const BottomToast = ({
-  theme,
-  text = "An error has occured.",
-}) => {
+export const BottomToast = ({ theme, text = "An error has occured." }) => {
   const insets = useSafeAreaInsets();
   const [closeToast, setCloseToast] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [closeAnimation, setCloseAnimation] = useState(false);
   const { isKeyboardVisible, keyboardHeight } = useKeyboardVisible();
   const [h, setH] = useState(0);
   const onLayout = (event) => {
@@ -44,24 +42,26 @@ export const BottomToast = ({
       setVisible(true);
     }, 500);
     setTimeout(() => {
-      LayoutAnimation.configureNext({
-        duration: 400,
-        create: { type: "easeInEaseOut", property: "opacity" },
-        update: { type: "spring", springDamping: 1 },
-      });
-      setVisible(false);
+      !closeToast && setCloseAnimation(true);
     }, 5000);
   }, []);
 
   useEffect(() => {
-    if (closeToast) {
+    if (closeAnimation) {
       LayoutAnimation.configureNext({
         duration: 400,
         create: { type: "easeInEaseOut", property: "opacity" },
         update: { type: "spring", springDamping: 1 },
       });
       setVisible(false);
+      setCloseAnimation(false);
       setCloseToast(false);
+    }
+  }, [closeAnimation]);
+
+  useEffect(() => {
+    if (closeToast) {
+      setCloseAnimation(true);
     }
   }, [closeToast]);
   return (

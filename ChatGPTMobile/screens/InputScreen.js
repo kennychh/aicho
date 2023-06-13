@@ -32,11 +32,19 @@ export const InputScreen = ({
   const [tempValue, setTempValue] = useState(value);
   const maxTokensDisable = tempValue <= 0 || tempValue > 4097;
   const timeoutDisable = tempValue <= 0 || tempValue > 10;
+  const temperatureDisable =
+    !/^-?\d+(?:\.\d+)?$/.test(tempValue) || tempValue < 0 || tempValue > 2;
+  const penaltyDisable =
+    !/^-?\d+(?:\.\d+)?$/.test(tempValue) || tempValue < -2 || tempValue > 2;
   const disableButton =
     headerTitle == "Max tokens"
       ? maxTokensDisable
       : headerTitle == "Timeout"
       ? timeoutDisable
+      : headerTitle == "Temperature"
+      ? temperatureDisable
+      : headerTitle == "Presence penalty" || headerTitle == "Frequency penalty"
+      ? penaltyDisable
       : false;
   const data = [
     <Text style={styles.text(theme)}>{title}</Text>,

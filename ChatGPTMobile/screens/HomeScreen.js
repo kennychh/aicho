@@ -29,6 +29,9 @@ export const HomeScreen = ({
   color,
   retainContext,
   setConfirmDeleteVisible,
+  temperature,
+  presencePenalty,
+  frequencyPenalty,
 }) => {
   return (
     <Drawer.Navigator
@@ -83,6 +86,9 @@ export const HomeScreen = ({
             maxTokens={maxTokens}
             color={color}
             retainContext={retainContext}
+            temperature={temperature}
+            presencePenalty={presencePenalty}
+            frequencyPenalty={frequencyPenalty}
           />
         )}
       </Drawer.Screen>

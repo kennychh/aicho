@@ -16,6 +16,9 @@ export const ChatParametersScreen = ({
   props,
   theme,
   maxTokens,
+  temperature,
+  presencePenalty,
+  frequencyPenalty,
   timeout,
   model,
 }) => {
@@ -38,6 +41,33 @@ export const ChatParametersScreen = ({
       }}
       theme={theme}
       value={maxTokens}
+      isMiddle={true}
+    />,
+    <SettingsOption
+      title={"Temperature"}
+      onPress={() => {
+        navigation.navigate("Temperature");
+      }}
+      theme={theme}
+      value={temperature}
+      isMiddle={true}
+    />,
+    <SettingsOption
+      title={"Presence penalty"}
+      onPress={() => {
+        navigation.navigate("Presence penalty");
+      }}
+      theme={theme}
+      value={presencePenalty}
+      isMiddle={true}
+    />,
+    <SettingsOption
+      title={"Frequency penalty"}
+      onPress={() => {
+        navigation.navigate("Frequency penalty");
+      }}
+      theme={theme}
+      value={frequencyPenalty}
       isMiddle={true}
     />,
     <SettingsOption

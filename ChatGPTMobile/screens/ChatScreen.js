@@ -41,6 +41,9 @@ export const ChatScreen = ({
   maxTokens,
   color,
   retainContext,
+  temperature,
+  presencePenalty,
+  frequencyPenalty,
 }) => {
   const API_URL = "https://chatgpt-api-blue.vercel.app/api";
   const result = chats[index];
@@ -245,11 +248,15 @@ export const ChatScreen = ({
           model: model,
           maxTokens: parseInt(maxTokens),
           retainContext: retainContext,
+          temperature: parseFloat(temperature),
+          presence_penalty: parseFloat(presencePenalty),
+          frequency_penalty: parseFloat(frequencyPenalty),
         }),
       });
       const data = await response.json();
       setKeyChanged(false);
       if (data.error) {
+        console.log(data.error);
         const errorInputText = {
           ...inputText,
           isError: true,
@@ -303,6 +310,7 @@ export const ChatScreen = ({
       }
     } catch (e) {
       setKeyChanged(false);
+      console.log(e);
       const errorInputText = {
         ...inputText,
         isError: true,

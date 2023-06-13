@@ -11,6 +11,9 @@ import {
   ModelScreen,
   AboutScreen,
   AuthenticateScreen,
+  TemperatureScreen,
+  PresencePenaltyScreen,
+  FrequencyPenaltyScreen,
 } from "./screens";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import {
@@ -51,6 +54,9 @@ export default function App() {
   const [maxTokens, setMaxTokens] = useState(0);
   const [model, setModel] = useState("");
   const [timeout, setChatTimeOut] = useState();
+  const [temperature, setTemperature] = useState();
+  const [presencePenalty, setPrescencePenalty] = useState();
+  const [frequencyPenalty, setFrequencyPenalty] = useState();
   const [color, setColor] = useState("");
   const [retainContext, setRetainContext] = useState();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -153,6 +159,36 @@ export default function App() {
     }
   };
 
+  const storeTemperature = async () => {
+    try {
+      const jsonValue = JSON.stringify(temperature);
+      await AsyncStorage.setItem("@temperature", jsonValue);
+    } catch (e) {
+      // saving error
+      Alert.alert("Couldn't store temperature", e.message);
+    }
+  };
+
+  const storePresencePenalty = async () => {
+    try {
+      const jsonValue = JSON.stringify(presencePenalty);
+      await AsyncStorage.setItem("@presencePenalty", jsonValue);
+    } catch (e) {
+      // saving error
+      Alert.alert("Couldn't store presence penalty", e.message);
+    }
+  };
+
+  const storeFrequencyPenalty = async () => {
+    try {
+      const jsonValue = JSON.stringify(frequencyPenalty);
+      await AsyncStorage.setItem("@frequencyPenalty", jsonValue);
+    } catch (e) {
+      // saving error
+      Alert.alert("Couldn't store frequency penalty", e.message);
+    }
+  };
+
   const clearConversation = (index) => {
     setChatIndex(index == 0 ? 0 : index - 1);
     setDeleteChat(true);
@@ -186,6 +222,9 @@ export default function App() {
     setIsDarkMode(true);
     setUseDeviceSettings(true);
     setConfirmResetVisible(false);
+    setTemperature(1);
+    setPrescencePenalty(0);
+    setFrequencyPenalty(0);
   };
 
   function onAuthenticate() {
@@ -260,6 +299,24 @@ export default function App() {
     }
   }, [authenticate]);
 
+  useEffect(() => {
+    if (temperature != null) {
+      storeTemperature();
+    }
+  }, [temperature]);
+
+  useEffect(() => {
+    if (presencePenalty != null) {
+      storePresencePenalty();
+    }
+  }, [presencePenalty]);
+
+  useEffect(() => {
+    if (frequencyPenalty != null) {
+      storeFrequencyPenalty();
+    }
+  }, [frequencyPenalty]);
+
   const storeDarkMode = async () => {
     try {
       const darkModeJson = JSON.stringify(isDarkMode);
@@ -317,6 +374,13 @@ export default function App() {
         const authenticateJsonValue = await AsyncStorage.getItem(
           "@authenticate"
         );
+        const temperatureJsonValue = await AsyncStorage.getItem("@temperature");
+        const presenceJsonValue = await AsyncStorage.getItem(
+          "@presencePenalty"
+        );
+        const frequencyJsonValue = await AsyncStorage.getItem(
+          "@frequencyPenalty"
+        );
 
         const storedRetainContext =
           retainContextJsonValue != null
@@ -345,6 +409,12 @@ export default function App() {
           authenticateJsonValue != null
             ? JSON.parse(authenticateJsonValue)
             : false;
+        const storedTemperature =
+          temperatureJsonValue != null ? JSON.parse(temperatureJsonValue) : 1;
+        const storedPresence =
+          presenceJsonValue != null ? JSON.parse(presenceJsonValue) : 0;
+        const storedFrequency =
+          frequencyJsonValue != null ? JSON.parse(frequencyJsonValue) : 0;
 
         if (storedRes) {
           setChatTitles(storedChatTitles);
@@ -375,6 +445,15 @@ export default function App() {
           if (storedAuthenticate) {
             onAuthenticate();
           }
+        }
+        if (storedTemperature != null) {
+          setTemperature(storedTemperature);
+        }
+        if (storedPresence != null) {
+          setPrescencePenalty(storedPresence);
+        }
+        if (storedFrequency != null) {
+          setFrequencyPenalty(storedFrequency);
         }
         setIsDarkMode(storedDarkMode);
         setUseDeviceSettings(storedUseDeviceSettings);
@@ -448,6 +527,9 @@ export default function App() {
                 color={color}
                 retainContext={retainContext}
                 setConfirmDeleteVisible={setConfirmDeleteVisible}
+                temperature={temperature}
+                presencePenalty={presencePenalty}
+                frequencyPenalty={frequencyPenalty}
               />
             )}
           </Stack.Screen>
@@ -492,6 +574,9 @@ export default function App() {
                 maxTokens={maxTokens}
                 timeout={timeout}
                 model={model}
+                temperature={temperature}
+                presencePenalty={presencePenalty}
+                frequencyPenalty={frequencyPenalty}
               />
             )}
           </Stack.Screen>
@@ -524,6 +609,45 @@ export default function App() {
                 theme={theme}
                 model={model}
                 setModel={setModel}
+                color={color}
+              />
+            )}
+          </Stack.Screen>
+          <Stack.Screen name="Temperature" options={{ headerShown: false }}>
+            {(props) => (
+              <TemperatureScreen
+                props={props}
+                theme={theme}
+                temperature={temperature}
+                setTemperature={setTemperature}
+                color={color}
+              />
+            )}
+          </Stack.Screen>
+          <Stack.Screen
+            name="Presence penalty"
+            options={{ headerShown: false }}
+          >
+            {(props) => (
+              <PresencePenaltyScreen
+                props={props}
+                theme={theme}
+                presencePenalty={presencePenalty}
+                setPresencePenalty={setPrescencePenalty}
+                color={color}
+              />
+            )}
+          </Stack.Screen>
+          <Stack.Screen
+            name="Frequency penalty"
+            options={{ headerShown: false }}
+          >
+            {(props) => (
+              <FrequencyPenaltyScreen
+                props={props}
+                theme={theme}
+                frequencyPenalty={frequencyPenalty}
+                setFrequencyPenalty={setFrequencyPenalty}
                 color={color}
               />
             )}
