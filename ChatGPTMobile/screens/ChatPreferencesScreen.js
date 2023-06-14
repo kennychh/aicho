@@ -6,11 +6,17 @@ import {
   FlatList,
   Keyboard,
   TouchableOpacity,
+  Animated,
 } from "react-native";
 import { Header, SettingsInput, SettingsOption } from "../components";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import {
+  SafeAreaProvider,
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { getTheme } from "../theme";
+import { useRef } from "react";
 
 export const ChatPreferencesScreen = ({
   props,
@@ -23,6 +29,8 @@ export const ChatPreferencesScreen = ({
   model,
 }) => {
   const navigation = props.navigation;
+  const insets = useSafeAreaInsets();
+  const yOffset = useRef(new Animated.Value(0)).current;
   const data = [
     <Text style={styles.text(theme)}>Parameters</Text>,
     <SettingsOption
@@ -88,18 +96,23 @@ export const ChatPreferencesScreen = ({
           animated={true}
           style={theme === getTheme("dark") ? "light" : "dark"}
         />
+        <FlatList
+          data={data}
+          onScroll={(event) => {
+            const offset = event.nativeEvent.contentOffset.y;
+            yOffset.setValue(offset);
+          }}
+          onScrollBeginDrag={Keyboard.dismiss}
+          style={{ flex: 1, paddingTop: insets.top + 32 }}
+          indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
+          renderItem={({ item }) => item}
+        />
         <Header
           navigation={navigation}
           headerTitle={"Chat Preferences"}
           theme={theme}
           isSettingsHeader={true}
-        />
-        <FlatList
-          data={data}
-          onScrollBeginDrag={Keyboard.dismiss}
-          style={{ flex: 1, paddingTop: 32 }}
-          indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
-          renderItem={({ item }) => item}
+          yOffset={yOffset}
         />
       </SafeAreaView>
     </SafeAreaProvider>

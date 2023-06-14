@@ -1,14 +1,22 @@
 import { StyleSheet, Text, FlatList } from "react-native";
 import { Header } from "../components";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import {
+  SafeAreaProvider,
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { getTheme } from "../theme";
 import { SettingsOption } from "./../components/SettingsOption";
 import * as WebBrowser from "expo-web-browser";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useRef } from "react";
+import { Animated } from "react-native";
 
 export const SettingsScreen = ({ props, theme, setConfirmResetVisible }) => {
   const navigation = props.navigation;
+  const yOffset = useRef(new Animated.Value(0)).current;
+  const insets = useSafeAreaInsets();
   const handleOpenBrowserPress = async () => {
     await WebBrowser.openBrowserAsync("https://forms.gle/3GC4GSN9aVirATC8A");
   };
@@ -112,20 +120,26 @@ export const SettingsScreen = ({ props, theme, setConfirmResetVisible }) => {
           animated={true}
           style={theme === getTheme("dark") ? "light" : "dark"}
         />
+
+        <FlatList
+          data={data}
+          onScroll={(event) => {
+            const offset = event.nativeEvent.contentOffset.y;
+            yOffset.setValue(offset);
+          }}
+          indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
+          style={{ flex: 1, paddingTop: insets.top + 32 }}
+          renderItem={({ item }) => <SettingsItem item={item} />}
+          keyExtractor={(item, index) => {
+            return index;
+          }}
+        />
         <Header
           navigation={navigation}
           headerTitle={"Settings"}
           theme={theme}
           isSettingsHeader={true}
-        />
-        <FlatList
-          data={data}
-          indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
-          style={{ flex: 1, paddingTop: 32 }}
-          renderItem={({ item }) => <SettingsItem item={item} />}
-          keyExtractor={(item, index) => {
-            return index;
-          }}
+          yOffset={yOffset}
         />
       </SafeAreaView>
     </SafeAreaProvider>

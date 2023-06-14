@@ -7,6 +7,7 @@ import {
   Keyboard,
   TouchableOpacity,
   Image,
+  Animated,
 } from "react-native";
 import {
   Header,
@@ -14,14 +15,20 @@ import {
   SettingsInput,
   TextButton,
 } from "../components";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import {
+  SafeAreaProvider,
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { getTheme } from "../theme";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 export const ModelScreen = ({ props, theme, model, setModel, color }) => {
   const navigation = props.navigation;
   const [selected, setSelected] = useState(model);
+  const insets = useSafeAreaInsets();
+  const yOffset = useRef(new Animated.Value(0)).current;
   const radioButtonListData = [{ value: "gpt-3.5-turbo" }, { value: "gpt-4" }];
   const data = [
     <Text style={styles.text(theme)}>Model</Text>,
@@ -47,18 +54,23 @@ export const ModelScreen = ({ props, theme, model, setModel, color }) => {
           animated={true}
           style={theme === getTheme("dark") ? "light" : "dark"}
         />
+        <FlatList
+          onScroll={(event) => {
+            const offset = event.nativeEvent.contentOffset.y;
+            yOffset.setValue(offset);
+          }}
+          data={data}
+          onScrollBeginDrag={Keyboard.dismiss}
+          style={{ flex: 1, paddingTop: insets.top + 32 }}
+          indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
+          renderItem={({ item }) => item}
+        />
         <Header
           navigation={navigation}
           headerTitle={"Model"}
           theme={theme}
           isSettingsHeader={true}
-        />
-        <FlatList
-          data={data}
-          onScrollBeginDrag={Keyboard.dismiss}
-          style={{ flex: 1, paddingTop: 32 }}
-          indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
-          renderItem={({ item }) => item}
+          yOffset={yOffset}
         />
         <View style={{ marginBottom: 8 }}>
           <TextButton

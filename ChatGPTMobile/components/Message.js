@@ -63,7 +63,6 @@ export const Message = ({
   useEffect(() => {
     if (index == 0) {
       toggleExpandMessage();
-      setTimeout(toggleExpandMessage2, 10);
     }
   }, []);
 
@@ -96,11 +95,10 @@ export const Message = ({
           {
             transform: [{ translateX: trans }, { scale }],
             opacity: opacity,
-            width: 40,
+            padding: 8,
             justifyContent: "center",
             alignItems: "center",
             alignSelf: "center",
-            height: 40,
             backgroundColor: theme.onBackgroundColor,
             borderRadius: "100%",
             marginRight: 8,
@@ -136,11 +134,10 @@ export const Message = ({
           {
             transform: [{ translateX: trans }, { scale }],
             opacity: opacity,
-            width: 40,
+            padding: 8,
             justifyContent: "center",
             alignItems: "center",
             alignSelf: "center",
-            height: 40,
             backgroundColor: theme.onBackgroundColor,
             borderRadius: "100%",
             marginRight: 16,
@@ -212,9 +209,7 @@ export const Message = ({
             ]}
           >
             {isError && !isInput && (
-              <View
-                style={[styles.alertIcon, { marginLeft: 0, marginRight: 8 }]}
-              >
+              <View style={{ marginLeft: 16, marginRight: 0 }}>
                 <Alert />
               </View>
             )}
@@ -264,8 +259,7 @@ export const Message = ({
 
 const styles = StyleSheet.create({
   alertIcon: {
-    marginTop: 16,
-    marginLeft: 8,
+    marginRight: 16,
   },
   messageContainer: {
     flexDirection: "row",

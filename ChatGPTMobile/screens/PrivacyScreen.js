@@ -6,11 +6,17 @@ import {
   Keyboard,
   Image,
   Switch,
+  Animated,
 } from "react-native";
 import { Header } from "../components";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import {
+  SafeAreaProvider,
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { getTheme } from "../theme";
+import { useRef } from "react";
 
 export const PrivacyScreen = ({
   props,
@@ -20,6 +26,8 @@ export const PrivacyScreen = ({
   authenticate,
   setAuthenticate,
 }) => {
+  const insets = useSafeAreaInsets();
+  const yOffset = useRef(new Animated.Value(0)).current;
   const navigation = props.navigation;
   const data = [
     <Text style={styles.subtext(theme)}>
@@ -68,18 +76,23 @@ export const PrivacyScreen = ({
           animated={true}
           style={theme === getTheme("dark") ? "light" : "dark"}
         />
+        <FlatList
+          data={data}
+          onScroll={(event) => {
+            const offset = event.nativeEvent.contentOffset.y;
+            yOffset.setValue(offset);
+          }}
+          onScrollBeginDrag={Keyboard.dismiss}
+          style={{ flex: 1, paddingTop: insets.top + 16 }}
+          indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
+          renderItem={({ item }) => item}
+        />
         <Header
           navigation={navigation}
           headerTitle={"Privacy & Security"}
           theme={theme}
           isSettingsHeader={true}
-        />
-        <FlatList
-          data={data}
-          onScrollBeginDrag={Keyboard.dismiss}
-          style={{ flex: 1, paddingTop: 16 }}
-          indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
-          renderItem={({ item }) => item}
+          yOffset={yOffset}
         />
       </SafeAreaView>
     </SafeAreaProvider>

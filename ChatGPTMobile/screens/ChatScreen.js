@@ -6,6 +6,7 @@ import {
   Platform,
   View,
   Keyboard,
+  Animated,
 } from "react-native";
 import { useState, useEffect, useRef } from "react";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -348,7 +349,7 @@ export const ChatScreen = ({
     <SafeAreaProvider>
       <SafeAreaView
         style={styles.container(theme)}
-        edges={["top", "left", "right", "bottom"]}
+        edges={["left", "right", "bottom"]}
       >
         <StatusBar
           animated={true}
@@ -358,20 +359,6 @@ export const ChatScreen = ({
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={styles.componentContainer}
         >
-          <Header
-            onOpen={onOpen}
-            modalizeRef={modalizeRef}
-            navigation={navigation}
-            headerTitle={`${chatTitles[chatIndex]}`}
-            textInputRef={headerTextInputRef}
-            setChatTitles={setChatTitles}
-            chatTitles={chatTitles}
-            chatIndex={chatIndex}
-            isHeaderEditable={isHeaderEditable}
-            setIsHeaderEditable={setIsHeaderEditable}
-            theme={theme}
-            color={color}
-          />
           <View style={{ flex: 1, overflow: "hidden" }}>
             <MessageList
               data={result}
@@ -398,12 +385,27 @@ export const ChatScreen = ({
               setRegen={setRegen}
               setError={setError}
               setRetry={setRetry}
+              setRegenIndex={setRegenIndex}
               setEditMessage={setEditMessage}
               setInput={setInput}
               theme={theme}
               color={color}
             />
           </View>
+          <Header
+            onOpen={onOpen}
+            modalizeRef={modalizeRef}
+            navigation={navigation}
+            headerTitle={`${chatTitles[chatIndex]}`}
+            textInputRef={headerTextInputRef}
+            setChatTitles={setChatTitles}
+            chatTitles={chatTitles}
+            chatIndex={chatIndex}
+            isHeaderEditable={isHeaderEditable}
+            setIsHeaderEditable={setIsHeaderEditable}
+            theme={theme}
+            color={color}
+          />
         </KeyboardAvoidingView>
         <MenuModal
           deleteConvo={removeData}

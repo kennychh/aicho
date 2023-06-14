@@ -13,6 +13,8 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { About, Alert, Close2 } from "../icons";
 import { useKeyboardVisible } from "./../hooks/useKeyboardVisible";
+import { BlurView } from "expo-blur";
+import { getTheme } from "../theme";
 
 export const BottomToast = ({ theme, text = "An error has occured." }) => {
   const insets = useSafeAreaInsets();
@@ -77,7 +79,11 @@ export const BottomToast = ({ theme, text = "An error has occured." }) => {
         width: "100%",
       }}
     >
-      <View style={[styles.container(theme)]}>
+      <BlurView
+        style={[styles.container(theme)]}
+        tint={theme === getTheme("dark") ? "dark" : "light"}
+        intensity={80}
+      >
         <Alert stroke={theme.iconColor} />
         <Text style={styles.text(theme)}>{text}</Text>
         <View style={{ marginLeft: "auto" }}>
@@ -89,7 +95,7 @@ export const BottomToast = ({ theme, text = "An error has occured." }) => {
             <Close2 stroke={theme.secondaryIconColor} width={20} height={20} />
           </TouchableOpacity>
         </View>
-      </View>
+      </BlurView>
     </View>
   );
 };
@@ -104,6 +110,7 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     paddingHorizontal: 16,
     marginHorizontal: 16,
+    overflow: "hidden",
   }),
   text: (theme) => ({
     color: theme.fontColor,

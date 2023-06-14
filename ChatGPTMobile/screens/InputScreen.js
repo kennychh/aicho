@@ -6,13 +6,18 @@ import {
   FlatList,
   Keyboard,
   TouchableOpacity,
+  Animated,
 } from "react-native";
 import { Header, SettingsInput } from "../components";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import {
+  SafeAreaProvider,
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { getTheme } from "../theme";
 import { TextButton } from "./../components";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 export const InputScreen = ({
   props,
@@ -29,6 +34,8 @@ export const InputScreen = ({
   color,
 }) => {
   const navigation = props.navigation;
+  const insets = useSafeAreaInsets();
+  const yOffset = useRef(new Animated.Value(0)).current;
   const [tempValue, setTempValue] = useState(value);
   const maxTokensDisable = tempValue <= 0 || tempValue > 4097;
   const timeoutDisable = tempValue <= 0 || tempValue > 10;
@@ -64,18 +71,23 @@ export const InputScreen = ({
           animated={true}
           style={theme === getTheme("dark") ? "light" : "dark"}
         />
+        <FlatList
+          data={data}
+          onScrollBeginDrag={Keyboard.dismiss}
+          onScroll={(event) => {
+            const offset = event.nativeEvent.contentOffset.y;
+            yOffset.setValue(offset);
+          }}
+          style={{ flex: 1, paddingTop: insets.top + 32 }}
+          indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
+          renderItem={({ item }) => item}
+        />
         <Header
           navigation={navigation}
           headerTitle={headerTitle}
           theme={theme}
           isSettingsHeader={true}
-        />
-        <FlatList
-          data={data}
-          onScrollBeginDrag={Keyboard.dismiss}
-          style={{ flex: 1, paddingTop: 32 }}
-          indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
-          renderItem={({ item }) => item}
+          yOffset={yOffset}
         />
         <View style={{ marginBottom: 8 }}>
           <TextButton

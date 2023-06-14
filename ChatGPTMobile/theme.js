@@ -60,7 +60,7 @@ const lightTheme = {
     },
   },
   toast: {
-    backgroundColor: "rgba(239, 239, 239,0.9)",
+    backgroundColor: "rgba(239, 239, 239,0.6)",
   },
 };
 
@@ -127,7 +127,7 @@ const darkTheme = {
     },
   },
   toast: {
-    backgroundColor: "rgba(28, 28, 29, 0.9)",
+    backgroundColor: "rgba(28, 28, 29, 0.6)",
   },
 };
 

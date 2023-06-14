@@ -1,7 +1,8 @@
-import { FlatList, View, Keyboard } from "react-native";
-import { useRef } from "react";
+import { FlatList, View, Keyboard, Dimensions, Animated } from "react-native";
+import { useEffect, useRef, useState } from "react";
 import { Message } from "./Message";
 import { getTheme } from "../theme";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export const MessageList = ({
   data,
@@ -15,11 +16,27 @@ export const MessageList = ({
   theme,
   color,
 }) => {
+  const insets = useSafeAreaInsets();
   return (
-    <View style={{ flex: 1, width: "100%" }}>
+    <Animated.View
+      style={{
+        flex: 1,
+        width: "100%",
+        paddingTop: insets.top + 56,
+      }}
+    >
       <FlatList
         inverted
         data={data}
+        indicator
+        // onScroll={(event) => {
+        //   const y =
+        //     event.nativeEvent.contentSize.height -
+        //     event.nativeEvent.layoutMeasurement.height;
+
+        //   const invertedYOffset = event.nativeEvent.contentOffset.y;
+        //   yOffset.setValue(y - invertedYOffset);
+        // }}
         keyboardShouldPersistTaps="always"
         onScrollBeginDrag={Keyboard.dismiss}
         indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
@@ -45,6 +62,6 @@ export const MessageList = ({
           return item?.result?.id;
         }}
       />
-    </View>
+    </Animated.View>
   );
 };

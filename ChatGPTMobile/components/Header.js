@@ -5,10 +5,14 @@ import {
   View,
   Image,
   Keyboard,
+  Animated,
 } from "react-native";
 import { More, Menu, ArrowLeft, CircleIconTransparent } from "../icons";
 import { HeaderButton } from "./HeaderButton";
 import { getTheme } from "../theme";
+import { BlurView } from "expo-blur";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useEffect, useState } from "react";
 export const Header = ({
   onOpen,
   modalizeRef,
@@ -22,7 +26,16 @@ export const Header = ({
   theme,
   isSettingsHeader = false,
   color,
+  yOffset,
 }) => {
+  const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
+  const insets = useSafeAreaInsets();
+  const intensity = yOffset
+    ? yOffset.interpolate({
+        inputRange: [0, 16],
+        outputRange: [1, 80],
+      })
+    : 80;
   const chatGptTitle = (
     <View
       style={{
@@ -64,6 +77,7 @@ export const Header = ({
         alignItems: "center",
         justifyContent: "center",
         flexDirection: "row",
+        height: 40,
       }}
     >
       <Text style={[styles.barText(theme), { fontWeight: "700" }]}>
@@ -71,8 +85,12 @@ export const Header = ({
       </Text>
     </View>
   );
-  return (
-    <View style={styles.bar(theme)}>
+  return yOffset ? (
+    <AnimatedBlurView
+      style={[styles.bar(theme), { paddingTop: insets.top + 8 }]}
+      tint={theme === getTheme("dark") ? "dark" : "light"}
+      intensity={intensity}
+    >
       {isSettingsHeader ? (
         <HeaderButton
           icon={<ArrowLeft stroke={theme.iconColor} />}
@@ -94,9 +112,39 @@ export const Header = ({
           }}
         />
       ) : (
-        <More stroke={theme.backgroundColor} />
+        <More stroke={"transparent"} />
       )}
-    </View>
+    </AnimatedBlurView>
+  ) : (
+    <BlurView
+      style={[styles.bar(theme), { paddingTop: insets.top + 8 }]}
+      tint={theme === getTheme("dark") ? "dark" : "light"}
+      intensity={intensity}
+    >
+      {isSettingsHeader ? (
+        <HeaderButton
+          icon={<ArrowLeft stroke={theme.iconColor} />}
+          onPress={() => navigation.goBack()}
+        />
+      ) : (
+        <HeaderButton
+          icon={<Menu stroke={theme.iconColor} />}
+          onPress={() => navigation.openDrawer()}
+        />
+      )}
+      {isSettingsHeader ? settingsTitle : chatGptTitle}
+      {!isSettingsHeader ? (
+        <HeaderButton
+          icon={<More stroke={theme.iconColor} />}
+          onPress={() => {
+            Keyboard.dismiss();
+            onOpen(modalizeRef);
+          }}
+        />
+      ) : (
+        <More stroke={"transparent"} />
+      )}
+    </BlurView>
   );
 };
 
@@ -121,11 +169,11 @@ const styles = StyleSheet.create({
     width: "100%",
     borderBottomColor: theme.divider.color,
     borderBottomWidth: 1,
-    backgroundColor: theme.backgroundColor,
     alignContent: "space-between",
     paddingHorizontal: 16,
     paddingVertical: 8,
     zIndex: 1,
-    height: 56,
+    overflow: "visible",
+    position: "absolute",
   }),
 });

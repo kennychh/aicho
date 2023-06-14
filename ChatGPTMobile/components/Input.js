@@ -24,6 +24,7 @@ export const Input = ({
   error,
   result,
   setRegen,
+  setRegenIndex,
   setError,
   setRetry,
   setEditMessage,
@@ -81,6 +82,7 @@ export const Input = ({
     if (editMessage) {
       onSubmit();
     } else if (showRefreshIcon && !result[0]?.isInput) {
+      setRegenIndex(0);
       setRegen(true);
     } else if (showRefreshIcon) {
       setRetry({ ...result[0], isError: false });
@@ -187,7 +189,7 @@ const styles = StyleSheet.create({
     bottom: 0,
   }),
   container: {
-    paddingTop: 16,
+    paddingTop: 8,
     paddingBottom: 8,
     paddingHorizontal: 16,
     position: "absolute",

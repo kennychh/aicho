@@ -8,12 +8,19 @@ import {
   Switch,
 } from "react-native";
 import { Header } from "../components";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import {
+  SafeAreaProvider,
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { getTheme } from "../theme";
+import { useRef } from "react";
 
 export const AboutScreen = ({ props, theme }) => {
   const navigation = props.navigation;
+  const insets = useSafeAreaInsets();
+  const flatListRef = useRef();
   const data = [
     <Image source={require("../assets/circle-icon.png")} style={styles.icon} />,
     <Text style={styles.title(theme)}>Hi, I'm AIcho!</Text>,
@@ -25,8 +32,8 @@ export const AboutScreen = ({ props, theme }) => {
     <Text style={[styles.subtext(theme), { paddingTop: 0 }]}>
       This app has a variety of features of the official ChatGPT, such as
       multiple conversations, context retention, and editing messages. It also
-      includes features by including the ability to tweak ChatGPT parameters, and
-      app themes!
+      includes features by including the ability to tweak ChatGPT parameters,
+      and app themes!
     </Text>,
   ];
   return (
@@ -36,18 +43,18 @@ export const AboutScreen = ({ props, theme }) => {
           animated={true}
           style={theme === getTheme("dark") ? "light" : "dark"}
         />
+        <FlatList
+          data={data}
+          onScrollBeginDrag={Keyboard.dismiss}
+          style={{ flex: 1, paddingTop: insets.top + 32 }}
+          indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
+          renderItem={({ item }) => item}
+        />
         <Header
           navigation={navigation}
           headerTitle={"About"}
           theme={theme}
           isSettingsHeader={true}
-        />
-        <FlatList
-          data={data}
-          onScrollBeginDrag={Keyboard.dismiss}
-          style={{ flex: 1, paddingTop: 32 }}
-          indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
-          renderItem={({ item }) => item}
         />
       </SafeAreaView>
     </SafeAreaProvider>
