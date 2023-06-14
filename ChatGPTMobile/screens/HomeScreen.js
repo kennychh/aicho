@@ -56,6 +56,7 @@ export const HomeScreen = ({
       initialRouteName="Chat"
       screenOptions={{
         headerShown: false,
+        swipeEdgeWidth: 60,
         drawerStyle: {
           backgroundColor: theme.drawerContent.backgroundColor,
         },

@@ -55,6 +55,7 @@ export const ChatScreen = ({
   const [isResultValid, setResultValid] = useState(false);
   const [inputHeight, setInputHeight] = useState(0);
   const [isHeaderEditable, setIsHeaderEditable] = useState(false);
+  const [regenIndex, setRegenIndex] = useState(1);
   const modalizeRef = useRef(null);
   const messageModalizeRef = useRef(null);
   const textInputRef = useRef(null);
@@ -165,7 +166,7 @@ export const ChatScreen = ({
         )
       : 0;
     if (regen && result?.length > 1) {
-      return result[1];
+      return result[regenIndex + 1];
     } else if (retry && result?.length > 1) {
       return result[1];
     } else if (editMessage != null && editMessageIndex >= 1) {
@@ -221,6 +222,12 @@ export const ChatScreen = ({
       setChats((oldResult) => [
         ...oldResult?.slice(0, index),
         [inputText, ...oldResult[index]],
+        ...oldResult?.slice(index + 1),
+      ]);
+    } else if (regen) {
+      setChats((oldResult) => [
+        ...oldResult?.slice(0, index),
+        [...oldResult[index].slice(regenIndex)],
         ...oldResult?.slice(index + 1),
       ]);
     }
@@ -370,6 +377,10 @@ export const ChatScreen = ({
               data={result}
               inputOffset={inputHeight}
               setMessage={setMessage}
+              setEditMessage={setEditMessage}
+              setInput={setInput}
+              setRegen={setRegen}
+              setRegenIndex={setRegenIndex}
               theme={theme}
               color={color}
             />

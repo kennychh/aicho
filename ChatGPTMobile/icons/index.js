@@ -32,3 +32,4 @@ export * from "./DarkTheme";
 export * from "./LightTheme";
 export * from "./Undo";
 export * from "./Close2";
+export * from "./Edit2";

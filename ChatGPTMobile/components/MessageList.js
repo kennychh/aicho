@@ -7,6 +7,10 @@ export const MessageList = ({
   data,
   inputOffset,
   setMessage,
+  setEditMessage,
+  setInput,
+  setRegen,
+  setRegenIndex,
   regen,
   theme,
   color,
@@ -24,13 +28,16 @@ export const MessageList = ({
             item={item}
             index={index}
             setMessage={setMessage}
+            setEditMessage={setEditMessage}
+            setInput={setInput}
+            setRegen={setRegen}
+            setRegenIndex={setRegenIndex}
             regen={regen}
             theme={theme}
             color={color}
           />
         )}
         style={{
-          paddingHorizontal: 16,
           overflow: "visible",
           marginBottom: inputOffset,
         }}
