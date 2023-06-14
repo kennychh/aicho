@@ -39,7 +39,10 @@ export const Message = ({
   const isError = item?.isError;
   const windowWidth = Dimensions.get("window").width;
   const swipeableRef = useRef(null);
+  const [progressValue, setProgressValue] = useState();
+  const progressRef = useRef();
   const [expandMessage, setExpandMessage] = useState(index != 0);
+  const [haptic, setHaptic] = useState(false);
 
   const toggleExpandMessage = () => {
     LayoutAnimation.configureNext({
@@ -64,10 +67,17 @@ export const Message = ({
     }
   }, []);
 
+  useEffect(() => {
+    if (haptic) {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    }
+  }, [haptic]);
+
   const renderAction = (progress, dragX) => {
     const trans = dragX.interpolate({
-      inputRange: [-48, 0],
+      inputRange: [0, 48],
       outputRange: [-16, 0],
+      extrapolate: "clamp",
     });
     const opacity = dragX.interpolate({
       inputRange: [0, 48],
@@ -94,6 +104,7 @@ export const Message = ({
             backgroundColor: theme.onBackgroundColor,
             borderRadius: "100%",
             marginRight: 8,
+            marginLeft: 16,
           },
         ]}
       >
@@ -106,6 +117,7 @@ export const Message = ({
     const trans = dragX.interpolate({
       inputRange: [-48, 0],
       outputRange: [0, 16],
+      extrapolate: "clamp",
     });
     const scale = dragX.interpolate({
       inputRange: [-16, 0],
@@ -117,6 +129,7 @@ export const Message = ({
       outputRange: [1, 0],
       extrapolate: "clamp",
     });
+
     return (
       <Animated.View
         style={[
@@ -144,13 +157,29 @@ export const Message = ({
         <Swipeable
           ref={swipeableRef}
           friction={2}
-          rightThreshold={40}
-          renderRightActions={isInput && renderRightAction}
-          renderLeftActions={!isInput && renderAction}
+          rightThreshold={48}
+          leftThreshold={48}
+          renderRightActions={(progress, dragX) => {
+            setProgressValue(progress);
+            progress.addListener(({ value }) => {
+              if (value >= 1 && !haptic) {
+                setHaptic(true);
+              }
+            });
+            return isInput && renderRightAction(progress, dragX);
+          }}
+          renderLeftActions={(progress, dragX) => {
+            setProgressValue(progress);
+            progress.addListener(({ value }) => {
+              if (value >= 1 && !haptic) {
+                setHaptic(true);
+              }
+            });
+            return !isInput && renderAction(progress, dragX);
+          }}
           overshootFriction={2}
           hitSlop={{ left: -60 }}
           onSwipeableWillOpen={(direction) => {
-            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
             if (direction == "right") {
               setMessage(null);
               setEditMessage(item);
@@ -163,19 +192,20 @@ export const Message = ({
               swipeableRef.current.close();
             }, 100);
           }}
-          // onSwipeableOpen={(direction) => {
-          //   console.log(direction);
-          //   swipeableRef.current.close()
-          // }}
+          onSwipeableClose={() => {
+            setHaptic(false);
+            progressValue.removeAllListeners();
+            setProgressValue(null);
+          }}
         >
           <TouchableOpacity
-            delayPressIn={150}
+            delayPressIn={200}
             onLongPress={() => {
               Keyboard.dismiss();
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
               setMessage(item);
             }}
-            delayLongPress={150}
+            delayLongPress={200}
             style={[
               styles.messageContainer,
               expandMessage ? styles.movedItemContainer : null,

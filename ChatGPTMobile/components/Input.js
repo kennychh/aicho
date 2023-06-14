@@ -5,10 +5,11 @@ import {
   TextInput,
   Text,
   Dimensions,
+  ActivityIndicator,
 } from "react-native";
 import { BlurView } from "expo-blur";
 import { useEffect, useState } from "react";
-import { Send, Refresh, Loading, Close } from "../icons";
+import { Send, Refresh, Close } from "../icons";
 import { getTheme } from "../theme";
 export const Input = ({
   textInputRef,
@@ -38,7 +39,7 @@ export const Input = ({
 
   const showInputIcon = () => {
     if (showLoadingIcon) {
-      return <Loading width="20px" height="20px" stroke="#fff" />;
+      return <ActivityIndicator size="small" color="#fff" />;
     } else if (editMessage) {
       return <Send width="20px" height="20px" stroke="#fff" />;
     } else if (showRefreshIcon) {
