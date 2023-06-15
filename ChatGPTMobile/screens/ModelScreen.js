@@ -29,6 +29,7 @@ export const ModelScreen = ({ props, theme, model, setModel, color }) => {
   const [selected, setSelected] = useState(model);
   const insets = useSafeAreaInsets();
   const yOffset = useRef(new Animated.Value(0)).current;
+  const [headerHeight, setHeaderHeight] = useState(0);
   const radioButtonListData = [{ value: "gpt-3.5-turbo" }, { value: "gpt-4" }];
   const data = [
     <Text style={styles.text(theme)}>Model</Text>,
@@ -61,7 +62,7 @@ export const ModelScreen = ({ props, theme, model, setModel, color }) => {
           }}
           data={data}
           onScrollBeginDrag={Keyboard.dismiss}
-          style={{ flex: 1, paddingTop: insets.top + 32 }}
+          style={{ flex: 1, marginTop: headerHeight - insets.top }}
           indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
           renderItem={({ item }) => item}
         />
@@ -71,8 +72,9 @@ export const ModelScreen = ({ props, theme, model, setModel, color }) => {
           theme={theme}
           isSettingsHeader={true}
           yOffset={yOffset}
+          setHeight={setHeaderHeight}
         />
-        <View style={{ marginBottom: 8 }}>
+        <View style={{ marginBottom: 16 }}>
           <TextButton
             text={"Save"}
             theme={theme}
@@ -104,6 +106,7 @@ const styles = StyleSheet.create({
   text: (theme) => ({
     paddingBottom: 16,
     paddingLeft: 32,
+    paddingTop: 24,
     fontSize: 14,
     fontWeight: "700",
     color: theme.secondaryIconColor,

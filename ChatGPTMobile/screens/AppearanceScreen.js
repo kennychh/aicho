@@ -32,6 +32,7 @@ export const AppearanceScreen = ({
   const navigation = props.navigation;
   const insets = useSafeAreaInsets();
   const yOffset = useRef(new Animated.Value(0)).current;
+  const [headerHeight, setHeaderHeight] = useState(0);
   const [selected, setSelected] = useState(
     useDeviceSettings ? "System" : isDarkMode ? "Dark" : "Light"
   );
@@ -61,7 +62,7 @@ export const AppearanceScreen = ({
     "#4361ee",
   ];
   const data = [
-    <Text style={styles.text(theme)}>Theme</Text>,
+    <Text style={[styles.text(theme), { paddingTop: 24 }]}>Theme</Text>,
     <View style={styles.appearanceContainer(theme)}>
       <View style={styles.themeImagesContainer}>
         <View style={styles.themeImage(color)}>
@@ -105,6 +106,7 @@ export const AppearanceScreen = ({
         </TouchableOpacity>
       ))}
     </View>,
+    <View style={{ paddingBottom: 16 }} />,
   ];
   return (
     <SafeAreaProvider>
@@ -120,7 +122,7 @@ export const AppearanceScreen = ({
             yOffset.setValue(offset);
           }}
           onScrollBeginDrag={Keyboard.dismiss}
-          style={{ flex: 1, paddingTop: insets.top }}
+          style={{ flex: 1, marginTop: headerHeight - insets.top }}
           indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
           renderItem={({ item }) => item}
         />
@@ -130,6 +132,7 @@ export const AppearanceScreen = ({
           theme={theme}
           isSettingsHeader={true}
           yOffset={yOffset}
+          setHeight={setHeaderHeight}
         />
       </SafeAreaView>
     </SafeAreaProvider>

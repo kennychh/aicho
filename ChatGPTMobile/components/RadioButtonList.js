@@ -28,14 +28,15 @@ export const RadioButtonList = ({
           }}
         >
           <View
-            style={
+            style={[
               itemStyle
                 ? itemStyle
                 : styles.radioButtonItem(
                     theme,
                     showDividerItems.indexOf(item.value) > -1
-                  )
-            }
+                  ),
+              { alignItems: "center" },
+            ]}
           >
             <Text style={textStyle ? textStyle : styles.text(theme)}>
               {item.value}
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
   radioButtonItem: (theme, showDivider) => ({
     flexDirection: "row",
     justifyContent: "space-between",
-    padding: 16,
+    paddingHorizontal: 16,
     borderBottomWidth: showDivider ? 1 : 0,
     borderBottomColor: showDivider
       ? theme.modal.divider.backgroundColor
@@ -91,6 +92,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.divider.color,
   }),
   text: (theme) => ({
+    paddingVertical: 16,
     fontSize: 16,
     alignSelf: "center",
     fontWeight: "500",

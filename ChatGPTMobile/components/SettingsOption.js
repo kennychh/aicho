@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     fontSize: 16,
     fontWeight: "500",
+    paddingVertical: 16,
   }),
   valueText: (theme) => ({
     marginRight: 16,
@@ -89,7 +90,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignContent: "space-between",
     alignItems: "center",
-    paddingVertical: 16,
     marginHorizontal: 16,
     backgroundColor: theme.onBackgroundColor,
     borderTopLeftRadius: (showDivider && !isMiddle) || isSingle ? 16 : 0,

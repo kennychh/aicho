@@ -16,7 +16,7 @@ import {
 } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { getTheme } from "../theme";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 export const PrivacyScreen = ({
   props,
@@ -28,9 +28,10 @@ export const PrivacyScreen = ({
 }) => {
   const insets = useSafeAreaInsets();
   const yOffset = useRef(new Animated.Value(0)).current;
+  const [headerHeight, setHeaderHeight] = useState(0);
   const navigation = props.navigation;
   const data = [
-    <Text style={styles.subtext(theme)}>
+    <Text style={[styles.subtext(theme), { paddingTop: 24 }]}>
       Your conversations and settings are stored on your device. Your API key is
       never shared, and is encrypted and securely stored locally.
     </Text>,
@@ -68,6 +69,7 @@ export const PrivacyScreen = ({
       />
     </View>,
     <Text style={styles.subtext(theme)}>Lock this app upon closing it.</Text>,
+    <View style={{ paddingBottom: 16 }} />,
   ];
   return (
     <SafeAreaProvider>
@@ -83,7 +85,7 @@ export const PrivacyScreen = ({
             yOffset.setValue(offset);
           }}
           onScrollBeginDrag={Keyboard.dismiss}
-          style={{ flex: 1, paddingTop: insets.top + 16 }}
+          style={{ flex: 1, marginTop: headerHeight - insets.top }}
           indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
           renderItem={({ item }) => item}
         />
@@ -93,6 +95,7 @@ export const PrivacyScreen = ({
           theme={theme}
           isSettingsHeader={true}
           yOffset={yOffset}
+          setHeight={setHeaderHeight}
         />
       </SafeAreaView>
     </SafeAreaProvider>

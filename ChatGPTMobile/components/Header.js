@@ -27,9 +27,14 @@ export const Header = ({
   isSettingsHeader = false,
   color,
   yOffset,
+  setHeight,
 }) => {
   const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
   const insets = useSafeAreaInsets();
+  const onLayout = (event) => {
+    const { height } = event.nativeEvent.layout;
+    setHeight && setHeight(height);
+  };
   const intensity = yOffset
     ? yOffset.interpolate({
         inputRange: [0, 16],
@@ -45,7 +50,7 @@ export const Header = ({
       }}
     >
       <View style={[styles.icon, { backgroundColor: color }]}>
-        <CircleIconTransparent width={40} height={40} />
+        <CircleIconTransparent width={32} height={32} />
       </View>
 
       <TextInput
@@ -87,6 +92,7 @@ export const Header = ({
   );
   return yOffset ? (
     <AnimatedBlurView
+      onLayout={onLayout}
       style={[styles.bar(theme), { paddingTop: insets.top + 8 }]}
       tint={theme === getTheme("dark") ? "dark" : "light"}
       intensity={intensity}
@@ -117,7 +123,8 @@ export const Header = ({
     </AnimatedBlurView>
   ) : (
     <BlurView
-      style={[styles.bar(theme), { paddingTop: insets.top + 8 }]}
+      onLayout={onLayout}
+      style={[styles.bar(theme), { paddingTop: insets.top + 16 }]}
       tint={theme === getTheme("dark") ? "dark" : "light"}
       intensity={intensity}
     >
@@ -155,8 +162,8 @@ const styles = StyleSheet.create({
     color: theme.fontColor,
   }),
   icon: {
-    width: 40,
-    height: 40,
+    width: 32,
+    height: 32,
     borderRadius: "50%",
     alignSelf: "center",
     marginLeft: 16,

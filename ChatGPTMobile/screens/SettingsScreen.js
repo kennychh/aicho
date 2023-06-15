@@ -1,4 +1,4 @@
-import { StyleSheet, Text, FlatList } from "react-native";
+import { StyleSheet, Text, FlatList, View } from "react-native";
 import { Header } from "../components";
 import {
   SafeAreaProvider,
@@ -10,13 +10,14 @@ import { getTheme } from "../theme";
 import { SettingsOption } from "./../components/SettingsOption";
 import * as WebBrowser from "expo-web-browser";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Animated } from "react-native";
 
 export const SettingsScreen = ({ props, theme, setConfirmResetVisible }) => {
   const navigation = props.navigation;
   const yOffset = useRef(new Animated.Value(0)).current;
   const insets = useSafeAreaInsets();
+  const [headerHeight, setHeaderHeight] = useState(0);
   const handleOpenBrowserPress = async () => {
     await WebBrowser.openBrowserAsync("https://forms.gle/3GC4GSN9aVirATC8A");
   };
@@ -40,7 +41,7 @@ export const SettingsScreen = ({ props, theme, setConfirmResetVisible }) => {
     },
     {
       title: "Content & Display",
-      style: [styles.text(theme), { paddingTop: 24 }],
+      style: styles.text(theme),
     },
     {
       title: "Chat Preferences",
@@ -56,7 +57,7 @@ export const SettingsScreen = ({ props, theme, setConfirmResetVisible }) => {
     },
     {
       title: "More info and support",
-      style: [styles.text(theme), { paddingTop: 24 }],
+      style: styles.text(theme),
     },
     {
       title: "AIcho Pro",
@@ -78,7 +79,7 @@ export const SettingsScreen = ({ props, theme, setConfirmResetVisible }) => {
     },
     {
       title: "Data",
-      style: [styles.text(theme), { paddingTop: 24 }],
+      style: styles.text(theme),
     },
     {
       title: "Reset data",
@@ -100,14 +101,16 @@ export const SettingsScreen = ({ props, theme, setConfirmResetVisible }) => {
     ].indexOf(item.title) > -1 ? (
       <Text style={item.style}>{item.title}</Text>
     ) : (
-      <SettingsOption
-        title={item.title}
-        theme={theme}
-        onPress={item.onPress}
-        showDivider={showDivider}
-        isMiddle={isMiddle}
-        isSingle={item.title == "Reset data"}
-      />
+      <View style={item.title == "Reset data" && { paddingBottom: 16 }}>
+        <SettingsOption
+          title={item.title}
+          theme={theme}
+          onPress={item.onPress}
+          showDivider={showDivider}
+          isMiddle={isMiddle}
+          isSingle={item.title == "Reset data"}
+        />
+      </View>
     );
   };
   return (
@@ -128,7 +131,7 @@ export const SettingsScreen = ({ props, theme, setConfirmResetVisible }) => {
             yOffset.setValue(offset);
           }}
           indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
-          style={{ flex: 1, paddingTop: insets.top + 32 }}
+          style={{ flex: 1, marginTop: headerHeight - insets.top }}
           renderItem={({ item }) => <SettingsItem item={item} />}
           keyExtractor={(item, index) => {
             return index;
@@ -140,6 +143,7 @@ export const SettingsScreen = ({ props, theme, setConfirmResetVisible }) => {
           theme={theme}
           isSettingsHeader={true}
           yOffset={yOffset}
+          setHeight={setHeaderHeight}
         />
       </SafeAreaView>
     </SafeAreaProvider>
@@ -154,6 +158,7 @@ const styles = StyleSheet.create({
   }),
   text: (theme) => ({
     paddingBottom: 16,
+    paddingTop: 24,
     paddingLeft: 32,
     fontSize: 14,
     fontWeight: "700",

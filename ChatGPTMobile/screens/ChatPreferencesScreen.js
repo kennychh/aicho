@@ -16,7 +16,7 @@ import {
 } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { getTheme } from "../theme";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 export const ChatPreferencesScreen = ({
   props,
@@ -31,6 +31,7 @@ export const ChatPreferencesScreen = ({
   const navigation = props.navigation;
   const insets = useSafeAreaInsets();
   const yOffset = useRef(new Animated.Value(0)).current;
+  const [headerHeight, setHeaderHeight] = useState(0);
   const data = [
     <Text style={styles.text(theme)}>Parameters</Text>,
     <SettingsOption
@@ -88,6 +89,7 @@ export const ChatPreferencesScreen = ({
       showDivider={false}
       isMiddle={false}
     />,
+    <View style={{ paddingBottom: 16 }} />,
   ];
   return (
     <SafeAreaProvider>
@@ -103,7 +105,7 @@ export const ChatPreferencesScreen = ({
             yOffset.setValue(offset);
           }}
           onScrollBeginDrag={Keyboard.dismiss}
-          style={{ flex: 1, paddingTop: insets.top + 32 }}
+          style={{ flex: 1, marginTop: headerHeight - insets.top }}
           indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
           renderItem={({ item }) => item}
         />
@@ -113,6 +115,7 @@ export const ChatPreferencesScreen = ({
           theme={theme}
           isSettingsHeader={true}
           yOffset={yOffset}
+          setHeight={setHeaderHeight}
         />
       </SafeAreaView>
     </SafeAreaProvider>
@@ -133,6 +136,7 @@ const styles = StyleSheet.create({
   }),
   text: (theme) => ({
     paddingBottom: 16,
+    paddingTop: 24,
     paddingLeft: 32,
     fontSize: 14,
     fontWeight: "700",

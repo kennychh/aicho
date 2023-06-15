@@ -158,7 +158,6 @@ export const DrawerContent = ({
 const styles = StyleSheet.create({
   drawerOptions: {
     paddingHorizontal: 16,
-    paddingVertical: 16,
     marginRight: 16,
     flexDirection: "row",
     flex: 1,
@@ -182,10 +181,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "500",
     color: theme.fontColor,
+    paddingVertical: 16,
   }),
   chatItemIcon: { marginRight: 16 },
   chatItem: {
-    padding: 16,
+    paddingHorizontal: 16,
     borderRadius: 16,
     marginBottom: 8,
     flexDirection: "row",

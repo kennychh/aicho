@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity, Text } from "react-native";
+import { StyleSheet, TouchableOpacity, Text, View } from "react-native";
 
 export const TextButton = ({
   text,
@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
   }),
   text: (theme, disabled, color) => ({
     fontSize: 16,
+
     fontWeight: "500",
     color: disabled ? theme.button.disabledFontColor : theme.button.fontColor,
   }),

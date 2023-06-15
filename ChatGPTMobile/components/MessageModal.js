@@ -38,7 +38,7 @@ export const MessageModal = ({
       <View
         style={[
           styles.modalOptionsContainer(theme),
-          { marginBottom: insets.bottom + 8 },
+          { marginBottom: insets.bottom + 16 },
         ]}
       >
         {/* {isError && (
@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontWeight: "500",
     color: theme.fontColor,
+    paddingVertical: 16,
   }),
   modalOptionDivider: (theme) => ({
     width: "100%",
@@ -121,7 +122,7 @@ const styles = StyleSheet.create({
   }),
   modalOption: {
     width: "100%",
-    padding: 16,
+    paddingHorizontal: 16,
     flexDirection: "row",
     alignItems: "center",
   },

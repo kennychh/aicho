@@ -15,15 +15,15 @@ import {
 } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { getTheme } from "../theme";
-import { useRef } from "react";
+import { useState } from "react";
 
 export const AboutScreen = ({ props, theme }) => {
   const navigation = props.navigation;
   const insets = useSafeAreaInsets();
-  const flatListRef = useRef();
+  const [headerHeight, setHeaderHeight] = useState(0);
   const data = [
     <Image source={require("../assets/circle-icon.png")} style={styles.icon} />,
-    <Text style={styles.title(theme)}>Hi, I'm AIcho!</Text>,
+    <Text style={[styles.title(theme)]}>Hi, I'm AIcho!</Text>,
     <Text style={styles.subtext(theme)}>
       AIcho is an AI chat bot that uses the official ChatGPT API powered by
       OpenAI. Experience the power of AI and ChatGPT in a beautiful and
@@ -46,7 +46,7 @@ export const AboutScreen = ({ props, theme }) => {
         <FlatList
           data={data}
           onScrollBeginDrag={Keyboard.dismiss}
-          style={{ flex: 1, paddingTop: insets.top + 32 }}
+          style={{ flex: 1, marginTop: headerHeight - insets.top }}
           indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
           renderItem={({ item }) => item}
         />
@@ -55,6 +55,7 @@ export const AboutScreen = ({ props, theme }) => {
           headerTitle={"About"}
           theme={theme}
           isSettingsHeader={true}
+          setHeight={setHeaderHeight}
         />
       </SafeAreaView>
     </SafeAreaProvider>
@@ -79,6 +80,7 @@ const styles = StyleSheet.create({
     color: theme.fontColor,
   }),
   icon: {
+    marginTop: 24,
     width: 80,
     height: 80,
     alignSelf: "center",

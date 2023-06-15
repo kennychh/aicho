@@ -37,6 +37,7 @@ export const InputScreen = ({
   const insets = useSafeAreaInsets();
   const yOffset = useRef(new Animated.Value(0)).current;
   const [tempValue, setTempValue] = useState(value);
+  const [headerHeight, setHeaderHeight] = useState(0);
   const maxTokensDisable = tempValue <= 0 || tempValue > 4097;
   const timeoutDisable = tempValue <= 0 || tempValue > 10;
   const temperatureDisable =
@@ -78,7 +79,7 @@ export const InputScreen = ({
             const offset = event.nativeEvent.contentOffset.y;
             yOffset.setValue(offset);
           }}
-          style={{ flex: 1, paddingTop: insets.top + 32 }}
+          style={{ flex: 1, marginTop: headerHeight - insets.top }}
           indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
           renderItem={({ item }) => item}
         />
@@ -88,8 +89,9 @@ export const InputScreen = ({
           theme={theme}
           isSettingsHeader={true}
           yOffset={yOffset}
+          setHeight={setHeaderHeight}
         />
-        <View style={{ marginBottom: 8 }}>
+        <View style={{ marginBottom: 16 }}>
           <TextButton
             text={buttonText}
             theme={theme}
@@ -117,6 +119,7 @@ const styles = StyleSheet.create({
   text: (theme) => ({
     paddingBottom: 16,
     paddingLeft: 32,
+    paddingTop: 24,
     fontSize: 14,
     fontWeight: "700",
     color: theme.secondaryIconColor,

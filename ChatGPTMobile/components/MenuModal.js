@@ -44,7 +44,7 @@ export const MenuModal = ({
       <View
         style={[
           styles.modalOptionsContainer(theme),
-          { marginTop: 16, marginBottom: insets.bottom + 8 },
+          { marginTop: 16, marginBottom: insets.bottom + 16 },
         ]}
       >
         <TouchableOpacity
@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     alignSelf: "center",
     fontWeight: "500",
+    paddingVertical: 16,
     color: theme.fontColor,
   }),
   modalOptionDivider: (theme) => ({
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
   }),
   modalOption: {
     width: "100%",
-    padding: 16,
+    paddingHorizontal: 16,
     flexDirection: "row",
     alignItems: "center",
   },
