@@ -68,7 +68,7 @@ export const Message = ({
 
   useEffect(() => {
     if (haptic) {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     }
   }, [haptic]);
 
@@ -205,6 +205,7 @@ export const Message = ({
             delayLongPress={200}
             style={[
               styles.messageContainer,
+              index == 0 && { paddingBottom: 8 },
               expandMessage ? styles.movedItemContainer : null,
             ]}
           >

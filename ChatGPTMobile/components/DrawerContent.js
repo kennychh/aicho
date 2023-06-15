@@ -69,7 +69,7 @@ export const DrawerContent = ({
       <View style={styles.drawerConversationsTitleContainer}>
         <Text style={styles.drawerConversationsTitle(theme)}>AIcho</Text>
       </View>
-      <View style={{ maxHeight: 464 }}>
+      <View style={{ flex: 1 }}>
         <FlatList
           inverted
           data={chats}
@@ -87,9 +87,15 @@ export const DrawerContent = ({
           }}
         />
       </View>
-      <View style={styles.drawerDivider(theme)} />
       <ScrollView
         indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
+        style={{
+          // flex: 1,
+          maxHeight: 240,
+          minHeight: 240,
+          borderTopColor: theme.drawerContent.drawerDivider.backgroundColor,
+          borderTopWidth: 1,
+        }}
       >
         <TouchableOpacity
           style={[styles.drawerOptions, { marginTop: 24 }]}
@@ -190,11 +196,14 @@ const styles = StyleSheet.create({
     backgroundColor: theme.drawerContent.backgroundColor,
     marginVertical: 16,
     marginLeft: 16,
+    justifyContent: "space-between",
+    flex: 1,
   }),
   componentContainer: (theme) => ({
     width: "100%",
     height: "100%",
     paddingRight: 16,
     backgroundColor: theme.drawerContent.backgroundColor,
+    // maxHeight: 400,
   }),
 });

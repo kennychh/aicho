@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
     bottom: 0,
   }),
   container: {
-    paddingTop: 8,
+    // paddingTop: 8,
     paddingBottom: 8,
     paddingHorizontal: 16,
     position: "absolute",
