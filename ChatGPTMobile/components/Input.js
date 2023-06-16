@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { BlurView } from "expo-blur";
 import { useEffect, useState } from "react";
-import { Send, Refresh, Close } from "../icons";
+import { Send, Refresh, Loading, Close } from "../icons";
 import { getTheme } from "../theme";
 export const Input = ({
   textInputRef,
@@ -101,6 +101,7 @@ export const Input = ({
       textInputRef.current.focus();
     }
   }, [editable, editMessage]);
+  
 
   return (
     <View>
@@ -140,7 +141,11 @@ export const Input = ({
           </View>
         )}
         <View style={{ overflow: "hidden", borderRadius: 24 }}>
-          <BlurView style={{ flexDirection: "row", alignItems: "center" }}>
+          <BlurView
+            style={{ flexDirection: "row", alignItems: "center" }}
+            tint={theme === getTheme("dark") ? "dark" : "light"}
+            intensity={80}
+          >
             <View style={styles.inputContainer(theme)}>
               <View style={{ flex: 1, paddingTop: 12, paddingBottom: 12 }}>
                 <TextInput
@@ -201,7 +206,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-end",
     alignItems: "center",
-    backgroundColor: theme.input.backgroundColor,
+    // backgroundColor: theme.input.backgroundColor,
     flex: 1,
     maxHeight: 120,
     borderRadius: 24,

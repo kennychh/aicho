@@ -107,7 +107,6 @@ const styles = StyleSheet.create({
     // justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
-    paddingVertical: 16,
     paddingHorizontal: 16,
     marginHorizontal: 16,
     overflow: "hidden",
@@ -117,5 +116,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     paddingRight: 52,
     paddingLeft: 16,
+    paddingVertical: 16,
   }),
 });
