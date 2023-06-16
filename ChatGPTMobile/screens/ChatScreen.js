@@ -7,6 +7,7 @@ import {
   View,
   Keyboard,
   Animated,
+  LayoutAnimation,
 } from "react-native";
 import { useState, useEffect, useRef } from "react";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -61,6 +62,7 @@ export const ChatScreen = ({
   const messageModalizeRef = useRef(null);
   const textInputRef = useRef(null);
   const headerTextInputRef = useRef(null);
+  const listRef = useRef(null);
 
   const onLayout = (event) => {
     const { x, y, height, width } = event.nativeEvent.layout;
@@ -77,6 +79,15 @@ export const ChatScreen = ({
 
   const removeData = () => {
     clearConversation(chatIndex);
+  };
+
+  const toggleExpandMessage = () => {
+    listRef.current?.prepareForLayoutAnimationRender();
+    LayoutAnimation.configureNext({
+      duration: 300,
+      create: { type: "easeInEaseOut", property: "opacity"},
+      update: { type: "spring", springDamping: 1 },
+    });
   };
 
   useEffect(() => {
@@ -102,6 +113,7 @@ export const ChatScreen = ({
 
   useEffect(() => {
     if (retry != null) {
+      toggleExpandMessage();
       setChats((oldResult) => [
         ...oldResult?.slice(0, index),
         [
@@ -214,18 +226,21 @@ export const ChatScreen = ({
     const res = getResult(result);
     const inputText = getInput(res);
     if (editMessage != null) {
+      toggleExpandMessage();
       setChats((oldResult) => [
         ...oldResult?.slice(0, index),
         [inputText, ...oldResult[index].slice(editMessageIndex + 1)],
         ...oldResult?.slice(index + 1),
       ]);
     } else if (!regen) {
+      toggleExpandMessage();
       setChats((oldResult) => [
         ...oldResult?.slice(0, index),
         [inputText, ...oldResult[index]],
         ...oldResult?.slice(index + 1),
       ]);
     } else if (regen) {
+      toggleExpandMessage();
       setChats((oldResult) => [
         ...oldResult?.slice(0, index),
         [...oldResult[index].slice(regenIndex)],
@@ -269,6 +284,7 @@ export const ChatScreen = ({
           ...inputText,
           isError: true,
         };
+        toggleExpandMessage();
         if (!regen) {
           setChats((oldResult) => [
             ...oldResult?.slice(0, index),
@@ -288,6 +304,7 @@ export const ChatScreen = ({
         }
         setError(true);
       } else {
+        toggleExpandMessage();
         if (!error && regen) {
           setChats((oldResult) => [
             ...oldResult?.slice(0, index),
@@ -323,6 +340,7 @@ export const ChatScreen = ({
         ...inputText,
         isError: true,
       };
+      toggleExpandMessage();
       if (!regen) {
         setChats((oldResult) => [
           ...oldResult?.slice(0, index),
@@ -370,6 +388,7 @@ export const ChatScreen = ({
               setRegenIndex={setRegenIndex}
               theme={theme}
               color={color}
+              ref={listRef}
             />
             <Input
               textInputRef={textInputRef}

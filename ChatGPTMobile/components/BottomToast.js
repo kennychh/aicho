@@ -73,8 +73,8 @@ export const BottomToast = ({ theme, text = "An error has occured." }) => {
         position: "absolute",
         bottom: visible
           ? isKeyboardVisible
-            ? 68 + keyboardHeight
-            : insets.bottom + 68 + keyboardHeight
+            ? 60 + keyboardHeight
+            : insets.bottom + 60 + keyboardHeight
           : -h,
         width: "100%",
       }}

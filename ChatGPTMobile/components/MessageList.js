@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Message } from "./Message";
 import { getTheme } from "../theme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { FlashList } from "@shopify/flash-list";
 
 export const MessageList = ({
   data,
@@ -15,19 +16,23 @@ export const MessageList = ({
   regen,
   theme,
   color,
+  ref,
 }) => {
   const insets = useSafeAreaInsets();
   return (
-    <Animated.View
+    <View
       style={{
         flex: 1,
         width: "100%",
-        paddingTop: insets.top + 56,
+        marginBottom: inputOffset,
+        // paddingTop: insets.top + 56,
       }}
     >
-      <FlatList
+      <FlashList
+        ref={ref}
         inverted
         data={data}
+        estimatedItemSize={32}
         indicator
         // onScroll={(event) => {
         //   const y =
@@ -40,6 +45,12 @@ export const MessageList = ({
         keyboardShouldPersistTaps="always"
         onScrollBeginDrag={Keyboard.dismiss}
         indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
+        scrollIndicatorInsets={{
+          top: -insets.top,
+          left: 0,
+          bottom: insets.top + 56,
+          right: 0,
+        }}
         renderItem={({ item, index }) => (
           <Message
             item={item}
@@ -54,14 +65,14 @@ export const MessageList = ({
             color={color}
           />
         )}
-        style={{
+        contentContainerStyle={{
+          paddingBottom: insets.top + 56,
           overflow: "visible",
-          marginBottom: inputOffset,
         }}
         keyExtractor={(item) => {
           return item?.result?.id;
         }}
       />
-    </Animated.View>
+    </View>
   );
 };

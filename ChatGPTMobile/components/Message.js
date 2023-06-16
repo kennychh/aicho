@@ -16,13 +16,6 @@ import { Alert, Edit2, Refresh } from "../icons";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-if (
-  Platform.OS === "android" &&
-  UIManager.setLayoutAnimationEnabledExperimental
-) {
-  UIManager.setLayoutAnimationEnabledExperimental(true);
-}
-
 export const Message = ({
   item,
   index,
@@ -46,25 +39,25 @@ export const Message = ({
 
   const toggleExpandMessage = () => {
     LayoutAnimation.configureNext({
-      duration: 400,
+      duration: 300,
       create: { type: "easeInEaseOut", property: "opacity" },
       update: { type: "spring", springDamping: 1 },
     });
+    // setExpandMessage(true);
   };
 
   const toggleExpandMessage2 = () => {
     LayoutAnimation.configureNext({
-      duration: 400,
-      create: { type: "easeInEaseOut", property: "opacity" },
+      duration: 300,
+      // create: { type: "easeInEaseOut", property: "opacity" },
       update: { type: "spring", springDamping: 1 },
     });
-    setExpandMessage(true);
   };
-  useEffect(() => {
-    if (index == 0) {
-      toggleExpandMessage();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (index == 0) {
+  //     toggleExpandMessage();
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (haptic) {
@@ -205,6 +198,7 @@ export const Message = ({
             delayLongPress={200}
             style={[
               styles.messageContainer,
+              // { bottom: -32 },
               index == 0 && { paddingBottom: 8 },
               expandMessage ? styles.movedItemContainer : null,
             ]}

@@ -27,11 +27,26 @@ import {
   ConfirmResetDataModal,
   BottomToast,
 } from "./components";
-import { Alert, AppState, Text, useColorScheme, View } from "react-native";
+import {
+  Alert,
+  AppState,
+  Platform,
+  Text,
+  UIManager,
+  useColorScheme,
+  View,
+} from "react-native";
 import { getTheme } from "./theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SecureStore from "expo-secure-store";
 import * as LocalAuthentication from "expo-local-authentication";
+
+if (
+  Platform.OS === "android" &&
+  UIManager.setLayoutAnimationEnabledExperimental
+) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -566,7 +581,10 @@ export default function App() {
               />
             )}
           </Stack.Screen>
-          <Stack.Screen name="Chat Preferences" options={{ headerShown: false }}>
+          <Stack.Screen
+            name="Chat Preferences"
+            options={{ headerShown: false }}
+          >
             {(props) => (
               <ChatPreferencesScreen
                 props={props}
