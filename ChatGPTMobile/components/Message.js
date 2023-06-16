@@ -24,6 +24,8 @@ export const Message = ({
   setInput,
   setRegenIndex,
   setRegen,
+  setRetry,
+  setError,
   theme,
   color,
 }) => {
@@ -96,7 +98,9 @@ export const Message = ({
             borderRadius: "100%",
             marginRight: 8,
             marginLeft: 16,
+            marginTop: 16,
           },
+          index == 0 && { marginBottom: 8 },
         ]}
       >
         <Refresh width="20px" height="20px" stroke={theme.iconColor} />
@@ -134,7 +138,10 @@ export const Message = ({
             backgroundColor: theme.onBackgroundColor,
             borderRadius: "100%",
             marginRight: 16,
+            marginLeft: 8,
+            marginTop: 16,
           },
+          index == 0 && { marginBottom: 8 },
         ]}
       >
         <Edit2 width="20px" height="20px" stroke={theme.iconColor} />
@@ -143,7 +150,7 @@ export const Message = ({
   };
   return (
     <GestureHandlerRootView>
-      <View style={{ paddingTop: 16 }}>
+      <View style={{ transform: [{ scaleY: -1 }] }}>
         <Swipeable
           ref={swipeableRef}
           friction={2}
@@ -175,12 +182,18 @@ export const Message = ({
               setEditMessage(item);
               setInput(text);
             } else {
-              setRegenIndex(index);
-              setRegen(true);
+              if (isError) {
+                setRegenIndex(0);
+                setRegen(true);
+              } else {
+                setRegenIndex(index);
+                setRegen(true);
+              }
+              setError(false);
             }
             setTimeout(() => {
-              swipeableRef.current.close();
-            }, 100);
+              swipeableRef.current?.close();
+            }, 10);
           }}
           onSwipeableClose={() => {
             setHaptic(false);
@@ -204,7 +217,13 @@ export const Message = ({
             ]}
           >
             {isError && !isInput && (
-              <View style={{ marginLeft: 16, marginRight: 0 }}>
+              <View
+                style={{
+                  marginLeft: 16,
+                  marginRight: 0,
+                  justifyContent: "center",
+                }}
+              >
                 <Alert />
               </View>
             )}
@@ -260,6 +279,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 16,
   },
   text: {
     fontSize: 16,

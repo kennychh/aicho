@@ -51,6 +51,7 @@ export const ChatScreen = ({
   const result = chats[index];
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [showBottomToast, setShowBottomToast] = useState(false);
   const [message, setMessage] = useState(null);
   const [retry, setRetry] = useState(null);
   const [regen, setRegen] = useState(false);
@@ -85,8 +86,8 @@ export const ChatScreen = ({
     listRef.current?.prepareForLayoutAnimationRender();
     LayoutAnimation.configureNext({
       duration: 300,
-      create: { type: "easeInEaseOut", property: "opacity"},
-      update: { type: "spring", springDamping: 1 },
+      create: { type: "easeInEaseOut", property: "opacity" },
+      update: { type: "spring", springDamping: 10 },
     });
   };
 
@@ -134,6 +135,14 @@ export const ChatScreen = ({
       setRegen(false);
     }
   }, [regen]);
+
+  useEffect(() => {
+    if (error) {
+      setShowBottomToast(true);
+    } else {
+      setShowBottomToast(false);
+    }
+  }, [error]);
 
   useEffect(() => {
     if (isHeaderEditable) {
@@ -386,9 +395,11 @@ export const ChatScreen = ({
               setInput={setInput}
               setRegen={setRegen}
               setRegenIndex={setRegenIndex}
+              setRetry={setRetry}
+              setError={setError}
               theme={theme}
               color={color}
-              ref={listRef}
+              listRef={listRef}
             />
             <Input
               textInputRef={textInputRef}
@@ -445,7 +456,7 @@ export const ChatScreen = ({
           setInput={setInput}
           theme={theme}
         />
-        {error && <BottomToast theme={theme} />}
+        {showBottomToast && <BottomToast theme={theme} />}
       </SafeAreaView>
     </SafeAreaProvider>
   );
