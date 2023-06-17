@@ -390,6 +390,7 @@ export const ChatScreen = ({
             <MessageList
               data={result}
               inputOffset={inputHeight}
+              editMessage={editMessage}
               setMessage={setMessage}
               setEditMessage={setEditMessage}
               setInput={setInput}

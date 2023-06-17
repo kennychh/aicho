@@ -100,7 +100,6 @@ export const Message = ({
             marginLeft: 16,
             marginTop: 16,
           },
-          index == 0 && { marginBottom: 8 },
         ]}
       >
         <Refresh width="20px" height="20px" stroke={theme.iconColor} />
@@ -141,7 +140,6 @@ export const Message = ({
             marginLeft: 8,
             marginTop: 16,
           },
-          index == 0 && { marginBottom: 8 },
         ]}
       >
         <Edit2 width="20px" height="20px" stroke={theme.iconColor} />
@@ -212,7 +210,6 @@ export const Message = ({
             style={[
               styles.messageContainer,
               // { bottom: -32 },
-              index == 0 && { paddingBottom: 8 },
               expandMessage ? styles.movedItemContainer : null,
             ]}
           >

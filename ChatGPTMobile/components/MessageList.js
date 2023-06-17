@@ -9,6 +9,7 @@ export const MessageList = ({
   data,
   inputOffset,
   setMessage,
+  editMessage,
   setEditMessage,
   setInput,
   setRegen,
@@ -67,7 +68,7 @@ export const MessageList = ({
         onScrollBeginDrag={Keyboard.dismiss}
         indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
         scrollIndicatorInsets={{
-          // top: -insets.top,
+          top: !!editMessage ? 60 : 8,
           left: 0,
           bottom: insets.top + 56,
           right: 0,
@@ -76,7 +77,7 @@ export const MessageList = ({
         contentContainerStyle={{
           // paddingBottom: insets.top + 56,
           // paddingTop: inputOffset,
-          paddingTop: inputOffset,
+          paddingTop: inputOffset + 8,
           paddingBottom: insets.top + 56,
         }}
         keyExtractor={keyExtractor}
