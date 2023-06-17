@@ -11,12 +11,12 @@ import {
   Keyboard,
 } from "react-native";
 import * as Haptics from "expo-haptics";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { Alert, Edit2, Refresh } from "../icons";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-export const Message = ({
+const Message = ({
   item,
   index,
   setMessage,
@@ -28,6 +28,7 @@ export const Message = ({
   setError,
   theme,
   color,
+  listRef,
 }) => {
   const text = item?.result?.text || "";
   const isInput = item?.isInput;
@@ -38,28 +39,6 @@ export const Message = ({
   const progressRef = useRef();
   const [expandMessage, setExpandMessage] = useState(index != 0);
   const [haptic, setHaptic] = useState(false);
-
-  const toggleExpandMessage = () => {
-    LayoutAnimation.configureNext({
-      duration: 300,
-      create: { type: "easeInEaseOut", property: "opacity" },
-      update: { type: "spring", springDamping: 1 },
-    });
-    // setExpandMessage(true);
-  };
-
-  const toggleExpandMessage2 = () => {
-    LayoutAnimation.configureNext({
-      duration: 300,
-      // create: { type: "easeInEaseOut", property: "opacity" },
-      update: { type: "spring", springDamping: 1 },
-    });
-  };
-  // useEffect(() => {
-  //   if (index == 0) {
-  //     toggleExpandMessage();
-  //   }
-  // }, []);
 
   useEffect(() => {
     if (haptic) {
@@ -200,13 +179,13 @@ export const Message = ({
           }}
         >
           <TouchableOpacity
-            delayPressIn={200}
+            delayPressIn={300}
             onLongPress={() => {
               Keyboard.dismiss();
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
               setMessage(item);
             }}
-            delayLongPress={200}
+            delayLongPress={300}
             style={[
               styles.messageContainer,
               // { bottom: -32 },
@@ -298,3 +277,9 @@ const styles = StyleSheet.create({
     right: 0,
   },
 });
+
+function arePropsEqual(prevProps, nextProps) {
+  return prevProps.color === nextProps.color;
+}
+
+export default memo(Message, arePropsEqual);

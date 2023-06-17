@@ -22,7 +22,7 @@ export const EditMessage = ({
   const [showEdit, setShowEdit] = useState(false);
   useEffect(() => {
     if (editMessage) {
-      listRef.current?.prepareForLayoutAnimationRender();
+      // listRef.current?.prepareForLayoutAnimationRender();
       LayoutAnimation.configureNext({
         duration: 300,
         create: {
@@ -37,7 +37,7 @@ export const EditMessage = ({
       });
       setShowEdit(true);
     } else {
-      listRef.current?.prepareForLayoutAnimationRender();
+      // listRef.current?.prepareForLayoutAnimationRender();
       LayoutAnimation.configureNext({
         duration: 300,
         create: {

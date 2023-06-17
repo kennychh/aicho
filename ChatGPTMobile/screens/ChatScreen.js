@@ -9,7 +9,7 @@ import {
   Animated,
   LayoutAnimation,
 } from "react-native";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import {
   Header,
@@ -83,7 +83,7 @@ export const ChatScreen = ({
   };
 
   const toggleExpandMessage = () => {
-    listRef.current?.prepareForLayoutAnimationRender();
+    // listRef?.current?.prepareForLayoutAnimationRender();
     LayoutAnimation.configureNext({
       duration: 300,
       create: { type: "easeInEaseOut", property: "opacity" },

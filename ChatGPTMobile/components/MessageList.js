@@ -5,12 +5,17 @@ import {
   Dimensions,
   LayoutAnimation,
 } from "react-native";
-import { useEffect, useRef, useState } from "react";
-import { Message } from "./Message";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import Message from "./Message";
 import { getTheme } from "../theme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { FlashList } from "@shopify/flash-list";
 import { EditMessage } from "./EditMessage";
+import Animated, {
+  FadeIn,
+  FadeInDown,
+  FadeInUp,
+} from "react-native-reanimated";
 
 export const MessageList = ({
   data,
@@ -29,8 +34,11 @@ export const MessageList = ({
   listRef,
 }) => {
   const insets = useSafeAreaInsets();
+  const [showCurrentMessage, setShowCurrentMessage] = useState(false);
+  const [isCurrentMessage, setIsCurrentMessage] = useState(false);
+  const memoizedColor = useMemo(() => color, [color]);
 
-  const renderItem = ({ item, index }) => {
+  const renderItem = useCallback(({ item, index }) => {
     return (
       <Message
         item={item}
@@ -44,10 +52,11 @@ export const MessageList = ({
         setError={setError}
         regen={regen}
         theme={theme}
-        color={color}
+        color={memoizedColor}
+        listRef={listRef}
       />
     );
-  };
+  }, [memoizedColor]);
 
   const keyExtractor = (item, index) => item?.result?.id || index;
   return (
@@ -66,10 +75,9 @@ export const MessageList = ({
         editMessage={editMessage}
         listRef={listRef}
       />
-      <FlashList
+      <FlatList
         ref={listRef}
         data={data}
-        estimatedItemSize={32}
         indicator
         // onScroll={(event) => {
         //   const y =
@@ -81,6 +89,8 @@ export const MessageList = ({
         // }}
         keyboardShouldPersistTaps="always"
         onScrollBeginDrag={Keyboard.dismiss}
+        removeClippedSubviews={true}
+        initialNumToRender={20}
         indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
         scrollIndicatorInsets={{
           top: 8,

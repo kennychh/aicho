@@ -42,7 +42,7 @@ export const BottomToast = ({ theme, text = "An error has occured." }) => {
         update: { type: "spring", springDamping: 1 },
       });
       setVisible(true);
-    }, 500);
+    }, 100);
     setTimeout(() => {
       !closeToast && setCloseAnimation(true);
     }, 5000);

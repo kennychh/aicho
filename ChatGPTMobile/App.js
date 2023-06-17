@@ -291,12 +291,6 @@ export default function App() {
   }, [model]);
 
   useEffect(() => {
-    if (model != "") {
-      storeModel();
-    }
-  }, [model]);
-
-  useEffect(() => {
     if (retainContext != null) {
       storeRetainContext(retainContext);
     }
