@@ -421,6 +421,7 @@ export const ChatScreen = ({
               setInput={setInput}
               theme={theme}
               color={color}
+              listRef={listRef}
             />
           </View>
           <Header

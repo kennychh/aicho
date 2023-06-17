@@ -82,7 +82,7 @@ export const Header = ({
         alignItems: "center",
         justifyContent: "center",
         flexDirection: "row",
-        height: 40,
+        height: 32,
       }}
     >
       <Text style={[styles.barText(theme), { fontWeight: "700" }]}>
@@ -93,7 +93,7 @@ export const Header = ({
   return yOffset ? (
     <AnimatedBlurView
       onLayout={onLayout}
-      style={[styles.bar(theme), { paddingTop: insets.top + 8 }]}
+      style={[styles.bar(theme), { paddingTop: insets.top + 16 }]}
       tint={theme === getTheme("dark") ? "dark" : "light"}
       intensity={intensity}
     >

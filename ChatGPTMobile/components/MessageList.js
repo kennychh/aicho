@@ -1,9 +1,16 @@
-import { FlatList, View, Keyboard, Dimensions } from "react-native";
+import {
+  FlatList,
+  View,
+  Keyboard,
+  Dimensions,
+  LayoutAnimation,
+} from "react-native";
 import { useEffect, useRef, useState } from "react";
 import { Message } from "./Message";
 import { getTheme } from "../theme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { FlashList } from "@shopify/flash-list";
+import { EditMessage } from "./EditMessage";
 
 export const MessageList = ({
   data,
@@ -51,6 +58,14 @@ export const MessageList = ({
         transform: [{ scaleY: -1 }],
       }}
     >
+      <EditMessage
+        theme={theme}
+        inputOffset={inputOffset}
+        setEditMessage={setEditMessage}
+        setInput={setInput}
+        editMessage={editMessage}
+        listRef={listRef}
+      />
       <FlashList
         ref={listRef}
         data={data}
@@ -68,7 +83,7 @@ export const MessageList = ({
         onScrollBeginDrag={Keyboard.dismiss}
         indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
         scrollIndicatorInsets={{
-          top: !!editMessage ? 60 : 8,
+          top: 8,
           left: 0,
           bottom: insets.top + 56,
           right: 0,
@@ -77,7 +92,7 @@ export const MessageList = ({
         contentContainerStyle={{
           // paddingBottom: insets.top + 56,
           // paddingTop: inputOffset,
-          paddingTop: inputOffset + 8,
+          paddingTop: !!editMessage ? 8 : inputOffset + 8,
           paddingBottom: insets.top + 56,
         }}
         keyExtractor={keyExtractor}

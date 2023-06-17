@@ -101,45 +101,16 @@ export const Input = ({
       textInputRef.current.focus();
     }
   }, [editable, editMessage]);
-  
 
   return (
     <View>
       <View
         style={[
           styles.inputBottomBackground(theme),
-          { height: height / 2, width: windowWidth - 16 },
+          { height: height / 2 + 4, width: windowWidth - 16 },
         ]}
       />
       <View style={styles.container} onLayout={(event) => onLayout(event)}>
-        {editMessage && (
-          <View style={{ width: windowWidth, marginHorizontal: -16 }}>
-            <View style={styles.divider(theme)} />
-            <View
-              style={{
-                width: windowWidth,
-                backgroundColor: theme.backgroundColor,
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <TouchableOpacity
-                style={styles.closeIcon}
-                onPress={() => {
-                  setEditMessage(null);
-                  setInput("");
-                }}
-              >
-                <Close
-                  width="20px"
-                  height="20px"
-                  stroke={theme.secondaryIconColor}
-                />
-              </TouchableOpacity>
-              <Text style={styles.text(theme)}>Editing message</Text>
-            </View>
-          </View>
-        )}
         <View style={{ overflow: "hidden", borderRadius: 24 }}>
           <BlurView
             style={{ flexDirection: "row", alignItems: "center" }}
@@ -220,18 +191,7 @@ const styles = StyleSheet.create({
     marginVertical: 4,
     marginRight: 4,
   }),
-  closeIcon: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 16,
-    paddingLeft: 16,
-    paddingRight: 8,
-  },
-  text: (theme) => ({
-    fontSize: 14,
-    color: theme.input.placeholderFontColor,
-    marginLeft: 8,
-  }),
+
   input: (theme) => ({
     fontSize: 16,
     marginLeft: 16,
