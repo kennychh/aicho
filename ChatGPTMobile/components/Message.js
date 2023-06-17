@@ -178,20 +178,7 @@ const Message = ({
             setProgressValue(null);
           }}
         >
-          <TouchableOpacity
-            delayPressIn={300}
-            onLongPress={() => {
-              Keyboard.dismiss();
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-              setMessage(item);
-            }}
-            delayLongPress={300}
-            style={[
-              styles.messageContainer,
-              // { bottom: -32 },
-              expandMessage ? styles.movedItemContainer : null,
-            ]}
-          >
+          <View style={styles.messageContainer}>
             {isError && !isInput && (
               <View
                 style={{
@@ -203,7 +190,13 @@ const Message = ({
                 <Alert />
               </View>
             )}
-            <View
+            <TouchableOpacity
+              delayPressIn={500}
+              onPressIn={() => {
+                Keyboard.dismiss();
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                setMessage(item);
+              }}
               style={[
                 styles.itemContainer,
                 {
@@ -234,13 +227,13 @@ const Message = ({
                   {text}
                 </Text>
               </View>
-            </View>
+            </TouchableOpacity>
             {isError && isInput && (
               <View style={styles.alertIcon}>
                 <Alert />
               </View>
             )}
-          </TouchableOpacity>
+          </View>
         </Swipeable>
       </View>
     </GestureHandlerRootView>
@@ -279,7 +272,9 @@ const styles = StyleSheet.create({
 });
 
 function arePropsEqual(prevProps, nextProps) {
-  return prevProps.color === nextProps.color;
+  return (
+    prevProps.color === nextProps.color && prevProps.item === nextProps.item
+  );
 }
 
 export default memo(Message, arePropsEqual);
