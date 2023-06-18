@@ -22,8 +22,8 @@ const Message = ({
   setMessage,
   setEditMessage,
   setInput,
-  setRegenIndex,
   setRegen,
+  regen,
   setRetry,
   setError,
   theme,
@@ -39,7 +39,6 @@ const Message = ({
   const progressRef = useRef();
   const [expandMessage, setExpandMessage] = useState(index != 0);
   const [haptic, setHaptic] = useState(false);
-
   useEffect(() => {
     if (haptic) {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
@@ -159,14 +158,8 @@ const Message = ({
               setEditMessage(item);
               setInput(text);
             } else {
-              if (isError) {
-                setRegenIndex(0);
-                setRegen(true);
-              } else {
-                setRegenIndex(index);
-                setRegen(true);
-              }
               setError(false);
+              setRegen(item);
             }
             setTimeout(() => {
               swipeableRef.current?.close();

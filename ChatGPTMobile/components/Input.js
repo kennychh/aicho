@@ -34,7 +34,7 @@ export const Input = ({
   const windowWidth = Dimensions.get("window").width;
   const showSendIcon = isResultValid;
   const showRefreshIcon =
-    (!isResultValid && !loading && result?.length > 0) || error;
+    (!isResultValid && !loading && result[0]?.isInput) || error;
   const showLoadingIcon = loading;
   const [editable, setEditable] = useState(!error);
 
@@ -53,12 +53,9 @@ export const Input = ({
   const getInputIconColor = () => {
     if (
       showLoadingIcon ||
-      (result?.length == 0 && !isResultValid) ||
-      (editMessage && !isResultValid)
+      (!error && !isResultValid)
     ) {
       return { backgroundColor: theme.input.button.disabled.backgroundColor };
-    } else if (showRefreshIcon || showSendIcon) {
-      return {};
     }
     return {};
   };
@@ -70,7 +67,7 @@ export const Input = ({
       return false;
     } else if (showLoadingIcon || error) {
       return true;
-    } else if (showRefreshIcon || showSendIcon) {
+    } else if (showRefreshIcon) {
       return false;
     } else if (!isResultValid) {
       return true;
@@ -79,17 +76,14 @@ export const Input = ({
   };
 
   const getInputOnPress = () => {
+    setError(false);
     if (editMessage) {
       onSubmit();
-    } else if (showRefreshIcon && !result[0]?.isInput) {
-      setRegenIndex(0);
-      setRegen(true);
     } else if (showRefreshIcon) {
       setRetry({ ...result[0], isError: false });
     } else if (isResultValid) {
       onSubmit();
     }
-    setError(false);
   };
 
   useEffect(() => {

@@ -58,7 +58,6 @@ export const ChatScreen = ({
   const [isResultValid, setResultValid] = useState(false);
   const [inputHeight, setInputHeight] = useState(0);
   const [isHeaderEditable, setIsHeaderEditable] = useState(false);
-  const [regenIndex, setRegenIndex] = useState(1);
   const modalizeRef = useRef(null);
   const messageModalizeRef = useRef(null);
   const textInputRef = useRef(null);
@@ -132,7 +131,7 @@ export const ChatScreen = ({
   useEffect(() => {
     if (regen) {
       onSubmit();
-      setRegen(false);
+      setRegen(null);
     }
   }, [regen]);
 
@@ -181,7 +180,7 @@ export const ChatScreen = ({
     return randomString;
   };
 
-  const getResult = (result) => {
+  const getResult = (result, regenIndex) => {
     const editMessageIndex = editMessage
       ? result.findIndex(
           (message) => message.result?.id == editMessage?.result?.id
@@ -232,7 +231,10 @@ export const ChatScreen = ({
           (message) => message.result?.id == editMessage?.result?.id
         )
       : 0;
-    const res = getResult(result);
+    const regenIndex = regen
+      ? result.findIndex((message) => message.result?.id == regen?.result?.id)
+      : 0;
+    const res = getResult(result, regenIndex);
     const inputText = getInput(res);
     if (editMessage != null) {
       toggleExpandMessage();
@@ -252,11 +254,12 @@ export const ChatScreen = ({
       toggleExpandMessage();
       setChats((oldResult) => [
         ...oldResult?.slice(0, index),
-        [...oldResult[index].slice(regenIndex)],
+        [...oldResult[index].slice(regenIndex + 1)],
         ...oldResult?.slice(index + 1),
       ]);
     }
-    const regenId = result?.length > 2 ? result[2]?.result?.id : null;
+    const regenId =
+      result?.length > 2 ? result[regenIndex + 2]?.result?.id : null;
     setInput("");
     try {
       const bearer = `Bearer ${apiKey}`;
@@ -305,8 +308,7 @@ export const ChatScreen = ({
             ...oldResult?.slice(0, index),
             [
               { ...oldResult[index][0], isError: true },
-              inputText,
-              ...oldResult[index].slice(2),
+              ...oldResult[index].slice(1),
             ],
             ...oldResult?.slice(index + 1),
           ]);
@@ -314,33 +316,11 @@ export const ChatScreen = ({
         setError(true);
       } else {
         toggleExpandMessage();
-        if (!error && regen) {
-          setChats((oldResult) => [
-            ...oldResult?.slice(0, index),
-            [
-              data,
-              { ...oldResult[index][1], isError: false },
-              ...oldResult[index].slice(2),
-            ],
-            ...oldResult?.slice(index + 1),
-          ]);
-        } else if (regen) {
-          setChats((oldResult) => [
-            ...oldResult?.slice(0, index),
-            [
-              data,
-              { ...oldResult[index][1], isError: false },
-              ...oldResult[index],
-            ],
-            ...oldResult?.slice(index + 1),
-          ]);
-        } else {
-          setChats((oldResult) => [
-            ...oldResult?.slice(0, index),
-            [data, ...oldResult[index]],
-            ...oldResult?.slice(index + 1),
-          ]);
-        }
+        setChats((oldResult) => [
+          ...oldResult?.slice(0, index),
+          [data, ...oldResult[index]],
+          ...oldResult?.slice(index + 1),
+        ]);
       }
     } catch (e) {
       setKeyChanged(false);
@@ -361,8 +341,7 @@ export const ChatScreen = ({
           ...oldResult?.slice(0, index),
           [
             { ...oldResult[index][0], isError: true },
-            inputText,
-            ...oldResult[index].slice(2),
+            ...oldResult[index].slice(1),
           ],
           ...oldResult?.slice(index + 1),
         ]);
@@ -395,7 +374,6 @@ export const ChatScreen = ({
               setEditMessage={setEditMessage}
               setInput={setInput}
               setRegen={setRegen}
-              setRegenIndex={setRegenIndex}
               setRetry={setRetry}
               setError={setError}
               theme={theme}
@@ -416,7 +394,6 @@ export const ChatScreen = ({
               setRegen={setRegen}
               setError={setError}
               setRetry={setRetry}
-              setRegenIndex={setRegenIndex}
               setEditMessage={setEditMessage}
               setInput={setInput}
               theme={theme}

@@ -25,10 +25,10 @@ export const MessageList = ({
   setEditMessage,
   setInput,
   setRegen,
-  setRegenIndex,
   setRetry,
   setError,
   regen,
+  regenIndex,
   theme,
   color,
   listRef,
@@ -36,27 +36,29 @@ export const MessageList = ({
   const insets = useSafeAreaInsets();
   const [showCurrentMessage, setShowCurrentMessage] = useState(false);
   const [isCurrentMessage, setIsCurrentMessage] = useState(false);
+  const [indexChanged, setIndexChanged] = useState(false);
   const memoizedColor = useMemo(() => color, [color]);
-
-  const renderItem = useCallback(({ item, index }) => {
-    return (
-      <Message
-        item={item}
-        index={index}
-        setMessage={setMessage}
-        setEditMessage={setEditMessage}
-        setInput={setInput}
-        setRegen={setRegen}
-        setRegenIndex={setRegenIndex}
-        setRetry={setRetry}
-        setError={setError}
-        regen={regen}
-        theme={theme}
-        color={memoizedColor}
-        listRef={listRef}
-      />
-    );
-  }, [memoizedColor]);
+  const renderItem = useCallback(
+    ({ item, index }) => {
+      return (
+        <Message
+          item={item}
+          index={index}
+          setMessage={setMessage}
+          setEditMessage={setEditMessage}
+          setInput={setInput}
+          setRegen={setRegen}
+          setRetry={setRetry}
+          setError={setError}
+          regen={regen}
+          theme={theme}
+          color={memoizedColor}
+          listRef={listRef}
+        />
+      );
+    },
+    [memoizedColor]
+  );
 
   const keyExtractor = (item, index) => item?.result?.id || index;
   return (
