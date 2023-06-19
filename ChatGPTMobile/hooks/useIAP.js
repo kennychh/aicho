@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from "expo-constants";
+import { Alert } from "react-native";
 
 export const hasUpgraded = async () => {
   const hasUpgraded = await AsyncStorage.getItem("@hasUpgraded");
@@ -28,8 +29,9 @@ export const restoreUpgrade = async () => {
   return false;
 };
 
-export const buy = async ({ item = "aicho_pro", onSuccess }) => {
+export const buy = async ({ item, onSuccess }) => {
   if (Constants.appOwnership === "expo") return false;
+
   const InAppPurchases = await import("expo-in-app-purchases"),
     { IAPResponseCode } = await import("expo-in-app-purchases");
   try {
@@ -54,6 +56,6 @@ export const buy = async ({ item = "aicho_pro", onSuccess }) => {
     });
   } catch (e) {
     InAppPurchases.disconnectAsync();
-    throw e;
+    Alert.alert("Couldn't buy subscription", e.message);
   }
 };

@@ -7,6 +7,7 @@ import {
   Keyboard,
   TouchableOpacity,
   Animated,
+  Alert,
 } from "react-native";
 import { Header, SettingsInput } from "../components";
 import {
@@ -25,7 +26,31 @@ export const ProScreen = ({ props, theme, onPress, color }) => {
   const insets = useSafeAreaInsets();
   const yOffset = useRef(new Animated.Value(0)).current;
   const [headerHeight, setHeaderHeight] = useState(0);
+  const [isUpgradeBtnLoading, setIsUpgradeBtnLoading] = useState(false);
   const data = [<Text style={styles.text(theme)}>{"AIcho Pro"}</Text>];
+
+  async function handlePurchase() {
+    setIsUpgradeBtnLoading(true);
+    const buySubscription = () =>
+      buy({
+        item: "aicho_pro",
+        onSuccess: () =>
+          AsyncStorage.setItem(`@hasUpgraded`, JSON.stringify(true)),
+      });
+
+    try {
+      const result = await buySubscription();
+      if (result) {
+        Alert.alert("I guess", result);
+      } else {
+        Alert.alert("I guess not", result);
+      }
+    } catch (e) {
+      Alert.alert("Couldn't buy subscription", e.message);
+    }
+
+    setIsUpgradeBtnLoading(false);
+  }
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container(theme)}>
@@ -57,12 +82,7 @@ export const ProScreen = ({ props, theme, onPress, color }) => {
             text={"$1.99/month"}
             theme={theme}
             color={color}
-            onPress={() => {
-              if (onPress) {
-                onPress();
-                buy({});
-              }
-            }}
+            onPress={handlePurchase}
           />
         </View>
       </SafeAreaView>
