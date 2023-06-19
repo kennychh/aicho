@@ -60,12 +60,6 @@ export const SettingsScreen = ({ props, theme, setConfirmResetVisible }) => {
       style: styles.text(theme),
     },
     {
-      title: "AIcho Pro",
-      onPress: () => {
-        navigation.navigate("AIcho Pro");
-      },
-    },
-    {
       title: "About",
       onPress: () => {
         navigation.navigate("About");
@@ -91,8 +85,8 @@ export const SettingsScreen = ({ props, theme, setConfirmResetVisible }) => {
 
   const SettingsItem = ({ item }) => {
     const showDivider =
-      ["Account", "Chat Preferences", "AIcho Pro"].indexOf(item.title) > -1;
-    const isMiddle = ["About"].indexOf(item.title) > -1;
+      ["Account", "Chat Preferences", "About"].indexOf(item.title) > -1;
+    const isMiddle = [""].indexOf(item.title) > -1;
     return [
       "User",
       "Content & Display",
