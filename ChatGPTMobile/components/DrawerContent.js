@@ -51,7 +51,13 @@ export const DrawerContent = ({
         ]}
       >
         <Message style={styles.chatItemIcon} stroke={theme.iconColor} />
-        <Text style={styles.chatItemText(theme)}>{chatTitles[index]}</Text>
+        <Text
+          style={[styles.chatItemText(theme), { flex: 1 }]}
+          numberOfLines={1}
+          ellipsizeMode="tail"
+        >
+          {chatTitles[index]}
+        </Text>
       </TouchableOpacity>
     );
   };
@@ -195,14 +201,14 @@ const styles = StyleSheet.create({
   container: (theme) => ({
     backgroundColor: theme.drawerContent.backgroundColor,
     marginVertical: 16,
-    marginLeft: 16,
+    marginHorizontal: 16,
     justifyContent: "space-between",
     flex: 1,
   }),
   componentContainer: (theme) => ({
     width: "100%",
     height: "100%",
-    paddingRight: 16,
+    // paddingRight: 16,
     backgroundColor: theme.drawerContent.backgroundColor,
     // maxHeight: 400,
   }),

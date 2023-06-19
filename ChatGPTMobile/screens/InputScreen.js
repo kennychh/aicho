@@ -31,6 +31,7 @@ export const InputScreen = ({
   headerTitle,
   buttonText,
   keyboardType,
+  secureTextEntry = false,
   color,
 }) => {
   const navigation = props.navigation;
@@ -62,6 +63,7 @@ export const InputScreen = ({
       value={tempValue}
       setValue={setTempValue}
       keyboardType={keyboardType}
+      secureTextEntry={secureTextEntry}
     />,
     <Text style={styles.subtext(theme)}>{description}</Text>,
   ];

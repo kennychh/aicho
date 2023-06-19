@@ -13,6 +13,7 @@ export const AccountScreen = ({
     <InputScreen
       props={props}
       theme={theme}
+      secureTextEntry={true}
       setValue={setKey}
       onPress={() => {
         setKeyChanged(true);

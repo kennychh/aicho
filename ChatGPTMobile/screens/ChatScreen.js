@@ -58,6 +58,7 @@ export const ChatScreen = ({
   const [isResultValid, setResultValid] = useState(false);
   const [inputHeight, setInputHeight] = useState(0);
   const [isHeaderEditable, setIsHeaderEditable] = useState(false);
+  const [initialChatTitle, setInitialChatTitle] = useState("");
   const modalizeRef = useRef(null);
   const messageModalizeRef = useRef(null);
   const textInputRef = useRef(null);
@@ -142,6 +143,16 @@ export const ChatScreen = ({
       setShowBottomToast(false);
     }
   }, [error]);
+
+  useEffect(() => {
+    if (chats[index].length == 2) {
+      setChatTitles((oldChatTitles) => [
+        ...oldChatTitles.slice(0, chatIndex),
+        initialChatTitle,
+        ...oldChatTitles.slice(chatIndex + 1),
+      ]);
+    }
+  }, [initialChatTitle, chats, chatIndex]);
 
   useEffect(() => {
     if (isHeaderEditable) {
@@ -288,7 +299,19 @@ export const ChatScreen = ({
           frequency_penalty: parseFloat(frequencyPenalty),
         }),
       });
-      const data = await response.json();
+      let data = await response.json();
+      const ctIndex = data?.result?.text.indexOf("CT:");
+      let chatTitle =
+        data?.result?.text.substring(ctIndex).substring(3).trimStart() ||
+        "New chat";
+      if (chatTitle.slice(-1) === ".") {
+        chatTitle = chatTitle.slice(0, -1);
+      }
+      setInitialChatTitle(chatTitle);
+      data = {
+        ...data,
+        result: { ...data.result, text: data?.result?.text.slice(0, ctIndex) },
+      };
       setKeyChanged(false);
       if (data.error) {
         console.log(data.error);

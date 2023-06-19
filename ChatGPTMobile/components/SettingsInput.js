@@ -7,10 +7,12 @@ export const SettingsInput = ({
   value,
   setValue,
   keyboardType = "default",
+  secureTextEntry,
 }) => {
   return (
     <View style={styles.container}>
       <TextInput
+        secureTextEntry={secureTextEntry}
         placeholder={placeholder}
         style={styles.textInput(theme)}
         placeholderTextColor={theme.input.placeholderFontColor}
@@ -42,7 +44,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 12,
     // backgroundColor: 'red',
-    padding: 4
+    padding: 4,
   },
   textInput: (theme) => ({
     width: "100%",

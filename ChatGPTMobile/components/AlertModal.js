@@ -16,8 +16,8 @@ export const AlertModal = ({
       isVisible={visible}
       animationIn={"fadeIn"}
       animationOut={"fadeOut"}
-      animationInTiming={200}
-      animationOutTiming={200}
+      animationInTiming={100}
+      animationOutTiming={100}
       backdropTransitionOutTiming={0}
     >
       <View style={styles.modal}>
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.modal.backgroundColor,
     borderRadius: 16,
     paddingTop: 32,
-    width: 296,
+    width: 280,
   }),
   modal: {
     position: "absolute",

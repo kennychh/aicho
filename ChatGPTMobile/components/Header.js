@@ -57,6 +57,8 @@ export const Header = ({
         ref={textInputRef}
         keyboardAppearance={theme === getTheme("dark") ? "dark" : "light"}
         style={styles.barText(theme)}
+        numberOfLines={1}
+        ellipsizeMode="tail"
         value={headerTitle}
         editable={isHeaderEditable}
         returnKeyType={"done"}
@@ -160,6 +162,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "500",
     color: theme.fontColor,
+    marginRight: 16,
+    flex: 1,
   }),
   icon: {
     width: 32,
