@@ -145,14 +145,14 @@ export const ChatScreen = ({
   }, [error]);
 
   useEffect(() => {
-    if (chats[index].length == 2) {
+    if (chats[index].length == 2 && initialChatTitle != "") {
       setChatTitles((oldChatTitles) => [
         ...oldChatTitles.slice(0, chatIndex),
         initialChatTitle,
         ...oldChatTitles.slice(chatIndex + 1),
       ]);
     }
-  }, [initialChatTitle, chats, chatIndex]);
+  }, [initialChatTitle, chats]);
 
   useEffect(() => {
     if (isHeaderEditable) {
