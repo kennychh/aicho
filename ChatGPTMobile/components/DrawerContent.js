@@ -50,7 +50,7 @@ export const DrawerContent = ({
             : {},
         ]}
       >
-        <Message style={styles.chatItemIcon} stroke={theme.iconColor} />
+        <Message style={{ marginRight: 8 }} stroke={theme.iconColor} />
         <Text
           style={[styles.chatItemText(theme), { flex: 1 }]}
           numberOfLines={1}

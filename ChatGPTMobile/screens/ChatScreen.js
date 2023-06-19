@@ -310,7 +310,7 @@ export const ChatScreen = ({
       setInitialChatTitle(chatTitle);
       data = {
         ...data,
-        result: { ...data.result, text: data?.result?.text.slice(0, ctIndex) },
+        result: { ...data.result, text: data?.result?.text.slice(0, ctIndex).trim() },
       };
       setKeyChanged(false);
       if (data.error) {
