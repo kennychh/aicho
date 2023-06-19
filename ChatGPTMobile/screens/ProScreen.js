@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Animated,
   Alert,
+  Platform,
 } from "react-native";
 import { Header, SettingsInput } from "../components";
 import {
@@ -18,8 +19,12 @@ import {
 import { StatusBar } from "expo-status-bar";
 import { getTheme } from "../theme";
 import { TextButton } from "./../components";
-import { useRef, useState } from "react";
-import { hasUpgraded, restoreUpgrade, buy } from "../hooks/useIAP";
+import { useEffect, useRef, useState } from "react";
+import Constants from "expo-constants";
+
+const subscriptionSkus = Platform.select({
+  ios: ["aicho_pro"],
+});
 
 export const ProScreen = ({ props, theme, onPress, color }) => {
   const navigation = props.navigation;
@@ -27,30 +32,27 @@ export const ProScreen = ({ props, theme, onPress, color }) => {
   const yOffset = useRef(new Animated.Value(0)).current;
   const [headerHeight, setHeaderHeight] = useState(0);
   const [isUpgradeBtnLoading, setIsUpgradeBtnLoading] = useState(false);
-  const data = [<Text style={styles.text(theme)}>{"AIcho Pro"}</Text>];
+  const [text, setText] = useState("");
+  const data = [<Text style={styles.text(theme)}>{text}</Text>];
+  const key = "appl_OpEHIehKoJaOakWiZDphVifxLrU";
 
-  async function handlePurchase() {
-    setIsUpgradeBtnLoading(true);
-    const buySubscription = () =>
-      buy({
-        item: "aicho_pro",
-        onSuccess: () =>
-          AsyncStorage.setItem(`@hasUpgraded`, JSON.stringify(true)),
-      });
-
-    try {
-      const result = await buySubscription();
-      if (result) {
-        Alert.alert("I guess", result);
-      } else {
-        Alert.alert("I guess not", result);
-      }
-    } catch (e) {
-      Alert.alert("Couldn't buy subscription", e.message);
+  useEffect(() => {
+    if (Constants.appOwnership === "expo") {
+      setText("expo");
+    } else {
+      const main = async () => {
+        const Purchases = await import("react-native-purchases"),
+          { getProducts } = await import("react-native-purchases");
+        await Purchases.configure({
+          apiKey: key,
+        });
+        const prods = await getProducts(["aicho_pro"]);
+        setText(prods);
+      };
+      main();
     }
+  }, []);
 
-    setIsUpgradeBtnLoading(false);
-  }
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container(theme)}>
@@ -82,7 +84,7 @@ export const ProScreen = ({ props, theme, onPress, color }) => {
             text={"$1.99/month"}
             theme={theme}
             color={color}
-            onPress={handlePurchase}
+            onPress={() => {}}
           />
         </View>
       </SafeAreaView>

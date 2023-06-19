@@ -32,7 +32,7 @@
         "usesNonExemptEncryption": false
       },
       "bundleIdentifier": "com.kckc0210.ChatGPTMobile",
-      "buildNumber": "20"
+      "buildNumber": "21"
     },
     "android": {
       "adaptiveIcon": {
