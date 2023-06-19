@@ -14,6 +14,7 @@ import {
   TemperatureScreen,
   PresencePenaltyScreen,
   FrequencyPenaltyScreen,
+  ProScreen,
 } from "./screens";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import {
@@ -675,6 +676,16 @@ export default function App() {
                 setUseDeviceSettings={setUseDeviceSettings}
                 color={color}
                 setColor={setColor}
+              />
+            )}
+          </Stack.Screen>
+          <Stack.Screen name="AIcho Pro" options={{ headerShown: false }}>
+            {(props) => (
+              <ProScreen
+                props={props}
+                theme={theme}
+                onPress={() => {}}
+                color={color}
               />
             )}
           </Stack.Screen>

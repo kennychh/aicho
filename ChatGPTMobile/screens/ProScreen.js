@@ -2,13 +2,13 @@ import {
   StyleSheet,
   View,
   Text,
+  TextInput,
   FlatList,
   Keyboard,
-  Image,
-  Switch,
+  TouchableOpacity,
   Animated,
 } from "react-native";
-import { Header } from "../components";
+import { Header, SettingsInput } from "../components";
 import {
   SafeAreaProvider,
   SafeAreaView,
@@ -16,28 +16,16 @@ import {
 } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { getTheme } from "../theme";
+import { TextButton } from "./../components";
 import { useRef, useState } from "react";
+import { hasUpgraded, restoreUpgrade, buy } from "../hooks/useIAP";
 
-export const AboutScreen = ({ props, theme }) => {
+export const ProScreen = ({ props, theme, onPress, color }) => {
   const navigation = props.navigation;
   const insets = useSafeAreaInsets();
-  const [headerHeight, setHeaderHeight] = useState(0);
   const yOffset = useRef(new Animated.Value(0)).current;
-  const data = [
-    <Image source={require("../assets/circle-icon.png")} style={styles.icon} />,
-    <Text style={[styles.title(theme)]}>Hi, I'm AIcho!</Text>,
-    <Text style={styles.subtext(theme)}>
-      AIcho is an AI chat bot that uses the official ChatGPT API powered by
-      OpenAI. Experience the power of AI and ChatGPT in a beautiful and
-      intuitive mobile app!
-    </Text>,
-    <Text style={[styles.subtext(theme), { paddingTop: 0 }]}>
-      This app has a variety of features of the official ChatGPT, such as
-      multiple conversations, context retention, and editing messages. It also
-      includes features by including the ability to tweak ChatGPT parameters,
-      and app themes!
-    </Text>,
-  ];
+  const [headerHeight, setHeaderHeight] = useState(0);
+  const data = [<Text style={styles.text(theme)}>{"AIcho Pro"}</Text>];
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container(theme)}>
@@ -47,75 +35,60 @@ export const AboutScreen = ({ props, theme }) => {
         />
         <FlatList
           data={data}
+          onScrollBeginDrag={Keyboard.dismiss}
           onScroll={(event) => {
             const offset = event.nativeEvent.contentOffset.y;
             yOffset.setValue(offset);
           }}
-          onScrollBeginDrag={Keyboard.dismiss}
           style={{ flex: 1, marginTop: headerHeight - insets.top }}
           indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
           renderItem={({ item }) => item}
         />
         <Header
           navigation={navigation}
-          headerTitle={"About"}
+          headerTitle={"AIcho Pro"}
           theme={theme}
           isSettingsHeader={true}
-          setHeight={setHeaderHeight}
           yOffset={yOffset}
+          setHeight={setHeaderHeight}
         />
+        <View style={{ marginBottom: 16 }}>
+          <TextButton
+            text={"$1.99/month"}
+            theme={theme}
+            color={color}
+            onPress={() => {
+              if (onPress) {
+                onPress();
+                buy({});
+              }
+            }}
+          />
+        </View>
       </SafeAreaView>
     </SafeAreaProvider>
   );
 };
 
 const styles = StyleSheet.create({
-  modalOption: (theme) => ({
-    padding: 16,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    backgroundColor: theme.onBackgroundColor,
-    marginHorizontal: 16,
-    marginTop: 16,
-    borderRadius: 16,
-  }),
-  modalOptionText: (theme) => ({
-    fontSize: 16,
-    alignSelf: "center",
-    fontWeight: "500",
-    color: theme.fontColor,
-  }),
-  icon: {
-    marginTop: 24,
-    width: 80,
-    height: 80,
-    alignSelf: "center",
-  },
   divider: (theme) => ({
     width: "100%",
     height: 1,
     backgroundColor: theme.divider.color,
   }),
   text: (theme) => ({
-    paddingTop: 16,
+    paddingBottom: 16,
     paddingLeft: 32,
+    paddingTop: 24,
     fontSize: 14,
     fontWeight: "700",
     color: theme.secondaryIconColor,
   }),
-  title: (theme) => ({
-    paddingTop: 16,
-    paddingHorizontal: 16,
-    fontSize: 16,
-    alignSelf: "center",
-    fontWeight: "700",
-    color: theme.iconColor,
-  }),
   subTextContainer: {
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "flex-end",
+    paddingHorizontal: 32,
   },
   subtext: (theme) => ({
     paddingTop: 16,

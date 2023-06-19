@@ -58,6 +58,8 @@ export const SettingsOption = ({
           <NavArrowRight
             stroke={theme.secondaryIconColor}
             style={styles.icon}
+            width={20}
+            height={20}
           />
         )}
       </TouchableOpacity>

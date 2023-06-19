@@ -56,13 +56,12 @@ export const Header = ({
       <TextInput
         ref={textInputRef}
         keyboardAppearance={theme === getTheme("dark") ? "dark" : "light"}
-        style={styles.barText(theme)}
+        style={[styles.barText(theme), { marginRight: 16, flex: 1 }]}
         numberOfLines={1}
         ellipsizeMode="tail"
         value={headerTitle}
         editable={isHeaderEditable}
         returnKeyType={"done"}
-        maxLength={25}
         onChangeText={(s) => {
           setChatTitles((oldChatTitles) => [
             ...oldChatTitles.slice(0, chatIndex),
@@ -162,8 +161,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "500",
     color: theme.fontColor,
-    marginRight: 16,
-    flex: 1,
   }),
   icon: {
     width: 32,

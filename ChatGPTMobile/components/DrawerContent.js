@@ -119,7 +119,9 @@ export const DrawerContent = ({
           }}
         >
           <Plus style={styles.chatItemIcon} stroke={theme.iconColor} />
-          <Text style={styles.chatItemText(theme)}>New chat</Text>
+          <Text style={styles.chatItemText(theme)} numberOfLines={1}>
+            New chat
+          </Text>
         </TouchableOpacity>
         {/* <TouchableOpacity
           style={styles.drawerOptions}
@@ -141,7 +143,9 @@ export const DrawerContent = ({
           }}
         >
           <Settings style={styles.chatItemIcon} stroke={theme.iconColor} />
-          <Text style={styles.chatItemText(theme)}>Settings</Text>
+          <Text style={styles.chatItemText(theme)} numberOfLines={1}>
+            Settings
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.drawerOptions}
@@ -151,6 +155,7 @@ export const DrawerContent = ({
         >
           <Delete style={styles.chatItemIcon} stroke={theme.error.color} />
           <Text
+            numberOfLines={1}
             style={[styles.chatItemText(theme), { color: theme.error.color }]}
           >
             Delete conversations
@@ -164,7 +169,7 @@ export const DrawerContent = ({
 const styles = StyleSheet.create({
   drawerOptions: {
     paddingHorizontal: 16,
-    marginRight: 16,
+    marginRight: 32,
     flexDirection: "row",
     flex: 1,
     alignItems: "center",

@@ -38,7 +38,7 @@ export const RadioButtonList = ({
               { alignItems: "center" },
             ]}
           >
-            <Text style={textStyle ? textStyle : styles.text(theme)}>
+            <Text style={textStyle ? textStyle : styles.text(theme)} numberOfLines={1}>
               {item.value}
             </Text>
             <View

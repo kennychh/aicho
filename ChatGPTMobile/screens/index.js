@@ -14,3 +14,4 @@ export * from "./AuthenticateScreen";
 export * from "./TemperatureScreen";
 export * from "./PresencePenaltyScreen";
 export * from "./FrequencyPenaltyScreen";
+export * from "./ProScreen";

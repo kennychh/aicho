@@ -62,7 +62,7 @@ export const SettingsScreen = ({ props, theme, setConfirmResetVisible }) => {
     {
       title: "AIcho Pro",
       onPress: () => {
-        navigation.navigate("Account");
+        navigation.navigate("AIcho Pro");
       },
     },
     {
