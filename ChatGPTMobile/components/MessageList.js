@@ -38,6 +38,7 @@ export const MessageList = ({
   const [isCurrentMessage, setIsCurrentMessage] = useState(false);
   const [indexChanged, setIndexChanged] = useState(false);
   const memoizedColor = useMemo(() => color, [color]);
+  const memoizedTheme = useMemo(() => theme, [theme]);
   const renderItem = useCallback(
     ({ item, index }) => {
       return (
@@ -51,13 +52,13 @@ export const MessageList = ({
           setRetry={setRetry}
           setError={setError}
           regen={regen}
-          theme={theme}
+          theme={memoizedTheme}
           color={memoizedColor}
           listRef={listRef}
         />
       );
     },
-    [memoizedColor]
+    [memoizedColor, memoizedTheme]
   );
 
   const keyExtractor = (item, index) => item?.result?.id || index;

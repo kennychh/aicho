@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Delete, Plus, Copy, Edit } from "../icons";
 import { Modalize } from "react-native-modalize";
+import * as Clipboard from "expo-clipboard";
 export const MenuModal = ({
   deleteConvo,
   modalizeRef,
@@ -10,6 +11,7 @@ export const MenuModal = ({
   headerTextInputRef,
   setIsHeaderEditable,
   theme,
+  chatInfo,
 }) => {
   const insets = useSafeAreaInsets();
   return (
@@ -34,7 +36,19 @@ export const MenuModal = ({
           </View>
         </TouchableOpacity>
         <View style={styles.modalOptionDivider(theme)} />
-        <TouchableOpacity onPress={() => onClose(modalizeRef)}>
+        <TouchableOpacity
+          onPress={() => {
+            const chatTexts = chatInfo
+              .map((chat) => chat.result?.text + "*#")
+              .reverse()
+              .toString()
+              .split("*#,")
+              .join("\n\n")
+              .replace("*#", "");
+            Clipboard.setStringAsync(chatTexts);
+            onClose(modalizeRef);
+          }}
+        >
           <View style={styles.modalOption}>
             <Copy stroke={theme.iconColor} />
             <Text style={styles.modalOptionText(theme)}>Copy conversation</Text>

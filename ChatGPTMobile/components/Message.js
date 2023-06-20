@@ -266,7 +266,9 @@ const styles = StyleSheet.create({
 
 function arePropsEqual(prevProps, nextProps) {
   return (
-    prevProps.color === nextProps.color && prevProps.item === nextProps.item
+    prevProps.color === nextProps.color &&
+    prevProps.item === nextProps.item &&
+    prevProps.theme === nextProps.theme
   );
 }
 

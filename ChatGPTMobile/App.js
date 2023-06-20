@@ -569,6 +569,7 @@ export default function App() {
               <PrivacyScreen
                 props={props}
                 theme={theme}
+                color={color}
                 retainContext={retainContext}
                 setRetainContext={setRetainContext}
                 authenticate={authenticate}

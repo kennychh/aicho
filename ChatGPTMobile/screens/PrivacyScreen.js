@@ -21,6 +21,7 @@ import { useRef, useState } from "react";
 export const PrivacyScreen = ({
   props,
   theme,
+  color,
   retainContext,
   setRetainContext,
   authenticate,
@@ -41,6 +42,7 @@ export const PrivacyScreen = ({
         Retain conversation context
       </Text>
       <Switch
+        trackColor={{ true: color }}
         style={{ marginVertical: -16 }}
         onValueChange={() => {
           setRetainContext(!retainContext);
@@ -61,6 +63,7 @@ export const PrivacyScreen = ({
         Use device authentication
       </Text>
       <Switch
+        trackColor={{ true: color }}
         style={{ marginVertical: -16 }}
         onValueChange={() => {
           setAuthenticate(!authenticate);

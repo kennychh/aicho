@@ -304,13 +304,18 @@ export const ChatScreen = ({
       let chatTitle =
         data?.result?.text.substring(ctIndex).substring(3).trimStart() ||
         "New chat";
-      if (chatTitle.slice(-1) === ".") {
+      if (ctIndex == -1) {
+        chatTitle = "New chat";
+      } else if (chatTitle.slice(-1) === ".") {
         chatTitle = chatTitle.slice(0, -1);
       }
       setInitialChatTitle(chatTitle);
       data = {
         ...data,
-        result: { ...data.result, text: data?.result?.text.slice(0, ctIndex).trim() },
+        result: {
+          ...data.result,
+          text: data?.result?.text.slice(0, ctIndex).trim(),
+        },
       };
       setKeyChanged(false);
       if (data.error) {
@@ -447,6 +452,7 @@ export const ChatScreen = ({
           headerTextInputRef={headerTextInputRef}
           setIsHeaderEditable={setIsHeaderEditable}
           theme={theme}
+          chatInfo={chats[index]}
         />
         <MessageModal
           message={message}
