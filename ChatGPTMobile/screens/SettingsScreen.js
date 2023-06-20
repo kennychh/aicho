@@ -145,11 +145,6 @@ export const SettingsScreen = ({ props, theme, setConfirmResetVisible }) => {
 };
 
 const styles = StyleSheet.create({
-  divider: (theme) => ({
-    width: "100%",
-    height: 1,
-    backgroundColor: theme.divider.color,
-  }),
   text: (theme) => ({
     paddingBottom: 16,
     paddingTop: 24,

@@ -197,11 +197,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: 52,
   },
-  divider: (theme) => ({
-    width: "100%",
-    height: 1,
-    backgroundColor: theme.divider.color,
-  }),
   text: (theme) => ({
     paddingBottom: 16,
     paddingTop: 32,

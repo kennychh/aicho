@@ -100,7 +100,7 @@ export const DrawerContent = ({
           maxHeight: 240,
           minHeight: 240,
           borderTopColor: theme.drawerContent.drawerDivider.backgroundColor,
-          borderTopWidth: 1,
+          borderTopWidth: 0.5,
         }}
       >
         <TouchableOpacity
@@ -174,11 +174,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
   },
-  drawerDivider: (theme) => ({
-    height: 1,
-    backgroundColor: theme.drawerContent.drawerDivider.backgroundColor,
-    marginRight: 16,
-  }),
   drawerConversationsTitle: (theme) => ({
     fontSize: 20,
     fontWeight: "700",

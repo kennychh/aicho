@@ -79,7 +79,7 @@ export const ProScreen = ({ props, theme, onPress, color }) => {
           yOffset={yOffset}
           setHeight={setHeaderHeight}
         />
-        <View style={{ marginBottom: 16 }}>
+        <View style={{ marginBottom: 8 }}>
           <TextButton
             text={"$1.99/month"}
             theme={theme}
@@ -93,11 +93,6 @@ export const ProScreen = ({ props, theme, onPress, color }) => {
 };
 
 const styles = StyleSheet.create({
-  divider: (theme) => ({
-    width: "100%",
-    height: 1,
-    backgroundColor: theme.divider.color,
-  }),
   text: (theme) => ({
     paddingBottom: 16,
     paddingLeft: 32,

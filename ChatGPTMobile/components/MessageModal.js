@@ -38,7 +38,7 @@ export const MessageModal = ({
       <View
         style={[
           styles.modalOptionsContainer(theme),
-          { marginBottom: insets.bottom + 16 },
+          { marginBottom: insets.bottom + 8 },
         ]}
       >
         {/* {isError && (
@@ -73,13 +73,16 @@ export const MessageModal = ({
         </TouchableOpacity>
         {isInput && (
           <View>
-            <View style={styles.modalOptionDivider(theme)} />
             <TouchableOpacity
               onPress={() => {
                 onClose(modalizeRef);
                 setMessage(null);
                 setEditMessage(message);
                 setInput(text);
+              }}
+              style={{
+                borderTopColor: theme.modal.divider.backgroundColor,
+                borderTopWidth: 0.5,
               }}
             >
               <View style={styles.modalOption}>
@@ -114,11 +117,6 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     color: theme.fontColor,
     paddingVertical: 16,
-  }),
-  modalOptionDivider: (theme) => ({
-    width: "100%",
-    height: 1,
-    backgroundColor: theme.modal.divider.backgroundColor,
   }),
   modalOption: {
     width: "100%",

@@ -92,11 +92,6 @@ const styles = StyleSheet.create({
     height: 80,
     alignSelf: "center",
   },
-  divider: (theme) => ({
-    width: "100%",
-    height: 1,
-    backgroundColor: theme.divider.color,
-  }),
   text: (theme) => ({
     paddingTop: 16,
     paddingLeft: 32,

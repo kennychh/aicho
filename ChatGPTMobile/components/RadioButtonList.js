@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 16,
-    borderBottomWidth: showDivider ? 1 : 0,
+    borderBottomWidth: showDivider ? 0.5 : 0,
     borderBottomColor: showDivider
       ? theme.modal.divider.backgroundColor
       : "transparent",
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   }),
   unselectedRadio: (theme) => ({
     borderColor: theme.radioButton.disabledColor,
-    borderWidth: 2,
+    borderWidth: 1.5,
     width: 24,
     height: 24,
     borderRadius: 100,
@@ -86,11 +86,6 @@ const styles = StyleSheet.create({
     borderRadius: "100%",
     alignSelf: "center",
   },
-  divider: (theme) => ({
-    width: "100%",
-    height: 1,
-    backgroundColor: theme.divider.color,
-  }),
   text: (theme) => ({
     paddingVertical: 16,
     fontSize: 16,

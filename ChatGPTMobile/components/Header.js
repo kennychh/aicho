@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "100%",
     borderBottomColor: theme.divider.color,
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.5,
     alignContent: "space-between",
     paddingHorizontal: 16,
     paddingVertical: 8,

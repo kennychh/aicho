@@ -129,11 +129,6 @@ const styles = StyleSheet.create({
     borderRadius: "100%",
     alignSelf: "center",
   },
-  divider: (theme) => ({
-    width: "100%",
-    height: 1,
-    backgroundColor: theme.divider.color,
-  }),
   text: (theme) => ({
     paddingBottom: 16,
     paddingTop: 24,

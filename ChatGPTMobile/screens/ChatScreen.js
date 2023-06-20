@@ -19,6 +19,7 @@ import {
   MessageModal,
   BottomToast,
 } from "../components";
+import * as Device from "expo-device";
 import { getTheme } from "../theme";
 
 export const ChatScreen = ({
@@ -59,6 +60,7 @@ export const ChatScreen = ({
   const [inputHeight, setInputHeight] = useState(0);
   const [isHeaderEditable, setIsHeaderEditable] = useState(false);
   const [initialChatTitle, setInitialChatTitle] = useState("");
+  const [deviceType, setDeviceType] = useState(0);
   const modalizeRef = useRef(null);
   const messageModalizeRef = useRef(null);
   const textInputRef = useRef(null);
@@ -90,6 +92,12 @@ export const ChatScreen = ({
       update: { type: "spring", springDamping: 10 },
     });
   };
+
+  useEffect(() => {
+    Device.getDeviceTypeAsync().then((deviceType) => {
+      setDeviceType(deviceType);
+    });
+  }, []);
 
   useEffect(() => {
     if (input.replace(/\s+/g, "") != "") {
@@ -390,6 +398,7 @@ export const ChatScreen = ({
           style={theme === getTheme("dark") ? "light" : "dark"}
         />
         <KeyboardAvoidingView
+          enabled={deviceType != 2}
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={styles.componentContainer}
         >

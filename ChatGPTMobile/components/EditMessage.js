@@ -69,7 +69,7 @@ export const EditMessage = ({
             flexDirection: "row",
             alignItems: "center",
             borderTopColor: theme.divider.color,
-            borderTopWidth: 1,
+            borderTopWidth: 0.5,
           }}
         >
           <TouchableOpacity

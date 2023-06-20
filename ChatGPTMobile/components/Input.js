@@ -145,11 +145,6 @@ export const Input = ({
 };
 
 const styles = StyleSheet.create({
-  divider: (theme) => ({
-    height: 1,
-    marginHorizontal: -16,
-    backgroundColor: theme.divider.color,
-  }),
   inputBottomBackground: (theme) => ({
     position: "absolute",
     backgroundColor: theme.backgroundColor,

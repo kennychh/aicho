@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: (showDivider && !isMiddle) || isSingle ? 16 : 0,
     borderBottomLeftRadius: (showDivider || isMiddle) && !isSingle ? 0 : 16,
     borderBottomRightRadius: (showDivider || isMiddle) && !isSingle ? 0 : 16,
-    borderBottomWidth: (showDivider || isMiddle) && !isSingle ? 1 : 0,
+    borderBottomWidth: (showDivider || isMiddle) && !isSingle ? 0.5 : 0,
     borderColor: theme.modal.divider.backgroundColor,
   }),
 });

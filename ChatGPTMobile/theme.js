@@ -8,7 +8,7 @@ const lightTheme = {
     fontColor: "white",
   },
   divider: {
-    color: "#F6F6F6",
+    color: "#DBDBDB",
   },
   radioButton: {
     disabledColor: "#A3A3A3",

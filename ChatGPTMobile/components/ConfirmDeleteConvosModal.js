@@ -39,9 +39,7 @@ export const ConfirmDeleteConvosModal = ({
       theme={theme}
       title={"Delete conversations?"}
       buttonText={"Delete"}
-      subtext={
-        "This will delete all conversations from your device."
-      }
+      subtext={"This will delete all conversations from your device."}
     />
   );
 };
@@ -70,11 +68,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontWeight: "500",
     color: theme.fontColor,
-  }),
-  modalOptionDivider: (theme) => ({
-    width: "100%",
-    height: 1,
-    backgroundColor: theme.modal.divider.backgroundColor,
   }),
   modalOption: {
     width: "100%",

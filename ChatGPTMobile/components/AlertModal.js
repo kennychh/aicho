@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderTopColor: theme.modal.divider.backgroundColor,
-    borderTopWidth: 1,
+    borderTopWidth: 0.5,
   }),
   container: (theme) => ({
     backgroundColor: theme.modal.backgroundColor,

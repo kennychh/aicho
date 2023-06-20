@@ -93,7 +93,7 @@ export const InputScreen = ({
           yOffset={yOffset}
           setHeight={setHeaderHeight}
         />
-        <View style={{ marginBottom: 16 }}>
+        <View style={{ marginBottom: 8 }}>
           <TextButton
             text={buttonText}
             theme={theme}
@@ -113,11 +113,6 @@ export const InputScreen = ({
 };
 
 const styles = StyleSheet.create({
-  divider: (theme) => ({
-    width: "100%",
-    height: 1,
-    backgroundColor: theme.divider.color,
-  }),
   text: (theme) => ({
     paddingBottom: 16,
     paddingLeft: 32,
