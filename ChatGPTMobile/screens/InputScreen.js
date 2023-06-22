@@ -114,9 +114,9 @@ export const InputScreen = ({
 
 const styles = StyleSheet.create({
   text: (theme) => ({
-    paddingBottom: 16,
+    paddingBottom: 8,
     paddingLeft: 32,
-    paddingTop: 24,
+    paddingTop: 32,
     fontSize: 14,
     fontWeight: "700",
     color: theme.secondaryIconColor,
@@ -128,9 +128,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
   },
   subtext: (theme) => ({
-    paddingTop: 16,
+    paddingTop: 8,
     paddingHorizontal: 32,
-    paddingBottom: 16,
     fontSize: 12,
     color: theme.secondaryIconColor,
   }),

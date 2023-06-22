@@ -130,8 +130,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   text: (theme) => ({
-    paddingBottom: 16,
-    paddingTop: 24,
+    paddingBottom: 8,
+    paddingTop: 32,
     paddingLeft: 32,
     fontSize: 14,
     fontWeight: "700",

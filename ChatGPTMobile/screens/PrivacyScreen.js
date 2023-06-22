@@ -32,7 +32,7 @@ export const PrivacyScreen = ({
   const [headerHeight, setHeaderHeight] = useState(0);
   const navigation = props.navigation;
   const data = [
-    <Text style={[styles.subtext(theme), { paddingTop: 24 }]}>
+    <Text style={[styles.subtext(theme), { paddingTop: 32 }]}>
       Your conversations and settings are stored on your device. Your API key is
       never shared, and is encrypted and securely stored locally.
     </Text>,
@@ -113,7 +113,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     backgroundColor: theme.onBackgroundColor,
     marginHorizontal: 16,
-    marginTop: 16,
     borderRadius: 16,
   }),
   modalOptionText: (theme) => ({
@@ -128,8 +127,9 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   text: (theme) => ({
-    paddingTop: 16,
+    paddingTop: 32,
     paddingLeft: 32,
+    paddingBottom: 8,
     fontSize: 14,
     fontWeight: "700",
     color: theme.secondaryIconColor,
@@ -148,9 +148,8 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   subtext: (theme) => ({
-    paddingTop: 16,
+    paddingTop: 8,
     paddingHorizontal: 32,
-    paddingBottom: 16,
     fontSize: 12,
     color: theme.secondaryIconColor,
   }),

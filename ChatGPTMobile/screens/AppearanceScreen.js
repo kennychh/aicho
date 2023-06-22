@@ -62,7 +62,7 @@ export const AppearanceScreen = ({
     "#4361ee",
   ];
   const data = [
-    <Text style={[styles.text(theme), { paddingTop: 24 }]}>Theme</Text>,
+    <Text style={styles.text(theme)}>Theme</Text>,
     <View style={styles.appearanceContainer(theme)}>
       <View style={styles.themeImagesContainer}>
         <View style={styles.themeImage(color)}>
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     width: 52,
   },
   text: (theme) => ({
-    paddingBottom: 16,
+    paddingBottom: 8,
     paddingTop: 32,
     paddingLeft: 32,
     fontSize: 14,
@@ -206,9 +206,8 @@ const styles = StyleSheet.create({
     color: theme.secondaryIconColor,
   }),
   subtext: (theme) => ({
-    paddingTop: 16,
+    paddingTop: 24,
     paddingHorizontal: 32,
-    paddingBottom: 16,
     fontSize: 12,
     color: theme.secondaryIconColor,
   }),

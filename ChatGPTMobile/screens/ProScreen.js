@@ -108,9 +108,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
   },
   subtext: (theme) => ({
-    paddingTop: 16,
+    paddingTop: 24,
     paddingHorizontal: 32,
-    paddingBottom: 16,
     fontSize: 12,
     color: theme.secondaryIconColor,
   }),

@@ -87,20 +87,20 @@ const styles = StyleSheet.create({
     color: theme.fontColor,
   }),
   icon: {
-    marginTop: 24,
+    marginTop: 32,
     width: 80,
     height: 80,
     alignSelf: "center",
   },
   text: (theme) => ({
-    paddingTop: 16,
+    paddingTop: 8,
     paddingLeft: 32,
     fontSize: 14,
     fontWeight: "700",
     color: theme.secondaryIconColor,
   }),
   title: (theme) => ({
-    paddingTop: 16,
+    paddingTop: 24,
     paddingHorizontal: 16,
     fontSize: 16,
     alignSelf: "center",
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   subtext: (theme) => ({
-    paddingTop: 16,
+    paddingTop: 8,
     paddingHorizontal: 32,
     paddingBottom: 16,
     fontSize: 12,
