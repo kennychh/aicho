@@ -1,10 +1,10 @@
-# ChatGPT Mobile (React Native/Expo)
+# AIcho (React Native/Expo)
 
 
 https://user-images.githubusercontent.com/48639878/221728998-2476e97c-be57-4431-abe5-715f6cbcb2a4.mp4
 
 
-A personal project that mimics ChatGPT in a RN mobile app. This utilizes the [Node.js client for the official ChatGPT API](https://github.com/transitive-bullshit/chatgpt-api), and [OpenAI API Quickstart](https://github.com/openai/openai-quickstart-node). 
+This utilizes the [Node.js client for the official ChatGPT API](https://github.com/transitive-bullshit/chatgpt-api), and [OpenAI API Quickstart](https://github.com/openai/openai-quickstart-node). 
 
 I made this project to not only expand my knowledge and skills in creating beatiful and functional mobile applications, but to also explore the world of AI and its impact on the technological world.
 
