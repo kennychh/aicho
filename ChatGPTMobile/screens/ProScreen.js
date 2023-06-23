@@ -67,7 +67,7 @@ export const ProScreen = ({ props, theme, onPress, color }) => {
             const offset = event.nativeEvent.contentOffset.y;
             yOffset.setValue(offset);
           }}
-          style={{ flex: 1, marginTop: headerHeight - insets.top }}
+          style={{ flex: 1, paddingTop: headerHeight}}
           indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
           renderItem={({ item }) => item}
         />

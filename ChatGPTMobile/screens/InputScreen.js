@@ -69,7 +69,7 @@ export const InputScreen = ({
   ];
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={styles.container(theme)}>
+      <SafeAreaView style={styles.container(theme)} edges={["left", "right"]}>
         <StatusBar
           animated={true}
           style={theme === getTheme("dark") ? "light" : "dark"}
@@ -81,7 +81,7 @@ export const InputScreen = ({
             const offset = event.nativeEvent.contentOffset.y;
             yOffset.setValue(offset);
           }}
-          style={{ flex: 1, marginTop: headerHeight - insets.top }}
+          style={{ flex: 1, paddingTop: headerHeight}}
           indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
           renderItem={({ item }) => item}
         />

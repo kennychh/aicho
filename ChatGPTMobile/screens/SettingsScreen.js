@@ -109,10 +109,7 @@ export const SettingsScreen = ({ props, theme, setConfirmResetVisible }) => {
   };
   return (
     <SafeAreaProvider>
-      <SafeAreaView
-        style={styles.container(theme)}
-        edges={["top", "left", "right"]}
-      >
+      <SafeAreaView style={styles.container(theme)} edges={["left", "right"]}>
         <StatusBar
           animated={true}
           style={theme === getTheme("dark") ? "light" : "dark"}
@@ -125,7 +122,7 @@ export const SettingsScreen = ({ props, theme, setConfirmResetVisible }) => {
             yOffset.setValue(offset);
           }}
           indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
-          style={{ flex: 1, marginTop: headerHeight - insets.top }}
+          style={{ flex: 1, paddingTop: headerHeight  }}
           renderItem={({ item }) => <SettingsItem item={item} />}
           keyExtractor={(item, index) => {
             return index;

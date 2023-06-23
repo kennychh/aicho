@@ -93,7 +93,7 @@ export const ChatPreferencesScreen = ({
   ];
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={styles.container(theme)}>
+      <SafeAreaView style={styles.container(theme)} edges={["left", "right"]}>
         <StatusBar
           animated={true}
           style={theme === getTheme("dark") ? "light" : "dark"}
@@ -105,7 +105,7 @@ export const ChatPreferencesScreen = ({
             yOffset.setValue(offset);
           }}
           onScrollBeginDrag={Keyboard.dismiss}
-          style={{ flex: 1, marginTop: headerHeight - insets.top }}
+          style={{ flex: 1, paddingTop: headerHeight}}
           indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
           renderItem={({ item }) => item}
         />

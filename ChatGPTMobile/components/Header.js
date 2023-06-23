@@ -40,7 +40,7 @@ export const Header = ({
         inputRange: [0, 16],
         outputRange: [1, 100],
       })
-    : 80;
+    : 100;
   const chatGptTitle = (
     <View
       style={{
@@ -129,29 +129,18 @@ export const Header = ({
       tint={theme === getTheme("dark") ? "dark" : "light"}
       intensity={intensity}
     >
-      {isSettingsHeader ? (
-        <HeaderButton
-          icon={<ArrowLeft stroke={theme.iconColor} />}
-          onPress={() => navigation.goBack()}
-        />
-      ) : (
-        <HeaderButton
-          icon={<Menu stroke={theme.iconColor} />}
-          onPress={() => navigation.openDrawer()}
-        />
-      )}
-      {isSettingsHeader ? settingsTitle : chatGptTitle}
-      {!isSettingsHeader ? (
-        <HeaderButton
-          icon={<More stroke={theme.iconColor} />}
-          onPress={() => {
-            Keyboard.dismiss();
-            onOpen(modalizeRef);
-          }}
-        />
-      ) : (
-        <More stroke={"transparent"} />
-      )}
+      <HeaderButton
+        icon={<Menu stroke={theme.iconColor} />}
+        onPress={() => navigation.openDrawer()}
+      />
+      {chatGptTitle}
+      <HeaderButton
+        icon={<More stroke={theme.iconColor} />}
+        onPress={() => {
+          Keyboard.dismiss();
+          onOpen(modalizeRef);
+        }}
+      />
     </BlurView>
   );
 };
