@@ -83,6 +83,34 @@ export const Input = ({
     }
   };
 
+  const inputContainer = (
+    <View style={styles.inputContainer(theme)}>
+      <View style={{ flex: 1, paddingTop: 12, paddingBottom: 12 }}>
+        <TextInput
+          ref={textInputRef}
+          keyboardAppearance={theme === getTheme("dark") ? "dark" : "light"}
+          placeholder={editable ? "Enter prompt" : "Regenerate response"}
+          placeholderTextColor={theme.input.placeholderFontColor}
+          style={styles.input(theme)}
+          multiline={true}
+          value={input}
+          editable={editable}
+          onChangeText={(s) => setInput(s)}
+        />
+      </View>
+      <TouchableOpacity
+        onPress={() => {
+          getInputOnPress();
+          setEditMessage(null);
+        }}
+        style={[styles.button(color), getInputIconColor()]}
+        disabled={getInputDisabled()}
+      >
+        {showInputIcon()}
+      </TouchableOpacity>
+    </View>
+  );
+
   useEffect(() => {
     setEditable(!!editMessage || !error);
   }, [editMessage, error]);
@@ -94,7 +122,7 @@ export const Input = ({
   }, [editable, editMessage]);
 
   return (
-    <View>
+    <View style={{ zIndex: 6 }}>
       <View
         style={[
           styles.inputBottomBackground(theme),
@@ -102,41 +130,18 @@ export const Input = ({
         ]}
       />
       <View style={styles.container} onLayout={(event) => onLayout(event)}>
-        <View style={{ overflow: "hidden", borderRadius: 24 }}>
+        <View
+          style={[
+            { overflow: "hidden", borderRadius: 24 },
+            editMessage && { backgroundColor: theme.backgroundColor },
+          ]}
+        >
           <BlurView
             style={{ flexDirection: "row", alignItems: "center" }}
             tint={theme === getTheme("dark") ? "dark" : "light"}
-            intensity={80}
+            intensity={100}
           >
-            <View style={styles.inputContainer(theme)}>
-              <View style={{ flex: 1, paddingTop: 12, paddingBottom: 12 }}>
-                <TextInput
-                  ref={textInputRef}
-                  keyboardAppearance={
-                    theme === getTheme("dark") ? "dark" : "light"
-                  }
-                  placeholder={
-                    editable ? "Enter prompt" : "Regenerate response"
-                  }
-                  placeholderTextColor={theme.input.placeholderFontColor}
-                  style={styles.input(theme)}
-                  multiline={true}
-                  value={input}
-                  editable={editable}
-                  onChangeText={(s) => setInput(s)}
-                />
-              </View>
-              <TouchableOpacity
-                onPress={() => {
-                  getInputOnPress();
-                  setEditMessage(null);
-                }}
-                style={[styles.button(color), getInputIconColor()]}
-                disabled={getInputDisabled()}
-              >
-                {showInputIcon()}
-              </TouchableOpacity>
-            </View>
+            {inputContainer}
           </BlurView>
         </View>
       </View>

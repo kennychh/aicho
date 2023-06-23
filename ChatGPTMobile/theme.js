@@ -32,6 +32,10 @@ const lightTheme = {
       },
     },
   },
+  scrollToButton: {
+    iconColor: "black",
+    backgroundColor: "white",
+  },
   modal: {
     fontColor: "black",
     backgroundColor: "white",
@@ -106,7 +110,7 @@ const darkTheme = {
     fontColor: "white",
   },
   input: {
-    backgroundColor: "rgba(15, 15, 15, 0.4)",
+    backgroundColor: "#1C1C1D",
     fontColor: "white",
     placeholderFontColor: "#A5A5A5",
     button: {
@@ -115,6 +119,10 @@ const darkTheme = {
         backgroundColor: "#2C2C2D",
       },
     },
+  },
+  scrollToButton: {
+    iconColor: "white",
+    backgroundColor: "#2C2C2D",
   },
   modal: {
     fontColor: "white",

@@ -16,6 +16,7 @@ export const EditMessage = ({
   setInput,
   editMessage,
   listRef,
+  setEditMessageHeight,
 }) => {
   const windowWidth = Dimensions.get("window").width;
 
@@ -51,15 +52,21 @@ export const EditMessage = ({
         },
       });
       setShowEdit(false);
+      setEditMessageHeight(0);
     }
   }, [editMessage]);
   return (
     showEdit && (
       <View
+        onLayout={(event) => {
+          const { height } = event.nativeEvent.layout;
+          setEditMessageHeight(height);
+        }}
         style={{
           width: "100%",
           marginTop: inputOffset,
           transform: [{ scaleY: -1 }],
+          zIndex: 3,
         }}
       >
         <View

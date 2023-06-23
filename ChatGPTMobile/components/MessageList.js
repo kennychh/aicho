@@ -16,6 +16,7 @@ import Animated, {
   FadeInDown,
   FadeInUp,
 } from "react-native-reanimated";
+import { ScrollToButton } from "./ScrollToButton";
 
 export const MessageList = ({
   data,
@@ -32,6 +33,10 @@ export const MessageList = ({
   theme,
   color,
   listRef,
+  showScrollToButton,
+  setShowScrollToButton,
+  setEditMessageHeight,
+  editMessageHeight,
 }) => {
   const insets = useSafeAreaInsets();
   const [showCurrentMessage, setShowCurrentMessage] = useState(false);
@@ -70,6 +75,14 @@ export const MessageList = ({
         transform: [{ scaleY: -1 }],
       }}
     >
+      <ScrollToButton
+        listRef={listRef}
+        theme={theme}
+        inputOffset={inputOffset}
+        showScrollToButton={showScrollToButton}
+        setShowScrollToButton={setShowScrollToButton}
+        editMessageHeight={editMessageHeight}
+      />
       <EditMessage
         theme={theme}
         inputOffset={inputOffset}
@@ -77,19 +90,20 @@ export const MessageList = ({
         setInput={setInput}
         editMessage={editMessage}
         listRef={listRef}
+        setEditMessageHeight={setEditMessageHeight}
       />
       <FlatList
-        ref={listRef}
+        ref={(list) => (listRef.current = list)}
         data={data}
         indicator
-        // onScroll={(event) => {
-        //   const y =
-        //     event.nativeEvent.contentSize.height -
-        //     event.nativeEvent.layoutMeasurement.height;
-
-        //   const invertedYOffset = event.nativeEvent.contentOffset.y;
-        //   yOffset.setValue(y - invertedYOffset);
-        // }}
+        onScroll={(event) => {
+          y = event.nativeEvent.contentOffset.y;
+          if (y > 144 && !showScrollToButton) {
+            setShowScrollToButton(true);
+          } else if (y <= 144 && showScrollToButton) {
+            setShowScrollToButton(false);
+          }
+        }}
         keyboardShouldPersistTaps="always"
         onScrollBeginDrag={Keyboard.dismiss}
         removeClippedSubviews={true}

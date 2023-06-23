@@ -38,7 +38,7 @@ export const Header = ({
   const intensity = yOffset
     ? yOffset.interpolate({
         inputRange: [0, 16],
-        outputRange: [1, 80],
+        outputRange: [1, 100],
       })
     : 80;
   const chatGptTitle = (

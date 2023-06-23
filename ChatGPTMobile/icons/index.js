@@ -33,3 +33,4 @@ export * from "./LightTheme";
 export * from "./Undo";
 export * from "./Close2";
 export * from "./Edit2";
+export * from "./ChevronDown";

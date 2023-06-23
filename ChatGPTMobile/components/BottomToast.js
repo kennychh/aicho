@@ -82,7 +82,7 @@ export const BottomToast = ({ theme, text = "An error has occured." }) => {
       <BlurView
         style={[styles.container(theme)]}
         tint={theme === getTheme("dark") ? "dark" : "light"}
-        intensity={80}
+        intensity={100}
       >
         <Alert stroke={theme.iconColor} />
         <Text style={styles.text(theme)}>{text}</Text>

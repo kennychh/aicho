@@ -15,3 +15,4 @@ export * from "./AlertModal";
 export * from "./ConfirmResetDataModal";
 export * from "./BottomToast";
 export * from "./EditMessage";
+export * from "./ScrollToButton";

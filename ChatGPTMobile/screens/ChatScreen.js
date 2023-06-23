@@ -18,6 +18,7 @@ import {
   MenuModal,
   MessageModal,
   BottomToast,
+  ScrollToButton,
 } from "../components";
 import * as Device from "expo-device";
 import { getTheme } from "../theme";
@@ -66,6 +67,8 @@ export const ChatScreen = ({
   const textInputRef = useRef(null);
   const headerTextInputRef = useRef(null);
   const listRef = useRef(null);
+  const [showScrollToButton, setShowScrollToButton] = useState(false);
+  const [editMessageHeight, setEditMessageHeight] = useState(0);
 
   const onLayout = (event) => {
     const { x, y, height, width } = event.nativeEvent.layout;
@@ -416,6 +419,10 @@ export const ChatScreen = ({
               theme={theme}
               color={color}
               listRef={listRef}
+              showScrollToButton={showScrollToButton}
+              setShowScrollToButton={setShowScrollToButton}
+              setEditMessageHeight={setEditMessageHeight}
+              editMessageHeight={editMessageHeight}
             />
             <Input
               textInputRef={textInputRef}
