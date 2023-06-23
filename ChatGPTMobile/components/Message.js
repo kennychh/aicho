@@ -39,6 +39,7 @@ const Message = ({
   const progressRef = useRef();
   const [expandMessage, setExpandMessage] = useState(index != 0);
   const [haptic, setHaptic] = useState(false);
+
   useEffect(() => {
     if (haptic) {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
@@ -249,14 +250,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   itemContainer: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+    padding: 12,
     marginHorizontal: 16,
-    borderRadius: 24,
+    borderRadius: 22,
     alignSelf: "left",
     alignItems: "center",
     justifyContent: "center",
-    minHeight: 40,
+    // minHeight: 40,
   },
   movedItemContainer: {
     bottom: 0,
