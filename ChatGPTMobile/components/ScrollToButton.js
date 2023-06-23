@@ -22,9 +22,9 @@ export const ScrollToButton = ({
     if (showScrollToButton) {
       // listRef.current?.prepareForLayoutAnimationRender();
       LayoutAnimation.configureNext({
-        duration: 400,
+        duration: 200,
         create: {
-          type: LayoutAnimation.Types.spring,
+          type: LayoutAnimation.Types.easeInEaseOut,
           property: LayoutAnimation.Properties.opacity,
           springDamping: 1,
         },
@@ -37,19 +37,19 @@ export const ScrollToButton = ({
     } else {
       // listRef.current?.prepareForLayoutAnimationRender();
       LayoutAnimation.configureNext({
-        duration: 400,
+        duration: 200,
         create: {
-          type: LayoutAnimation.Types.spring,
+          type: LayoutAnimation.Types.easeInEaseOut,
           property: LayoutAnimation.Properties.opacity,
           springDamping: 1,
         },
         update: {
-          type: LayoutAnimation.Types.spring,
+          type: LayoutAnimation.Types.easeInEaseOut,
           property: LayoutAnimation.Properties.opacity,
           springDamping: 1,
         },
         delete: {
-          type: LayoutAnimation.Types.spring,
+          type: LayoutAnimation.Types.easeInEaseOut,
           property: LayoutAnimation.Properties.opacity,
           springDamping: 1,
         },
