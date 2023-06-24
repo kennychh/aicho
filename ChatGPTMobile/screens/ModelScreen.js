@@ -50,7 +50,10 @@ export const ModelScreen = ({ props, theme, model, setModel, color }) => {
   ];
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={styles.container(theme)} edges={["left", "right"]}>
+      <SafeAreaView
+        style={styles.container(theme)}
+        edges={["left", "right", "bottom"]}
+      >
         <StatusBar
           animated={true}
           style={theme === getTheme("dark") ? "light" : "dark"}
@@ -62,7 +65,7 @@ export const ModelScreen = ({ props, theme, model, setModel, color }) => {
           }}
           data={data}
           onScrollBeginDrag={Keyboard.dismiss}
-          style={{ flex: 1, paddingTop: headerHeight}}
+          style={{ flex: 1, paddingTop: headerHeight }}
           indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
           renderItem={({ item }) => item}
         />

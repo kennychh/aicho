@@ -15,6 +15,7 @@ import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { Alert, Edit2, Refresh } from "../icons";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { MenuView } from '@react-native-menu/menu';
 
 const Message = ({
   item,
@@ -186,7 +187,8 @@ const Message = ({
                 </View>
               )}
               <TouchableOpacity
-                delayPressIn={500}
+                delayPressIn={200}
+                delayLongPress={200}
                 onLongPress={() => {
                   Keyboard.dismiss();
                   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -257,6 +259,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     // minHeight: 40,
+    minWidth: 48,
   },
   movedItemContainer: {
     bottom: 0,
