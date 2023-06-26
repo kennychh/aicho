@@ -126,7 +126,7 @@ export const Input = ({
       <View
         style={[
           styles.inputBottomBackground(theme),
-          { height: height / 2 + 4, width: windowWidth - 16 },
+          { height: height / 2 + 4, width: windowWidth - 8 },
         ]}
       />
       <View style={styles.container} onLayout={(event) => onLayout(event)}>
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
   container: {
     // paddingTop: 8,
     paddingBottom: 8,
-    paddingHorizontal: 16,
+    paddingHorizontal: 8,
     position: "absolute",
     width: "100%",
     bottom: 0,

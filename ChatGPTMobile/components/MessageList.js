@@ -45,6 +45,7 @@ export const MessageList = ({
   const [indexChanged, setIndexChanged] = useState(false);
   const memoizedColor = useMemo(() => color, [color]);
   const memoizedTheme = useMemo(() => theme, [theme]);
+  const scrollEnabled = useRef(true);
   const renderItem = useCallback(
     ({ item, index }) => {
       return (
@@ -106,6 +107,7 @@ export const MessageList = ({
             setShowScrollToButton(false);
           }
         }}
+        scrollEnabled={listRef.current?.props?.scrollEnabled || true}
         keyboardShouldPersistTaps="always"
         onScrollBeginDrag={Keyboard.dismiss}
         removeClippedSubviews={true}

@@ -24,8 +24,17 @@ import {
 } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const HoldItem = ({ children, isActive, setIsActive, tint }) => {
+const HoldItem = ({
+  children,
+  isActive,
+  setIsActive,
+  tint,
+  isInput,
+  listRef,
+  swipeEnabled,
+}) => {
   const windowHeight = Dimensions.get("window").height;
+  const windowWidth = Dimensions.get("window").width;
   const insets = useSafeAreaInsets();
   const containerRef = useAnimatedRef();
   const [itemRectY, setItemRectY] = useState(null);
@@ -102,13 +111,39 @@ const HoldItem = ({ children, isActive, setIsActive, tint }) => {
     return 0;
   };
 
+  const calculateTransformXValue = () => {
+    "worklet";
+    let tX = 2;
+    if (isInput) {
+      tX = -2;
+    }
+    return tX;
+  };
+
   const animatedMessageStyle = useAnimatedStyle(() => {
     const animateOpacity = () =>
       withDelay(duration, withTiming(0, { duration: 0 }));
-    let ty = calculateTransformValue();
-    const transformAnimation = () =>
+    let tY = calculateTransformValue();
+    let tX = calculateTransformXValue();
+    const transformYAnimation = () =>
       active.value
-        ? withSpring(ty, {
+        ? withSpring(tY, {
+            damping: 33,
+            mass: 1.03,
+            stiffness: 400,
+            restDisplacementThreshold: 0.0001,
+            restSpeedThreshold: 0.0001,
+          })
+        : withSpring(0, {
+            damping: 33,
+            mass: 1.03,
+            stiffness: 400,
+            restDisplacementThreshold: 0.0001,
+            restSpeedThreshold: 0.0001,
+          });
+    const transformXAnimation = () =>
+      active.value
+        ? withSpring(tX, {
             damping: 33,
             mass: 1.03,
             stiffness: 400,
@@ -125,8 +160,9 @@ const HoldItem = ({ children, isActive, setIsActive, tint }) => {
     return {
       transform: [
         {
-          translateY: transformAnimation(),
+          translateY: transformYAnimation(),
         },
+        { translateX: transformXAnimation() },
       ],
     };
   });
@@ -137,10 +173,14 @@ const HoldItem = ({ children, isActive, setIsActive, tint }) => {
         position: "absolute",
         zIndex: 100,
         top: itemRectY,
-        left: itemRectX,
-        width: itemRectWidth,
-        height: itemRectHeight,
+        // width: itemRectWidth,
+        // height: itemRectHeight,
       },
+      isInput
+        ? itemRectWidth != windowWidth
+          ? { right: itemRectX + windowWidth - itemRectWidth }
+          : { right: itemRectX }
+        : { left: itemRectX },
       animatedMessageStyle,
     ],
     [animatedMessageStyle]
@@ -159,8 +199,10 @@ const HoldItem = ({ children, isActive, setIsActive, tint }) => {
             onHandlerStateChange={() => {
               if (isActive) {
                 active.value = false;
+                swipeEnabled.current = true;
                 setTimeout(() => {
                   setIsActive(false);
+                  listRef?.current?.setNativeProps({ scrollEnabled: true });
                 }, duration);
               }
               // setShowPortal(false);

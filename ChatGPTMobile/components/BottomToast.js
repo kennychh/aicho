@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     paddingHorizontal: 16,
-    marginHorizontal: 16,
+    marginHorizontal: 8,
     overflow: "hidden",
   }),
   text: (theme) => ({

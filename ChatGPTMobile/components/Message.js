@@ -47,6 +47,7 @@ const Message = ({
   const inputRange = [0, 1];
   const outputRange = [1, 0.97];
   const scale = animation.interpolate({ inputRange, outputRange });
+  const swipeEnabled = useRef(true);
 
   const onScaleInOut = () => {
     Animated.sequence([
@@ -99,7 +100,7 @@ const Message = ({
             backgroundColor: theme.onBackgroundColor,
             borderRadius: "100%",
             marginRight: 8,
-            marginLeft: 16,
+            marginLeft: 8,
             marginTop: 16,
           },
         ]}
@@ -138,7 +139,7 @@ const Message = ({
             alignSelf: "center",
             backgroundColor: theme.onBackgroundColor,
             borderRadius: "100%",
-            marginRight: 16,
+            marginRight: 8,
             marginLeft: 8,
             marginTop: 16,
           },
@@ -152,14 +153,16 @@ const Message = ({
     <TouchableWithoutFeedback
       delayLongPress={200}
       onLongPress={() => {
+        swipeEnabled.current = false;
         onScaleInOut();
         // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
         // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        Keyboard.dismiss();
+        listRef?.current?.setNativeProps({ scrollEnabled: false });
         setTimeout(() => {
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
           setIsActive(true);
         }, 160);
-        // Keyboard.dismiss();
         // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
         // setMessage(item);
       }}
@@ -199,6 +202,7 @@ const Message = ({
       <View style={{ transform: [{ scaleY: -1 }] }}>
         <View>
           <Swipeable
+            enabled={swipeEnabled.current}
             ref={swipeableRef}
             friction={2}
             rightThreshold={48}
@@ -246,7 +250,7 @@ const Message = ({
               {isError && !isInput && (
                 <View
                   style={{
-                    marginLeft: 16,
+                    marginLeft: 8,
                     marginRight: 0,
                     justifyContent: "center",
                   }}
@@ -258,6 +262,9 @@ const Message = ({
                 isActive={isActive}
                 setIsActive={setIsActive}
                 tint={theme == getTheme("dark") ? "dark" : "light"}
+                isInput={isInput}
+                listRef={listRef}
+                swipeEnabled={swipeEnabled}
               >
                 {messageItem}
               </HoldItem>
@@ -276,7 +283,7 @@ const Message = ({
 
 const styles = StyleSheet.create({
   alertIcon: {
-    marginRight: 16,
+    marginRight: 8,
   },
   messageContainer: {
     flexDirection: "row",
@@ -289,7 +296,7 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     padding: 12,
-    marginHorizontal: 16,
+    marginHorizontal: 8,
     borderRadius: 22,
     alignSelf: "left",
     alignItems: "center",
