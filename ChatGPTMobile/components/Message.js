@@ -9,13 +9,15 @@ import {
   UIManager,
   TouchableOpacity,
   Keyboard,
+  TouchableWithoutFeedback,
 } from "react-native";
 import * as Haptics from "expo-haptics";
-import { memo, useCallback, useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Alert, Edit2, Refresh } from "../icons";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { MenuView } from '@react-native-menu/menu';
+import HoldItem from "./HoldItem";
+import { getTheme } from "../theme";
 
 const Message = ({
   item,
@@ -40,6 +42,26 @@ const Message = ({
   const progressRef = useRef();
   const [expandMessage, setExpandMessage] = useState(index != 0);
   const [haptic, setHaptic] = useState(false);
+  const [isActive, setIsActive] = useState(false);
+  const animation = new Animated.Value(0);
+  const inputRange = [0, 1];
+  const outputRange = [1, 0.97];
+  const scale = animation.interpolate({ inputRange, outputRange });
+
+  const onScaleInOut = () => {
+    Animated.sequence([
+      Animated.timing(animation, {
+        duration: 100,
+        toValue: 1,
+        useNativeDriver: true,
+      }),
+      Animated.timing(animation, {
+        duration: 100,
+        toValue: 0,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  };
 
   useEffect(() => {
     if (haptic) {
@@ -126,114 +148,125 @@ const Message = ({
       </Animated.View>
     );
   };
+  const messageItem = (
+    <TouchableWithoutFeedback
+      delayLongPress={200}
+      onLongPress={() => {
+        onScaleInOut();
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        setTimeout(() => {
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+          setIsActive(true);
+        }, 200);
+        // Keyboard.dismiss();
+        // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+        // setMessage(item);
+      }}
+    >
+      <Animated.View
+        style={[
+          styles.itemContainer,
+          {
+            maxWidth: windowWidth - 100,
+            transform: [{ scale }],
+          },
+          isInput
+            ? {
+                marginLeft: "auto",
+                backgroundColor: color,
+                fontColor: "white",
+              }
+            : {
+                marginRight: "auto",
+                backgroundColor: theme.message.itemContainer.backgroundColor,
+              },
+        ]}
+      >
+        <Text
+          style={[
+            styles.text,
+            isInput ? { color: "white" } : { color: theme.message.fontColor },
+          ]}
+        >
+          {text}
+        </Text>
+      </Animated.View>
+    </TouchableWithoutFeedback>
+  );
   return (
     text != "" && (
-      <GestureHandlerRootView>
-        <View style={{ transform: [{ scaleY: -1 }] }}>
-          <Swipeable
-            ref={swipeableRef}
-            friction={2}
-            rightThreshold={48}
-            leftThreshold={48}
-            renderRightActions={(progress, dragX) => {
-              setProgressValue(progress);
-              progress.addListener(({ value }) => {
-                if (value >= 1 && !haptic) {
-                  setHaptic(true);
-                }
-              });
-              return isInput && renderRightAction(progress, dragX);
-            }}
-            renderLeftActions={(progress, dragX) => {
-              setProgressValue(progress);
-              progress.addListener(({ value }) => {
-                if (value >= 1 && !haptic) {
-                  setHaptic(true);
-                }
-              });
-              return !isInput && renderAction(progress, dragX);
-            }}
-            overshootFriction={2}
-            hitSlop={{ left: -60 }}
-            onSwipeableWillOpen={(direction) => {
-              if (direction == "right") {
-                setMessage(null);
-                setEditMessage(item);
-                setInput(text);
-              } else {
-                setError(false);
-                setRegen(item);
+      <View style={{ transform: [{ scaleY: -1 }] }}>
+        <Swipeable
+          ref={swipeableRef}
+          friction={2}
+          rightThreshold={48}
+          leftThreshold={48}
+          renderRightActions={(progress, dragX) => {
+            setProgressValue(progress);
+            progress.addListener(({ value }) => {
+              if (value >= 1 && !haptic) {
+                setHaptic(true);
               }
-              setTimeout(() => {
-                swipeableRef.current?.close();
-              }, 10);
-            }}
-            onSwipeableClose={() => {
-              setHaptic(false);
-              progressValue.removeAllListeners();
-              setProgressValue(null);
-            }}
-          >
-            <View style={styles.messageContainer}>
-              {isError && !isInput && (
-                <View
-                  style={{
-                    marginLeft: 16,
-                    marginRight: 0,
-                    justifyContent: "center",
-                  }}
-                >
-                  <Alert />
-                </View>
-              )}
-              <TouchableOpacity
-                delayPressIn={200}
-                delayLongPress={200}
-                onLongPress={() => {
-                  Keyboard.dismiss();
-                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-                  setMessage(item);
+            });
+            return isInput && renderRightAction(progress, dragX);
+          }}
+          renderLeftActions={(progress, dragX) => {
+            setProgressValue(progress);
+            progress.addListener(({ value }) => {
+              if (value >= 1 && !haptic) {
+                setHaptic(true);
+              }
+            });
+            return !isInput && renderAction(progress, dragX);
+          }}
+          overshootFriction={2}
+          hitSlop={{ left: -60 }}
+          onSwipeableWillOpen={(direction) => {
+            if (direction == "right") {
+              setMessage(null);
+              setEditMessage(item);
+              setInput(text);
+            } else {
+              setError(false);
+              setRegen(item);
+            }
+            setTimeout(() => {
+              swipeableRef.current?.close();
+            }, 10);
+          }}
+          onSwipeableClose={() => {
+            setHaptic(false);
+            progressValue.removeAllListeners();
+            setProgressValue(null);
+          }}
+        >
+          <View style={styles.messageContainer}>
+            {isError && !isInput && (
+              <View
+                style={{
+                  marginLeft: 16,
+                  marginRight: 0,
+                  justifyContent: "center",
                 }}
-                style={[
-                  styles.itemContainer,
-                  {
-                    maxWidth: windowWidth - 100,
-                  },
-                  isInput
-                    ? {
-                        marginLeft: "auto",
-                        backgroundColor: color,
-                        fontColor: "white",
-                      }
-                    : {
-                        marginRight: "auto",
-                        backgroundColor:
-                          theme.message.itemContainer.backgroundColor,
-                      },
-                ]}
               >
-                <View>
-                  <Text
-                    style={[
-                      styles.text,
-                      isInput
-                        ? { color: "white" }
-                        : { color: theme.message.fontColor },
-                    ]}
-                  >
-                    {text}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-              {isError && isInput && (
-                <View style={styles.alertIcon}>
-                  <Alert />
-                </View>
-              )}
-            </View>
-          </Swipeable>
-        </View>
-      </GestureHandlerRootView>
+                <Alert />
+              </View>
+            )}
+            <HoldItem
+              isActive={isActive}
+              setIsActive={setIsActive}
+              tint={theme == getTheme("dark") ? "dark" : "light"}
+            >
+              {messageItem}
+            </HoldItem>
+            {isError && isInput && (
+              <View style={styles.alertIcon}>
+                <Alert />
+              </View>
+            )}
+          </View>
+        </Swipeable>
+      </View>
     )
   );
 };

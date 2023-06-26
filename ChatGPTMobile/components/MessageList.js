@@ -37,6 +37,7 @@ export const MessageList = ({
   setShowScrollToButton,
   setEditMessageHeight,
   editMessageHeight,
+  intensity,
 }) => {
   const insets = useSafeAreaInsets();
   const [showCurrentMessage, setShowCurrentMessage] = useState(false);
@@ -60,6 +61,7 @@ export const MessageList = ({
           theme={memoizedTheme}
           color={memoizedColor}
           listRef={listRef}
+          intensity={intensity}
         />
       );
     },
@@ -107,7 +109,7 @@ export const MessageList = ({
         keyboardShouldPersistTaps="always"
         onScrollBeginDrag={Keyboard.dismiss}
         removeClippedSubviews={true}
-        initialNumToRender={20}
+        initialNumToRender={10}
         indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
         scrollIndicatorInsets={{
           top: 8,
