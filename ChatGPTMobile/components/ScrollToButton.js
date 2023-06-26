@@ -63,10 +63,7 @@ export const ScrollToButton = ({
         zIndex: 2,
         position: "absolute",
         transform: [{ scaleY: -1 }],
-        left: 0,
-        right: 0,
-        marginLeft: "auto",
-        marginRight: "auto",
+        alignSelf: "center",
         alignItems: "center",
         top: showButton ? inputOffset + 16 + editMessageHeight : -40,
       }}

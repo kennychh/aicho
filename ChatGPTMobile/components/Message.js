@@ -51,12 +51,12 @@ const Message = ({
   const onScaleInOut = () => {
     Animated.sequence([
       Animated.timing(animation, {
-        duration: 100,
+        duration: 75,
         toValue: 1,
         useNativeDriver: true,
       }),
       Animated.timing(animation, {
-        duration: 100,
+        duration: 75,
         toValue: 0,
         useNativeDriver: true,
       }),
@@ -153,11 +153,12 @@ const Message = ({
       delayLongPress={200}
       onLongPress={() => {
         onScaleInOut();
-        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+        // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
         setTimeout(() => {
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
           setIsActive(true);
-        }, 200);
+        }, 160);
         // Keyboard.dismiss();
         // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
         // setMessage(item);
@@ -172,12 +173,12 @@ const Message = ({
           },
           isInput
             ? {
-                marginLeft: "auto",
+                alignSelf: "flex-end",
                 backgroundColor: color,
                 fontColor: "white",
               }
             : {
-                marginRight: "auto",
+                alignSelf: "flex-start",
                 backgroundColor: theme.message.itemContainer.backgroundColor,
               },
         ]}
@@ -196,76 +197,78 @@ const Message = ({
   return (
     text != "" && (
       <View style={{ transform: [{ scaleY: -1 }] }}>
-        <Swipeable
-          ref={swipeableRef}
-          friction={2}
-          rightThreshold={48}
-          leftThreshold={48}
-          renderRightActions={(progress, dragX) => {
-            setProgressValue(progress);
-            progress.addListener(({ value }) => {
-              if (value >= 1 && !haptic) {
-                setHaptic(true);
+        <View>
+          <Swipeable
+            ref={swipeableRef}
+            friction={2}
+            rightThreshold={48}
+            leftThreshold={48}
+            renderRightActions={(progress, dragX) => {
+              setProgressValue(progress);
+              progress.addListener(({ value }) => {
+                if (value >= 1 && !haptic) {
+                  setHaptic(true);
+                }
+              });
+              return isInput && renderRightAction(progress, dragX);
+            }}
+            renderLeftActions={(progress, dragX) => {
+              setProgressValue(progress);
+              progress.addListener(({ value }) => {
+                if (value >= 1 && !haptic) {
+                  setHaptic(true);
+                }
+              });
+              return !isInput && renderAction(progress, dragX);
+            }}
+            overshootFriction={2}
+            hitSlop={{ left: -60 }}
+            onSwipeableWillOpen={(direction) => {
+              if (direction == "right") {
+                setMessage(null);
+                setEditMessage(item);
+                setInput(text);
+              } else {
+                setError(false);
+                setRegen(item);
               }
-            });
-            return isInput && renderRightAction(progress, dragX);
-          }}
-          renderLeftActions={(progress, dragX) => {
-            setProgressValue(progress);
-            progress.addListener(({ value }) => {
-              if (value >= 1 && !haptic) {
-                setHaptic(true);
-              }
-            });
-            return !isInput && renderAction(progress, dragX);
-          }}
-          overshootFriction={2}
-          hitSlop={{ left: -60 }}
-          onSwipeableWillOpen={(direction) => {
-            if (direction == "right") {
-              setMessage(null);
-              setEditMessage(item);
-              setInput(text);
-            } else {
-              setError(false);
-              setRegen(item);
-            }
-            setTimeout(() => {
-              swipeableRef.current?.close();
-            }, 10);
-          }}
-          onSwipeableClose={() => {
-            setHaptic(false);
-            progressValue.removeAllListeners();
-            setProgressValue(null);
-          }}
-        >
-          <View style={styles.messageContainer}>
-            {isError && !isInput && (
-              <View
-                style={{
-                  marginLeft: 16,
-                  marginRight: 0,
-                  justifyContent: "center",
-                }}
+              setTimeout(() => {
+                swipeableRef.current?.close();
+              }, 10);
+            }}
+            onSwipeableClose={() => {
+              setHaptic(false);
+              progressValue.removeAllListeners();
+              setProgressValue(null);
+            }}
+          >
+            <View style={styles.messageContainer}>
+              {isError && !isInput && (
+                <View
+                  style={{
+                    marginLeft: 16,
+                    marginRight: 0,
+                    justifyContent: "center",
+                  }}
+                >
+                  <Alert />
+                </View>
+              )}
+              <HoldItem
+                isActive={isActive}
+                setIsActive={setIsActive}
+                tint={theme == getTheme("dark") ? "dark" : "light"}
               >
-                <Alert />
-              </View>
-            )}
-            <HoldItem
-              isActive={isActive}
-              setIsActive={setIsActive}
-              tint={theme == getTheme("dark") ? "dark" : "light"}
-            >
-              {messageItem}
-            </HoldItem>
-            {isError && isInput && (
-              <View style={styles.alertIcon}>
-                <Alert />
-              </View>
-            )}
-          </View>
-        </Swipeable>
+                {messageItem}
+              </HoldItem>
+              {isError && isInput && (
+                <View style={styles.alertIcon}>
+                  <Alert />
+                </View>
+              )}
+            </View>
+          </Swipeable>
+        </View>
       </View>
     )
   );

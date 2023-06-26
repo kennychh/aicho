@@ -2,7 +2,7 @@ import { Portal } from "@gorhom/portal";
 import { BlurView } from "expo-blur";
 import { nanoid } from "nanoid/non-secure";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import Animated, {
   measure,
   runOnJS,
@@ -22,8 +22,11 @@ import {
   TapGestureHandler,
   TapGestureHandlerGestureEvent,
 } from "react-native-gesture-handler";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const HoldItem = ({ children, isActive, setIsActive, tint }) => {
+  const windowHeight = Dimensions.get("window").height;
+  const insets = useSafeAreaInsets();
   const containerRef = useAnimatedRef();
   const [itemRectY, setItemRectY] = useState(null);
   const [itemRectX, setItemRectX] = useState(null);
@@ -81,29 +84,43 @@ const HoldItem = ({ children, isActive, setIsActive, tint }) => {
   const animatedInitialMessageStyle = useAnimatedStyle(() => {
     return {
       opacity: active.value
-        ? withTiming(0, { duration: 150 })
-        :withDelay(duration, withTiming(1, { duration: 0 }))
+        ? withTiming(0, { duration: 50 })
+        : withDelay(duration, withTiming(1, { duration: 0 })),
     };
   });
+
+  const calculateTransformValue = () => {
+    "worklet";
+    if (itemRectY != null && itemRectY < insets.top) {
+      return -itemRectY + insets.top;
+    } else if (
+      itemRectY != null &&
+      itemRectY + itemRectHeight > windowHeight - insets.bottom
+    ) {
+      return -itemRectY - itemRectHeight + windowHeight - insets.bottom;
+    }
+    return 0;
+  };
 
   const animatedMessageStyle = useAnimatedStyle(() => {
     const animateOpacity = () =>
       withDelay(duration, withTiming(0, { duration: 0 }));
+    let ty = calculateTransformValue();
     const transformAnimation = () =>
       active.value
-        ? withSpring(0, {
+        ? withSpring(ty, {
             damping: 33,
             mass: 1.03,
-            stiffness: 500,
-            restDisplacementThreshold: 0.001,
-            restSpeedThreshold: 0.001,
+            stiffness: 400,
+            restDisplacementThreshold: 0.0001,
+            restSpeedThreshold: 0.0001,
           })
         : withSpring(0, {
             damping: 33,
             mass: 1.03,
-            stiffness: 500,
-            restDisplacementThreshold: 0.001,
-            restSpeedThreshold: 0.001,
+            stiffness: 400,
+            restDisplacementThreshold: 0.0001,
+            restSpeedThreshold: 0.0001,
           });
     return {
       transform: [
@@ -136,9 +153,6 @@ const HoldItem = ({ children, isActive, setIsActive, tint }) => {
 
   return (
     <>
-      <Animated.View ref={containerRef} style={initialMessageContainerStyle}>
-        {children}
-      </Animated.View>
       {active.value ? (
         <Portal>
           <TapGestureHandler
@@ -163,6 +177,9 @@ const HoldItem = ({ children, isActive, setIsActive, tint }) => {
           </Animated.View>
         </Portal>
       ) : null}
+      <Animated.View ref={containerRef} style={initialMessageContainerStyle}>
+        {children}
+      </Animated.View>
     </>
   );
 };
