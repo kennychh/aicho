@@ -66,6 +66,11 @@ const lightTheme = {
   toast: {
     backgroundColor: "rgba(239, 239, 239,0.6)",
   },
+  holdItem: {
+    menu: {
+      backgroundColor: "rgba(255,255,255,0.6)",
+    },
+  },
 };
 
 const darkTheme = {
@@ -135,7 +140,12 @@ const darkTheme = {
     },
   },
   toast: {
-    backgroundColor: "rgba(28, 28, 29, 0.6)",
+    backgroundColor: "rgba(28, 28, 29, 0.8)",
+  },
+  holdItem: {
+    menu: {
+      backgroundColor: "rgba(58, 58, 60, 0.6)",
+    },
   },
 };
 

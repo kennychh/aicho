@@ -52,12 +52,12 @@ const Message = ({
   const onScaleInOut = () => {
     Animated.sequence([
       Animated.timing(animation, {
-        duration: 75,
+        duration: 80,
         toValue: 1,
         useNativeDriver: true,
       }),
       Animated.timing(animation, {
-        duration: 75,
+        duration: 80,
         toValue: 0,
         useNativeDriver: true,
       }),
@@ -265,6 +265,7 @@ const Message = ({
                 isInput={isInput}
                 listRef={listRef}
                 swipeEnabled={swipeEnabled}
+                theme={theme}
               >
                 {messageItem}
               </HoldItem>

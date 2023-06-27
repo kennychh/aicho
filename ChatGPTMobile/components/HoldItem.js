@@ -2,7 +2,7 @@ import { Portal } from "@gorhom/portal";
 import { BlurView } from "expo-blur";
 import { nanoid } from "nanoid/non-secure";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, StyleSheet, Text } from "react-native";
 import Animated, {
   measure,
   runOnJS,
@@ -32,16 +32,19 @@ const HoldItem = ({
   isInput,
   listRef,
   swipeEnabled,
+  theme,
 }) => {
   const windowHeight = Dimensions.get("window").height;
   const windowWidth = Dimensions.get("window").width;
   const insets = useSafeAreaInsets();
   const containerRef = useAnimatedRef();
+  const menuRef = useAnimatedRef();
   const [itemRectY, setItemRectY] = useState(null);
   const [itemRectX, setItemRectX] = useState(null);
   const [itemRectWidth, setItemRectWidth] = useState(null);
   const [itemRectHeight, setItemRectHeight] = useState(null);
   const [showPortal, setShowPortal] = useState(false);
+  const [menuWidth, menuHeight] = [200, 108];
   const active = useSharedValue(false);
   const duration = 200;
   const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
@@ -50,6 +53,7 @@ const HoldItem = ({
     if (isActive) {
       active.value = true;
       containerRef.current?.measure((x, y, width, height, pageX, pageY) => {
+        console.log(x, y, width, pageX);
         if (itemRectY != pageY || !showPortal) {
           setItemRectX(pageX);
           setItemRectHeight(height);
@@ -93,7 +97,7 @@ const HoldItem = ({
   const animatedInitialMessageStyle = useAnimatedStyle(() => {
     return {
       opacity: active.value
-        ? withTiming(0, { duration: 50 })
+        ? withDelay(50, withTiming(0, { duration: 50 }))
         : withDelay(duration, withTiming(1, { duration: 0 })),
     };
   });
@@ -104,9 +108,16 @@ const HoldItem = ({
       return -itemRectY + insets.top;
     } else if (
       itemRectY != null &&
-      itemRectY + itemRectHeight > windowHeight - insets.bottom
+      itemRectY + itemRectHeight + menuHeight > windowHeight - insets.bottom
     ) {
-      return -itemRectY - itemRectHeight + windowHeight - insets.bottom;
+      return (
+        -itemRectY -
+        itemRectHeight -
+        menuHeight +
+        windowHeight -
+        insets.bottom -
+        24
+      );
     }
     return 0;
   };
@@ -167,6 +178,42 @@ const HoldItem = ({
     };
   });
 
+  const animatedMenuStyle = useAnimatedStyle(() => {
+    let tX = calculateTransformXValue();
+    const transformXAnimation = () =>
+      active.value
+        ? withSpring(tX, {
+            damping: 33,
+            mass: 1.03,
+            stiffness: 400,
+            restDisplacementThreshold: 0.0001,
+            restSpeedThreshold: 0.0001,
+          })
+        : withSpring(0, {
+            damping: 33,
+            mass: 1.03,
+            stiffness: 400,
+            restDisplacementThreshold: 0.0001,
+            restSpeedThreshold: 0.0001,
+          });
+    return {
+      shadowColor: "#000",
+      shadowOpacity: 0.2,
+      shadowRadius: 24,
+      opacity: active.value
+        ? withTiming(1, { duration: duration })
+        : withTiming(0, { duration: duration }),
+      transform: [
+        { translateX: transformXAnimation() },
+        {
+          scale: active.value
+            ? withTiming(1, { duration: duration })
+            : withTiming(0, { duration: duration }),
+        },
+      ],
+    };
+  });
+
   const messageContainerStyle = useMemo(
     () => [
       {
@@ -184,6 +231,23 @@ const HoldItem = ({
       animatedMessageStyle,
     ],
     [animatedMessageStyle]
+  );
+
+  const menuContainerStyle = useMemo(
+    () => [
+      {
+        position: "absolute",
+        zIndex: 101,
+        top: itemRectY + itemRectHeight + 8 + calculateTransformValue(),
+        width: menuWidth,
+        height: menuHeight,
+        borderRadius: 16,
+        // overflow: "hidden",
+      },
+      isInput ? { right: 8 } : { left: 8 },
+      animatedMenuStyle,
+    ],
+    [animatedMenuStyle]
   );
 
   const initialMessageContainerStyle = useMemo(
@@ -216,6 +280,20 @@ const HoldItem = ({
           </TapGestureHandler>
           <Animated.View style={messageContainerStyle}>
             {children}
+          </Animated.View>
+          <Animated.View style={menuContainerStyle}>
+            <AnimatedBlurView
+              style={{
+                backgroundColor: theme.holdItem.menu.backgroundColor,
+                flex: 1,
+                borderRadius: 16,
+                overflow: "hidden",
+              }}
+              tint={tint}
+              intensity={50}
+            >
+              <Text style={{ color: "white" }}>Test</Text>
+            </AnimatedBlurView>
           </Animated.View>
         </Portal>
       ) : null}
