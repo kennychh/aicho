@@ -68,7 +68,7 @@ const lightTheme = {
   },
   holdItem: {
     menu: {
-      backgroundColor: "rgba(255,255,255,0.6)",
+      backgroundColor: "rgba(246,246,246,0.6)",
     },
   },
 };
@@ -144,7 +144,7 @@ const darkTheme = {
   },
   holdItem: {
     menu: {
-      backgroundColor: "rgba(58, 58, 60, 0.6)",
+      backgroundColor: "rgba(58, 58, 60, 0.4)",
     },
   },
 };

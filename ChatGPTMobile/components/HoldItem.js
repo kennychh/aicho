@@ -290,7 +290,7 @@ const HoldItem = ({
                 overflow: "hidden",
               }}
               tint={tint}
-              intensity={50}
+              intensity={80}
             >
               <Text style={{ color: "white" }}>Test</Text>
             </AnimatedBlurView>
