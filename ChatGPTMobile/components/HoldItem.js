@@ -48,12 +48,11 @@ const HoldItem = ({
   const active = useSharedValue(false);
   const duration = 200;
   const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
-
+  const messageScale = useSharedValue(0);
   const getMeasurements = useCallback(() => {
     if (isActive) {
       active.value = true;
       containerRef.current?.measure((x, y, width, height, pageX, pageY) => {
-        console.log(x, y, width, pageX);
         if (itemRectY != pageY || !showPortal) {
           setItemRectX(pageX);
           setItemRectHeight(height);
@@ -104,7 +103,12 @@ const HoldItem = ({
 
   const calculateTransformValue = () => {
     "worklet";
-    if (itemRectY != null && itemRectY < insets.top) {
+    if (messageScale.value != 1) {
+      const scaledItemRectY = itemRectY * messageScale.value;
+      const scaledItemRectHeight = itemRectHeight * messageScale.value;
+      const heightDifference = itemRectHeight - scaledItemRectHeight;
+      return -itemRectY - itemRectHeight - menuHeight + windowHeight+24;
+    } else if (itemRectY != null && itemRectY < insets.top) {
       return -itemRectY + insets.top;
     } else if (
       itemRectY != null &&
@@ -116,7 +120,7 @@ const HoldItem = ({
         menuHeight +
         windowHeight -
         insets.bottom -
-        24
+        16
       );
     }
     return 0;
@@ -131,11 +135,31 @@ const HoldItem = ({
     return tX;
   };
 
+  const calculateScaleValue = () => {
+    "worklet";
+    let scale = 1;
+    const messageMenuHeight = itemRectHeight;
+    const availableHeight =
+      windowHeight - insets.top - menuHeight - insets.bottom - 16;
+    if (messageMenuHeight > availableHeight) {
+      scale = availableHeight / messageMenuHeight;
+    }
+    return scale;
+  };
+
+  const calculateTopValue = () => {
+    "worklet";
+    let top = 0;
+    return top;
+  };
+
   const animatedMessageStyle = useAnimatedStyle(() => {
     const animateOpacity = () =>
       withDelay(duration, withTiming(0, { duration: 0 }));
     let tY = calculateTransformValue();
     let tX = calculateTransformXValue();
+    messageScale.value = calculateScaleValue();
+    let top = calculateTopValue();
     const transformYAnimation = () =>
       active.value
         ? withSpring(tY, {
@@ -174,6 +198,11 @@ const HoldItem = ({
           translateY: transformYAnimation(),
         },
         { translateX: transformXAnimation() },
+        {
+          scale: active.value
+            ? withTiming(messageScale.value, { duration: duration })
+            : withTiming(1, { duration: duration }),
+        },
       ],
     };
   });
@@ -238,13 +267,15 @@ const HoldItem = ({
       {
         position: "absolute",
         zIndex: 101,
-        top: itemRectY + itemRectHeight + 8 + calculateTransformValue(),
         width: menuWidth,
         height: menuHeight,
         borderRadius: 16,
         // overflow: "hidden",
       },
       isInput ? { right: 8 } : { left: 8 },
+      calculateScaleValue() != 1
+        ? { bottom: insets.bottom + 8 }
+        : { top: itemRectY + itemRectHeight + 8 + calculateTransformValue() },
       animatedMenuStyle,
     ],
     [animatedMenuStyle]
