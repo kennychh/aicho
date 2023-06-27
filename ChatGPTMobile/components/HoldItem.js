@@ -94,10 +94,22 @@ const HoldItem = ({
     };
   });
 
+  const calculateInitialMessageDelay = () => {
+    "worklet";
+    if (
+      itemRectY != null &&
+      itemRectY + itemRectHeight + menuHeight > windowHeight - insets.bottom
+    ) {
+      return 10;
+    }
+    return 50;
+  };
+
   const animatedInitialMessageStyle = useAnimatedStyle(() => {
+    let delay = calculateInitialMessageDelay();
     return {
       opacity: active.value
-        ? withDelay(50, withTiming(0, { duration: 50 }))
+        ? withDelay(delay, withTiming(0, { duration: 50 }))
         : withDelay(duration, withTiming(1, { duration: 0 })),
     };
   });
@@ -266,8 +278,6 @@ const HoldItem = ({
       {
         position: "absolute",
         zIndex: 100,
-        // width: itemRectWidth,
-        // height: itemRectHeight,
       },
       messageScale.value != 1 ? { top: itemRectY } : { top: itemRectY },
       isInput ? { right: 0 } : { left: 0 },
