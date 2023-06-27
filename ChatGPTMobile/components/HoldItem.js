@@ -53,6 +53,7 @@ const HoldItem = ({
     if (isActive) {
       active.value = true;
       containerRef.current?.measure((x, y, width, height, pageX, pageY) => {
+        console.log(width, pageX, x);
         if (itemRectY != pageY || !showPortal) {
           setItemRectX(pageX);
           setItemRectHeight(height);
@@ -104,10 +105,9 @@ const HoldItem = ({
   const calculateTransformValue = () => {
     "worklet";
     if (messageScale.value != 1) {
-      const scaledItemRectY = itemRectY * messageScale.value;
       const scaledItemRectHeight = itemRectHeight * messageScale.value;
       const heightDifference = itemRectHeight - scaledItemRectHeight;
-      return -itemRectY - itemRectHeight - menuHeight + windowHeight+24;
+      return -itemRectY - heightDifference / 2 + insets.top;
     } else if (itemRectY != null && itemRectY < insets.top) {
       return -itemRectY + insets.top;
     } else if (
@@ -127,6 +127,24 @@ const HoldItem = ({
   };
 
   const calculateTransformXValue = () => {
+    "worklet";
+    let tX = 2;
+    if (isInput) {
+      tX = -2;
+    }
+    if (messageScale.value != 1) {
+      const scaledItemRectWidth = (itemRectWidth - 16) * messageScale.value;
+      const widthDifference = itemRectWidth - scaledItemRectWidth;
+      console.log(widthDifference);
+      if (isInput) {
+        return widthDifference / 2 - 8 + tX;
+      }
+      return -widthDifference / 2 + 8 + tX;
+    }
+    return tX;
+  };
+
+  const calculateTransformMenuXValue = () => {
     "worklet";
     let tX = 2;
     if (isInput) {
@@ -208,7 +226,7 @@ const HoldItem = ({
   });
 
   const animatedMenuStyle = useAnimatedStyle(() => {
-    let tX = calculateTransformXValue();
+    let tX = calculateTransformMenuXValue();
     const transformXAnimation = () =>
       active.value
         ? withSpring(tX, {
@@ -248,15 +266,11 @@ const HoldItem = ({
       {
         position: "absolute",
         zIndex: 100,
-        top: itemRectY,
         // width: itemRectWidth,
         // height: itemRectHeight,
       },
-      isInput
-        ? itemRectWidth != windowWidth
-          ? { right: itemRectX + windowWidth - itemRectWidth }
-          : { right: itemRectX }
-        : { left: itemRectX },
+      messageScale.value != 1 ? { top: itemRectY } : { top: itemRectY },
+      isInput ? { right: 0 } : { left: 0 },
       animatedMessageStyle,
     ],
     [animatedMessageStyle]
@@ -282,7 +296,10 @@ const HoldItem = ({
   );
 
   const initialMessageContainerStyle = useMemo(
-    () => [{ flex: 1 }, animatedInitialMessageStyle],
+    () => [
+      isInput ? { marginLeft: "auto" } : { marginRight: "auto" },
+      animatedInitialMessageStyle,
+    ],
     [animatedInitialMessageStyle]
   );
 
