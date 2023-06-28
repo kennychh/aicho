@@ -122,14 +122,14 @@ const HoldItem = ({
     ) {
       return 10;
     }
-    return 50;
+    return 30;
   };
 
   const animatedInitialMessageStyle = useAnimatedStyle(() => {
     let delay = calculateInitialMessageDelay();
     return {
       opacity: active.value
-        ? withDelay(delay, withTiming(0, { duration: 50 }))
+        ? withDelay(delay, withTiming(0, { duration: 10 }))
         : withDelay(duration, withTiming(1, { duration: 0 })),
     };
   });
@@ -337,6 +337,9 @@ const HoldItem = ({
 
   return (
     <>
+      <Animated.View ref={containerRef} style={initialMessageContainerStyle}>
+        {children}
+      </Animated.View>
       {active.value ? (
         <Portal>
           <TapGestureHandler
@@ -363,9 +366,6 @@ const HoldItem = ({
           </Animated.View>
         </Portal>
       ) : null}
-      <Animated.View ref={containerRef} style={initialMessageContainerStyle}>
-        {children}
-      </Animated.View>
     </>
   );
 };
