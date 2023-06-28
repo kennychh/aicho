@@ -72,13 +72,13 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 16,
     fontSize: 16,
-    fontWeight: "500",
+    // fontWeight: "500",
     paddingVertical: 16,
   }),
   valueText: (theme) => ({
     marginRight: 16,
     fontSize: 14,
-    fontWeight: "500",
+    // fontWeight: "500",
     color: theme.secondaryIconColor,
   }),
   leftIcon: {

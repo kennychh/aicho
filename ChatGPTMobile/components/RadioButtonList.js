@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     fontSize: 16,
     alignSelf: "center",
-    fontWeight: "500",
+    // fontWeight: "500",
     color: theme.iconColor,
   }),
 });

@@ -35,6 +35,7 @@ const HoldItem = ({
   swipeEnabled,
   theme,
   holdMenuRef,
+  holdMenuData,
 }) => {
   const windowHeight = Dimensions.get("window").height;
   const windowWidth = Dimensions.get("window").width;
@@ -52,6 +53,16 @@ const HoldItem = ({
   const duration = 200;
   const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
   const messageScale = useSharedValue(0);
+  const closeHoldItem = () => {
+    if (isActive) {
+      active.value = false;
+      swipeEnabled.current = true;
+      setTimeout(() => {
+        setIsActive(false);
+        listRef?.current?.setNativeProps({ scrollEnabled: true });
+      }, duration);
+    }
+  };
   const getMeasurements = useCallback(() => {
     if (isActive) {
       active.value = true;
@@ -66,6 +77,7 @@ const HoldItem = ({
       });
       holdMenuRef?.current?.measure((x, y, width, height, pageX, pageY) => {
         if (width != 0 || height != 0) {
+          console.log(height);
           setMenuHeight(height);
           setMenuWidth(width);
         }
@@ -266,7 +278,10 @@ const HoldItem = ({
     return {
       shadowColor: "#000",
       shadowOpacity: 0.2,
-      shadowRadius: 24,
+      shadowRadius: 32,
+      shadowOffset: {
+        height: 2,
+      },
       opacity: active.value
         ? withTiming(1, { duration: duration })
         : withTiming(0, { duration: duration }),
@@ -327,14 +342,7 @@ const HoldItem = ({
         <Portal>
           <TapGestureHandler
             onHandlerStateChange={() => {
-              if (isActive) {
-                active.value = false;
-                swipeEnabled.current = true;
-                setTimeout(() => {
-                  setIsActive(false);
-                  listRef?.current?.setNativeProps({ scrollEnabled: true });
-                }, duration);
-              }
+              closeHoldItem();
               // setShowPortal(false);
             }}
           >
@@ -348,7 +356,11 @@ const HoldItem = ({
             {children}
           </Animated.View>
           <Animated.View style={menuContainerStyle}>
-            <HoldMenu theme={theme} />
+            <HoldMenu
+              theme={theme}
+              data={holdMenuData}
+              onPress={closeHoldItem}
+            />
           </Animated.View>
         </Portal>
       ) : null}

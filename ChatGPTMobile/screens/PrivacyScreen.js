@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
   modalOptionText: (theme) => ({
     fontSize: 16,
     alignSelf: "center",
-    fontWeight: "500",
+    // fontWeight: "500",
     color: theme.fontColor,
   }),
   icon: {
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     paddingLeft: 32,
     paddingBottom: 8,
     fontSize: 14,
-    fontWeight: "700",
+    fontWeight: "600",
     color: theme.secondaryIconColor,
   }),
   title: (theme) => ({
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     fontSize: 16,
     alignSelf: "center",
-    fontWeight: "700",
+    fontWeight: "600",
     color: theme.iconColor,
   }),
   subTextContainer: {

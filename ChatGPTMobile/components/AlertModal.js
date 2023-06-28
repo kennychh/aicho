@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   text: (theme) => ({
     fontSize: 16,
     alignSelf: "center",
-    fontWeight: "500",
+    // fontWeight: "500",
     color: theme.fontColor,
   }),
   subtext: (theme) => ({
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   title: (theme) => ({
     fontSize: 16,
     alignSelf: "center",
-    fontWeight: "700",
+    fontWeight: "600",
     color: theme.fontColor,
     paddingBottom: 16,
   }),

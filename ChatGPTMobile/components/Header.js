@@ -86,7 +86,7 @@ export const Header = ({
         height: 32,
       }}
     >
-      <Text style={[styles.barText(theme), { fontWeight: "700" }]}>
+      <Text style={[styles.barText(theme), { fontWeight: "600", }]}>
         {headerTitle}
       </Text>
     </View>

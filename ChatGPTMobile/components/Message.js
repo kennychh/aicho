@@ -13,9 +13,10 @@ import {
 } from "react-native";
 import * as Haptics from "expo-haptics";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Alert, Edit2, Refresh } from "../icons";
+import { Alert, Copy, Edit, Edit2, Refresh } from "../icons";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import * as Clipboard from "expo-clipboard";
 import HoldItem from "./HoldItem";
 import { getTheme } from "../theme";
 
@@ -49,6 +50,45 @@ const Message = ({
   const outputRange = [1, 0.97];
   const scale = animation.interpolate({ inputRange, outputRange });
   const swipeEnabled = useRef(true);
+  const copyToClipboard = async () => {
+    await Clipboard.setStringAsync(text);
+  };
+
+  const holdMenuInputData = [
+    {
+      title: "Copy",
+      icon: <Copy stroke={theme.iconColor} width={20} height={20} />,
+      onPress: () => {
+        copyToClipboard();
+      },
+    },
+    {
+      title: "Edit",
+      icon: <Edit stroke={theme.iconColor} width={20} height={20} />,
+      onPress: () => {
+        setEditMessage(item);
+        setInput(text);
+      },
+    },
+  ];
+
+  const holdMenuData = [
+    {
+      title: "Copy",
+      icon: <Copy stroke={theme.iconColor} width={20} height={20} />,
+      onPress: () => {
+        copyToClipboard();
+      },
+    },
+    {
+      title: "Regenerate",
+      icon: <Refresh stroke={theme.iconColor} width={20} height={20} />,
+      onPress: () => {
+        setError(false);
+        setRegen(item);
+      },
+    },
+  ];
 
   const onScaleInOut = () => {
     Animated.sequence([
@@ -172,7 +212,7 @@ const Message = ({
         style={[
           styles.itemContainer,
           {
-            maxWidth: windowWidth - 100,
+            maxWidth: (windowWidth - 16) * 0.8,
             transform: [{ scale }],
           },
           isInput
@@ -268,6 +308,7 @@ const Message = ({
                 swipeEnabled={swipeEnabled}
                 theme={theme}
                 holdMenuRef={holdMenuRef}
+                holdMenuData={isInput ? holdMenuInputData : holdMenuData}
               >
                 {messageItem}
               </HoldItem>

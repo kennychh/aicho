@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     fontSize: 16,
     alignSelf: "center",
-    fontWeight: "500",
+    // fontWeight: "500",
     paddingVertical: 16,
     color: theme.fontColor,
   }),

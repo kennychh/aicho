@@ -1,11 +1,20 @@
 import Animated from "react-native-reanimated";
 import { getTheme } from "../theme";
-import { Text } from "react-native";
+import { Text, View } from "react-native";
 import { StyleSheet } from "react-native";
 import { BlurView } from "expo-blur";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { Close } from "../icons";
 
-export const HoldMenu = ({ theme, holdMenuRef = null }) => {
+export const HoldMenu = ({
+  theme,
+  holdMenuRef = null,
+  numItems = 2,
+  data,
+  onPress,
+}) => {
   const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
+  const defaultData = Array.from({ length: numItems }, () => ({}));
   return (
     <AnimatedBlurView
       ref={holdMenuRef}
@@ -13,7 +22,45 @@ export const HoldMenu = ({ theme, holdMenuRef = null }) => {
       tint={theme === getTheme("dark") ? "dark" : "light"}
       intensity={80}
     >
-      <Text style={{ color: "white" }}>Test</Text>
+      {!data
+        ? defaultData.map((data, index) => {
+            return (
+              <TouchableOpacity
+                style={styles.menuItemContainer({
+                  showBorder: index == 0,
+                  theme,
+                })}
+              >
+                <Text style={styles.text(theme)} numberOfLines={1}>
+                  Test
+                </Text>
+                <View style={styles.icon}>
+                  <Close width={20} height={20} />
+                </View>
+              </TouchableOpacity>
+            );
+          })
+        : data.map((data, index) => {
+            return (
+              <TouchableOpacity
+                style={styles.menuItemContainer({
+                  showBorder: index == 0,
+                  theme,
+                })}
+                onPress={() => {
+                  onPress();
+                  setTimeout(() => {
+                    data.onPress();
+                  }, 200);
+                }}
+              >
+                <Text style={styles.text(theme)} numberOfLines={1}>
+                  {data.title}
+                </Text>
+                <View style={styles.icon}>{data.icon}</View>
+              </TouchableOpacity>
+            );
+          })}
     </AnimatedBlurView>
   );
 };
@@ -24,7 +71,23 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 16,
     overflow: "hidden",
-    height: 208,
-    width: 200,
+    width: 232,
   }),
+  text: (theme) => ({
+    marginVertical: 16,
+    color: theme.fontColor,
+    fontSize: 16,
+    maxWidth: 148,
+  }),
+  menuItemContainer: ({ showBorder, theme }) => ({
+    paddingHorizontal: 16,
+    borderBottomWidth: showBorder ? 0.5 : 0,
+    borderBottomColor: theme.holdItem.menu.borderColor,
+    justifyContent: "space-between",
+    flexDirection: "row",
+    alignItems: "center",
+  }),
+  icon: {
+    paddingLeft: 16,
+  },
 });

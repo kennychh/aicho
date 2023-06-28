@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     paddingLeft: 32,
     fontSize: 14,
-    fontWeight: "700",
+    fontWeight: "600",
     color: theme.secondaryIconColor,
   }),
   title: (theme) => ({
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     fontSize: 16,
     alignSelf: "center",
-    fontWeight: "700",
+    fontWeight: "600",
     color: theme.iconColor,
   }),
   subTextContainer: {

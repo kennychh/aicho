@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     paddingLeft: 32,
     paddingTop: 32,
     fontSize: 14,
-    fontWeight: "700",
+    fontWeight: "600",
     color: theme.secondaryIconColor,
   }),
   subtext: (theme) => ({
