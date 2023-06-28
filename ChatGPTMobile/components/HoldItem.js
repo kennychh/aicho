@@ -67,8 +67,6 @@ const HoldItem = ({
     if (isActive) {
       active.value = true;
       containerRef.current?.measure((x, y, width, height, pageX, pageY) => {
-        console.log(x, pageX, width);
-        console.log(pageX + width);
         if (itemRectY != pageY || !showPortal) {
           setItemRectX(pageX);
           setItemRectHeight(height);

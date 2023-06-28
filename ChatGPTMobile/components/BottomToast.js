@@ -39,17 +39,19 @@ export const BottomToast = ({
   }
 
   useEffect(() => {
-    setTimeout(() => {
-      LayoutAnimation.configureNext({
-        duration: 400,
-        create: { type: "easeInEaseOut", property: "opacity" },
-        update: { type: "spring", springDamping: 1 },
-      });
-      setVisible(true);
-    }, 500);
-    setTimeout(() => {
-      !closeToast && setCloseAnimation(true);
-    }, 5000);
+    if (isEnabled) {
+      setTimeout(() => {
+        LayoutAnimation.configureNext({
+          duration: 400,
+          create: { type: "easeInEaseOut", property: "opacity" },
+          update: { type: "spring", springDamping: 1 },
+        });
+        setVisible(true);
+      }, 500);
+      setTimeout(() => {
+        !closeToast && setCloseAnimation(true);
+      }, 5000);
+    }
   }, [isEnabled]);
 
   useEffect(() => {
