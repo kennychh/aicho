@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     width: 232,
   }),
   text: (theme) => ({
-    marginVertical: 16,
+    marginVertical: 12,
     color: theme.fontColor,
     fontSize: 16,
     maxWidth: 148,
