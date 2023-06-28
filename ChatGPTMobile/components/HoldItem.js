@@ -67,6 +67,8 @@ const HoldItem = ({
     if (isActive) {
       active.value = true;
       containerRef.current?.measure((x, y, width, height, pageX, pageY) => {
+        console.log(x, pageX, width);
+        console.log(pageX + width);
         if (itemRectY != pageY || !showPortal) {
           setItemRectX(pageX);
           setItemRectHeight(height);
@@ -302,7 +304,11 @@ const HoldItem = ({
         zIndex: 100,
       },
       messageScale.value != 1 ? { top: itemRectY } : { top: itemRectY },
-      isInput ? { right: 0 } : { left: 0 },
+      isInput
+        ? itemRectX + itemRectWidth == windowWidth
+          ? { right: 0 }
+          : { right: windowWidth - (itemRectX + itemRectWidth) }
+        : { left: 0 },
       animatedMessageStyle,
     ],
     [animatedMessageStyle]
@@ -318,7 +324,11 @@ const HoldItem = ({
         borderRadius: 16,
         // overflow: "hidden",
       },
-      isInput ? { right: 8 } : { left: 8 },
+      isInput
+        ? itemRectX + itemRectWidth == windowWidth
+          ? { right: 8 }
+          : { right: windowWidth - (itemRectX + itemRectWidth) + 8 }
+        : { left: 8 },
       calculateScaleValue() != 1
         ? { bottom: insets.bottom + 8 }
         : { top: itemRectY + itemRectHeight + 8 + calculateTransformValue() },

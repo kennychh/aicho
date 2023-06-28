@@ -482,8 +482,8 @@ export const ChatScreen = ({
           setInput={setInput}
           theme={theme}
         />
-        {showBottomToast && <BottomToast theme={theme} />}
       </SafeAreaView>
+      <BottomToast theme={theme} isEnabled={showBottomToast} />
     </SafeAreaProvider>
   );
 };

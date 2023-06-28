@@ -16,7 +16,11 @@ import { useKeyboardVisible } from "./../hooks/useKeyboardVisible";
 import { BlurView } from "expo-blur";
 import { getTheme } from "../theme";
 
-export const BottomToast = ({ theme, text = "An error has occured." }) => {
+export const BottomToast = ({
+  theme,
+  text = "An error has occured.",
+  isEnabled,
+}) => {
   const insets = useSafeAreaInsets();
   const [closeToast, setCloseToast] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -42,11 +46,11 @@ export const BottomToast = ({ theme, text = "An error has occured." }) => {
         update: { type: "spring", springDamping: 1 },
       });
       setVisible(true);
-    }, 100);
+    }, 500);
     setTimeout(() => {
       !closeToast && setCloseAnimation(true);
     }, 5000);
-  }, []);
+  }, [isEnabled]);
 
   useEffect(() => {
     if (closeAnimation) {
@@ -67,36 +71,42 @@ export const BottomToast = ({ theme, text = "An error has occured." }) => {
     }
   }, [closeToast]);
   return (
-    <View
-      onLayout={onLayout}
-      style={{
-        position: "absolute",
-        bottom: visible
-          ? isKeyboardVisible
-            ? 60 + keyboardHeight
-            : insets.bottom + 60 + keyboardHeight
-          : -h,
-        width: "100%",
-      }}
-    >
-      <BlurView
-        style={[styles.container(theme)]}
-        tint={theme === getTheme("dark") ? "dark" : "light"}
-        intensity={100}
+    isEnabled && (
+      <View
+        onLayout={onLayout}
+        style={{
+          position: "absolute",
+          bottom: visible
+            ? isKeyboardVisible
+              ? 60 + keyboardHeight
+              : insets.bottom + 60 + keyboardHeight
+            : -h,
+          width: "100%",
+        }}
       >
-        <Alert stroke={theme.iconColor} />
-        <Text style={styles.text(theme)}>{text}</Text>
-        <View style={{ marginLeft: "auto" }}>
-          <TouchableOpacity
-            onPress={() => {
-              setCloseToast(true);
-            }}
-          >
-            <Close2 stroke={theme.secondaryIconColor} width={20} height={20} />
-          </TouchableOpacity>
-        </View>
-      </BlurView>
-    </View>
+        <BlurView
+          style={[styles.container(theme)]}
+          tint={theme === getTheme("dark") ? "dark" : "light"}
+          intensity={100}
+        >
+          <Alert stroke={theme.iconColor} />
+          <Text style={styles.text(theme)}>{text}</Text>
+          <View style={{ marginLeft: "auto" }}>
+            <TouchableOpacity
+              onPress={() => {
+                setCloseToast(true);
+              }}
+            >
+              <Close2
+                stroke={theme.secondaryIconColor}
+                width={20}
+                height={20}
+              />
+            </TouchableOpacity>
+          </View>
+        </BlurView>
+      </View>
+    )
   );
 };
 
