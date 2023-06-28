@@ -5,6 +5,7 @@ import { StyleSheet } from "react-native";
 import { BlurView } from "expo-blur";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Close } from "../icons";
+import * as Haptics from "expo-haptics";
 
 export const HoldMenu = ({
   theme,
@@ -47,6 +48,9 @@ export const HoldMenu = ({
                   showBorder: index == 0,
                   theme,
                 })}
+                onPressIn={() => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                }}
                 onPress={() => {
                   onPress();
                   setTimeout(() => {

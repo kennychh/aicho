@@ -77,7 +77,6 @@ const HoldItem = ({
       });
       holdMenuRef?.current?.measure((x, y, width, height, pageX, pageY) => {
         if (width != 0 || height != 0) {
-          console.log(height);
           setMenuHeight(height);
           setMenuWidth(width);
         }
