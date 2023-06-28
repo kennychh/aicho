@@ -48,6 +48,7 @@ export const ChatScreen = ({
   temperature,
   presencePenalty,
   frequencyPenalty,
+  holdMenuRef,
 }) => {
   const API_URL = "https://chatgpt-api-blue.vercel.app/api";
   const result = chats[index];
@@ -423,6 +424,7 @@ export const ChatScreen = ({
               setShowScrollToButton={setShowScrollToButton}
               setEditMessageHeight={setEditMessageHeight}
               editMessageHeight={editMessageHeight}
+              holdMenuRef={holdMenuRef}
             />
             <Input
               textInputRef={textInputRef}

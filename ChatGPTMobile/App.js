@@ -41,6 +41,7 @@ import { getTheme } from "./theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SecureStore from "expo-secure-store";
 import * as LocalAuthentication from "expo-local-authentication";
+import { HoldMenu } from "./components/HoldMenu";
 
 if (
   Platform.OS === "android" &&
@@ -81,6 +82,7 @@ export default function App() {
   const appState = useRef(AppState.currentState);
   const [_, setAppStateVisible] = useState(appState.current);
   const [authenticateSuccess, setAuthenticateSuccess] = useState(false);
+  const holdMenuRef = useRef();
   const storeKey = async (value) => {
     try {
       await SecureStore.setItemAsync("key", value);
@@ -540,6 +542,7 @@ export default function App() {
                 temperature={temperature}
                 presencePenalty={presencePenalty}
                 frequencyPenalty={frequencyPenalty}
+                holdMenuRef={holdMenuRef}
               />
             )}
           </Stack.Screen>
@@ -694,6 +697,9 @@ export default function App() {
             {(props) => <AboutScreen props={props} theme={theme} />}
           </Stack.Screen>
         </Stack.Navigator>
+        <View style={{ position: "absolute", zIndex: -1, opacity: 0 }}>
+          <HoldMenu theme={theme} holdMenuRef={holdMenuRef} />
+        </View>
         <DarkModeModal
           theme={theme}
           setTheme={setTheme}

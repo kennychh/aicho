@@ -38,6 +38,7 @@ export const MessageList = ({
   setEditMessageHeight,
   editMessageHeight,
   intensity,
+  holdMenuRef,
 }) => {
   const insets = useSafeAreaInsets();
   const [showCurrentMessage, setShowCurrentMessage] = useState(false);
@@ -63,6 +64,7 @@ export const MessageList = ({
           color={memoizedColor}
           listRef={listRef}
           intensity={intensity}
+          holdMenuRef={holdMenuRef}
         />
       );
     },

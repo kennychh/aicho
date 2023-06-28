@@ -23,6 +23,7 @@ import {
   TapGestureHandlerGestureEvent,
 } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { HoldMenu } from "./HoldMenu";
 
 const HoldItem = ({
   children,
@@ -33,6 +34,7 @@ const HoldItem = ({
   listRef,
   swipeEnabled,
   theme,
+  holdMenuRef,
 }) => {
   const windowHeight = Dimensions.get("window").height;
   const windowWidth = Dimensions.get("window").width;
@@ -44,7 +46,8 @@ const HoldItem = ({
   const [itemRectWidth, setItemRectWidth] = useState(null);
   const [itemRectHeight, setItemRectHeight] = useState(null);
   const [showPortal, setShowPortal] = useState(false);
-  const [menuWidth, menuHeight] = [200, 108];
+  const [menuWidth, setMenuWidth] = useState(0);
+  const [menuHeight, setMenuHeight] = useState(0);
   const active = useSharedValue(false);
   const duration = 200;
   const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
@@ -53,13 +56,18 @@ const HoldItem = ({
     if (isActive) {
       active.value = true;
       containerRef.current?.measure((x, y, width, height, pageX, pageY) => {
-        console.log(width, pageX, x);
         if (itemRectY != pageY || !showPortal) {
           setItemRectX(pageX);
           setItemRectHeight(height);
           setItemRectWidth(width);
           setItemRectY(pageY);
           setShowPortal(true);
+        }
+      });
+      holdMenuRef?.current?.measure((x, y, width, height, pageX, pageY) => {
+        if (width != 0 || height != 0) {
+          setMenuHeight(height);
+          setMenuWidth(width);
         }
       });
     }
@@ -72,8 +80,9 @@ const HoldItem = ({
     itemRectWidth,
     itemRectHeight,
     showPortal,
+    menuWidth,
+    menuHeight,
   ]);
-
   const isActiveFunction = useCallback(() => {
     if (isActive) {
       getMeasurements();
@@ -147,7 +156,6 @@ const HoldItem = ({
     if (messageScale.value != 1) {
       const scaledItemRectWidth = (itemRectWidth - 16) * messageScale.value;
       const widthDifference = itemRectWidth - scaledItemRectWidth;
-      console.log(widthDifference);
       if (isInput) {
         return widthDifference / 2 - 8 + tX;
       }
@@ -340,18 +348,7 @@ const HoldItem = ({
             {children}
           </Animated.View>
           <Animated.View style={menuContainerStyle}>
-            <AnimatedBlurView
-              style={{
-                backgroundColor: theme.holdItem.menu.backgroundColor,
-                flex: 1,
-                borderRadius: 16,
-                overflow: "hidden",
-              }}
-              tint={tint}
-              intensity={80}
-            >
-              <Text style={{ color: "white" }}>Test</Text>
-            </AnimatedBlurView>
+            <HoldMenu theme={theme} />
           </Animated.View>
         </Portal>
       ) : null}

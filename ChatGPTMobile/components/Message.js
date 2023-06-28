@@ -32,6 +32,7 @@ const Message = ({
   theme,
   color,
   listRef,
+  holdMenuRef,
 }) => {
   const text = item?.result?.text || "";
   const isInput = item?.isInput;
@@ -266,6 +267,7 @@ const Message = ({
                 listRef={listRef}
                 swipeEnabled={swipeEnabled}
                 theme={theme}
+                holdMenuRef={holdMenuRef}
               >
                 {messageItem}
               </HoldItem>

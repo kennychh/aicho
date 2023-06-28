@@ -34,6 +34,7 @@ export const HomeScreen = ({
   temperature,
   presencePenalty,
   frequencyPenalty,
+  holdMenuRef,
 }) => {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -94,6 +95,7 @@ export const HomeScreen = ({
                 temperature={temperature}
                 presencePenalty={presencePenalty}
                 frequencyPenalty={frequencyPenalty}
+                holdMenuRef={holdMenuRef}
               />
             )}
           </Drawer.Screen>
