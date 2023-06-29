@@ -346,7 +346,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     // minHeight: 40,
-    minWidth: 48,
+    // minWidth: 48,
   },
   movedItemContainer: {
     bottom: 0,

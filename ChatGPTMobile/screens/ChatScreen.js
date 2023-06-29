@@ -94,6 +94,12 @@ export const ChatScreen = ({
       duration: 300,
       create: { type: "easeInEaseOut", property: "opacity" },
       update: { type: "spring", springDamping: 10 },
+      delete: {
+        type: LayoutAnimation.Types.spring,
+        property: LayoutAnimation.Properties.opacity,
+        springDamping: 1,
+        duration: 150,
+      },
     });
   };
 
@@ -117,12 +123,12 @@ export const ChatScreen = ({
     }
   }, [message]);
 
-  useEffect(() => {
-    const errorFound = chats[chatIndex][0]?.isError;
-    if (errorFound != error) {
-      setError(errorFound);
-    }
-  }, [chats, chatIndex]);
+  // useEffect(() => {
+  //   const errorFound = chats[chatIndex][0]?.isError;
+  //   if (errorFound != error) {
+  //     setError(errorFound);
+  //   }
+  // }, [chats, chatIndex]);
 
   useEffect(() => {
     if (retry != null) {

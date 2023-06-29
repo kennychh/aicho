@@ -51,7 +51,7 @@ export const Input = ({
     return <Send width="20px" height="20px" stroke="#fff" />;
   };
   const getInputIconColor = () => {
-    if (showLoadingIcon || (!error && !isResultValid)) {
+    if (showLoadingIcon || (!error && !isResultValid && !result[0]?.isError)) {
       return { backgroundColor: theme.input.button.disabled.backgroundColor };
     }
     return {};
