@@ -26,43 +26,41 @@ export const HoldMenu = ({
       {!data
         ? defaultData.map((data, index) => {
             return (
-              <TouchableOpacity
-                style={styles.menuItemContainer({
-                  showBorder: index == 0,
-                  theme,
-                })}
-              >
-                <Text style={styles.text(theme)} numberOfLines={1}>
-                  Test
-                </Text>
-                <View style={styles.icon}>
-                  <Close width={20} height={20} />
-                </View>
-              </TouchableOpacity>
+              <View>
+                <TouchableOpacity style={styles.menuItemContainer}>
+                  <Text style={styles.text(theme)} numberOfLines={1}>
+                    Test
+                  </Text>
+                  <View style={styles.icon}>
+                    <Close width={20} height={20} />
+                  </View>
+                </TouchableOpacity>
+                {index == 0 && <View style={styles.border(theme)} />}
+              </View>
             );
           })
         : data.map((data, index) => {
             return (
-              <TouchableOpacity
-                style={styles.menuItemContainer({
-                  showBorder: index == 0,
-                  theme,
-                })}
-                onPressIn={() => {
-                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                }}
-                onPress={() => {
-                  onPress();
-                  setTimeout(() => {
-                    data.onPress();
-                  }, 200);
-                }}
-              >
-                <Text style={styles.text(theme)} numberOfLines={1}>
-                  {data.title}
-                </Text>
-                <View style={styles.icon}>{data.icon}</View>
-              </TouchableOpacity>
+              <View>
+                <TouchableOpacity
+                  style={styles.menuItemContainer}
+                  onPressIn={() => {
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  }}
+                  onPress={() => {
+                    onPress();
+                    setTimeout(() => {
+                      data.onPress();
+                    }, 200);
+                  }}
+                >
+                  <Text style={styles.text(theme)} numberOfLines={1}>
+                    {data.title}
+                  </Text>
+                  <View style={styles.icon}>{data.icon}</View>
+                </TouchableOpacity>
+                {index == 0 && <View style={styles.border(theme)} />}
+              </View>
             );
           })}
     </AnimatedBlurView>
@@ -83,15 +81,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     maxWidth: 148,
   }),
-  menuItemContainer: ({ showBorder, theme }) => ({
+  menuItemContainer: {
     paddingHorizontal: 16,
-    borderBottomWidth: showBorder ? 0.5 : 0,
-    borderBottomColor: theme.holdItem.menu.borderColor,
     justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center",
-  }),
+  },
   icon: {
     paddingLeft: 16,
   },
+  border: (theme) => ({
+    backgroundColor: theme.holdItem.menu.borderColor,
+    height: 0.5,
+  }),
 });

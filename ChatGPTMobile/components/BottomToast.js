@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -26,6 +26,7 @@ export const BottomToast = ({
   const [visible, setVisible] = useState(false);
   const [closeAnimation, setCloseAnimation] = useState(false);
   const { isKeyboardVisible, keyboardHeight } = useKeyboardVisible();
+  const toastUserClosed = useRef(false);
   const [h, setH] = useState(0);
   const onLayout = (event) => {
     const { height } = event.nativeEvent.layout;
@@ -40,6 +41,7 @@ export const BottomToast = ({
 
   useEffect(() => {
     if (isEnabled) {
+      toastUserClosed.current = false;
       setTimeout(() => {
         LayoutAnimation.configureNext({
           duration: 400,
@@ -49,7 +51,7 @@ export const BottomToast = ({
         setVisible(true);
       }, 500);
       setTimeout(() => {
-        !closeToast && setCloseAnimation(true);
+        !toastUserClosed.current && setCloseAnimation(true);
       }, 5000);
     }
   }, [isEnabled]);
@@ -69,6 +71,7 @@ export const BottomToast = ({
 
   useEffect(() => {
     if (closeToast) {
+      toastUserClosed.current = true;
       setCloseAnimation(true);
     }
   }, [closeToast]);
@@ -83,6 +86,7 @@ export const BottomToast = ({
               ? 60 + keyboardHeight
               : insets.bottom + 60 + keyboardHeight
             : -h,
+          opacity: h != 0 ? 1 : 0,
           width: "100%",
         }}
       >

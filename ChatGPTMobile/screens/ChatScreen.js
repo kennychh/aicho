@@ -128,13 +128,13 @@ export const ChatScreen = ({
     if (retry != null) {
       toggleExpandMessage();
       setChats((oldResult) => [
-        ...oldResult?.slice(0, index),
+        ...oldResult?.slice(0, chatIndex),
         [
-          ...oldResult[index].filter(
+          ...oldResult[chatIndex].filter(
             (message) => message?.result?.id !== retry?.result?.id
           ),
-          ...oldResult?.slice(index + 1),
         ],
+        ...oldResult?.slice(chatIndex + 1),
       ]);
       onSubmit();
       setRetry(null);
@@ -279,6 +279,17 @@ export const ChatScreen = ({
         ...oldResult?.slice(0, index),
         [...oldResult[index].slice(regenIndex + 1)],
         ...oldResult?.slice(index + 1),
+      ]);
+    } else if (retry != null) {
+      toggleExpandMessage();
+      setChats((oldResult) => [
+        ...oldResult?.slice(0, chatIndex),
+        [
+          ...oldResult[chatIndex].filter(
+            (message) => message?.result?.id !== retry?.result?.id
+          ),
+          ...oldResult?.slice(chatIndex + 1),
+        ],
       ]);
     }
     const regenId =
@@ -462,6 +473,7 @@ export const ChatScreen = ({
             color={color}
           />
         </KeyboardAvoidingView>
+        <BottomToast theme={theme} isEnabled={showBottomToast} />
         <MenuModal
           deleteConvo={removeData}
           modalizeRef={modalizeRef}
@@ -483,7 +495,6 @@ export const ChatScreen = ({
           theme={theme}
         />
       </SafeAreaView>
-      <BottomToast theme={theme} isEnabled={showBottomToast} />
     </SafeAreaProvider>
   );
 };
