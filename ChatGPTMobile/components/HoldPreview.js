@@ -25,7 +25,7 @@ export const HoldPreview = ({
   translateX,
   translateY,
   showPreview,
-  origin = { x: 0, y: 0 },
+  origin = { x: 0, y: 0, width: 0, height: 0 },
 }) => {
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
@@ -41,8 +41,8 @@ export const HoldPreview = ({
     const { height } = event.nativeEvent.layout;
     previewHeight.value = height;
   };
-  const originX = origin.x - windowWidth / 2;
-  const originY = origin.y - previewHeight.value / 2 - insets.top - 24;
+  const originX = origin.x - 16;
+  const originY = origin.y - previewHeight.value - insets.top - 24;
 
   const panGesture = useAnimatedGestureHandler(
     {
@@ -87,16 +87,35 @@ export const HoldPreview = ({
       transform: [
         { translateX: translateX.value },
         { translateY: translateY.value },
-        {
-          scale: showPreview.value
-            ? withTiming(1, { duration: DURATION })
-            : withTiming(0, { duration: END_DURATION }),
-        },
+        // {
+        //   scale: showPreview.value
+        //     ? withTiming(1, { duration: DURATION })
+        //     : withTiming(0, { duration: END_DURATION }),
+        // },
       ],
+      maxHeight: showPreview.value
+        ? withTiming(460, { duration: DURATION })
+        : withTiming(origin.height, { duration: END_DURATION }),
+      maxWidth: showPreview.value
+        ? withTiming(windowWidth, { duration: DURATION })
+        : withTiming(origin.width, { duration: END_DURATION }),
     };
   });
 
-  const itemStyle = useMemo(() => [styles.box, animatedStyle], [animatedStyle]);
+  const itemStyle = useMemo(
+    () => [
+      {
+        maxWidth: origin.width,
+        // position: "absolute",
+        // minHeight: 400,
+        maxHeight: origin.height,
+        backgroundColor: "red",
+        flex: 1,
+      },
+      animatedStyle,
+    ],
+    [animatedStyle]
+  );
 
   const animatedBlurViewStyle = useAnimatedStyle(() => ({
     top: showPreview.value
@@ -115,7 +134,7 @@ export const HoldPreview = ({
             ? withSpring(-originX, {
                 damping: 20,
                 stiffness: 200,
-                mass: 0.80,
+                mass: 0.8,
               })
             : withTiming(0, { duration: END_DURATION }),
         },
@@ -124,7 +143,7 @@ export const HoldPreview = ({
             ? withSpring(-originY, {
                 damping: 20,
                 stiffness: 200,
-                mass: 0.80,
+                mass: 0.8,
               })
             : withTiming(0, { duration: END_DURATION }),
         },
@@ -173,8 +192,7 @@ const styles = StyleSheet.create({
     width: "100%",
     // position: "absolute",
     // minHeight: 400,
-    maxHeight: 460,
-    flex: 1,
+    height: 460,
     backgroundColor: "red",
   },
 });

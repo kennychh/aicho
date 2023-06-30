@@ -110,17 +110,17 @@ export const HomeScreen = ({
           showPreview={showPreview}
           translateX={translateX}
           translateY={translateY}
-          origin={{x: 150, y: 500}}
+          origin={{ x: 16, y: 115, width: 248, height: 51.3 }}
         />
       </PortalProvider>
-      {/* <TouchableOpacity
-        style={{ width: "100%", height: 50 }}
+      <TouchableOpacity
+        style={{ width: "100%", height: 50, position: "absolute", bottom: 0, backgroundColor: 'red' }}
         onPress={() => {
           showPreview.value = true;
           translateX.value = 0;
           translateY.value = 0;
         }}
-      ></TouchableOpacity> */}
+      ></TouchableOpacity>
     </GestureHandlerRootView>
   );
 };
