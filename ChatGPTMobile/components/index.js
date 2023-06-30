@@ -17,3 +17,4 @@ export * from "./BottomToast";
 export * from "./EditMessage";
 export * from "./ScrollToButton";
 export * from "./HoldItem";
+export * from "./HoldPreview";

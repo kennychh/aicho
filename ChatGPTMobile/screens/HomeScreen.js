@@ -1,8 +1,11 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { DrawerContent } from "../components";
+import { DrawerContent, HoldPreview } from "../components";
 import { ChatScreen } from "./ChatScreen";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PortalProvider } from "@gorhom/portal";
+import { TouchableOpacity } from "react-native";
+import { useState } from "react";
+import { useSharedValue } from "react-native-reanimated";
 
 const Drawer = createDrawerNavigator();
 
@@ -36,6 +39,9 @@ export const HomeScreen = ({
   frequencyPenalty,
   holdMenuRef,
 }) => {
+  const showPreview = useSharedValue(false);
+  const translateX = useSharedValue(0);
+  const translateY = useSharedValue(0);
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <PortalProvider>
@@ -100,7 +106,21 @@ export const HomeScreen = ({
             )}
           </Drawer.Screen>
         </Drawer.Navigator>
+        <HoldPreview
+          showPreview={showPreview}
+          translateX={translateX}
+          translateY={translateY}
+          origin={{x: 150, y: 500}}
+        />
       </PortalProvider>
+      {/* <TouchableOpacity
+        style={{ width: "100%", height: 50 }}
+        onPress={() => {
+          showPreview.value = true;
+          translateX.value = 0;
+          translateY.value = 0;
+        }}
+      ></TouchableOpacity> */}
     </GestureHandlerRootView>
   );
 };
