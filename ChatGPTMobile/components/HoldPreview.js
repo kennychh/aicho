@@ -34,8 +34,8 @@ export const HoldPreview = ({
 
   const END_POSITION_X = 0;
   const END_POSITION_Y = 0;
-  const DURATION = 1000;
-  const END_DURATION = 1000;
+  const DURATION = 200;
+  const END_DURATION = 400;
   const originX = origin.x - 16;
   const originY = origin.y - insets.top - 24;
 
@@ -76,9 +76,9 @@ export const HoldPreview = ({
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
-      // opacity: showPreview.value
-      //   ? withTiming(1, { duration: DURATION })
-      //   : withTiming(0, { duration: END_DURATION }),
+      opacity: showPreview.value
+        ? withTiming(1, { duration: DURATION })
+        : withTiming(0, { duration: END_DURATION }),
       transform: [
         { translateX: translateX.value },
         { translateY: translateY.value },
