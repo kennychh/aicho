@@ -29,20 +29,15 @@ export const HoldPreview = ({
 }) => {
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
-  const previewHeight = useSharedValue(0);
   const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
   const insets = useSafeAreaInsets();
 
   const END_POSITION_X = 0;
   const END_POSITION_Y = 0;
-  const DURATION = 200;
-  const END_DURATION = 400;
-  const onLayout = (event) => {
-    const { height } = event.nativeEvent.layout;
-    previewHeight.value = height;
-  };
+  const DURATION = 1000;
+  const END_DURATION = 1000;
   const originX = origin.x - 16;
-  const originY = origin.y - previewHeight.value - insets.top - 24;
+  const originY = origin.y - insets.top - 24;
 
   const panGesture = useAnimatedGestureHandler(
     {
@@ -81,9 +76,9 @@ export const HoldPreview = ({
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
-      opacity: showPreview.value
-        ? withTiming(1, { duration: DURATION })
-        : withTiming(0, { duration: END_DURATION }),
+      // opacity: showPreview.value
+      //   ? withTiming(1, { duration: DURATION })
+      //   : withTiming(0, { duration: END_DURATION }),
       transform: [
         { translateX: translateX.value },
         { translateY: translateY.value },
@@ -180,7 +175,7 @@ export const HoldPreview = ({
         ]}
       >
         <Animated.View style={containerStyle}>
-          <Animated.View onLayout={onLayout} style={itemStyle} />
+          <Animated.View style={itemStyle} />
         </Animated.View>
       </AnimatedBlurView>
     </PanGestureHandler>
