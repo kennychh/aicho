@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { Message, Delete, Moon, Plus, Sun, Settings } from "../icons";
 import { getTheme } from "../theme";
+import { DrawerChats } from "./DrawerChats";
 
 export const DrawerContent = ({
   props,
@@ -26,40 +27,18 @@ export const DrawerContent = ({
   setTheme,
   darkModeModalizeRef,
   setConfirmDeleteVisible,
+  openHoldPreview,
 }) => {
   const navigation = props.navigation;
   const [selectedItem, setSelectedItem] = useState(chatIndex);
   const isDarkMode = theme === getTheme("dark");
-  const ChatsItem = ({ item, index }) => {
-    return (
-      <TouchableOpacity
-        onPress={() => {
-          setSelectedItem(index);
-          setChatIndex(index);
-          setInput("");
-          setEditMessage(null);
-          navigation.closeDrawer();
-        }}
-        style={[
-          styles.chatItem,
-          selectedItem == index
-            ? {
-                backgroundColor:
-                  theme.drawerContent.chatItem.selected.backgroundColor,
-              }
-            : {},
-        ]}
-      >
-        <Message style={{ marginRight: 8 }} stroke={theme.iconColor} />
-        <Text
-          style={[styles.chatItemText(theme), { flex: 1 }]}
-          numberOfLines={1}
-          ellipsizeMode="tail"
-        >
-          {chatTitles[index]}
-        </Text>
-      </TouchableOpacity>
-    );
+
+  const drawerChatsOnPress = (index) => {
+    setSelectedItem(index);
+    setChatIndex(index);
+    setInput("");
+    setEditMessage(null);
+    navigation.closeDrawer();
   };
 
   useEffect(() => {
@@ -86,7 +65,15 @@ export const DrawerContent = ({
             justifyContent: "flex-end",
           }}
           renderItem={({ item, index }) => (
-            <ChatsItem item={item} index={index} />
+            <DrawerChats
+              theme={theme}
+              onPress={() => {
+                drawerChatsOnPress(index);
+              }}
+              text={chatTitles[index]}
+              selected={selectedItem == index}
+              openHoldPreview={openHoldPreview}
+            />
           )}
           keyExtractor={(item, index) => {
             return index;
@@ -210,6 +197,7 @@ const styles = StyleSheet.create({
     height: "100%",
     // paddingRight: 16,
     backgroundColor: theme.drawerContent.backgroundColor,
+    overflow: "visible",
     // maxHeight: 400,
   }),
 });

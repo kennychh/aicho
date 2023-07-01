@@ -18,3 +18,4 @@ export * from "./EditMessage";
 export * from "./ScrollToButton";
 export * from "./HoldItem";
 export * from "./HoldPreview";
+export * from "./DrawerChats";

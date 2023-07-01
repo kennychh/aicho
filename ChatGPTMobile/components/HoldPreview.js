@@ -77,7 +77,7 @@ export const HoldPreview = ({
   const animatedStyle = useAnimatedStyle(() => {
     return {
       opacity: showPreview.value
-        ? withTiming(1, { duration: DURATION })
+        ? withTiming(1, { duration: DURATION - 100 })
         : withTiming(0, { duration: END_DURATION }),
       transform: [
         { translateX: translateX.value },
@@ -105,6 +105,7 @@ export const HoldPreview = ({
         // minHeight: 400,
         maxHeight: origin.height,
         backgroundColor: "red",
+        borderRadius: 16,
         flex: 1,
       },
       animatedStyle,

@@ -4,7 +4,7 @@ import { ChatScreen } from "./ChatScreen";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PortalProvider } from "@gorhom/portal";
 import { TouchableOpacity } from "react-native";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useSharedValue } from "react-native-reanimated";
 
 const Drawer = createDrawerNavigator();
@@ -42,6 +42,19 @@ export const HomeScreen = ({
   const showPreview = useSharedValue(false);
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
+  const [origin, setOrigin] = useState({ x: 0, y: 0, width: 0, height: 0 });
+
+  const openHoldPreview = (layout) => {
+    setOrigin({
+      x: layout.x,
+      y: layout.y,
+      width: layout.width,
+      height: layout.height,
+    });
+    showPreview.value = true;
+    translateX.value = 0;
+    translateY.value = 0;
+  };
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <PortalProvider>
@@ -62,6 +75,7 @@ export const HomeScreen = ({
               setTheme={setTheme}
               darkModeModalizeRef={darkModeModalizeRef}
               setConfirmDeleteVisible={setConfirmDeleteVisible}
+              openHoldPreview={openHoldPreview}
             />
           )}
           initialRouteName="Chat"
@@ -110,17 +124,9 @@ export const HomeScreen = ({
           showPreview={showPreview}
           translateX={translateX}
           translateY={translateY}
-          origin={{ x: 16, y: 115, width: 248, height: 51.3 }}
+          origin={origin}
         />
       </PortalProvider>
-      <TouchableOpacity
-        style={{ width: "100%", height: 50, position: "absolute", bottom: 0, backgroundColor: 'red' }}
-        onPress={() => {
-          showPreview.value = true;
-          translateX.value = 0;
-          translateY.value = 0;
-        }}
-      ></TouchableOpacity>
     </GestureHandlerRootView>
   );
 };
