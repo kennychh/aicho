@@ -257,6 +257,9 @@ export const HoldPreview = ({
                 indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
                 style={styles.flatList(theme)}
                 renderItem={renderItem}
+                contentContainerStyle={{
+                  flexGrow: 1,
+                }}
               />
             </Animated.View>
           </Animated.View>
