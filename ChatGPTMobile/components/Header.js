@@ -148,6 +148,7 @@ export const Header = ({
 const styles = StyleSheet.create({
   barText: (theme) => ({
     fontSize: 16,
+    lineHeight: 18,
     fontWeight: "500",
     color: theme.fontColor,
   }),

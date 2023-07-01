@@ -337,9 +337,13 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
+    lineHeight: 18,
+
+    textAlignVertical: "center",
   },
   itemContainer: {
-    padding: 12,
+    paddingVertical: 11,
+    paddingHorizontal: 12,
     marginHorizontal: 8,
     borderRadius: 22,
     alignSelf: "left",

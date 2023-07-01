@@ -34,7 +34,8 @@ export const HoldPreview = ({
   data,
   color,
 }) => {
-  const windowWidth = Dimensions.get("window").width;
+  const windowWidth =
+    Dimensions.get("window").width > 390 ? 390 : Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
   const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
   const insets = useSafeAreaInsets();
@@ -289,6 +290,7 @@ const styles = StyleSheet.create({
     color: theme.fontColor,
     paddingVertical: 16,
     fontSize: 16,
+    lineHeight: 18,
   }),
   flatList: (theme) => ({
     // paddingRight: 16,

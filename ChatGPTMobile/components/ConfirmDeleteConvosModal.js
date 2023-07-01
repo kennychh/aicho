@@ -59,12 +59,14 @@ const styles = StyleSheet.create({
   }),
   modalOptionText: (theme) => ({
     fontSize: 16,
+    lineHeight: 18,
     alignSelf: "center",
     fontWeight: "500",
     color: theme.fontColor,
   }),
   modalOptionTitleText: (theme) => ({
     fontSize: 16,
+    lineHeight: 18,
     alignSelf: "center",
     fontWeight: "500",
     color: theme.fontColor,

@@ -26,7 +26,7 @@ export const DrawerChats = ({
       transform: [
         {
           scale: expandContainer.value
-            ? withTiming(1.05, { duration: DURATION })
+            ? withTiming(1.05, { duration: DURATION + 100 })
             : withTiming(1, { duration: DURATION }),
         },
       ],
@@ -59,7 +59,7 @@ export const DrawerChats = ({
                 data
               );
             });
-          }, DURATION - 100);
+          }, DURATION);
         }}
         onPressOut={() => {
           expandContainer.value = false;
@@ -90,6 +90,7 @@ export const DrawerChats = ({
 const styles = StyleSheet.create({
   chatItemText: (theme) => ({
     fontSize: 16,
+    lineHeight: 18,
     // fontWeight: "500",
     color: theme.fontColor,
     paddingVertical: 16,

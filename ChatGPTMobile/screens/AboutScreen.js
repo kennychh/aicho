@@ -82,6 +82,7 @@ const styles = StyleSheet.create({
   }),
   modalOptionText: (theme) => ({
     fontSize: 16,
+    lineHeight: 18,
     alignSelf: "center",
     fontWeight: "500",
     color: theme.fontColor,
@@ -103,6 +104,7 @@ const styles = StyleSheet.create({
     paddingTop: 24,
     paddingHorizontal: 16,
     fontSize: 16,
+    lineHeight: 18,
     alignSelf: "center",
     fontWeight: "600",
     color: theme.iconColor,

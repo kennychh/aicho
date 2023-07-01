@@ -55,16 +55,21 @@ const styles = StyleSheet.create({
     transform: [{ scaleY: -1 }],
   },
   itemContainer: {
-    padding: 12,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
     marginHorizontal: 8,
-    borderRadius: 20,
+    borderRadius: 18,
     alignSelf: "left",
     alignItems: "center",
     justifyContent: "center",
-    // minHeight: 40,
-    minWidth: 48,
+    minWidth: 32,
   },
-  text: {},
+  text: {
+    fontSize: 14,
+    lineHeight: 16,
+
+    textAlignVertical: "center",
+  },
   alertIcon: {
     marginRight: 8,
   },

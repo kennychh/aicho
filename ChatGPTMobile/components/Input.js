@@ -185,6 +185,7 @@ const styles = StyleSheet.create({
 
   input: (theme) => ({
     fontSize: 16,
+    lineHeight: 18,
     marginLeft: 12,
     alignItems: "center",
     paddingTop: 0,

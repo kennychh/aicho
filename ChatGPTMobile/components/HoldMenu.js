@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
     marginVertical: 12,
     color: theme.fontColor,
     fontSize: 16,
+    lineHeight: 18,
     maxWidth: 148,
   }),
   menuItemContainer: {

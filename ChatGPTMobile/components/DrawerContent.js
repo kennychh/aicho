@@ -173,6 +173,7 @@ const styles = StyleSheet.create({
   },
   chatItemText: (theme) => ({
     fontSize: 16,
+    lineHeight: 18,
     // fontWeight: "500",
     color: theme.fontColor,
     paddingVertical: 16,

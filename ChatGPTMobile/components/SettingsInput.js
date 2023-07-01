@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 56,
     fontSize: 16,
+    lineHeight: 18,
     color: theme.input.fontColor,
     borderRadius: 16,
   }),

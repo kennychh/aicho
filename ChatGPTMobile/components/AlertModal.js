@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
   }),
   text: (theme) => ({
     fontSize: 16,
+    lineHeight: 18,
     alignSelf: "center",
     // fontWeight: "500",
     color: theme.fontColor,
@@ -75,6 +76,7 @@ const styles = StyleSheet.create({
   }),
   title: (theme) => ({
     fontSize: 16,
+    lineHeight: 18,
     alignSelf: "center",
     fontWeight: "600",
     color: theme.fontColor,

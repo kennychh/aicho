@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
   text: (theme) => ({
     paddingVertical: 16,
     fontSize: 16,
+    lineHeight: 18,
     alignSelf: "center",
     // fontWeight: "500",
     color: theme.iconColor,

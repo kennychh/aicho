@@ -154,6 +154,7 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingLeft: 32,
     fontSize: 16,
+    lineHeight: 18,
     color: "#FF0000",
   },
   container: (theme) => ({
