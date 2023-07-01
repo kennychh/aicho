@@ -1,6 +1,6 @@
 import { BlurView } from "expo-blur";
 import { useCallback, useEffect, useMemo } from "react";
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { Dimensions, FlatList, StyleSheet, Text, View } from "react-native";
 import {
   Gesture,
   GestureDetector,
@@ -21,6 +21,8 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Message } from "../icons";
+import { getTheme } from "../theme";
+import { PreviewMessage } from "./PreviewMessage";
 
 export const HoldPreview = ({
   translateX,
@@ -29,18 +31,25 @@ export const HoldPreview = ({
   origin = { x: 0, y: 0, width: 0, height: 0 },
   title,
   theme,
+  data,
+  color,
 }) => {
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
   const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
   const insets = useSafeAreaInsets();
+  const scale = useSharedValue(1);
 
   const END_POSITION_X = 0;
   const END_POSITION_Y = 0;
   const DURATION = 200;
   const END_DURATION = 400;
-  const originX = origin.x - 16;
+  const originX = origin.x - 12;
   const originY = origin.y - insets.top - 24;
+
+  const renderItem = ({ item, index }) => (
+    <PreviewMessage item={item} color={color} theme={theme} />
+  );
 
   const panGesture = useAnimatedGestureHandler(
     {
@@ -50,7 +59,19 @@ export const HoldPreview = ({
         translateY.value =
           END_POSITION_Y +
           e.translationY -
-          (e.translationY < 0 ? e.translationY / 1.08 : e.translationY / 3.5);
+          (e.translationY < 0 ? e.translationY / 1.08 : 0);
+        const scaleValue =
+          e.translationY < 0
+            ? 1 -
+              (0.1 * Math.abs(e.translationY)) /
+                (windowHeight - insets.top - 24 - 520 / 2)
+            : 1 -
+              (0.5 * Math.abs(e.translationY)) /
+                (windowHeight - insets.top - 24 - 520 / 2);
+        if (scaleValue >= 0.7) {
+          console.log(scaleValue);
+          scale.value = scaleValue;
+        }
       },
       onEnd: (e) => {
         let end_x = END_POSITION_X;
@@ -60,18 +81,9 @@ export const HoldPreview = ({
           end_y = originY;
           end_x = originX;
         }
-        translateX.value = withSpring(0, {
-          damping: 30,
-          stiffness: 400,
-          restDisplacementThreshold: 0.0001,
-          restSpeedThreshold: 0.0001,
-        });
-        translateY.value = withSpring(0, {
-          damping: 30,
-          stiffness: 400,
-          restDisplacementThreshold: 0.0001,
-          restSpeedThreshold: 0.0001,
-        });
+        translateX.value = withTiming(0, END_DURATION);
+        translateY.value = withTiming(0, END_DURATION);
+        scale.value = withTiming(1, END_DURATION);
       },
     },
     [translateX, translateY]
@@ -85,14 +97,9 @@ export const HoldPreview = ({
       transform: [
         { translateX: translateX.value },
         { translateY: translateY.value },
-        // {
-        //   scale: showPreview.value
-        //     ? withTiming(1, { duration: DURATION })
-        //     : withTiming(0, { duration: END_DURATION }),
-        // },
       ],
       maxHeight: showPreview.value
-        ? withTiming(460, { duration: DURATION })
+        ? withTiming(480, { duration: DURATION })
         : withTiming(origin.height, { duration: END_DURATION }),
       maxWidth: showPreview.value
         ? withTiming(windowWidth, { duration: DURATION })
@@ -100,21 +107,43 @@ export const HoldPreview = ({
     };
   });
 
+  const flatListAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      opacity: showPreview.value
+        ? withTiming(1, { duration: DURATION })
+        : withTiming(0, { duration: DURATION }),
+      // transform: [
+      //   {
+      //     scale: showPreview.value
+      //       ? withTiming(1, { duration: DURATION })
+      //       : withTiming(0, { duration: END_DURATION }),
+      //   },
+      // ],
+    };
+  });
+
   const itemStyle = useMemo(
     () => [
       {
-        maxWidth: origin.width,
+        maxWidth: windowWidth,
         // position: "absolute",
         // minHeight: 400,
-        maxHeight: origin.height,
+        maxHeight: 480,
         backgroundColor: theme.backgroundColor,
-        borderRadius: 16,
+        borderBottomLeftRadius: 16,
+        borderBottomRightRadius: 16,
         flex: 1,
         overflow: "hidden",
+        paddingBottom: 8,
       },
       animatedStyle,
     ],
     [animatedStyle]
+  );
+
+  const flatlistStyle = useMemo(
+    () => [{ flex: 1, height: "100%" }, flatListAnimatedStyle],
+    [flatListAnimatedStyle]
   );
 
   const animatedBlurViewStyle = useAnimatedStyle(() => ({
@@ -145,9 +174,13 @@ export const HoldPreview = ({
                 stiffness: 200,
                 mass: 0.8,
               })
-            : withTiming(0, { duration: END_DURATION }),
+            : withTiming(0, { duration: DURATION }),
         },
+        { scale: scale.value },
       ],
+      maxWidth: showPreview.value
+        ? withTiming(windowWidth, { duration: DURATION })
+        : withTiming(origin.width, { duration: END_DURATION }),
     };
   });
 
@@ -162,6 +195,23 @@ export const HoldPreview = ({
       animatedContainerStyle,
     ],
     [animatedContainerStyle]
+  );
+
+  const animatedTitleBarStyle = useAnimatedStyle(() => {
+    return {
+      opacity: showPreview.value
+        ? withTiming(1, { duration: DURATION - 100 })
+        : withTiming(0, { duration: END_DURATION }),
+      transform: [
+        { translateX: translateX.value },
+        { translateY: translateY.value },
+      ],
+    };
+  });
+
+  const tileBarStyle = useMemo(
+    () => [styles.titleBar(theme), animatedTitleBarStyle],
+    [animatedTitleBarStyle]
   );
 
   return (
@@ -180,17 +230,35 @@ export const HoldPreview = ({
         ]}
       >
         <Animated.View style={containerStyle}>
+          <Animated.View style={tileBarStyle}>
+            <Message style={{ marginRight: 8 }} stroke={theme.iconColor} />
+            <Text
+              style={styles.title(theme)}
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            >
+              {title}
+            </Text>
+          </Animated.View>
           <Animated.View style={itemStyle}>
-            <View style={styles.titleBar(theme)}>
-              <Message style={{ marginRight: 8 }} stroke={theme.iconColor} />
-              <Text
-                style={styles.title(theme)}
-                numberOfLines={1}
-                ellipsizeMode="tail"
-              >
-                {title}
-              </Text>
-            </View>
+            <Animated.View
+              style={{
+                position: "absolute",
+                backgroundColor: theme.backgroundColor,
+                width: "100%",
+                height: "100%",
+              }}
+            />
+            <Animated.View style={flatlistStyle}>
+              <Animated.FlatList
+                inverted
+                data={data}
+                scrollEnabled={false}
+                indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
+                style={styles.flatList(theme)}
+                renderItem={renderItem}
+              />
+            </Animated.View>
           </Animated.View>
         </Animated.View>
       </AnimatedBlurView>
@@ -212,10 +280,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingHorizontal: 16,
     alignItems: "center",
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
   }),
   title: (theme) => ({
     color: theme.fontColor,
     paddingVertical: 16,
     fontSize: 16,
+  }),
+  flatList: (theme) => ({
+    // paddingRight: 16,
+    backgroundColor: theme.backgroundColor,
+    // maxHeight: 400,
   }),
 });

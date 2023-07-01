@@ -15,6 +15,7 @@ export const DrawerChats = ({
   text,
   selected,
   openHoldPreview,
+  data,
 }) => {
   const expandContainer = useSharedValue(false);
   const ref = useRef(null);
@@ -41,6 +42,7 @@ export const DrawerChats = ({
       <TouchableOpacity
         ref={ref}
         onPress={onPress}
+        delayLongPress={200}
         onLongPress={() => {
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
           expandContainer.value = true;
@@ -53,7 +55,8 @@ export const DrawerChats = ({
                   width: width,
                   height: height,
                 },
-                text
+                text,
+                data
               );
             });
           }, DURATION - 100);

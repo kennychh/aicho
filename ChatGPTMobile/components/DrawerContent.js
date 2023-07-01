@@ -73,6 +73,7 @@ export const DrawerContent = ({
               text={chatTitles[index]}
               selected={selectedItem == index}
               openHoldPreview={openHoldPreview}
+              data={item.slice(0, 10)}
             />
           )}
           keyExtractor={(item, index) => {
