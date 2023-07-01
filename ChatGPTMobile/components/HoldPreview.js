@@ -1,6 +1,6 @@
 import { BlurView } from "expo-blur";
 import { useCallback, useEffect, useMemo } from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
+import { Dimensions, StyleSheet, Text, View } from "react-native";
 import {
   Gesture,
   GestureDetector,
@@ -20,12 +20,15 @@ import Animated, {
   useAnimatedGestureHandler,
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Message } from "../icons";
 
 export const HoldPreview = ({
   translateX,
   translateY,
   showPreview,
   origin = { x: 0, y: 0, width: 0, height: 0 },
+  title,
+  theme,
 }) => {
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
@@ -104,9 +107,10 @@ export const HoldPreview = ({
         // position: "absolute",
         // minHeight: 400,
         maxHeight: origin.height,
-        backgroundColor: "red",
+        backgroundColor: theme.backgroundColor,
         borderRadius: 16,
         flex: 1,
+        overflow: "hidden",
       },
       animatedStyle,
     ],
@@ -176,7 +180,18 @@ export const HoldPreview = ({
         ]}
       >
         <Animated.View style={containerStyle}>
-          <Animated.View style={itemStyle} />
+          <Animated.View style={itemStyle}>
+            <View style={styles.titleBar(theme)}>
+              <Message style={{ marginRight: 8 }} stroke={theme.iconColor} />
+              <Text
+                style={styles.title(theme)}
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {title}
+              </Text>
+            </View>
+          </Animated.View>
         </Animated.View>
       </AnimatedBlurView>
     </PanGestureHandler>
@@ -184,11 +199,23 @@ export const HoldPreview = ({
 };
 
 const styles = StyleSheet.create({
-  box: {
+  box: (theme) => ({
     width: "100%",
     // position: "absolute",
     // minHeight: 400,
     height: 460,
-    backgroundColor: "red",
-  },
+    backgroundColor: theme.backgroundColor,
+  }),
+  titleBar: (theme) => ({
+    width: "100%",
+    backgroundColor: theme.onBackgroundColor,
+    flexDirection: "row",
+    paddingHorizontal: 16,
+    alignItems: "center",
+  }),
+  title: (theme) => ({
+    color: theme.fontColor,
+    paddingVertical: 16,
+    fontSize: 16,
+  }),
 });

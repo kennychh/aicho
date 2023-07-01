@@ -18,7 +18,7 @@ export const DrawerChats = ({
 }) => {
   const expandContainer = useSharedValue(false);
   const ref = useRef(null);
-  const DURATION = 500;
+  const DURATION = 400;
 
   const animatedContainerStyle = useAnimatedStyle(() => {
     return {
@@ -46,12 +46,15 @@ export const DrawerChats = ({
           expandContainer.value = true;
           setTimeout(() => {
             ref.current.measure((x, y, width, height, pageX, pageY) => {
-              openHoldPreview({
-                x: pageX,
-                y: pageY,
-                width: width,
-                height: height,
-              });
+              openHoldPreview(
+                {
+                  x: pageX,
+                  y: pageY,
+                  width: width,
+                  height: height,
+                },
+                text
+              );
             });
           }, DURATION - 100);
         }}

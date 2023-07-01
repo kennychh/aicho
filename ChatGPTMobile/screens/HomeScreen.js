@@ -42,15 +42,17 @@ export const HomeScreen = ({
   const showPreview = useSharedValue(false);
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
+  const [previewTitle, setPreviewTitle] = useState("F");
   const [origin, setOrigin] = useState({ x: 0, y: 0, width: 0, height: 0 });
 
-  const openHoldPreview = (layout) => {
+  const openHoldPreview = (layout, title) => {
     setOrigin({
       x: layout.x,
       y: layout.y,
       width: layout.width,
       height: layout.height,
     });
+    setPreviewTitle(title);
     showPreview.value = true;
     translateX.value = 0;
     translateY.value = 0;
@@ -125,6 +127,8 @@ export const HomeScreen = ({
           translateX={translateX}
           translateY={translateY}
           origin={origin}
+          theme={theme}
+          title={previewTitle}
         />
       </PortalProvider>
     </GestureHandlerRootView>
