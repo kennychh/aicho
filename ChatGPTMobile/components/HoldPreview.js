@@ -69,7 +69,6 @@ export const HoldPreview = ({
               (0.5 * Math.abs(e.translationY)) /
                 (windowHeight - insets.top - 24 - 520 / 2);
         if (scaleValue >= 0.7) {
-          console.log(scaleValue);
           scale.value = scaleValue;
         }
       },
