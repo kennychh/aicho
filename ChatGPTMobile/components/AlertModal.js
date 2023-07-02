@@ -16,8 +16,8 @@ export const AlertModal = ({
       isVisible={visible}
       animationIn={"fadeIn"}
       animationOut={"fadeOut"}
-      animationInTiming={100}
-      animationOutTiming={100}
+      animationInTiming={200}
+      animationOutTiming={200}
       backdropTransitionOutTiming={0}
     >
       <View style={styles.modal}>

@@ -79,7 +79,7 @@ export const DrawerChats = ({
                 holdMenuData
               );
             });
-          }, DURATION);
+          }, DURATION - 100);
         }}
         onPressOut={() => {
           expandContainer.value = false;
