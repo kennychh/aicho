@@ -146,7 +146,7 @@ export const DrawerContent = ({
             numberOfLines={1}
             style={[styles.chatItemText(theme), { color: theme.error.color }]}
           >
-            Delete conversations
+            Clear conversations
           </Text>
         </TouchableOpacity>
       </ScrollView>

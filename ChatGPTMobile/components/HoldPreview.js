@@ -23,16 +23,19 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Message } from "../icons";
 import { getTheme } from "../theme";
 import { PreviewMessage } from "./PreviewMessage";
+import { HoldMenu } from "./HoldMenu";
 
 export const HoldPreview = ({
   translateX,
   translateY,
   showPreview,
+  showHoldMenu,
   origin = { x: 0, y: 0, width: 0, height: 0 },
   title,
   theme,
   data,
   color,
+  holdMenuData,
 }) => {
   const windowWidth =
     Dimensions.get("window").width > 390 ? 390 : Dimensions.get("window").width;
@@ -40,6 +43,7 @@ export const HoldPreview = ({
   const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
   const insets = useSafeAreaInsets();
   const scale = useSharedValue(1);
+  const activeHoldMenu = useSharedValue(false);
 
   const END_POSITION_X = 0;
   const END_POSITION_Y = 0;
@@ -72,6 +76,13 @@ export const HoldPreview = ({
         if (scaleValue >= 0.7) {
           scale.value = scaleValue;
         }
+        if (e.translationY > 100) {
+          showHoldMenu.value = false;
+          activeHoldMenu.value = false;
+        } else {
+          showHoldMenu.value = true;
+          activeHoldMenu.value = withDelay(DURATION, withTiming(true, 0));
+        }
       },
       onEnd: (e) => {
         let end_x = END_POSITION_X;
@@ -80,6 +91,8 @@ export const HoldPreview = ({
           showPreview.value = false;
           end_y = originY;
           end_x = originX;
+        } else {
+          showHoldMenu.value = true;
         }
         translateX.value = withTiming(0, END_DURATION);
         translateY.value = withTiming(0, END_DURATION);
@@ -214,6 +227,44 @@ export const HoldPreview = ({
     [animatedTitleBarStyle]
   );
 
+  const animatedHoldMenuStyle = useAnimatedStyle(() => {
+    return {
+      // opacity: showHoldMenu.value
+      //   ? withTiming(1, { duration: DURATION })
+      //   : withTiming(0, { duration: DURATION - 50 }),
+      transform: [
+        { translateY: translateY.value },
+        {
+          scale: showHoldMenu.value
+            ? activeHoldMenu.value
+              ? 1 / scale.value
+              : withTiming(1, { duration: DURATION })
+            : withTiming(0, { duration: DURATION }),
+        },
+      ],
+    };
+  });
+
+  const holdMenuStyle = useMemo(
+    () => [styles.holdMenu, animatedHoldMenuStyle],
+    [animatedHoldMenuStyle]
+  );
+
+  const animatedHoldMenuContainerStyle = useAnimatedStyle(() => {
+    return {
+      // transform: [
+      //   {
+      //     scale: showHoldMenu.value ? withTiming(1, { duration: DURATION }) : 1,
+      //   },
+      // ],
+    };
+  });
+
+  const holdMenuContainerStyle = useMemo(
+    () => [animatedHoldMenuContainerStyle],
+    [animatedHoldMenuContainerStyle]
+  );
+
   return (
     <PanGestureHandler onGestureEvent={panGesture}>
       <AnimatedBlurView
@@ -263,6 +314,11 @@ export const HoldPreview = ({
               />
             </Animated.View>
           </Animated.View>
+          <Animated.View style={holdMenuContainerStyle}>
+            <Animated.View style={holdMenuStyle}>
+              <HoldMenu theme={theme} onPress={() => {}} data={holdMenuData} />
+            </Animated.View>
+          </Animated.View>
         </Animated.View>
       </AnimatedBlurView>
     </PanGestureHandler>
@@ -297,4 +353,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.backgroundColor,
     // maxHeight: 400,
   }),
+  holdMenu: {
+    marginTop: 16,
+  },
 });

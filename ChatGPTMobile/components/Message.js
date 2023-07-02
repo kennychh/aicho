@@ -64,7 +64,7 @@ const Message = ({
     },
     {
       title: "Edit",
-      icon: <Edit stroke={theme.iconColor} width={20} height={20} />,
+      icon: <Edit2 stroke={theme.iconColor} width={20} height={20} />,
       onPress: () => {
         setEditMessage(item);
         setInput(text);

@@ -39,7 +39,7 @@ export const HoldMenu = ({
               </View>
             );
           })
-        : data.map((data, index) => {
+        : data.map((item, index) => {
             return (
               <View>
                 <TouchableOpacity
@@ -50,16 +50,32 @@ export const HoldMenu = ({
                   onPress={() => {
                     onPress();
                     setTimeout(() => {
-                      data.onPress();
+                      item.onPress();
                     }, 200);
                   }}
                 >
-                  <Text style={styles.text(theme)} numberOfLines={1}>
-                    {data.title}
+                  <Text
+                    style={[
+                      styles.text(theme),
+                      item.isDestructive ? { color: "#FF0000" } : {},
+                    ]}
+                    numberOfLines={1}
+                  >
+                    {item.title}
                   </Text>
-                  <View style={styles.icon}>{data.icon}</View>
+                  <View style={styles.icon}>{item.icon}</View>
                 </TouchableOpacity>
-                {index == 0 && <View style={styles.border(theme)} />}
+                {index != data.length - 1 && (
+                  <View>
+                    <View style={styles.border(theme)} />
+                    <View
+                      style={[
+                        styles.border(theme),
+                        { backgroundColor: "transparent" },
+                      ]}
+                    />
+                  </View>
+                )}
               </View>
             );
           })}
@@ -70,7 +86,7 @@ export const HoldMenu = ({
 const styles = StyleSheet.create({
   blurView: (theme) => ({
     backgroundColor: theme.holdItem.menu.backgroundColor,
-    flex: 1,
+    // flex: 1,
     borderRadius: 16,
     overflow: "hidden",
     width: 232,

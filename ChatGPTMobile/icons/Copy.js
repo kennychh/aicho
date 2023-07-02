@@ -13,11 +13,11 @@ export const Copy = (props) => {
       strokeWidth={2}
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="feather feather-clipboard"
+      className="lucide lucide-files"
       {...props}
     >
-      <Path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2" />
-      <Rect x={8} y={2} width={8} height={4} rx={1} ry={1} />
+      <Path d="M15.5 2H8.6c-.4 0-.8.2-1.1.5-.3.3-.5.7-.5 1.1v12.8c0 .4.2.8.5 1.1.3.3.7.5 1.1.5h9.8c.4 0 .8-.2 1.1-.5.3-.3.5-.7.5-1.1V6.5L15.5 2z" />
+      <Path d="M3 7.6v12.8c0 .4.2.8.5 1.1.3.3.7.5 1.1.5h9.8M15 2v5h5" />
     </Svg>
   );
 };

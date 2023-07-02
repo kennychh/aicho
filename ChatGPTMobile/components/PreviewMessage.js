@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     alignSelf: "left",
     alignItems: "center",
     justifyContent: "center",
-    minWidth: 32,
+    minWidth: 40,
   },
   text: {
     fontSize: 14,

@@ -1,6 +1,6 @@
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { Text } from "react-native";
-import { Message } from "../icons";
+import { Copy, Delete, Edit, Edit2, Message } from "../icons";
 import { useMemo, useRef, useState } from "react";
 import Animated, {
   useAnimatedStyle,
@@ -37,6 +37,25 @@ export const DrawerChats = ({
     () => [animatedContainerStyle],
     [animatedContainerStyle]
   );
+
+  const holdMenuData = [
+    {
+      title: "Copy conversation",
+      icon: <Copy stroke={theme.iconColor} width={20} height={20} />,
+      onPress: () => {},
+    },
+    {
+      title: "Edit title",
+      icon: <Edit2 stroke={theme.iconColor} width={20} height={20} />,
+      onPress: () => {},
+    },
+    {
+      title: "Delete conversation",
+      icon: <Delete stroke={"#FF0000"} width={20} height={20} />,
+      isDestructive: true,
+      onPress: () => {},
+    },
+  ];
   return (
     <Animated.View style={containerStyle}>
       <TouchableOpacity
@@ -56,7 +75,8 @@ export const DrawerChats = ({
                   height: height,
                 },
                 text,
-                data
+                data,
+                holdMenuData
               );
             });
           }, DURATION);

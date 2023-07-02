@@ -42,10 +42,12 @@ export const HomeScreen = ({
   const showPreview = useSharedValue(false);
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
+  const showHoldMenu = useSharedValue(true);
   const [previewTitle, setPreviewTitle] = useState("");
+  const [holdMenuData, setHoldMenuData] = useState();
   const [previewData, setPreviewData] = useState(chats[0].slice(0, 10));
   const [origin, setOrigin] = useState({ x: 0, y: 0, width: 0, height: 0 });
-  const openHoldPreview = (layout, title, data) => {
+  const openHoldPreview = (layout, title, data, holdMenuData) => {
     setOrigin({
       x: layout.x,
       y: layout.y,
@@ -54,7 +56,9 @@ export const HomeScreen = ({
     });
     setPreviewTitle(title);
     setPreviewData(data);
+    setHoldMenuData(holdMenuData);
     showPreview.value = true;
+    showHoldMenu.value = true;
     translateX.value = 0;
     translateY.value = 0;
   };
@@ -125,6 +129,8 @@ export const HomeScreen = ({
         </Drawer.Navigator>
         <HoldPreview
           showPreview={showPreview}
+          showHoldMenu={showHoldMenu}
+          holdMenuData={holdMenuData}
           translateX={translateX}
           translateY={translateY}
           origin={origin}

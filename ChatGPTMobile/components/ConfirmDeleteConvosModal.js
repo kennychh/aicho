@@ -37,7 +37,7 @@ export const ConfirmDeleteConvosModal = ({
         setConfirmDeleteVisible(false);
       }}
       theme={theme}
-      title={"Delete conversations?"}
+      title={"Clear conversations?"}
       buttonText={"Delete"}
       subtext={"This will delete all conversations from your device."}
     />
