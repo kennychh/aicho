@@ -18,6 +18,8 @@ import Animated, {
   interpolate,
   Extrapolation,
   useAnimatedGestureHandler,
+  useDerivedValue,
+  interpolateColor,
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Message } from "../icons";
@@ -51,6 +53,11 @@ export const HoldPreview = ({
   const END_DURATION = 400;
   const originX = origin.x - 12;
   const originY = origin.y - insets.top - 24;
+  const progress = useDerivedValue(() => {
+    return showPreview.value
+      ? withTiming(1, DURATION)
+      : withTiming(0, DURATION);
+  });
 
   const renderItem = ({ item, index }) => (
     <PreviewMessage item={item} color={color} theme={theme} />
@@ -159,14 +166,22 @@ export const HoldPreview = ({
     [flatListAnimatedStyle]
   );
 
-  const animatedBlurViewStyle = useAnimatedStyle(() => ({
-    top: showPreview.value
-      ? 0
-      : withDelay(END_DURATION, withTiming(windowHeight, { duration: 0 })),
-    intensity: withTiming(showPreview.value ? 50 : 0, {
-      duration: DURATION,
-    }),
-  }));
+  const animatedBlurViewStyle = useAnimatedStyle(() => {
+    const backgroundColor = interpolateColor(
+      progress.value,
+      [0, 1],
+      ["transparent", theme.blurView.backgroundColor]
+    );
+    return {
+      backgroundColor: backgroundColor,
+      top: showPreview.value
+        ? 0
+        : withDelay(END_DURATION, withTiming(windowHeight, { duration: 0 })),
+      intensity: withTiming(showPreview.value ? 50 : 0, {
+        duration: DURATION,
+      }),
+    };
+  });
 
   const animatedContainerStyle = useAnimatedStyle(() => {
     return {
@@ -269,6 +284,7 @@ export const HoldPreview = ({
     <PanGestureHandler onGestureEvent={panGesture}>
       <AnimatedBlurView
         intensity={0}
+        tint={theme === getTheme("dark") ? "dark" : "light"}
         style={[
           {
             position: "absolute",

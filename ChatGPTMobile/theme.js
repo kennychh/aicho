@@ -72,6 +72,9 @@ const lightTheme = {
       borderColor: "#DBDBDB",
     },
   },
+  blurView: {
+    backgroundColor: "rgba(0,0,0,0.3)",
+  },
 };
 
 const darkTheme = {
@@ -145,9 +148,12 @@ const darkTheme = {
   },
   holdItem: {
     menu: {
-      backgroundColor: "rgba(58, 58, 60, 0.4)",
+      backgroundColor: "rgba(86, 86, 91, 0.4)",
       borderColor: "#45474B",
     },
+  },
+  blurView: {
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
 };
 

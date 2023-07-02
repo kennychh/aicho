@@ -17,6 +17,8 @@ import Animated, {
   withSpring,
   useAnimatedReaction,
   Easing,
+  useDerivedValue,
+  interpolateColor,
 } from "react-native-reanimated";
 import {
   TapGestureHandler,
@@ -53,6 +55,11 @@ const HoldItem = ({
   const duration = 200;
   const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
   const messageScale = useSharedValue(0);
+  const progress = useDerivedValue(() => {
+    return active.value
+      ? withTiming(1, duration)
+      : withTiming(0, duration);
+  });
   const closeHoldItem = () => {
     if (isActive) {
       active.value = false;
@@ -275,12 +282,6 @@ const HoldItem = ({
             restSpeedThreshold: 0.0001,
           });
     return {
-      shadowColor: "#000",
-      shadowOpacity: 0.2,
-      shadowRadius: 32,
-      shadowOffset: {
-        height: 2,
-      },
       opacity: active.value
         ? withTiming(1, { duration: duration })
         : withTiming(0, { duration: duration }),
@@ -343,6 +344,21 @@ const HoldItem = ({
     [animatedInitialMessageStyle]
   );
 
+  const animatedBlurViewStyle = useAnimatedStyle(() => {
+    const backgroundColor = interpolateColor(
+      progress.value,
+      [0, 1],
+      ["transparent", theme.blurView.backgroundColor]
+    );
+    return {
+      backgroundColor: backgroundColor,
+    };
+  });
+  const blurViewStyle = useMemo(
+    () => [styles.blurView, animatedBlurViewStyle],
+    [animatedBlurViewStyle]
+  );
+
   return (
     <>
       <Animated.View ref={containerRef} style={initialMessageContainerStyle}>
@@ -358,7 +374,7 @@ const HoldItem = ({
           >
             <AnimatedBlurView
               tint={tint}
-              style={styles.blurView}
+              style={blurViewStyle}
               animatedProps={animatedContainerProps}
             />
           </TapGestureHandler>

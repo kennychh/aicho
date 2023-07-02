@@ -40,7 +40,7 @@ export const DrawerChats = ({
 
   const holdMenuData = [
     {
-      title: "Copy conversation",
+      title: "Copy",
       icon: <Copy stroke={theme.iconColor} width={20} height={20} />,
       onPress: () => {},
     },
@@ -50,7 +50,7 @@ export const DrawerChats = ({
       onPress: () => {},
     },
     {
-      title: "Delete conversation",
+      title: "Delete",
       icon: <Delete stroke={"#FF0000"} width={20} height={20} />,
       isDestructive: true,
       onPress: () => {},
