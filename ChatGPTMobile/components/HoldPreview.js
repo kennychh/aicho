@@ -86,6 +86,8 @@ export const HoldPreview = ({
         if (e.translationY > 100) {
           showHoldMenu.value = false;
           activeHoldMenu.value = false;
+        } else if (e.translationY < 0) {
+          activeHoldMenu.value = true;
         } else {
           showHoldMenu.value = true;
           activeHoldMenu.value = withDelay(DURATION, withTiming(true, 0));

@@ -100,14 +100,14 @@ const darkTheme = {
     color: "#FF0000",
   },
   drawerContent: {
-    backgroundColor: "#1C1C1D",
-    overlayColor: "rgba(255, 255, 255, 0.10)",
+    backgroundColor: "black",
+    overlayColor: "rgba(	46,	46,	48, 0.4)",
     drawerDivider: {
-      backgroundColor: "#3A3A3C",
+      backgroundColor: "#1C1C1D",
     },
     chatItem: {
       selected: {
-        backgroundColor: "#2C2C2D",
+        backgroundColor: "#1C1C1D",
       },
       backgroundColor: "black",
     },

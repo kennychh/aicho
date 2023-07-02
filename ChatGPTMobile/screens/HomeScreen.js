@@ -66,6 +66,8 @@ export const HomeScreen = ({
     <GestureHandlerRootView style={{ flex: 1 }}>
       <PortalProvider>
         <Drawer.Navigator
+        drawerStyle
+        
           drawerContent={(props) => (
             <DrawerContent
               props={props}
@@ -92,7 +94,7 @@ export const HomeScreen = ({
             drawerStyle: {
               backgroundColor: theme.drawerContent.backgroundColor,
             },
-            // overlayColor: theme.drawerContent.overlayColor,
+            overlayColor: theme.drawerContent.overlayColor,
           }}
         >
           <Drawer.Screen name="Chat">
