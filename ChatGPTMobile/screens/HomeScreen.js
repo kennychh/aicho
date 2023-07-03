@@ -84,7 +84,9 @@ export const HomeScreen = ({
       setInput("");
       setEditMessage(null);
       navigation.closeDrawer();
-      setIsHeaderEditable(true);
+      setTimeout(() => {
+        setIsHeaderEditable(true);
+      }, 300);
     },
   };
   return (

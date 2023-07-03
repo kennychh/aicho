@@ -154,6 +154,7 @@ export const DrawerContent = ({
 const styles = StyleSheet.create({
   drawerOptions: {
     paddingHorizontal: 16,
+    marginHorizontal: 16,
     marginRight: 32,
     flexDirection: "row",
     flex: 1,
@@ -165,7 +166,7 @@ const styles = StyleSheet.create({
     color: theme.fontColor,
   }),
   drawerConversationsTitleContainer: {
-    marginBottom: 24,
+    marginBottom: 16,
     marginLeft: 16,
   },
   chatItemText: (theme) => ({
@@ -187,7 +188,7 @@ const styles = StyleSheet.create({
   container: (theme) => ({
     backgroundColor: theme.drawerContent.backgroundColor,
     marginVertical: 16,
-    marginHorizontal: 16,
+    // marginHorizontal: 16,
     justifyContent: "space-between",
     flex: 1,
   }),
@@ -197,6 +198,7 @@ const styles = StyleSheet.create({
     // paddingRight: 16,
     backgroundColor: theme.drawerContent.backgroundColor,
     overflow: "visible",
+    marginTop: 16,
     // maxHeight: 400,
   }),
 });
