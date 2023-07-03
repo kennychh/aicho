@@ -6,6 +6,7 @@ import { PortalProvider } from "@gorhom/portal";
 import { TouchableOpacity } from "react-native";
 import { useRef, useState } from "react";
 import { useSharedValue } from "react-native-reanimated";
+import * as Clipboard from "expo-clipboard";
 
 const Drawer = createDrawerNavigator();
 
@@ -62,12 +63,27 @@ export const HomeScreen = ({
     translateX.value = 0;
     translateY.value = 0;
   };
+
+  const holdPreviewFunctions = {
+    deleteChat: (index) => {
+      clearConversation(index);
+    },
+    copyChat: (index) => {
+      const chatTexts = chats[index]
+        .map((chat) => chat.result?.text + "*#")
+        .reverse()
+        .toString()
+        .split("*#,")
+        .join("\n\n")
+        .replace("*#", "");
+      Clipboard.setStringAsync(chatTexts);
+    },
+  };
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <PortalProvider>
         <Drawer.Navigator
-        drawerStyle
-        
+          drawerStyle
           drawerContent={(props) => (
             <DrawerContent
               props={props}
@@ -85,6 +101,7 @@ export const HomeScreen = ({
               darkModeModalizeRef={darkModeModalizeRef}
               setConfirmDeleteVisible={setConfirmDeleteVisible}
               openHoldPreview={openHoldPreview}
+              holdPreviewFunctions={holdPreviewFunctions}
             />
           )}
           initialRouteName="Chat"

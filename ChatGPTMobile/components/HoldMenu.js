@@ -13,6 +13,7 @@ export const HoldMenu = ({
   numItems = 2,
   data,
   onPress,
+  duration = 200,
 }) => {
   const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
   const defaultData = Array.from({ length: numItems }, () => ({}));
@@ -51,7 +52,7 @@ export const HoldMenu = ({
                     onPress();
                     setTimeout(() => {
                       item.onPress();
-                    }, 200);
+                    }, duration);
                   }}
                 >
                   <Text

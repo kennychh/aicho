@@ -28,6 +28,7 @@ export const DrawerContent = ({
   darkModeModalizeRef,
   setConfirmDeleteVisible,
   openHoldPreview,
+  holdPreviewFunctions,
 }) => {
   const navigation = props.navigation;
   const [selectedItem, setSelectedItem] = useState(chatIndex);
@@ -74,6 +75,8 @@ export const DrawerContent = ({
               selected={selectedItem == index}
               openHoldPreview={openHoldPreview}
               data={item.slice(0, 10)}
+              index={index}
+              holdPreviewFunctions={holdPreviewFunctions}
             />
           )}
           keyExtractor={(item, index) => {

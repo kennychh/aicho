@@ -16,6 +16,8 @@ export const DrawerChats = ({
   selected,
   openHoldPreview,
   data,
+  index,
+  holdPreviewFunctions,
 }) => {
   const expandContainer = useSharedValue(false);
   const ref = useRef(null);
@@ -42,7 +44,9 @@ export const DrawerChats = ({
     {
       title: "Copy",
       icon: <Copy stroke={theme.iconColor} width={20} height={20} />,
-      onPress: () => {},
+      onPress: () => {
+        holdPreviewFunctions.copyChat(index);
+      },
     },
     {
       title: "Edit title",
@@ -53,7 +57,9 @@ export const DrawerChats = ({
       title: "Delete",
       icon: <Delete stroke={"#FF0000"} width={20} height={20} />,
       isDestructive: true,
-      onPress: () => {},
+      onPress: () => {
+        holdPreviewFunctions.deleteChat(index);
+      },
     },
   ];
   return (

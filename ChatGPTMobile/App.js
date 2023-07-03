@@ -212,6 +212,7 @@ export default function App() {
     setDeleteChat(true);
     if (chats.length == 1) {
       setChats([[]]);
+      setChatTitles(["New chat"]);
     } else {
       setChats((oldChats) => [
         ...oldChats.slice(0, index),

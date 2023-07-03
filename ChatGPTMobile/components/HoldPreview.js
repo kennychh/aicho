@@ -334,7 +334,15 @@ export const HoldPreview = ({
           </Animated.View>
           <Animated.View style={holdMenuContainerStyle}>
             <Animated.View style={holdMenuStyle}>
-              <HoldMenu theme={theme} onPress={() => {}} data={holdMenuData} />
+              <HoldMenu
+                theme={theme}
+                onPress={() => {
+                  showPreview.value = false;
+                  showHoldMenu.value = false;
+                }}
+                data={holdMenuData}
+                duration={END_DURATION}
+              />
             </Animated.View>
           </Animated.View>
         </Animated.View>
