@@ -34,84 +34,38 @@ const HoldItem = ({
   tint,
   isInput,
   listRef,
-  swipeEnabled,
+  setSwipeEnabled,
   theme,
   holdMenuRef,
   holdMenuData,
+  active,
+  itemRectHeight,
+  itemRectWidth,
+  itemRectX,
+  itemRectY,
+  containerRef,
+  menuWidth,
+  menuHeight,
+  menuRef,
+  showPortal,
 }) => {
   const windowHeight = Dimensions.get("window").height;
   const windowWidth = Dimensions.get("window").width;
   const insets = useSafeAreaInsets();
-  const containerRef = useAnimatedRef();
-  const menuRef = useAnimatedRef();
-  const [itemRectY, setItemRectY] = useState(null);
-  const [itemRectX, setItemRectX] = useState(null);
-  const [itemRectWidth, setItemRectWidth] = useState(null);
-  const [itemRectHeight, setItemRectHeight] = useState(null);
-  const [showPortal, setShowPortal] = useState(false);
-  const [menuWidth, setMenuWidth] = useState(0);
-  const [menuHeight, setMenuHeight] = useState(0);
-  const active = useSharedValue(false);
+
   const duration = 200;
   const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
   const messageScale = useSharedValue(0);
   const progress = useDerivedValue(() => {
-    return active.value
-      ? withTiming(1, duration)
-      : withTiming(0, duration);
+    return active.value ? withTiming(1, duration) : withTiming(0, duration);
   });
   const closeHoldItem = () => {
-    if (isActive) {
-      active.value = false;
-      swipeEnabled.current = true;
-      setTimeout(() => {
-        setIsActive(false);
-        listRef?.current?.setNativeProps({ scrollEnabled: true });
-      }, duration);
-    }
+    active.value = false;
+    setTimeout(() => {
+      listRef?.current?.setNativeProps({ scrollEnabled: true });
+      setSwipeEnabled(true);
+    }, duration);
   };
-  const getMeasurements = useCallback(() => {
-    if (isActive) {
-      active.value = true;
-      containerRef.current?.measure((x, y, width, height, pageX, pageY) => {
-        if (itemRectY != pageY || !showPortal) {
-          setItemRectX(pageX);
-          setItemRectHeight(height);
-          setItemRectWidth(width);
-          setItemRectY(pageY);
-          setShowPortal(true);
-        }
-      });
-      holdMenuRef?.current?.measure((x, y, width, height, pageX, pageY) => {
-        if (width != 0 || height != 0) {
-          setMenuHeight(height);
-          setMenuWidth(width);
-        }
-      });
-    }
-  }, [
-    containerRef,
-    active,
-    isActive,
-    itemRectY,
-    itemRectX,
-    itemRectWidth,
-    itemRectHeight,
-    showPortal,
-    menuWidth,
-    menuHeight,
-  ]);
-  const isActiveFunction = useCallback(() => {
-    if (isActive) {
-      getMeasurements();
-    } else {
-      setShowPortal(false);
-    }
-  }, [isActive]);
-
-  useEffect(() => {
-    isActiveFunction();
-  }, [isActiveFunction]);
 
   const animatedContainerProps = useAnimatedProps(() => {
     return {
@@ -121,11 +75,17 @@ const HoldItem = ({
     };
   });
 
+  const onHoldMenuLayout = (width, height) => {
+    menuHeight.value = height;
+    menuWidth.value = width;
+  };
+
   const calculateInitialMessageDelay = () => {
     "worklet";
     if (
-      itemRectY != null &&
-      itemRectY + itemRectHeight + menuHeight > windowHeight - insets.bottom
+      itemRectY.value != null &&
+      itemRectY.value + itemRectHeight.value + menuHeight.value >
+        windowHeight - insets.bottom
     ) {
       return 10;
     }
@@ -144,19 +104,20 @@ const HoldItem = ({
   const calculateTransformValue = () => {
     "worklet";
     if (messageScale.value != 1) {
-      const scaledItemRectHeight = itemRectHeight * messageScale.value;
-      const heightDifference = itemRectHeight - scaledItemRectHeight;
-      return -itemRectY - heightDifference / 2 + insets.top;
-    } else if (itemRectY != null && itemRectY < insets.top) {
-      return -itemRectY + insets.top;
+      const scaledItemRectHeight = itemRectHeight.value * messageScale.value;
+      const heightDifference = itemRectHeight.value - scaledItemRectHeight;
+      return -itemRectY.value - heightDifference / 2 + insets.top;
+    } else if (itemRectY.value != null && itemRectY.value < insets.top) {
+      return -itemRectY.value + insets.top;
     } else if (
-      itemRectY != null &&
-      itemRectY + itemRectHeight + menuHeight > windowHeight - insets.bottom
+      itemRectY.value != null &&
+      itemRectY.value + itemRectHeight.value + menuHeight.value >
+        windowHeight - insets.bottom
     ) {
       return (
-        -itemRectY -
-        itemRectHeight -
-        menuHeight +
+        -itemRectY.value -
+        itemRectHeight.value -
+        menuHeight.value +
         windowHeight -
         insets.bottom -
         16
@@ -167,26 +128,27 @@ const HoldItem = ({
 
   const calculateTransformXValue = () => {
     "worklet";
-    let tX = 2;
+    let tX = 0;
     if (isInput) {
-      tX = -2;
+      tX = 0;
     }
     if (messageScale.value != 1) {
-      const scaledItemRectWidth = (itemRectWidth - 16) * messageScale.value;
-      const widthDifference = itemRectWidth - scaledItemRectWidth;
+      const scaledItemRectWidth =
+        (itemRectWidth.value - 16) * messageScale.value;
+      const widthDifference = itemRectWidth.value - scaledItemRectWidth;
       if (isInput) {
-        return widthDifference / 2 - 8 + tX;
+        return widthDifference / 2 + tX;
       }
-      return -widthDifference / 2 + 8 + tX;
+      return -widthDifference / 2 + tX;
     }
     return tX;
   };
 
   const calculateTransformMenuXValue = () => {
     "worklet";
-    let tX = 2;
+    let tX = 0;
     if (isInput) {
-      tX = -2;
+      tX = 0;
     }
     return tX;
   };
@@ -194,9 +156,9 @@ const HoldItem = ({
   const calculateScaleValue = () => {
     "worklet";
     let scale = 1;
-    const messageMenuHeight = itemRectHeight;
+    const messageMenuHeight = itemRectHeight.value;
     const availableHeight =
-      windowHeight - insets.top - menuHeight - insets.bottom - 16;
+      windowHeight - insets.top - menuHeight.value - insets.bottom - 16;
     if (messageMenuHeight > availableHeight) {
       scale = availableHeight / messageMenuHeight;
     }
@@ -249,6 +211,12 @@ const HoldItem = ({
             restSpeedThreshold: 0.0001,
           });
     return {
+      top: itemRectY.value,
+      ...(isInput
+        ? itemRectX.value + itemRectWidth.value == windowWidth
+          ? { right: 0 }
+          : { right: windowWidth - (itemRectX.value + itemRectWidth.value) }
+        : { left: 0 }),
       transform: [
         {
           translateY: transformYAnimation(),
@@ -282,6 +250,11 @@ const HoldItem = ({
             restSpeedThreshold: 0.0001,
           });
     return {
+      ...(isInput
+        ? menuWidth.value < itemRectWidth.value
+          ? { right: menuWidth.value - itemRectWidth.value + 8 }
+          : { right: 8 }
+        : { left: 8 }),
       opacity: active.value
         ? withTiming(1, { duration: duration })
         : withTiming(0, { duration: duration }),
@@ -302,12 +275,6 @@ const HoldItem = ({
         position: "absolute",
         zIndex: 100,
       },
-      messageScale.value != 1 ? { top: itemRectY } : { top: itemRectY },
-      isInput
-        ? itemRectX + itemRectWidth == windowWidth
-          ? { right: 0 }
-          : { right: windowWidth - (itemRectX + itemRectWidth) }
-        : { left: 0 },
       animatedMessageStyle,
     ],
     [animatedMessageStyle]
@@ -316,21 +283,12 @@ const HoldItem = ({
   const menuContainerStyle = useMemo(
     () => [
       {
-        position: "absolute",
-        zIndex: 101,
-        width: menuWidth,
-        height: menuHeight,
+        // position: "absolute",
         borderRadius: 16,
+        marginTop: 16,
         // overflow: "hidden",
       },
-      isInput
-        ? itemRectX + itemRectWidth == windowWidth
-          ? { right: 8 }
-          : { right: windowWidth - (itemRectX + itemRectWidth) + 8 }
-        : { left: 8 },
-      calculateScaleValue() != 1
-        ? { bottom: insets.bottom + 8 }
-        : { top: itemRectY + itemRectHeight + 8 + calculateTransformValue() },
+
       animatedMenuStyle,
     ],
     [animatedMenuStyle]
@@ -352,6 +310,9 @@ const HoldItem = ({
     );
     return {
       backgroundColor: backgroundColor,
+      top: active.value
+        ? 0
+        : withDelay(duration, withTiming(windowHeight, { duration: 0 })),
     };
   });
   const blurViewStyle = useMemo(
@@ -361,35 +322,35 @@ const HoldItem = ({
 
   return (
     <>
-      <Animated.View ref={containerRef} style={initialMessageContainerStyle}>
+      <Animated.View style={initialMessageContainerStyle} ref={containerRef}>
         {children}
       </Animated.View>
-      {active.value ? (
-        <Portal>
-          <TapGestureHandler
-            onHandlerStateChange={() => {
-              closeHoldItem();
-              // setShowPortal(false);
-            }}
+      <Portal>
+        <TapGestureHandler
+          onHandlerStateChange={() => {
+            closeHoldItem();
+            // setShowPortal(false);
+          }}
+        >
+          <AnimatedBlurView
+            tint={tint}
+            style={blurViewStyle}
+            animatedProps={animatedContainerProps}
           >
-            <AnimatedBlurView
-              tint={tint}
-              style={blurViewStyle}
-              animatedProps={animatedContainerProps}
-            />
-          </TapGestureHandler>
-          <Animated.View style={messageContainerStyle}>
-            {children}
-          </Animated.View>
-          <Animated.View style={menuContainerStyle}>
-            <HoldMenu
-              theme={theme}
-              data={holdMenuData}
-              onPress={closeHoldItem}
-            />
-          </Animated.View>
-        </Portal>
-      ) : null}
+            <Animated.View style={messageContainerStyle}>
+              {children}
+              <Animated.View style={menuContainerStyle}>
+                <HoldMenu
+                  theme={theme}
+                  data={holdMenuData}
+                  onPress={closeHoldItem}
+                  onLayout={onHoldMenuLayout}
+                />
+              </Animated.View>
+            </Animated.View>
+          </AnimatedBlurView>
+        </TapGestureHandler>
+      </Portal>
     </>
   );
 };

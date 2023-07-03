@@ -34,10 +34,11 @@ export const Input = ({
   const windowWidth = Dimensions.get("window").width;
   const showSendIcon = isResultValid;
   const showRefreshIcon =
-    (!isResultValid && !loading && result[0]?.isInput) || error;
-  const showLoadingIcon = loading;
-  const [editable, setEditable] = useState(!error);
+    (!isResultValid && !loading && result[0]?.isInput) || result[0]?.isError;
 
+  console.log(!!showRefreshIcon);
+  const showLoadingIcon = loading;
+  const [editable, setEditable] = useState(!result[0]?.isError);
   const showInputIcon = () => {
     if (showLoadingIcon) {
       return <ActivityIndicator size="small" color="#fff" />;
@@ -51,7 +52,7 @@ export const Input = ({
     return <Send width="20px" height="20px" stroke="#fff" />;
   };
   const getInputIconColor = () => {
-    if (showLoadingIcon || (!error && !isResultValid && !result[0]?.isError)) {
+    if (showLoadingIcon || (!isResultValid && !result[0]?.isError)) {
       return { backgroundColor: theme.input.button.disabled.backgroundColor };
     }
     return {};
@@ -60,12 +61,10 @@ export const Input = ({
   const getInputDisabled = () => {
     if (editMessage) {
       return !isResultValid;
-    } else if (showRefreshIcon && error) {
-      return false;
-    } else if (showLoadingIcon || error) {
-      return true;
     } else if (showRefreshIcon) {
       return false;
+    } else if (showLoadingIcon) {
+      return true;
     } else if (!isResultValid) {
       return true;
     }
@@ -112,8 +111,8 @@ export const Input = ({
   );
 
   useEffect(() => {
-    setEditable(!!editMessage || !error);
-  }, [editMessage, error]);
+    setEditable(!!editMessage || !result[0]?.isError);
+  }, [editMessage, result]);
 
   useEffect(() => {
     if (editable && !!editMessage) {

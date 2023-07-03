@@ -19,6 +19,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import * as Clipboard from "expo-clipboard";
 import HoldItem from "./HoldItem";
 import { getTheme } from "../theme";
+import { useAnimatedRef, useSharedValue } from "react-native-reanimated";
 
 const Message = ({
   item,
@@ -39,17 +40,28 @@ const Message = ({
   const isInput = item?.isInput;
   const isError = item?.isError;
   const windowWidth = Dimensions.get("window").width;
+  const windowHeight = Dimensions.get("window").height;
   const swipeableRef = useRef(null);
   const [progressValue, setProgressValue] = useState();
   const progressRef = useRef();
   const [expandMessage, setExpandMessage] = useState(index != 0);
   const [haptic, setHaptic] = useState(false);
   const [isActive, setIsActive] = useState(false);
-  const animation = new Animated.Value(0);
+  const animation = useRef(new Animated.Value(0)).current;
   const inputRange = [0, 1];
   const outputRange = [1, 0.97];
   const scale = animation.interpolate({ inputRange, outputRange });
-  const swipeEnabled = useRef(true);
+  const [swipeEnabled, setSwipeEnabled] = useState(true);
+  const active = useSharedValue(false);
+  const containerRef = useAnimatedRef();
+  const menuRef = useAnimatedRef();
+  const itemRectY = useSharedValue(0);
+  const itemRectX = useSharedValue(0);
+  const itemRectWidth = useSharedValue(0);
+  const itemRectHeight = useSharedValue(0);
+  const showPortal = useSharedValue(false);
+  const menuWidth = useSharedValue(0);
+  const menuHeight = useSharedValue(0);
   const copyToClipboard = async () => {
     await Clipboard.setStringAsync(text);
   };
@@ -194,16 +206,21 @@ const Message = ({
     <TouchableWithoutFeedback
       delayLongPress={200}
       onLongPress={() => {
-        swipeEnabled.current = false;
         onScaleInOut();
+        setSwipeEnabled(false);
         // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
         // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
         Keyboard.dismiss();
         listRef?.current?.setNativeProps({ scrollEnabled: false });
-        setTimeout(() => {
-          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-          setIsActive(true);
-        }, 160);
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+        containerRef?.current?.measure((x, y, width, height, pageX, pageY) => {
+          itemRectX.value = pageX;
+          itemRectY.value = pageY;
+          itemRectHeight.value = height;
+          itemRectWidth.value = width;
+          showPortal.value = true;
+          active.value = true;
+        });
         // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
         // setMessage(item);
       }}
@@ -213,7 +230,7 @@ const Message = ({
           styles.itemContainer,
           {
             maxWidth: (windowWidth - 16) * 0.8,
-            transform: [{ scale }],
+            transform: [{ scale: scale }],
           },
           isInput
             ? {
@@ -243,7 +260,7 @@ const Message = ({
       <View style={{ transform: [{ scaleY: -1 }] }}>
         <View>
           <Swipeable
-            enabled={swipeEnabled.current}
+            enabled={swipeEnabled}
             ref={swipeableRef}
             friction={2}
             rightThreshold={48}
@@ -305,10 +322,20 @@ const Message = ({
                 tint={theme == getTheme("dark") ? "dark" : "light"}
                 isInput={isInput}
                 listRef={listRef}
-                swipeEnabled={swipeEnabled}
+                setSwipeEnabled={setSwipeEnabled}
                 theme={theme}
                 holdMenuRef={holdMenuRef}
                 holdMenuData={isInput ? holdMenuInputData : holdMenuData}
+                active={active}
+                itemRectHeight={itemRectHeight}
+                itemRectWidth={itemRectWidth}
+                itemRectX={itemRectX}
+                itemRectY={itemRectY}
+                containerRef={containerRef}
+                menuWidth={menuWidth}
+                menuHeight={menuHeight}
+                menuRef={menuRef}
+                showPortal={showPortal}
               >
                 {messageItem}
               </HoldItem>

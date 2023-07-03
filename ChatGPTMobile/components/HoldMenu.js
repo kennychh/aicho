@@ -3,13 +3,14 @@ import { getTheme } from "../theme";
 import { Text, View } from "react-native";
 import { StyleSheet } from "react-native";
 import { BlurView } from "expo-blur";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { Close } from "../icons";
 import * as Haptics from "expo-haptics";
+import { TouchableOpacity } from "react-native";
 
 export const HoldMenu = ({
   theme,
   holdMenuRef = null,
+  onLayout,
   numItems = 2,
   data,
   onPress,
@@ -20,6 +21,10 @@ export const HoldMenu = ({
   return (
     <AnimatedBlurView
       ref={holdMenuRef}
+      onLayout={(e) => {
+        const { width, height } = e.nativeEvent.layout;
+        onLayout && onLayout(width, height);
+      }}
       style={styles.blurView(theme)}
       tint={theme === getTheme("dark") ? "dark" : "light"}
       intensity={80}
