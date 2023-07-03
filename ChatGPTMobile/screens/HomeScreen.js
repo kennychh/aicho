@@ -48,6 +48,7 @@ export const HomeScreen = ({
   const [holdMenuData, setHoldMenuData] = useState();
   const [previewData, setPreviewData] = useState(chats[0].slice(0, 10));
   const [origin, setOrigin] = useState({ x: 0, y: 0, width: 0, height: 0 });
+  const [isHeaderEditable, setIsHeaderEditable] = useState(false);
   const openHoldPreview = (layout, title, data, holdMenuData) => {
     setOrigin({
       x: layout.x,
@@ -77,6 +78,13 @@ export const HomeScreen = ({
         .join("\n\n")
         .replace("*#", "");
       Clipboard.setStringAsync(chatTexts);
+    },
+    editTitle: (index, navigation) => {
+      setChatIndex(index);
+      setInput("");
+      setEditMessage(null);
+      navigation.closeDrawer();
+      setIsHeaderEditable(true);
     },
   };
   return (
@@ -142,6 +150,8 @@ export const HomeScreen = ({
                 presencePenalty={presencePenalty}
                 frequencyPenalty={frequencyPenalty}
                 holdMenuRef={holdMenuRef}
+                isHeaderEditable={isHeaderEditable}
+                setIsHeaderEditable={setIsHeaderEditable}
               />
             )}
           </Drawer.Screen>

@@ -49,6 +49,8 @@ export const ChatScreen = ({
   presencePenalty,
   frequencyPenalty,
   holdMenuRef,
+  isHeaderEditable,
+  setIsHeaderEditable,
 }) => {
   const API_URL = "https://chatgpt-api-blue.vercel.app/api";
   const result = chats[index];
@@ -60,7 +62,6 @@ export const ChatScreen = ({
   const [regen, setRegen] = useState(false);
   const [isResultValid, setResultValid] = useState(false);
   const [inputHeight, setInputHeight] = useState(0);
-  const [isHeaderEditable, setIsHeaderEditable] = useState(false);
   const [initialChatTitle, setInitialChatTitle] = useState("");
   const [deviceType, setDeviceType] = useState(0);
   const modalizeRef = useRef(null);
@@ -333,19 +334,22 @@ export const ChatScreen = ({
       let chatTitle =
         data?.result?.text.substring(ctIndex).substring(3).trimStart() ||
         "New chat";
+      console.log(data?.result?.text, ctIndex);
       if (ctIndex == -1) {
         chatTitle = "New chat";
       } else if (chatTitle.slice(-1) === ".") {
         chatTitle = chatTitle.slice(0, -1);
       }
+      if (ctIndex != -1) {
+        data = {
+          ...data,
+          result: {
+            ...data.result,
+            text: data?.result?.text.slice(0, ctIndex).trim(),
+          },
+        };
+      }
       setInitialChatTitle(chatTitle);
-      data = {
-        ...data,
-        result: {
-          ...data.result,
-          text: data?.result?.text.slice(0, ctIndex).trim(),
-        },
-      };
       setKeyChanged(false);
       if (data.error) {
         console.log(data.error);

@@ -31,20 +31,13 @@ export const DrawerContent = ({
   holdPreviewFunctions,
 }) => {
   const navigation = props.navigation;
-  const [selectedItem, setSelectedItem] = useState(chatIndex);
-  const isDarkMode = theme === getTheme("dark");
 
   const drawerChatsOnPress = (index) => {
-    setSelectedItem(index);
     setChatIndex(index);
     setInput("");
     setEditMessage(null);
     navigation.closeDrawer();
   };
-
-  useEffect(() => {
-    setSelectedItem(chatIndex);
-  }, [chatIndex]);
 
   return (
     <DrawerContentScrollView
@@ -55,7 +48,7 @@ export const DrawerContent = ({
       <View style={styles.drawerConversationsTitleContainer}>
         <Text style={styles.drawerConversationsTitle(theme)}>AIcho</Text>
       </View>
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, overflow: "hidden" }}>
         <FlatList
           inverted
           data={chats}
@@ -72,11 +65,12 @@ export const DrawerContent = ({
                 drawerChatsOnPress(index);
               }}
               text={chatTitles[index]}
-              selected={selectedItem == index}
+              selected={chatIndex == index}
               openHoldPreview={openHoldPreview}
               data={item.slice(0, 10)}
               index={index}
               holdPreviewFunctions={holdPreviewFunctions}
+              navigation={navigation}
             />
           )}
           keyExtractor={(item, index) => {

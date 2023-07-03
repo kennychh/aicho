@@ -51,6 +51,7 @@ export const HoldPreview = ({
   const END_POSITION_Y = 0;
   const DURATION = 200;
   const END_DURATION = 400;
+  const MAX_HEIGHT = 480;
   const originX = origin.x - 12;
   const originY = origin.y - insets.top - 24;
   const progress = useDerivedValue(() => {
@@ -76,14 +77,14 @@ export const HoldPreview = ({
           e.translationY < 0
             ? 1 -
               (0.1 * Math.abs(e.translationY)) /
-                (windowHeight - insets.top - 24 - 520 / 2)
+                (windowHeight - insets.top - 24 - MAX_HEIGHT / 2)
             : 1 -
               (0.5 * Math.abs(e.translationY)) /
-                (windowHeight - insets.top - 24 - 520 / 2);
+                (windowHeight - insets.top - 24 - MAX_HEIGHT / 2);
         if (scaleValue >= 0.7) {
           scale.value = scaleValue;
         }
-        if (e.translationY > 100) {
+        if (e.translationY > 50) {
           showHoldMenu.value = false;
           activeHoldMenu.value = false;
         } else if (e.translationY < 0) {
@@ -121,7 +122,7 @@ export const HoldPreview = ({
         { translateY: translateY.value },
       ],
       maxHeight: showPreview.value
-        ? withTiming(480, { duration: DURATION })
+        ? withTiming(MAX_HEIGHT, { duration: DURATION })
         : withTiming(origin.height, { duration: END_DURATION }),
       maxWidth: showPreview.value
         ? withTiming(windowWidth, { duration: DURATION })
@@ -150,7 +151,7 @@ export const HoldPreview = ({
         maxWidth: windowWidth,
         // position: "absolute",
         // minHeight: 400,
-        maxHeight: 480,
+        maxHeight: MAX_HEIGHT,
         backgroundColor: theme.backgroundColor,
         borderBottomLeftRadius: 16,
         borderBottomRightRadius: 16,
@@ -220,6 +221,7 @@ export const HoldPreview = ({
         marginHorizontal: 16,
         left: originX,
         top: originY,
+        maxHeight: MAX_HEIGHT + 50,
         flex: 1,
       },
       animatedContainerStyle,
@@ -253,9 +255,7 @@ export const HoldPreview = ({
         { translateY: translateY.value },
         {
           scale: showHoldMenu.value
-            ? activeHoldMenu.value
-              ? 1 / scale.value
-              : withTiming(1, { duration: DURATION })
+            ? withTiming(1, { duration: DURATION })
             : withTiming(0, { duration: DURATION }),
         },
       ],
@@ -332,18 +332,18 @@ export const HoldPreview = ({
               />
             </Animated.View>
           </Animated.View>
-          <Animated.View style={holdMenuContainerStyle}>
-            <Animated.View style={holdMenuStyle}>
-              <HoldMenu
-                theme={theme}
-                onPress={() => {
-                  showPreview.value = false;
-                  showHoldMenu.value = false;
-                }}
-                data={holdMenuData}
-                duration={END_DURATION}
-              />
-            </Animated.View>
+        </Animated.View>
+        <Animated.View style={holdMenuContainerStyle}>
+          <Animated.View style={holdMenuStyle}>
+            <HoldMenu
+              theme={theme}
+              onPress={() => {
+                showPreview.value = false;
+                showHoldMenu.value = false;
+              }}
+              data={holdMenuData}
+              duration={END_DURATION}
+            />
           </Animated.View>
         </Animated.View>
       </AnimatedBlurView>
@@ -381,5 +381,6 @@ const styles = StyleSheet.create({
   }),
   holdMenu: {
     marginTop: 16,
+    marginLeft: 16
   },
 });

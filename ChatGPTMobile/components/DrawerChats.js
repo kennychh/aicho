@@ -18,6 +18,7 @@ export const DrawerChats = ({
   data,
   index,
   holdPreviewFunctions,
+  navigation,
 }) => {
   const expandContainer = useSharedValue(false);
   const ref = useRef(null);
@@ -51,7 +52,9 @@ export const DrawerChats = ({
     {
       title: "Edit title",
       icon: <Edit2 stroke={theme.iconColor} width={20} height={20} />,
-      onPress: () => {},
+      onPress: () => {
+        holdPreviewFunctions.editTitle(index, navigation);
+      },
     },
     {
       title: "Delete",
