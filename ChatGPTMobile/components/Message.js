@@ -358,7 +358,7 @@ const Message = ({
 
 const styles = StyleSheet.create({
   alertIcon: {
-    marginRight: 8,
+    marginRight: 16,
   },
   messageContainer: {
     flexDirection: "row",

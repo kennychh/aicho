@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     paddingHorizontal: 16,
-    marginHorizontal: 8,
+    marginHorizontal: 16,
     overflow: "hidden",
   }),
   text: (theme) => ({
