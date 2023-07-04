@@ -25,6 +25,7 @@ export const PreviewMessage = ({ item, color, theme }) => {
                 marginRight: "auto",
                 backgroundColor: theme.message.itemContainer.backgroundColor,
               },
+          isError ? { marginRight: 8 } : {},
         ]}
       >
         <Text
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
   itemContainer: {
     paddingVertical: 10,
     paddingHorizontal: 10,
-    marginHorizontal: 8,
+    marginHorizontal: 16,
     borderRadius: 18,
     alignSelf: "left",
     alignItems: "center",
@@ -71,6 +72,6 @@ const styles = StyleSheet.create({
     textAlignVertical: "center",
   },
   alertIcon: {
-    marginRight: 8,
+    marginRight: 16,
   },
 });

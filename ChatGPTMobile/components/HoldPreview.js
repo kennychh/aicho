@@ -157,7 +157,7 @@ export const HoldPreview = ({
         borderBottomRightRadius: 16,
         flex: 1,
         overflow: "hidden",
-        paddingBottom: 8,
+        paddingBottom: 16,
       },
       animatedStyle,
     ],

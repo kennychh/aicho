@@ -153,7 +153,7 @@ const Message = ({
             backgroundColor: theme.onBackgroundColor,
             borderRadius: "100%",
             marginRight: 8,
-            marginLeft: 8,
+            marginLeft: 16,
             marginTop: 16,
           },
         ]}
@@ -192,7 +192,7 @@ const Message = ({
             alignSelf: "center",
             backgroundColor: theme.onBackgroundColor,
             borderRadius: "100%",
-            marginRight: 8,
+            marginRight: 16,
             marginLeft: 8,
             marginTop: 16,
           },
@@ -244,6 +244,7 @@ const Message = ({
                 alignSelf: "flex-start",
                 backgroundColor: theme.message.itemContainer.backgroundColor,
               },
+          isError ? { marginRight: 8 } : {},
         ]}
       >
         <Text
@@ -323,6 +324,7 @@ const Message = ({
                 setIsActive={setIsActive}
                 tint={theme == getTheme("dark") ? "dark" : "light"}
                 isInput={isInput}
+                isError={isError}
                 listRef={listRef}
                 setSwipeEnabled={setSwipeEnabled}
                 theme={theme}
@@ -373,7 +375,7 @@ const styles = StyleSheet.create({
   itemContainer: {
     paddingVertical: 11,
     paddingHorizontal: 12,
-    marginHorizontal: 8,
+    marginHorizontal: 16,
     borderRadius: 22,
     alignSelf: "left",
     alignItems: "center",

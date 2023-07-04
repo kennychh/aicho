@@ -33,6 +33,7 @@ const HoldItem = ({
   setIsActive,
   tint,
   isInput,
+  isError,
   listRef,
   setSwipeEnabled,
   theme,
@@ -109,7 +110,7 @@ const HoldItem = ({
       const scaledItemRectHeight = itemRectHeight.value * messageScale.value;
       const heightDifference = itemRectHeight.value - scaledItemRectHeight;
       return -itemRectY.value - heightDifference / 2 + (insets.top + 16);
-    } else if (itemRectY.value != null && itemRectY.value < (insets.top + 16)) {
+    } else if (itemRectY.value != null && itemRectY.value < insets.top + 16) {
       return -itemRectY.value + (insets.top + 16);
     } else if (
       itemRectY.value != null &&
@@ -136,12 +137,12 @@ const HoldItem = ({
     }
     if (messageScale.value != 1) {
       const scaledItemRectWidth =
-        (itemRectWidth.value - 16) * messageScale.value;
+        (itemRectWidth.value - 32) * messageScale.value;
       const widthDifference = itemRectWidth.value - scaledItemRectWidth;
       if (isInput) {
-        return widthDifference / 2 + tX - 8;
+        return widthDifference / 2 + tX - 16;
       }
-      return -widthDifference / 2 + tX + 8;
+      return -widthDifference / 2 + tX + 16;
     }
     return tX;
   };
@@ -281,9 +282,13 @@ const HoldItem = ({
     return {
       ...(isInput
         ? itemRectX.value + itemRectWidth.value == windowWidth
-          ? { right: 8 }
-          : { right: windowWidth - (itemRectX.value + itemRectWidth.value) + 8 }
-        : { left: 8 }),
+          ? { right: 16 }
+          : isError
+          ? {
+              right: windowWidth - (itemRectX.value + itemRectWidth.value) + 8,
+            }
+          : { right: windowWidth - (itemRectX.value + itemRectWidth.value) + 16 }
+        : { left: 16 }),
       top: messageScale.value != 1 ? (menuHeight.value > 0 ? top : 0) : top,
       opacity: active.value
         ? withTiming(1, { duration: duration })
