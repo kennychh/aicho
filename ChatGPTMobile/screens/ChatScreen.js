@@ -334,7 +334,6 @@ export const ChatScreen = ({
       let chatTitle =
         data?.result?.text.substring(ctIndex).substring(3).trimStart() ||
         "New chat";
-      console.log(data?.result?.text, ctIndex);
       if (ctIndex == -1) {
         chatTitle = "New chat";
       } else if (chatTitle.slice(-1) === ".") {

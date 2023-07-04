@@ -36,7 +36,6 @@ export const Input = ({
   const showRefreshIcon =
     (!isResultValid && !loading && result[0]?.isInput) || result[0]?.isError;
 
-  console.log(!!showRefreshIcon);
   const showLoadingIcon = loading;
   const [editable, setEditable] = useState(!result[0]?.isError);
   const showInputIcon = () => {

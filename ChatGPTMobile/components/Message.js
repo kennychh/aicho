@@ -214,12 +214,14 @@ const Message = ({
         listRef?.current?.setNativeProps({ scrollEnabled: false });
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
         containerRef?.current?.measure((x, y, width, height, pageX, pageY) => {
-          itemRectX.value = pageX;
-          itemRectY.value = pageY;
-          itemRectHeight.value = height;
-          itemRectWidth.value = width;
-          showPortal.value = true;
-          active.value = true;
+          if (itemRectY.value != pageY || !active.value) {
+            itemRectX.value = pageX;
+            itemRectY.value = pageY;
+            itemRectHeight.value = height;
+            itemRectWidth.value = width;
+            showPortal.value = true;
+            active.value = true;
+          }
         });
         // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
         // setMessage(item);

@@ -23,7 +23,9 @@ export const HoldMenu = ({
       ref={holdMenuRef}
       onLayout={(e) => {
         const { width, height } = e.nativeEvent.layout;
-        onLayout && onLayout(width, height);
+        if (onLayout && width != 0 && height != 0) {
+          onLayout(width, height);
+        }
       }}
       style={styles.blurView(theme)}
       tint={theme === getTheme("dark") ? "dark" : "light"}

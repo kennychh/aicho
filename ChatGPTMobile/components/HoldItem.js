@@ -55,7 +55,7 @@ const HoldItem = ({
 
   const duration = 200;
   const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
-  const messageScale = useSharedValue(0);
+  const messageScale = useSharedValue(1);
   const progress = useDerivedValue(() => {
     return active.value ? withTiming(1, duration) : withTiming(0, duration);
   });
@@ -76,8 +76,10 @@ const HoldItem = ({
   });
 
   const onHoldMenuLayout = (width, height) => {
-    menuHeight.value = height;
-    menuWidth.value = width;
+    if (width != menuWidth.value || height != menuHeight.value) {
+      menuHeight.value = height;
+      menuWidth.value = width;
+    }
   };
 
   const calculateInitialMessageDelay = () => {
@@ -133,8 +135,7 @@ const HoldItem = ({
       tX = 0;
     }
     if (messageScale.value != 1) {
-      const scaledItemRectWidth =
-        (itemRectWidth.value - 16) * messageScale.value;
+      const scaledItemRectWidth = itemRectWidth.value * messageScale.value;
       const widthDifference = itemRectWidth.value - scaledItemRectWidth;
       if (isInput) {
         return widthDifference / 2 + tX;
@@ -211,7 +212,6 @@ const HoldItem = ({
             restSpeedThreshold: 0.0001,
           });
     return {
-      top: itemRectY.value,
       ...(isInput
         ? itemRectX.value + itemRectWidth.value == windowWidth
           ? { right: 0 }
@@ -219,20 +219,41 @@ const HoldItem = ({
         : { left: 0 }),
       transform: [
         {
-          translateY: transformYAnimation(),
+          translateY: active.value
+            ? transformYAnimation()
+            : withTiming(0, { duration: duration }),
         },
-        { translateX: transformXAnimation() },
+        {
+          translateX: active.value
+            ? transformXAnimation()
+            : withTiming(0, { duration: duration }),
+        },
         {
           scale: active.value
             ? withTiming(messageScale.value, { duration: duration })
             : withTiming(1, { duration: duration }),
         },
       ],
+      top: active.value
+        ? itemRectY.value
+        : withDelay(duration, withTiming(windowHeight, { duration: 0 })),
     };
   });
 
+  const calculateMenuTopValue = () => {
+    "worklet";
+    return (
+      itemRectY.value +
+      itemRectHeight.value +
+      8 +
+      calculateTransformValue() -
+      menuHeight.value
+    );
+  };
+
   const animatedMenuStyle = useAnimatedStyle(() => {
     let tX = calculateTransformMenuXValue();
+    let top = calculateMenuTopValue();
     const transformXAnimation = () =>
       active.value
         ? withSpring(tX, {
@@ -251,10 +272,11 @@ const HoldItem = ({
           });
     return {
       ...(isInput
-        ? menuWidth.value < itemRectWidth.value
-          ? { right: menuWidth.value - itemRectWidth.value + 8 }
-          : { right: 8 }
+        ? itemRectX.value + itemRectWidth.value == windowWidth
+          ? { right: 8 }
+          : { right: windowWidth - (itemRectX.value + itemRectWidth.value) + 8 }
         : { left: 8 }),
+      top: messageScale.value != 1 ? (menuHeight.value > 0 ? top : 0) : top + menuHeight.value,
       opacity: active.value
         ? withTiming(1, { duration: duration })
         : withTiming(0, { duration: duration }),
@@ -280,19 +302,14 @@ const HoldItem = ({
     [animatedMessageStyle]
   );
 
-  const menuContainerStyle = useMemo(
-    () => [
-      {
-        // position: "absolute",
-        borderRadius: 16,
-        marginTop: 16,
-        // overflow: "hidden",
-      },
-
-      animatedMenuStyle,
-    ],
-    [animatedMenuStyle]
-  );
+  const menuContainerStyle = [
+    {
+      position: "absolute",
+      borderRadius: 16,
+      // overflow: "hidden",
+    },
+    animatedMenuStyle,
+  ];
 
   const initialMessageContainerStyle = useMemo(
     () => [
@@ -339,14 +356,14 @@ const HoldItem = ({
           >
             <Animated.View style={messageContainerStyle}>
               {children}
-              <Animated.View style={menuContainerStyle}>
-                <HoldMenu
-                  theme={theme}
-                  data={holdMenuData}
-                  onPress={closeHoldItem}
-                  onLayout={onHoldMenuLayout}
-                />
-              </Animated.View>
+            </Animated.View>
+            <Animated.View style={menuContainerStyle}>
+              <HoldMenu
+                theme={theme}
+                data={holdMenuData}
+                onPress={closeHoldItem}
+                onLayout={onHoldMenuLayout}
+              />
             </Animated.View>
           </AnimatedBlurView>
         </TapGestureHandler>
