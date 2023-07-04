@@ -108,9 +108,9 @@ const HoldItem = ({
     if (messageScale.value != 1) {
       const scaledItemRectHeight = itemRectHeight.value * messageScale.value;
       const heightDifference = itemRectHeight.value - scaledItemRectHeight;
-      return -itemRectY.value - heightDifference / 2 + insets.top;
-    } else if (itemRectY.value != null && itemRectY.value < insets.top) {
-      return -itemRectY.value + insets.top;
+      return -itemRectY.value - heightDifference / 2 + (insets.top + 16);
+    } else if (itemRectY.value != null && itemRectY.value < (insets.top + 16)) {
+      return -itemRectY.value + (insets.top + 16);
     } else if (
       itemRectY.value != null &&
       itemRectY.value + itemRectHeight.value + menuHeight.value >
@@ -160,7 +160,7 @@ const HoldItem = ({
     let scale = 1;
     const messageMenuHeight = itemRectHeight.value;
     const availableHeight =
-      windowHeight - insets.top - menuHeight.value - insets.bottom - 24;
+      windowHeight - (insets.top + 16) - menuHeight.value - insets.bottom - 24;
     if (messageMenuHeight > availableHeight) {
       scale = availableHeight / messageMenuHeight;
     }

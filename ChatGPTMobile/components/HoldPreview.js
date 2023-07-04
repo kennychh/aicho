@@ -293,7 +293,7 @@ export const HoldPreview = ({
             bottom: 0,
             left: 0,
             right: 0,
-            paddingTop: insets.top + 24,
+            paddingTop: insets.top + 16,
           },
           animatedBlurViewStyle,
         ]}
