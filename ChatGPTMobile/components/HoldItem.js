@@ -122,7 +122,7 @@ const HoldItem = ({
         menuHeight.value +
         windowHeight -
         insets.bottom -
-        16
+        24
       );
     }
     return 0;
@@ -135,12 +135,13 @@ const HoldItem = ({
       tX = 0;
     }
     if (messageScale.value != 1) {
-      const scaledItemRectWidth = itemRectWidth.value * messageScale.value;
+      const scaledItemRectWidth =
+        (itemRectWidth.value - 16) * messageScale.value;
       const widthDifference = itemRectWidth.value - scaledItemRectWidth;
       if (isInput) {
-        return widthDifference / 2 + tX;
+        return widthDifference / 2 + tX - 8;
       }
-      return -widthDifference / 2 + tX;
+      return -widthDifference / 2 + tX + 8;
     }
     return tX;
   };
@@ -159,7 +160,7 @@ const HoldItem = ({
     let scale = 1;
     const messageMenuHeight = itemRectHeight.value;
     const availableHeight =
-      windowHeight - insets.top - menuHeight.value - insets.bottom - 16;
+      windowHeight - insets.top - menuHeight.value - insets.bottom - 24;
     if (messageMenuHeight > availableHeight) {
       scale = availableHeight / messageMenuHeight;
     }
@@ -242,12 +243,19 @@ const HoldItem = ({
 
   const calculateMenuTopValue = () => {
     "worklet";
+    let scaledTopValue = 0;
+    if (messageScale.value != 1) {
+      const scaledItemRectHeight = itemRectHeight.value * messageScale.value;
+      const heightDifference = itemRectHeight.value - scaledItemRectHeight;
+      scaledTopValue =
+        -itemRectHeight.value + scaledItemRectHeight + heightDifference / 2;
+    }
     return (
       itemRectY.value +
       itemRectHeight.value +
-      8 +
-      calculateTransformValue() -
-      menuHeight.value
+      16 +
+      calculateTransformValue() +
+      scaledTopValue
     );
   };
 
@@ -276,7 +284,7 @@ const HoldItem = ({
           ? { right: 8 }
           : { right: windowWidth - (itemRectX.value + itemRectWidth.value) + 8 }
         : { left: 8 }),
-      top: messageScale.value != 1 ? (menuHeight.value > 0 ? top : 0) : top + menuHeight.value,
+      top: messageScale.value != 1 ? (menuHeight.value > 0 ? top : 0) : top,
       opacity: active.value
         ? withTiming(1, { duration: duration })
         : withTiming(0, { duration: duration }),
@@ -306,7 +314,6 @@ const HoldItem = ({
     {
       position: "absolute",
       borderRadius: 16,
-      // overflow: "hidden",
     },
     animatedMenuStyle,
   ];
