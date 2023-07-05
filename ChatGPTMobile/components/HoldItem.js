@@ -287,7 +287,9 @@ const HoldItem = ({
           ? {
               right: windowWidth - (itemRectX.value + itemRectWidth.value) + 8,
             }
-          : { right: windowWidth - (itemRectX.value + itemRectWidth.value) + 16 }
+          : {
+              right: windowWidth - (itemRectX.value + itemRectWidth.value) + 16,
+            }
         : { left: 16 }),
       top: messageScale.value != 1 ? (menuHeight.value > 0 ? top : 0) : top,
       opacity: active.value
@@ -315,13 +317,16 @@ const HoldItem = ({
     [animatedMessageStyle]
   );
 
-  const menuContainerStyle = [
-    {
-      position: "absolute",
-      borderRadius: 16,
-    },
-    animatedMenuStyle,
-  ];
+  const menuContainerStyle = useMemo(
+    () => [
+      {
+        position: "absolute",
+        borderRadius: 16,
+      },
+      animatedMenuStyle,
+    ],
+    [animatedMenuStyle]
+  );
 
   const initialMessageContainerStyle = useMemo(
     () => [

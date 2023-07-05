@@ -49,13 +49,13 @@ export const DrawerChats = ({
         holdPreviewFunctions.copyChat(index);
       },
     },
-    {
-      title: "Edit title",
-      icon: <Edit2 stroke={theme.iconColor} width={20} height={20} />,
-      onPress: () => {
-        holdPreviewFunctions.editTitle(index, navigation);
-      },
-    },
+    // {
+    //   title: "Edit title",
+    //   icon: <Edit2 stroke={theme.iconColor} width={20} height={20} />,
+    //   onPress: () => {
+    //     holdPreviewFunctions.editTitle(index, navigation);
+    //   },
+    // },
     {
       title: "Delete",
       icon: <Delete stroke={"#FF0000"} width={20} height={20} />,

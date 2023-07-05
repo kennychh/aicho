@@ -13,13 +13,13 @@ import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import {
   Header,
-  MessageList,
   Input,
   MenuModal,
   MessageModal,
   BottomToast,
   ScrollToButton,
 } from "../components";
+import MessageList from "../components/MessageList";
 import * as Device from "expo-device";
 import { getTheme } from "../theme";
 

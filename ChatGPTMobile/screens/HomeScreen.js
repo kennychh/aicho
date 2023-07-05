@@ -83,10 +83,8 @@ export const HomeScreen = ({
       setChatIndex(index);
       setInput("");
       setEditMessage(null);
+      setIsHeaderEditable(true);
       navigation.closeDrawer();
-      setTimeout(() => {
-        setIsHeaderEditable(true);
-      }, 300);
     },
   };
   return (

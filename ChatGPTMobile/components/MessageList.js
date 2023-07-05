@@ -5,7 +5,7 @@ import {
   Dimensions,
   LayoutAnimation,
 } from "react-native";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Message from "./Message";
 import { getTheme } from "../theme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -18,7 +18,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { ScrollToButton } from "./ScrollToButton";
 
-export const MessageList = ({
+const MessageList = ({
   data,
   inputOffset,
   setMessage,
@@ -113,7 +113,9 @@ export const MessageList = ({
         keyboardShouldPersistTaps="always"
         onScrollBeginDrag={Keyboard.dismiss}
         removeClippedSubviews={true}
-        initialNumToRender={10}
+        maxToRenderPerBatch={8}
+        windowSize={10}
+        initialNumToRender={8}
         indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
         scrollIndicatorInsets={{
           top: 8,
@@ -133,3 +135,20 @@ export const MessageList = ({
     </View>
   );
 };
+
+function arePropsEqual(prevProps, nextProps) {
+  return (
+    prevProps.color === nextProps.color &&
+    prevProps.data === nextProps.data &&
+    prevProps.theme === nextProps.theme &&
+    prevProps.showScrollToButton === nextProps.showScrollToButton &&
+    prevProps.inputOffset === nextProps.inputOffset &&
+    prevProps.editMessage === nextProps.editMessage &&
+    prevProps.regen === nextProps.regen &&
+    prevProps.listRef === nextProps.listRef &&
+    prevProps.editMessageHeight === nextProps.editMessageHeight &&
+    prevProps.intensity === nextProps.intensity &&
+    prevProps.holdMenuRef === nextProps.holdMenuRef
+  );
+}
+export default memo(MessageList, arePropsEqual);
