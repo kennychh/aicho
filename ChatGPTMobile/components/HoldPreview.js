@@ -45,7 +45,6 @@ export const HoldPreview = ({
   const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
   const insets = useSafeAreaInsets();
   const scale = useSharedValue(1);
-  const holdMenuStopValue = useSharedValue(0);
   const activeHoldMenu = useSharedValue(false);
 
   const END_POSITION_X = 0;
@@ -88,21 +87,16 @@ export const HoldPreview = ({
         if (e.translationY > 50) {
           showHoldMenu.value = false;
           activeHoldMenu.value = false;
-          if (holdMenuStopValue.value == 0) {
-            holdMenuStopValue.value = translateY.value;
-          }
         } else if (e.translationY < 0) {
           activeHoldMenu.value = true;
         } else {
           showHoldMenu.value = true;
-          holdMenuStopValue.value = 0;
           activeHoldMenu.value = withDelay(DURATION, withTiming(true, 0));
         }
       },
       onEnd: (e) => {
         let end_x = END_POSITION_X;
         let end_y = END_POSITION_Y;
-        holdMenuStopValue.value = 0;
         if (e.translationY > 200) {
           showPreview.value = false;
           end_y = originY;
