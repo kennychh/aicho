@@ -45,6 +45,7 @@ export const HoldPreview = ({
   const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
   const insets = useSafeAreaInsets();
   const scale = useSharedValue(1);
+  const holdMenuStopValue = useSharedValue(0);
   const activeHoldMenu = useSharedValue(false);
 
   const END_POSITION_X = 0;
@@ -53,7 +54,7 @@ export const HoldPreview = ({
   const END_DURATION = 400;
   const MAX_HEIGHT = 480;
   const originX = origin.x - 12;
-  const originY = origin.y - insets.top - 24;
+  const originY = origin.y - insets.top - 16;
   const progress = useDerivedValue(() => {
     return showPreview.value
       ? withTiming(1, DURATION)
@@ -87,16 +88,21 @@ export const HoldPreview = ({
         if (e.translationY > 50) {
           showHoldMenu.value = false;
           activeHoldMenu.value = false;
+          if (holdMenuStopValue.value == 0) {
+            holdMenuStopValue.value = translateY.value;
+          }
         } else if (e.translationY < 0) {
           activeHoldMenu.value = true;
         } else {
           showHoldMenu.value = true;
+          holdMenuStopValue.value = 0;
           activeHoldMenu.value = withDelay(DURATION, withTiming(true, 0));
         }
       },
       onEnd: (e) => {
         let end_x = END_POSITION_X;
         let end_y = END_POSITION_Y;
+        holdMenuStopValue.value = 0;
         if (e.translationY > 200) {
           showPreview.value = false;
           end_y = originY;
@@ -223,6 +229,7 @@ export const HoldPreview = ({
         top: originY,
         maxHeight: MAX_HEIGHT + 50,
         flex: 1,
+        zIndex: 1,
       },
       animatedContainerStyle,
     ],
@@ -248,15 +255,17 @@ export const HoldPreview = ({
 
   const animatedHoldMenuStyle = useAnimatedStyle(() => {
     return {
-      // opacity: showHoldMenu.value
-      //   ? withTiming(1, { duration: DURATION })
-      //   : withTiming(0, { duration: DURATION - 50 }),
+      opacity: showHoldMenu.value
+        ? withTiming(1, { duration: DURATION })
+        : withTiming(0, { duration: END_DURATION - 100 }),
       transform: [
-        { translateY: translateY.value },
+        {
+          translateY: translateY.value,
+        },
         {
           scale: showHoldMenu.value
             ? withTiming(1, { duration: DURATION })
-            : withTiming(0, { duration: DURATION }),
+            : withTiming(0, { duration: END_DURATION - 100 }),
         },
       ],
     };
@@ -381,6 +390,7 @@ const styles = StyleSheet.create({
   }),
   holdMenu: {
     marginTop: 16,
-    marginLeft: 16
+    marginLeft: 16,
+    zIndex: 0,
   },
 });

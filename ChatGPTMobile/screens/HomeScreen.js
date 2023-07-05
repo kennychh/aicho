@@ -43,7 +43,7 @@ export const HomeScreen = ({
   const showPreview = useSharedValue(false);
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
-  const showHoldMenu = useSharedValue(true);
+  const showHoldMenu = useSharedValue(false);
   const [previewTitle, setPreviewTitle] = useState("");
   const [holdMenuData, setHoldMenuData] = useState();
   const [previewData, setPreviewData] = useState(chats[0].slice(0, 10));
@@ -59,8 +59,8 @@ export const HomeScreen = ({
     setPreviewTitle(title);
     setPreviewData(data);
     setHoldMenuData(holdMenuData);
-    showPreview.value = true;
     showHoldMenu.value = true;
+    showPreview.value = true;
     translateX.value = 0;
     translateY.value = 0;
   };
