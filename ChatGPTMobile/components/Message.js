@@ -59,7 +59,7 @@ const Message = ({
   const itemRectX = useSharedValue(0);
   const itemRectWidth = useSharedValue(0);
   const itemRectHeight = useSharedValue(0);
-  const showPortal = useSharedValue(false);
+  const [showPortal, setShowPortal] = useState(false);
   const menuWidth = useSharedValue(0);
   const menuHeight = useSharedValue(0);
   const copyToClipboard = async () => {
@@ -208,6 +208,7 @@ const Message = ({
       onLongPress={() => {
         onScaleInOut();
         setSwipeEnabled(false);
+        setShowPortal(true);
         // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
         // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
         Keyboard.dismiss();
@@ -219,7 +220,6 @@ const Message = ({
             itemRectY.value = pageY;
             itemRectHeight.value = height;
             itemRectWidth.value = width;
-            showPortal.value = true;
             active.value = true;
           }
         });
@@ -340,6 +340,7 @@ const Message = ({
                 menuHeight={menuHeight}
                 menuRef={menuRef}
                 showPortal={showPortal}
+                setShowPortal={setShowPortal}
               >
                 {messageItem}
               </HoldItem>

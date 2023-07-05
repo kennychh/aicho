@@ -91,7 +91,6 @@ export const HomeScreen = ({
     <GestureHandlerRootView style={{ flex: 1 }}>
       <PortalProvider>
         <Drawer.Navigator
-          drawerStyle
           drawerContent={(props) => (
             <DrawerContent
               props={props}

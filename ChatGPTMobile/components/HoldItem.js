@@ -49,6 +49,7 @@ const HoldItem = ({
   menuHeight,
   menuRef,
   showPortal,
+  setShowPortal,
 }) => {
   const windowHeight = Dimensions.get("window").height;
   const windowWidth = Dimensions.get("window").width;
@@ -65,6 +66,7 @@ const HoldItem = ({
     setTimeout(() => {
       listRef?.current?.setNativeProps({ scrollEnabled: true });
       setSwipeEnabled(true);
+      setShowPortal(false);
     }, duration);
   };
 
@@ -359,32 +361,34 @@ const HoldItem = ({
       <Animated.View style={initialMessageContainerStyle} ref={containerRef}>
         {children}
       </Animated.View>
-      <Portal>
-        <TapGestureHandler
-          onHandlerStateChange={() => {
-            closeHoldItem();
-            // setShowPortal(false);
-          }}
-        >
-          <AnimatedBlurView
-            tint={tint}
-            style={blurViewStyle}
-            animatedProps={animatedContainerProps}
+      {showPortal && (
+        <Portal>
+          <TapGestureHandler
+            onHandlerStateChange={() => {
+              closeHoldItem();
+              // setShowPortal(false);
+            }}
           >
-            <Animated.View style={messageContainerStyle}>
-              {children}
-            </Animated.View>
-            <Animated.View style={menuContainerStyle}>
-              <HoldMenu
-                theme={theme}
-                data={holdMenuData}
-                onPress={closeHoldItem}
-                onLayout={onHoldMenuLayout}
-              />
-            </Animated.View>
-          </AnimatedBlurView>
-        </TapGestureHandler>
-      </Portal>
+            <AnimatedBlurView
+              tint={tint}
+              style={blurViewStyle}
+              animatedProps={animatedContainerProps}
+            >
+              <Animated.View style={messageContainerStyle}>
+                {children}
+              </Animated.View>
+              <Animated.View style={menuContainerStyle}>
+                <HoldMenu
+                  theme={theme}
+                  data={holdMenuData}
+                  onPress={closeHoldItem}
+                  onLayout={onHoldMenuLayout}
+                />
+              </Animated.View>
+            </AnimatedBlurView>
+          </TapGestureHandler>
+        </Portal>
+      )}
     </>
   );
 };
