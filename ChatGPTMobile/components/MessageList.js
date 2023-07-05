@@ -113,9 +113,9 @@ const MessageList = ({
         keyboardShouldPersistTaps="always"
         onScrollBeginDrag={Keyboard.dismiss}
         removeClippedSubviews={true}
-        maxToRenderPerBatch={8}
-        windowSize={10}
-        initialNumToRender={8}
+        maxToRenderPerBatch={4}
+        windowSize={8}
+        initialNumToRender={4}
         indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
         scrollIndicatorInsets={{
           top: 8,

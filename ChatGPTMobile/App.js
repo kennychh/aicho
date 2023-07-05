@@ -698,9 +698,6 @@ export default function App() {
             {(props) => <AboutScreen props={props} theme={theme} />}
           </Stack.Screen>
         </Stack.Navigator>
-        <View style={{ position: "absolute", zIndex: -1, opacity: 0 }}>
-          <HoldMenu theme={theme} holdMenuRef={holdMenuRef} />
-        </View>
         <DarkModeModal
           theme={theme}
           setTheme={setTheme}

@@ -33,11 +33,14 @@ export const DrawerContent = ({
   const navigation = props.navigation;
 
   const drawerChatsOnPress = (index) => {
-    setChatIndex(index);
     setInput("");
     setEditMessage(null);
-    navigation.closeDrawer();
+    setChatIndex(index);
   };
+
+  useEffect(() => {
+    navigation.closeDrawer();
+  }, [chatIndex]);
 
   return (
     <DrawerContentScrollView
