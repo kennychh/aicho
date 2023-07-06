@@ -62,7 +62,6 @@ export const ChatScreen = ({
   const [regen, setRegen] = useState(false);
   const [isResultValid, setResultValid] = useState(false);
   const [inputHeight, setInputHeight] = useState(0);
-  const [initialChatTitle, setInitialChatTitle] = useState("");
   const [deviceType, setDeviceType] = useState(0);
   const modalizeRef = useRef(null);
   const messageModalizeRef = useRef(null);
@@ -164,16 +163,6 @@ export const ChatScreen = ({
   }, [error]);
 
   useEffect(() => {
-    if (chats[index].length == 2 && initialChatTitle != "") {
-      setChatTitles((oldChatTitles) => [
-        ...oldChatTitles.slice(0, chatIndex),
-        initialChatTitle,
-        ...oldChatTitles.slice(chatIndex + 1),
-      ]);
-    }
-  }, [initialChatTitle, chats]);
-
-  useEffect(() => {
     if (isHeaderEditable) {
       headerTextInputRef.current.focus();
     }
@@ -210,48 +199,54 @@ export const ChatScreen = ({
     return randomString;
   };
 
-  const getResult = (result, regenIndex) => {
-    const editMessageIndex = editMessage
-      ? result.findIndex(
-          (message) => message.result?.id == editMessage?.result?.id
-        )
-      : 0;
-    if (regen && result?.length > 1) {
-      return result[regenIndex + 1];
-    } else if (retry && result?.length > 1) {
-      return result[1];
-    } else if (editMessage != null && editMessageIndex >= 1) {
-      return result[editMessageIndex + 1];
-    }
-    return result[0];
-  };
+  const getResult = useCallback(
+    (result, regenIndex) => {
+      const editMessageIndex = editMessage
+        ? result.findIndex(
+            (message) => message.result?.id == editMessage?.result?.id
+          )
+        : 0;
+      if (regen && result?.length > 1) {
+        return result[regenIndex + 1];
+      } else if (retry && result?.length > 1) {
+        return result[1];
+      } else if (editMessage != null && editMessageIndex >= 1) {
+        return result[editMessageIndex + 1];
+      }
+      return result[0];
+    },
+    [editMessage, retry, regen]
+  );
 
-  const getInput = (res) => {
-    const inputId = generateInputId();
-    if (regen) {
-      return res;
-    } else if (retry != null) {
-      return retry;
-    } else if (editMessage != null) {
+  const getInput = useCallback(
+    (res) => {
+      const inputId = generateInputId();
+      if (regen) {
+        return res;
+      } else if (retry != null) {
+        return retry;
+      } else if (editMessage != null) {
+        return {
+          result: {
+            text: input,
+            id: editMessage?.result?.id,
+          },
+          isInput: true,
+          isError: false,
+        };
+      }
       return {
         result: {
           text: input,
-          id: editMessage?.result?.id,
+          id: inputId,
         },
         isInput: true,
-        isError: false,
       };
-    }
-    return {
-      result: {
-        text: input,
-        id: inputId,
-      },
-      isInput: true,
-    };
-  };
+    },
+    [input, editMessage, regen, retry]
+  );
 
-  const onSubmit = async () => {
+  const onSubmit = useCallback(async () => {
     if (loading) {
       return;
     }
@@ -260,10 +255,10 @@ export const ChatScreen = ({
       ? result.findIndex(
           (message) => message.result?.id == editMessage?.result?.id
         )
-      : 0;
+      : -1;
     const regenIndex = regen
       ? result.findIndex((message) => message.result?.id == regen?.result?.id)
-      : 0;
+      : -1;
     const res = getResult(result, regenIndex);
     const inputText = getInput(res);
     if (editMessage != null) {
@@ -348,7 +343,6 @@ export const ChatScreen = ({
           },
         };
       }
-      setInitialChatTitle(chatTitle);
       setKeyChanged(false);
       if (data.error) {
         console.log(data.error);
@@ -382,6 +376,17 @@ export const ChatScreen = ({
           ...oldResult?.slice(index + 1),
         ]);
       }
+      if (
+        (chats[index].length == 0 ||
+          editMessageIndex + 1 == chats[index].length ||
+          regenIndex + 2 == chats[index].length)
+      ) {
+        setChatTitles((oldChatTitles) => [
+          ...oldChatTitles.slice(0, chatIndex),
+          chatTitle,
+          ...oldChatTitles.slice(chatIndex + 1),
+        ]);
+      }
     } catch (e) {
       setKeyChanged(false);
       console.log(e);
@@ -410,7 +415,7 @@ export const ChatScreen = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, [chats, input, regen, retry, index, editMessage, chatTitles]);
   return (
     <SafeAreaProvider>
       <SafeAreaView
