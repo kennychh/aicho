@@ -26,7 +26,7 @@ export const DrawerContent = ({
   theme,
   setTheme,
   darkModeModalizeRef,
-  setConfirmDeleteVisible,
+  confirmDeleteVisible,
   openHoldPreview,
   holdPreviewFunctions,
 }) => {
@@ -138,7 +138,7 @@ export const DrawerContent = ({
         <TouchableOpacity
           style={styles.drawerOptions}
           onPress={() => {
-            setConfirmDeleteVisible(true);
+            confirmDeleteVisible.value = true;
           }}
         >
           <Delete style={styles.chatItemIcon} stroke={theme.error.color} />

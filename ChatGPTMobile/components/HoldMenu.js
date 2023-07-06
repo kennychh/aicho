@@ -6,6 +6,7 @@ import { BlurView } from "expo-blur";
 import { Close } from "../icons";
 import * as Haptics from "expo-haptics";
 import { TouchableOpacity } from "react-native";
+import { Divider } from "./Divider";
 
 export const HoldMenu = ({
   theme,
@@ -57,9 +58,13 @@ export const HoldMenu = ({
                   }}
                   onPress={() => {
                     onPress();
-                    setTimeout(() => {
+                    if (item.title == "Delete") {
                       item.onPress();
-                    }, duration);
+                    } else {
+                      setTimeout(() => {
+                        item.onPress();
+                      }, duration);
+                    }
                   }}
                 >
                   <Text
@@ -74,15 +79,7 @@ export const HoldMenu = ({
                   <View style={styles.icon}>{item.icon}</View>
                 </TouchableOpacity>
                 {index != data.length - 1 && (
-                  <View>
-                    <View style={styles.border(theme)} />
-                    <View
-                      style={[
-                        styles.border(theme),
-                        { backgroundColor: "transparent" },
-                      ]}
-                    />
-                  </View>
+                  <Divider backgroundColor={theme.holdItem.menu.borderColor} />
                 )}
               </View>
             );

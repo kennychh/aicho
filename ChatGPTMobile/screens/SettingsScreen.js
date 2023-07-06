@@ -13,7 +13,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { useRef, useState } from "react";
 import { Animated } from "react-native";
 
-export const SettingsScreen = ({ props, theme, setConfirmResetVisible }) => {
+export const SettingsScreen = ({ props, theme, confirmResetVisible }) => {
   const navigation = props.navigation;
   const yOffset = useRef(new Animated.Value(0)).current;
   const insets = useSafeAreaInsets();
@@ -78,7 +78,7 @@ export const SettingsScreen = ({ props, theme, setConfirmResetVisible }) => {
     {
       title: "Reset data",
       onPress: () => {
-        setConfirmResetVisible(true);
+        confirmResetVisible.value = true;
       },
     },
   ];
@@ -122,7 +122,7 @@ export const SettingsScreen = ({ props, theme, setConfirmResetVisible }) => {
             yOffset.setValue(offset);
           }}
           indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
-          style={{ flex: 1, paddingTop: headerHeight  }}
+          style={{ flex: 1, paddingTop: headerHeight }}
           renderItem={({ item }) => <SettingsItem item={item} />}
           keyExtractor={(item, index) => {
             return index;

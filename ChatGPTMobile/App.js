@@ -27,6 +27,7 @@ import {
   ConfirmDeleteConvosModal,
   ConfirmResetDataModal,
   BottomToast,
+  ConfirmDeleteChatModal,
 } from "./components";
 import {
   Alert,
@@ -42,6 +43,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SecureStore from "expo-secure-store";
 import * as LocalAuthentication from "expo-local-authentication";
 import { HoldMenu } from "./components/HoldMenu";
+import { useSharedValue } from "react-native-reanimated";
 
 if (
   Platform.OS === "android" &&
@@ -77,8 +79,8 @@ export default function App() {
   const [color, setColor] = useState("");
   const [retainContext, setRetainContext] = useState();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
-  const [confirmResetVisible, setConfirmResetVisible] = useState(false);
+  const confirmDeleteVisible = useSharedValue(false);
+  const confirmResetVisible = useSharedValue(false);
   const appState = useRef(AppState.currentState);
   const [_, setAppStateVisible] = useState(appState.current);
   const [authenticateSuccess, setAuthenticateSuccess] = useState(false);
@@ -207,20 +209,20 @@ export default function App() {
     }
   };
 
-  const clearConversation = (index) => {
-    setChatIndex(index == 0 ? 0 : index - 1);
+  const clearConversation = (i) => {
+    setChatIndex(i == 0 ? 0 : i - 1);
     setDeleteChat(true);
     if (chats.length == 1) {
       setChats([[]]);
       setChatTitles(["New chat"]);
     } else {
       setChats((oldChats) => [
-        ...oldChats.slice(0, index),
-        ...oldChats.slice(index + 1),
+        ...oldChats.slice(0, i),
+        ...oldChats.slice(i + 1),
       ]);
       setChatTitles((oldChatTitles) => [
-        ...oldChatTitles.slice(0, index),
-        ...oldChatTitles.slice(index + 1),
+        ...oldChatTitles.slice(0, i),
+        ...oldChatTitles.slice(i + 1),
       ]);
     }
   };
@@ -240,7 +242,6 @@ export default function App() {
     setRetainContext(true);
     setIsDarkMode(true);
     setUseDeviceSettings(true);
-    setConfirmResetVisible(false);
     setTemperature(1);
     setPrescencePenalty(0);
     setFrequencyPenalty(0);
@@ -539,7 +540,7 @@ export default function App() {
                 maxTokens={maxTokens}
                 color={color}
                 retainContext={retainContext}
-                setConfirmDeleteVisible={setConfirmDeleteVisible}
+                confirmDeleteVisible={confirmDeleteVisible}
                 temperature={temperature}
                 presencePenalty={presencePenalty}
                 frequencyPenalty={frequencyPenalty}
@@ -552,7 +553,7 @@ export default function App() {
               <SettingsScreen
                 props={props}
                 theme={theme}
-                setConfirmResetVisible={setConfirmResetVisible}
+                confirmResetVisible={confirmResetVisible}
               />
             )}
           </Stack.Screen>
@@ -698,16 +699,6 @@ export default function App() {
             {(props) => <AboutScreen props={props} theme={theme} />}
           </Stack.Screen>
         </Stack.Navigator>
-        <DarkModeModal
-          theme={theme}
-          setTheme={setTheme}
-          modalizeRef={darkModeModalizeRef}
-          isDarkMode={isDarkMode}
-          setIsDarkMode={setIsDarkMode}
-          useDeviceSettings={useDeviceSettings}
-          setUseDeviceSettings={setUseDeviceSettings}
-          storeDarkMode={storeDarkMode}
-        />
         <ConfirmDeleteConvosModal
           setChatIndex={setChatIndex}
           setChats={setChats}
@@ -717,13 +708,11 @@ export default function App() {
           setEditMessage={setEditMessage}
           theme={theme}
           confirmDeleteVisible={confirmDeleteVisible}
-          setConfirmDeleteVisible={setConfirmDeleteVisible}
         ></ConfirmDeleteConvosModal>
         <ConfirmResetDataModal
           onPress={resetData}
           theme={theme}
           visible={confirmResetVisible}
-          setVisible={setConfirmResetVisible}
         ></ConfirmResetDataModal>
       </NavigationContainer>
     </SafeAreaProvider>

@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { Modalize } from "react-native-modalize";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { AlertModal } from "./AlertModal";
+import { BottomModal } from "./BottomModal";
 
 export const ConfirmDeleteConvosModal = ({
   setChatIndex,
@@ -20,13 +20,11 @@ export const ConfirmDeleteConvosModal = ({
   theme,
   modalizeRef,
   confirmDeleteVisible,
-  setConfirmDeleteVisible,
 }) => {
   const insets = useSafeAreaInsets();
   return (
-    <AlertModal
+    <BottomModal
       visible={confirmDeleteVisible}
-      setVisible={setConfirmDeleteVisible}
       onPress={() => {
         setDeleteChat(true);
         setChats([[]]);
@@ -34,12 +32,11 @@ export const ConfirmDeleteConvosModal = ({
         setChatTitles(["New chat"]);
         setInput("");
         setEditMessage(null);
-        setConfirmDeleteVisible(false);
       }}
       theme={theme}
       title={"Clear conversations?"}
       buttonText={"Delete"}
-      subtext={"This will delete all conversations from your device."}
+      description={"This will delete all conversations from your device."}
     />
   );
 };

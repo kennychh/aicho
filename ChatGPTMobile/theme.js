@@ -75,6 +75,12 @@ const lightTheme = {
   blurView: {
     backgroundColor: "rgba(0,0,0,0.3)",
   },
+  bottomModal: {
+    backgroundColor: "rgba(0,0,0,0.3)",
+  },
+  highlight: {
+    color: "#DBDBDB",
+  },
 };
 
 const darkTheme = {
@@ -154,6 +160,12 @@ const darkTheme = {
   },
   blurView: {
     backgroundColor: "rgba(0, 0, 0, 0.6)",
+  },
+  bottomModal: {
+    backgroundColor: "rgba(0, 0, 0, 0.8)",
+  },
+  highlight: {
+    color: "#2C2C2D",
   },
 };
 

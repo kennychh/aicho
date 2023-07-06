@@ -59,7 +59,9 @@ const HoldItem = ({
   const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
   const messageScale = useSharedValue(1);
   const progress = useDerivedValue(() => {
-    return active.value ? withTiming(1, duration) : withTiming(0, duration);
+    return active.value
+      ? withTiming(1, { duration: duration })
+      : withTiming(0, { duration: duration });
   });
   const closeHoldItem = () => {
     active.value = false;

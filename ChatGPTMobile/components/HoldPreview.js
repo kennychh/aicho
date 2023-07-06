@@ -56,8 +56,8 @@ export const HoldPreview = ({
   const originY = origin.y - insets.top - 16;
   const progress = useDerivedValue(() => {
     return showPreview.value
-      ? withTiming(1, DURATION)
-      : withTiming(0, DURATION);
+      ? withTiming(1, { duration: DURATION })
+      : withTiming(0, { duration: DURATION });
   });
 
   const renderItem = ({ item, index }) => (

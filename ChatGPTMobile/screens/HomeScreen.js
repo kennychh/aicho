@@ -1,5 +1,9 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { DrawerContent, HoldPreview } from "../components";
+import {
+  ConfirmDeleteChatModal,
+  DrawerContent,
+  HoldPreview,
+} from "../components";
 import { ChatScreen } from "./ChatScreen";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PortalProvider } from "@gorhom/portal";
@@ -34,7 +38,7 @@ export const HomeScreen = ({
   maxTokens,
   color,
   retainContext,
-  setConfirmDeleteVisible,
+  confirmDeleteVisible,
   temperature,
   presencePenalty,
   frequencyPenalty,
@@ -46,6 +50,8 @@ export const HomeScreen = ({
   const showHoldMenu = useSharedValue(false);
   const [previewTitle, setPreviewTitle] = useState("");
   const [holdMenuData, setHoldMenuData] = useState();
+  const [confirmDeleteChatIndex, setConfirmDeleteChatIndex] = useState(0);
+  const confirmDeleteChatVisible = useSharedValue(false);
   const [previewData, setPreviewData] = useState(chats[0].slice(0, 10));
   const [origin, setOrigin] = useState({ x: 0, y: 0, width: 0, height: 0 });
   const [isHeaderEditable, setIsHeaderEditable] = useState(false);
@@ -67,7 +73,8 @@ export const HomeScreen = ({
 
   const holdPreviewFunctions = {
     deleteChat: (index) => {
-      clearConversation(index);
+      setConfirmDeleteChatIndex(index);
+      confirmDeleteChatVisible.value = true;
     },
     copyChat: (index) => {
       const chatTexts = chats[index]
@@ -106,7 +113,7 @@ export const HomeScreen = ({
               theme={theme}
               setTheme={setTheme}
               darkModeModalizeRef={darkModeModalizeRef}
-              setConfirmDeleteVisible={setConfirmDeleteVisible}
+              confirmDeleteVisible={confirmDeleteVisible}
               openHoldPreview={openHoldPreview}
               holdPreviewFunctions={holdPreviewFunctions}
             />
@@ -167,6 +174,13 @@ export const HomeScreen = ({
           data={previewData}
           color={color}
         />
+        <ConfirmDeleteChatModal
+          onPress={() => {
+            clearConversation(confirmDeleteChatIndex);
+          }}
+          theme={theme}
+          visible={confirmDeleteChatVisible}
+        ></ConfirmDeleteChatModal>
       </PortalProvider>
     </GestureHandlerRootView>
   );
