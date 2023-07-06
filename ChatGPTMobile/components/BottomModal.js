@@ -7,11 +7,13 @@ import {
 } from "react-native";
 import Modal from "react-native-modal";
 import Animated, {
+  Easing,
   interpolateColor,
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
   withDelay,
+  withSpring,
   withTiming,
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -57,8 +59,11 @@ export const BottomModal = ({
       transform: [
         {
           translateY: visible.value
-            ? withTiming(-containerHeight.value, { duration: DURATION })
-            : withTiming(0, { duration: DURATION }),
+            ? withSpring(-containerHeight.value, {
+                damping: 100,
+                stiffness: 500,
+              })
+            : withSpring(0, { damping: 100, stiffness: 600 }),
         },
       ],
     };
@@ -87,7 +92,10 @@ export const BottomModal = ({
         <View style={styles.descriptionContainer(theme)}>
           <Text style={styles.description(theme)}>{description}</Text>
         </View>
-        <Divider backgroundColor={theme.modal.divider.backgroundColor} />
+        <Divider
+          backgroundColor={theme.modal.divider.backgroundColor}
+          spacerColor={theme.onBackgroundColor}
+        />
         <TouchableHighlight
           style={styles.ctaButtonContainer(theme)}
           // activeOpacity={0.6}

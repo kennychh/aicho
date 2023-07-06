@@ -84,6 +84,7 @@ export const HoldMenu = ({
                   <Divider
                     backgroundColor={theme.holdItem.menu.borderColor}
                     marginHorizontal={0}
+                    spacerColor={theme.holdItem.menu.backgroundColor}
                   />
                 )}
               </View>

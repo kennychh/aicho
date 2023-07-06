@@ -6,6 +6,7 @@ import {
   View,
 } from "react-native";
 import { getTheme } from "../theme";
+import { Divider } from "./Divider";
 
 export const RadioButtonList = ({
   theme,
@@ -20,34 +21,41 @@ export const RadioButtonList = ({
 }) => {
   return (
     <View style={style}>
-      {data.map((item) => (
+      {data.map((item, index) => (
         <TouchableWithoutFeedback
           key={item.value}
           onPress={() => {
             setSelected(item.value);
           }}
         >
-          <View
-            style={[
-              itemStyle
-                ? itemStyle
-                : styles.radioButtonItem(
-                    theme,
-                    showDividerItems.indexOf(item.value) > -1
-                  ),
-              { alignItems: "center" },
-            ]}
-          >
-            <Text style={textStyle ? textStyle : styles.text(theme)} numberOfLines={1}>
-              {item.value}
-            </Text>
+          <View>
             <View
-              style={
-                selected == item.value
-                  ? styles.radio(color)
-                  : styles.unselectedRadio(theme)
-              }
-            />
+              style={[
+                itemStyle ? itemStyle : styles.radioButtonItem,
+                { alignItems: "center" },
+              ]}
+            >
+              <Text
+                style={textStyle ? textStyle : styles.text(theme)}
+                numberOfLines={1}
+              >
+                {item.value}
+              </Text>
+              <View
+                style={
+                  selected == item.value
+                    ? styles.radio(color)
+                    : styles.unselectedRadio(theme)
+                }
+              />
+            </View>
+            {index == 0 && (
+              <Divider
+                backgroundColor={theme.modal.divider.backgroundColor}
+                spacerColor={theme.onBackgroundColor}
+                marginHorizontal={0}
+              />
+            )}
           </View>
         </TouchableWithoutFeedback>
       ))}
@@ -56,15 +64,11 @@ export const RadioButtonList = ({
 };
 
 const styles = StyleSheet.create({
-  radioButtonItem: (theme, showDivider) => ({
+  radioButtonItem: {
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 16,
-    borderBottomWidth: showDivider ? 0.5 : 0,
-    borderBottomColor: showDivider
-      ? theme.modal.divider.backgroundColor
-      : "transparent",
-  }),
+  },
   radio: (color) => ({
     backgroundColor: "white",
     borderColor: color,
