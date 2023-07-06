@@ -1,8 +1,8 @@
 import { StyleSheet, View } from "react-native";
 
-export const Divider = ({ backgroundColor }) => {
+export const Divider = ({ backgroundColor, marginHorizontal = 16 }) => {
   return (
-    <View>
+    <View style={{ marginHorizontal: marginHorizontal }}>
       <View style={styles.border(backgroundColor)} />
       <View
         style={[

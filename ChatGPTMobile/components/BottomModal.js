@@ -87,9 +87,7 @@ export const BottomModal = ({
         <View style={styles.descriptionContainer(theme)}>
           <Text style={styles.description(theme)}>{description}</Text>
         </View>
-        <View style={styles.dividerContainer(theme)}>
-          <Divider backgroundColor={theme.modal.divider.backgroundColor} />
-        </View>
+        <Divider backgroundColor={theme.modal.divider.backgroundColor} />
         <TouchableHighlight
           style={styles.ctaButtonContainer(theme)}
           // activeOpacity={0.6}

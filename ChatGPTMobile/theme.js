@@ -80,6 +80,7 @@ const lightTheme = {
   },
   highlight: {
     color: "#DBDBDB",
+    onBackgroundColor: "#DBDBDB",
   },
 };
 
@@ -166,6 +167,7 @@ const darkTheme = {
   },
   highlight: {
     color: "#2C2C2D",
+    onBackgroundColor: "#3A3A3C",
   },
 };
 

@@ -1,6 +1,6 @@
 import Animated from "react-native-reanimated";
 import { getTheme } from "../theme";
-import { Text, View } from "react-native";
+import { Text, TouchableHighlight, View } from "react-native";
 import { StyleSheet } from "react-native";
 import { BlurView } from "expo-blur";
 import { Close } from "../icons";
@@ -51,8 +51,8 @@ export const HoldMenu = ({
         : data.map((item, index) => {
             return (
               <View>
-                <TouchableOpacity
-                  style={styles.menuItemContainer}
+                <TouchableHighlight
+                  underlayColor={theme.highlight.color}
                   onPressIn={() => {
                     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                   }}
@@ -67,19 +67,24 @@ export const HoldMenu = ({
                     }
                   }}
                 >
-                  <Text
-                    style={[
-                      styles.text(theme),
-                      item.isDestructive ? { color: "#FF0000" } : {},
-                    ]}
-                    numberOfLines={1}
-                  >
-                    {item.title}
-                  </Text>
-                  <View style={styles.icon}>{item.icon}</View>
-                </TouchableOpacity>
+                  <View style={styles.menuItemContainer}>
+                    <Text
+                      style={[
+                        styles.text(theme),
+                        item.isDestructive ? { color: "#FF0000" } : {},
+                      ]}
+                      numberOfLines={1}
+                    >
+                      {item.title}
+                    </Text>
+                    <View style={styles.icon}>{item.icon}</View>
+                  </View>
+                </TouchableHighlight>
                 {index != data.length - 1 && (
-                  <Divider backgroundColor={theme.holdItem.menu.borderColor} />
+                  <Divider
+                    backgroundColor={theme.holdItem.menu.borderColor}
+                    marginHorizontal={0}
+                  />
                 )}
               </View>
             );

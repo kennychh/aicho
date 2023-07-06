@@ -10,6 +10,7 @@ import {
   Palette,
   Undo,
 } from "../icons";
+import { Divider } from "./Divider";
 
 export const SettingsOption = ({
   title,
@@ -63,6 +64,9 @@ export const SettingsOption = ({
           />
         )}
       </TouchableOpacity>
+      {(showDivider || isMiddle) && !isSingle && (
+        <Divider backgroundColor={theme.modal.divider.backgroundColor} />
+      )}
     </View>
   );
 };
@@ -98,7 +102,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: (showDivider && !isMiddle) || isSingle ? 16 : 0,
     borderBottomLeftRadius: (showDivider || isMiddle) && !isSingle ? 0 : 16,
     borderBottomRightRadius: (showDivider || isMiddle) && !isSingle ? 0 : 16,
-    borderBottomWidth: (showDivider || isMiddle) && !isSingle ? 0.5 : 0,
-    borderColor: theme.modal.divider.backgroundColor,
+    // borderBottomWidth: (showDivider || isMiddle) && !isSingle ? 0.5 : 0,
+    // borderColor: theme.modal.divider.backgroundColor,
   }),
 });
