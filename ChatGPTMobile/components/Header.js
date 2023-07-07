@@ -6,6 +6,7 @@ import {
   Image,
   Keyboard,
   Animated,
+  TouchableOpacity,
 } from "react-native";
 import { More, Menu, ArrowLeft, CircleIconTransparent } from "../icons";
 import { HeaderButton } from "./HeaderButton";
@@ -49,15 +50,11 @@ export const Header = ({
         flexDirection: "row",
       }}
     >
-      <View style={[styles.icon, { backgroundColor: color }]}>
-        <CircleIconTransparent width={32} height={32} />
-      </View>
-
       {isHeaderEditable ? (
         <TextInput
           ref={textInputRef}
           keyboardAppearance={theme === getTheme("dark") ? "dark" : "light"}
-          style={[styles.barText(theme), { flex: 1, marginRight: 24 }]}
+          style={[styles.barText(theme), { flex: 1, marginRight: 22 }]}
           numberOfLines={1}
           ellipsizeMode="tail"
           value={headerTitle}
@@ -76,7 +73,7 @@ export const Header = ({
         />
       ) : (
         <Text
-          style={[styles.barText(theme), { flex: 1, marginRight: 24 }]}
+          style={[styles.barText(theme), { flex: 1, marginRight: 22 }]}
           numberOfLines={1}
           ellipsizeMode="tail"
         >
@@ -93,7 +90,7 @@ export const Header = ({
         alignItems: "center",
         justifyContent: "center",
         flexDirection: "row",
-        height: 32,
+        height: 30,
       }}
     >
       <Text style={[styles.barText(theme), { fontWeight: "600" }]}>
@@ -139,18 +136,24 @@ export const Header = ({
       tint={theme === getTheme("dark") ? "dark" : "light"}
       intensity={intensity}
     >
-      <HeaderButton
+      {/* <HeaderButton
         icon={<Menu stroke={theme.iconColor} />}
         onPress={() => navigation.openDrawer()}
-      />
+      /> */}
+      <TouchableOpacity
+        style={[styles.icon, { backgroundColor: color }]}
+        onPress={() => navigation.openDrawer()}
+      >
+        <CircleIconTransparent width={30} height={30} />
+      </TouchableOpacity>
       {chatGptTitle}
-      {/* <HeaderButton
+      <HeaderButton
         icon={<More stroke={theme.iconColor} />}
         onPress={() => {
           Keyboard.dismiss();
           onOpen(modalizeRef);
         }}
-      /> */}
+      />
     </BlurView>
   );
 };
@@ -161,14 +164,15 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     fontWeight: "500",
     color: theme.fontColor,
+    textAlign: "center",
   }),
   icon: {
-    width: 32,
-    height: 32,
+    width: 30,
+    height: 30,
     borderRadius: "50%",
     alignSelf: "center",
-    marginLeft: 16,
-    marginRight: 8,
+    // marginLeft: 16,
+    marginRight: 16,
   },
   bar: (theme) => ({
     alignItems: "center",
