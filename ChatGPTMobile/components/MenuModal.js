@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Delete, Plus, Copy, Edit } from "../icons";
+import { Delete, Plus, Copy, Edit, Edit2 } from "../icons";
 import { Modalize } from "react-native-modalize";
 import * as Clipboard from "expo-clipboard";
 export const MenuModal = ({
@@ -26,18 +26,6 @@ export const MenuModal = ({
       <View style={styles.modalOptionsContainer(theme)}>
         <TouchableOpacity
           onPress={() => {
-            setIsHeaderEditable(true);
-            onClose(modalizeRef);
-          }}
-        >
-          <View style={styles.modalOption}>
-            <Edit stroke={theme.iconColor} />
-            <Text style={styles.modalOptionText(theme)}>Edit title</Text>
-          </View>
-        </TouchableOpacity>
-        <View style={styles.modalOptionDivider(theme)} />
-        <TouchableOpacity
-          onPress={() => {
             const chatTexts = chatInfo
               .map((chat) => chat.result?.text + "*#")
               .reverse()
@@ -51,7 +39,19 @@ export const MenuModal = ({
         >
           <View style={styles.modalOption}>
             <Copy stroke={theme.iconColor} />
-            <Text style={styles.modalOptionText(theme)}>Copy conversation</Text>
+            <Text style={styles.modalOptionText(theme)}>Copy</Text>
+          </View>
+        </TouchableOpacity>
+        <View style={styles.modalOptionDivider(theme)} />
+        <TouchableOpacity
+          onPress={() => {
+            setIsHeaderEditable(true);
+            onClose(modalizeRef);
+          }}
+        >
+          <View style={styles.modalOption}>
+            <Edit2 stroke={theme.iconColor} />
+            <Text style={styles.modalOptionText(theme)}>Rename</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -70,7 +70,7 @@ export const MenuModal = ({
           <View style={styles.modalOption}>
             <Delete stroke={"#FF0000"} />
             <Text style={[styles.modalOptionText(theme), { color: "#FF0000" }]}>
-              Delete conversation
+              Delete
             </Text>
           </View>
         </TouchableOpacity>
@@ -88,8 +88,8 @@ const styles = StyleSheet.create({
   }),
   modalStyle: (theme) => ({
     paddingHorizontal: 16,
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
+    borderTopLeftRadius: 32,
+    borderTopRightRadius: 32,
     backgroundColor: theme.modal.backgroundColor,
   }),
   modalOptionText: (theme) => ({

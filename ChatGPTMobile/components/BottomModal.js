@@ -35,8 +35,8 @@ export const BottomModal = ({
   const containerHeight = useSharedValue(0);
   const progress = useDerivedValue(() => {
     return visible.value
-      ? withTiming(1, { duration: DURATION })
-      : withTiming(0, { duration: DURATION });
+      ? withSpring(1, { damping: 100, stiffness: 600 })
+      : withSpring(0, { damping: 100, stiffness: 600 });
   });
 
   const animatedViewStyle = useAnimatedStyle(() => {

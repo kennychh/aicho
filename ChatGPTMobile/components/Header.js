@@ -53,26 +53,36 @@ export const Header = ({
         <CircleIconTransparent width={32} height={32} />
       </View>
 
-      <TextInput
-        ref={textInputRef}
-        keyboardAppearance={theme === getTheme("dark") ? "dark" : "light"}
-        style={[styles.barText(theme), { marginRight: 16, flex: 1 }]}
-        numberOfLines={1}
-        ellipsizeMode="tail"
-        value={headerTitle}
-        editable={isHeaderEditable}
-        returnKeyType={"done"}
-        onChangeText={(s) => {
-          setChatTitles((oldChatTitles) => [
-            ...oldChatTitles.slice(0, chatIndex),
-            s,
-            ...oldChatTitles.slice(chatIndex + 1),
-          ]);
-        }}
-        onSubmitEditing={() => {
-          setIsHeaderEditable(false);
-        }}
-      />
+      {isHeaderEditable ? (
+        <TextInput
+          ref={textInputRef}
+          keyboardAppearance={theme === getTheme("dark") ? "dark" : "light"}
+          style={[styles.barText(theme), { flex: 1, marginRight: 24 }]}
+          numberOfLines={1}
+          ellipsizeMode="tail"
+          value={headerTitle}
+          editable={isHeaderEditable}
+          returnKeyType={"done"}
+          onChangeText={(s) => {
+            setChatTitles((oldChatTitles) => [
+              ...oldChatTitles.slice(0, chatIndex),
+              s,
+              ...oldChatTitles.slice(chatIndex + 1),
+            ]);
+          }}
+          onSubmitEditing={() => {
+            setIsHeaderEditable(false);
+          }}
+        />
+      ) : (
+        <Text
+          style={[styles.barText(theme), { flex: 1, marginRight: 24 }]}
+          numberOfLines={1}
+          ellipsizeMode="tail"
+        >
+          {headerTitle}
+        </Text>
+      )}
     </View>
   );
 
@@ -86,7 +96,7 @@ export const Header = ({
         height: 32,
       }}
     >
-      <Text style={[styles.barText(theme), { fontWeight: "600", }]}>
+      <Text style={[styles.barText(theme), { fontWeight: "600" }]}>
         {headerTitle}
       </Text>
     </View>
@@ -134,13 +144,13 @@ export const Header = ({
         onPress={() => navigation.openDrawer()}
       />
       {chatGptTitle}
-      <HeaderButton
+      {/* <HeaderButton
         icon={<More stroke={theme.iconColor} />}
         onPress={() => {
           Keyboard.dismiss();
           onOpen(modalizeRef);
         }}
-      />
+      /> */}
     </BlurView>
   );
 };

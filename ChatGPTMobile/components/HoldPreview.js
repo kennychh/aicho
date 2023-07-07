@@ -376,6 +376,8 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     fontSize: 16,
     lineHeight: 18,
+    // marginRigt: 16,
+    flex: 1
   }),
   flatList: (theme) => ({
     // paddingRight: 16,
