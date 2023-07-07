@@ -49,7 +49,7 @@ export const RadioButtonList = ({
                 }
               />
             </View>
-            {index == 0 && (
+            {showDividerItems.indexOf(item.value) > -1 && (
               <Divider
                 backgroundColor={theme.modal.divider.backgroundColor}
                 spacerColor={theme.onBackgroundColor}
