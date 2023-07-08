@@ -7,7 +7,7 @@ import {
 import { ChatScreen } from "./ChatScreen";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PortalProvider } from "@gorhom/portal";
-import { TouchableOpacity } from "react-native";
+import { Dimensions, TouchableOpacity } from "react-native";
 import { useRef, useState } from "react";
 import { useSharedValue } from "react-native-reanimated";
 import * as Clipboard from "expo-clipboard";
@@ -55,6 +55,7 @@ export const HomeScreen = ({
   const [previewData, setPreviewData] = useState(chats[0].slice(0, 10));
   const [origin, setOrigin] = useState({ x: 0, y: 0, width: 0, height: 0 });
   const [isHeaderEditable, setIsHeaderEditable] = useState(false);
+  const windowWidth = Dimensions.get("window").width;
   const openHoldPreview = (layout, title, data, holdMenuData) => {
     setOrigin({
       x: layout.x,
@@ -94,6 +95,11 @@ export const HomeScreen = ({
       navigation.closeDrawer();
     },
   };
+
+  const deleteChatFromModal = () => {
+    setConfirmDeleteChatIndex(chatIndex);
+    confirmDeleteChatVisible.value = true;
+  };
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <PortalProvider>
@@ -124,6 +130,7 @@ export const HomeScreen = ({
             swipeEdgeWidth: 60,
             drawerStyle: {
               backgroundColor: theme.drawerContent.backgroundColor,
+              width: Math.round(windowWidth * 0.82),
             },
             overlayColor: theme.drawerContent.overlayColor,
           }}
@@ -158,6 +165,7 @@ export const HomeScreen = ({
                 holdMenuRef={holdMenuRef}
                 isHeaderEditable={isHeaderEditable}
                 setIsHeaderEditable={setIsHeaderEditable}
+                deleteChatFromModal={deleteChatFromModal}
               />
             )}
           </Drawer.Screen>

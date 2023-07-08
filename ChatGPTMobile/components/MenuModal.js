@@ -1,4 +1,10 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Animated,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Delete, Plus, Copy, Edit, Edit2 } from "../icons";
 import { Modalize } from "react-native-modalize";
@@ -20,12 +26,21 @@ export const MenuModal = ({
       modalStyle={styles.modalStyle(theme)}
       handleStyle={styles.handleStyle(theme)}
       handlePosition={"inside"}
-      childrenStyle={styles.childrenStyle}
+      openAnimationConfig={{
+        timing: { duration: 200 },
+        spring: { damping: 100, stiffness: 600 },
+      }}
+      closeAnimationConfig={{
+        timing: { duration: 200 },
+        spring: { damping: 100, stiffness: 600 },
+      }}
       adjustToContentHeight={true}
+      velocity={2000}
     >
       <View style={styles.modalOptionsContainer(theme)}>
         <TouchableOpacity
           onPress={() => {
+            modalizeRef.current.close();
             const chatTexts = chatInfo
               .map((chat) => chat.result?.text + "*#")
               .reverse()
@@ -34,7 +49,6 @@ export const MenuModal = ({
               .join("\n\n")
               .replace("*#", "");
             Clipboard.setStringAsync(chatTexts);
-            onClose(modalizeRef);
           }}
         >
           <View style={styles.modalOption}>
@@ -45,8 +59,10 @@ export const MenuModal = ({
         <View style={styles.modalOptionDivider(theme)} />
         <TouchableOpacity
           onPress={() => {
-            setIsHeaderEditable(true);
-            onClose(modalizeRef);
+            modalizeRef.current.close();
+            setTimeout(() => {
+              setIsHeaderEditable(true);
+            }, 200);
           }}
         >
           <View style={styles.modalOption}>
@@ -63,8 +79,10 @@ export const MenuModal = ({
       >
         <TouchableOpacity
           onPress={() => {
-            deleteConvo();
-            onClose(modalizeRef);
+            modalizeRef.current.close();
+            setTimeout(() => {
+              deleteConvo();
+            }, 400);
           }}
         >
           <View style={styles.modalOption}>
@@ -84,12 +102,13 @@ const styles = StyleSheet.create({
   handleStyle: (theme) => ({
     width: 40,
     height: 4,
+    marginTop: 4,
     backgroundColor: theme.modal.divider.backgroundColor,
   }),
   modalStyle: (theme) => ({
     paddingHorizontal: 16,
-    borderTopLeftRadius: 32,
-    borderTopRightRadius: 32,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
     backgroundColor: theme.modal.backgroundColor,
   }),
   modalOptionText: (theme) => ({

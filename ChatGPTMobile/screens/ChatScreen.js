@@ -51,6 +51,7 @@ export const ChatScreen = ({
   holdMenuRef,
   isHeaderEditable,
   setIsHeaderEditable,
+  deleteChatFromModal,
 }) => {
   const API_URL = "https://chatgpt-api-blue.vercel.app/api";
   const result = chats[index];
@@ -377,9 +378,9 @@ export const ChatScreen = ({
         ]);
       }
       if (
-        (chats[index].length == 0 ||
-          editMessageIndex + 1 == chats[index].length ||
-          regenIndex + 2 == chats[index].length)
+        chats[index].length == 0 ||
+        editMessageIndex + 1 == chats[index].length ||
+        regenIndex + 2 == chats[index].length
       ) {
         setChatTitles((oldChatTitles) => [
           ...oldChatTitles.slice(0, chatIndex),
@@ -489,7 +490,7 @@ export const ChatScreen = ({
         </KeyboardAvoidingView>
         <BottomToast theme={theme} isEnabled={showBottomToast} />
         <MenuModal
-          deleteConvo={removeData}
+          deleteConvo={deleteChatFromModal}
           modalizeRef={modalizeRef}
           onClose={onClose}
           setChats={setChats}

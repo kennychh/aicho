@@ -163,7 +163,7 @@ const darkTheme = {
     backgroundColor: "rgba(0, 0, 0, 0.6)",
   },
   bottomModal: {
-    backgroundColor: "rgba(0, 0, 0, 0.8)",
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
   },
   highlight: {
     color: "#2C2C2D",

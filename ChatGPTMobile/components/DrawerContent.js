@@ -167,6 +167,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "600",
     color: theme.fontColor,
+    marginLeft: 16,
   }),
   drawerConversationsTitleContainer: {
     marginBottom: 16,
