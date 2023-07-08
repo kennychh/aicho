@@ -35,7 +35,8 @@ export const MenuModal = ({
         spring: { damping: 100, stiffness: 600 },
       }}
       adjustToContentHeight={true}
-      velocity={2000}
+      closeSnapPointStraightEnabled={false}
+      // velocity={2000}
     >
       <View style={styles.modalOptionsContainer(theme)}>
         <TouchableOpacity

@@ -74,10 +74,10 @@ export const Input = ({
     setError(false);
     if (editMessage) {
       onSubmit();
-    } else if (showRefreshIcon) {
-      setRetry({ ...result[0], isError: false });
     } else if (isResultValid) {
       onSubmit();
+    } else if (showRefreshIcon) {
+      setRetry({ ...result[0], isError: false });
     }
   };
 

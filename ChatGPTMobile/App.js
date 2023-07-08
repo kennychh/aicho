@@ -44,6 +44,7 @@ import * as SecureStore from "expo-secure-store";
 import * as LocalAuthentication from "expo-local-authentication";
 import { HoldMenu } from "./components/HoldMenu";
 import { useSharedValue } from "react-native-reanimated";
+import { getTimeCreated } from "./helpers";
 
 if (
   Platform.OS === "android" &&
@@ -57,6 +58,7 @@ export default function App() {
   const [chats, setChats] = useState([[]]);
   const [chatIndex, setChatIndex] = useState(0);
   const [chatTitles, setChatTitles] = useState([]);
+  const [chatDateCreated, setChatDateCreated] = useState([]);
   const [deleteChat, setDeleteChat] = useState(false);
   const [editMessage, setEditMessage] = useState(null);
   const [isDarkMode, setIsDarkMode] = useState(colorScheme === "dark");
@@ -169,6 +171,17 @@ export default function App() {
     }
   };
 
+  const storeChatDatesCreated = async () => {
+    try {
+      const jsonValue = JSON.stringify(chatDateCreated);
+      console.log("jsonValue", jsonValue);
+      await AsyncStorage.setItem("@chatDateCreated", jsonValue);
+    } catch (e) {
+      // saving error
+      Alert.alert("Couldn't store chat creation dates", e.message);
+    }
+  };
+
   const storeChatTitles = async () => {
     try {
       const chatTitlesJson = JSON.stringify(chatTitles);
@@ -214,9 +227,14 @@ export default function App() {
     setDeleteChat(true);
     if (chats.length == 1) {
       setChats([[]]);
+      setChatDateCreated([new Date().toString()]);
       setChatTitles(["New chat"]);
     } else {
       setChats((oldChats) => [
+        ...oldChats.slice(0, i),
+        ...oldChats.slice(i + 1),
+      ]);
+      setChatDateCreated((oldChats) => [
         ...oldChats.slice(0, i),
         ...oldChats.slice(i + 1),
       ]);
@@ -230,6 +248,7 @@ export default function App() {
   const resetData = () => {
     setDeleteChat(true);
     setChats([[]]);
+    setChatDateCreated([]);
     setChatIndex(0);
     setChatTitles(["New chat"]);
     setInput("");
@@ -264,6 +283,13 @@ export default function App() {
       storeChats();
     }
   }, [chats, chatIndex]);
+
+  useEffect(() => {
+    console.log(chatDateCreated);
+    if (chatDateCreated != []) {
+      storeChatDatesCreated();
+    }
+  }, [chatDateCreated]);
 
   useEffect(() => {
     if (key != "") {
@@ -372,6 +398,9 @@ export default function App() {
     const getData = async () => {
       try {
         const jsonValue = await AsyncStorage.getItem("@chatgpt");
+        const chatDateCreatedJsonValue = await AsyncStorage.getItem(
+          "@chatDateCreated"
+        );
         const retainContextJsonValue = await AsyncStorage.getItem(
           "@retainContext"
         );
@@ -395,11 +424,15 @@ export default function App() {
         const frequencyJsonValue = await AsyncStorage.getItem(
           "@frequencyPenalty"
         );
-
+        console.log("chatDateCreatedJsonValue", chatDateCreatedJsonValue);
         const storedRetainContext =
           retainContextJsonValue != null
             ? JSON.parse(retainContextJsonValue)
             : true;
+        const storeChatDateCreatedJsonValue =
+          chatDateCreatedJsonValue != "[]"
+            ? JSON.parse(chatDateCreatedJsonValue)
+            : [new Date().toString()];
         const storedColor =
           colorJsonValue != null ? JSON.parse(colorJsonValue) : "#10a37f";
         const storedChatTitles =
@@ -434,6 +467,9 @@ export default function App() {
           setChatTitles(storedChatTitles);
           setChats(storedRes);
           setChatIndex(storedRes.length - 1);
+        }
+        if (storeChatDateCreatedJsonValue.length != 0) {
+          setChatDateCreated(storeChatDateCreatedJsonValue);
         }
         if (storedKey != "") {
           setKey(storedKey);
@@ -545,6 +581,7 @@ export default function App() {
                 presencePenalty={presencePenalty}
                 frequencyPenalty={frequencyPenalty}
                 holdMenuRef={holdMenuRef}
+                setChatDateCreated={setChatDateCreated}
               />
             )}
           </Stack.Screen>
@@ -702,6 +739,7 @@ export default function App() {
         <ConfirmDeleteConvosModal
           setChatIndex={setChatIndex}
           setChats={setChats}
+          setChatDateCreated={setChatDateCreated}
           setDeleteChat={setDeleteChat}
           setChatTitles={setChatTitles}
           setInput={setInput}

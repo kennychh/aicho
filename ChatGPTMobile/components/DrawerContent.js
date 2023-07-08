@@ -29,6 +29,7 @@ export const DrawerContent = ({
   confirmDeleteVisible,
   openHoldPreview,
   holdPreviewFunctions,
+  setChatDateCreated,
 }) => {
   const navigation = props.navigation;
 
@@ -95,6 +96,7 @@ export const DrawerContent = ({
           style={[styles.drawerOptions, { marginTop: 24 }]}
           onPress={() => {
             setChats((oldChats) => [...oldChats, []]);
+            setChatDateCreated((oldChats) => [...oldChats, new Date().toString()]);
             setChatIndex(chats.length);
             setChatTitles((oldChatTitles) => [
               ...oldChatTitles.slice(0, chats.length),

@@ -20,6 +20,7 @@ export const ConfirmDeleteConvosModal = ({
   theme,
   modalizeRef,
   confirmDeleteVisible,
+  setChatDateCreated,
 }) => {
   const insets = useSafeAreaInsets();
   return (
@@ -28,6 +29,7 @@ export const ConfirmDeleteConvosModal = ({
       onPress={() => {
         setDeleteChat(true);
         setChats([[]]);
+        setChatDateCreated([new Date().toString()]);
         setChatIndex(0);
         setChatTitles(["New chat"]);
         setInput("");

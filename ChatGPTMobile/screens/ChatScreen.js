@@ -262,6 +262,10 @@ export const ChatScreen = ({
       : -1;
     const res = getResult(result, regenIndex);
     const inputText = getInput(res);
+    const shouldCreateTitle =
+      chats[index].length == 0 ||
+      editMessageIndex + 1 == chats[index].length ||
+      regenIndex + 2 == chats[index].length;
     if (editMessage != null) {
       toggleExpandMessage();
       setChats((oldResult) => [
@@ -300,6 +304,12 @@ export const ChatScreen = ({
     setInput("");
     try {
       const bearer = `Bearer ${apiKey}`;
+      const responseInput =
+        retry != null
+          ? retry.result?.text
+          : regen
+          ? inputText.result?.text
+          : input;
       const response = await fetch(`${API_URL}/generate`, {
         method: "POST",
         headers: {
@@ -307,12 +317,11 @@ export const ChatScreen = ({
           Authorization: bearer,
         },
         body: JSON.stringify({
-          input:
-            retry != null
-              ? retry.result?.text
-              : regen
-              ? inputText.result?.text
-              : input,
+          input: responseInput.concat(
+            shouldCreateTitle
+              ? ". at the end of the response, make a title for this conversation in 24 characters or fewer with the format: 'CT:'."
+              : ""
+          ),
           conversationId: res?.result?.conversationId,
           id: regen ? regenId : res?.result?.id,
           keyChanged: keyChanged,
@@ -326,6 +335,7 @@ export const ChatScreen = ({
         }),
       });
       let data = await response.json();
+      console.log(chats[index]);
       const ctIndex = data?.result?.text.indexOf("CT:");
       let chatTitle =
         data?.result?.text.substring(ctIndex).substring(3).trimStart() ||
@@ -377,11 +387,7 @@ export const ChatScreen = ({
           ...oldResult?.slice(index + 1),
         ]);
       }
-      if (
-        chats[index].length == 0 ||
-        editMessageIndex + 1 == chats[index].length ||
-        regenIndex + 2 == chats[index].length
-      ) {
+      if (shouldCreateTitle) {
         setChatTitles((oldChatTitles) => [
           ...oldChatTitles.slice(0, chatIndex),
           chatTitle,

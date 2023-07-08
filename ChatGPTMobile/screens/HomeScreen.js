@@ -43,6 +43,7 @@ export const HomeScreen = ({
   presencePenalty,
   frequencyPenalty,
   holdMenuRef,
+  setChatDateCreated,
 }) => {
   const showPreview = useSharedValue(false);
   const translateX = useSharedValue(0);
@@ -122,6 +123,7 @@ export const HomeScreen = ({
               confirmDeleteVisible={confirmDeleteVisible}
               openHoldPreview={openHoldPreview}
               holdPreviewFunctions={holdPreviewFunctions}
+              setChatDateCreated={setChatDateCreated}
             />
           )}
           initialRouteName="Chat"

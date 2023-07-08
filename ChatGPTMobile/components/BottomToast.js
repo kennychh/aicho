@@ -49,7 +49,7 @@ export const BottomToast = ({
           update: { type: "spring", springDamping: 1 },
         });
         setVisible(true);
-      }, 500);
+      }, 600);
       setTimeout(() => {
         !toastUserClosed.current && setCloseAnimation(true);
       }, 5000);
