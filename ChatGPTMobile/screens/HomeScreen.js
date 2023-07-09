@@ -20,8 +20,8 @@ export const HomeScreen = ({
   chatIndex,
   setChats,
   setDeleteChat,
-  chatTitles,
-  setChatTitles,
+  chatDetails,
+  setChatDetails,
   setInput,
   setEditMessage,
   theme,
@@ -43,7 +43,6 @@ export const HomeScreen = ({
   presencePenalty,
   frequencyPenalty,
   holdMenuRef,
-  setChatDateCreated,
 }) => {
   const showPreview = useSharedValue(false);
   const translateX = useSharedValue(0);
@@ -113,8 +112,8 @@ export const HomeScreen = ({
               chatIndex={chatIndex}
               setChats={setChats}
               setDeleteChat={setDeleteChat}
-              chatTitles={chatTitles}
-              setChatTitles={setChatTitles}
+              chatDetails={chatDetails}
+              setChatDetails={setChatDetails}
               setInput={setInput}
               setEditMessage={setEditMessage}
               theme={theme}
@@ -123,7 +122,6 @@ export const HomeScreen = ({
               confirmDeleteVisible={confirmDeleteVisible}
               openHoldPreview={openHoldPreview}
               holdPreviewFunctions={holdPreviewFunctions}
-              setChatDateCreated={setChatDateCreated}
             />
           )}
           initialRouteName="Chat"
@@ -146,8 +144,8 @@ export const HomeScreen = ({
                 chatIndex={chatIndex}
                 clearConversation={clearConversation}
                 setChats={setChats}
-                chatTitles={chatTitles}
-                setChatTitles={setChatTitles}
+                chatDetails={chatDetails}
+                setChatDetails={setChatDetails}
                 input={input}
                 setInput={setInput}
                 editMessage={editMessage}

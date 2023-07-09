@@ -20,7 +20,7 @@ export const Header = ({
   navigation,
   headerTitle,
   textInputRef,
-  setChatTitles,
+  setChatDetails,
   chatIndex,
   isHeaderEditable,
   setIsHeaderEditable,
@@ -61,9 +61,9 @@ export const Header = ({
           editable={isHeaderEditable}
           returnKeyType={"done"}
           onChangeText={(s) => {
-            setChatTitles((oldChatTitles) => [
+            setChatDetails((oldChatTitles) => [
               ...oldChatTitles.slice(0, chatIndex),
-              s,
+              [s, oldChatTitles[chatIndex][1]],
               ...oldChatTitles.slice(chatIndex + 1),
             ]);
           }}

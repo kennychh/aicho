@@ -19,8 +19,8 @@ export const DrawerContent = ({
   chatIndex,
   setChats,
   setDeleteChat,
-  chatTitles,
-  setChatTitles,
+  chatDetails,
+  setChatDetails,
   setInput,
   setEditMessage,
   theme,
@@ -29,10 +29,14 @@ export const DrawerContent = ({
   confirmDeleteVisible,
   openHoldPreview,
   holdPreviewFunctions,
-  setChatDateCreated,
 }) => {
   const navigation = props.navigation;
 
+  const chatTitle = (index) =>
+    typeof chatDetails[index] === "string" ||
+    typeof chatDetails[index] === "undefined"
+      ? chatDetails[index]
+      : chatDetails[index][0];
   const drawerChatsOnPress = (index) => {
     setInput("");
     setEditMessage(null);
@@ -68,7 +72,7 @@ export const DrawerContent = ({
               onPress={() => {
                 drawerChatsOnPress(index);
               }}
-              text={chatTitles[index]}
+              text={chatTitle(index)}
               selected={chatIndex == index}
               openHoldPreview={openHoldPreview}
               data={item.slice(0, 10)}
@@ -96,11 +100,10 @@ export const DrawerContent = ({
           style={[styles.drawerOptions, { marginTop: 24 }]}
           onPress={() => {
             setChats((oldChats) => [...oldChats, []]);
-            setChatDateCreated((oldChats) => [...oldChats, new Date().toString()]);
             setChatIndex(chats.length);
-            setChatTitles((oldChatTitles) => [
+            setChatDetails((oldChatTitles) => [
               ...oldChatTitles.slice(0, chats.length),
-              `New chat`,
+              ["New chat", new Date().toString()],
               ...oldChatTitles.slice(chats.length + 1),
             ]);
             setInput("");

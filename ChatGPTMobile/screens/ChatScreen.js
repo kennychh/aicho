@@ -30,8 +30,8 @@ export const ChatScreen = ({
   chatIndex,
   clearConversation,
   setChats,
-  chatTitles,
-  setChatTitles,
+  chatDetails,
+  setChatDetails,
   input,
   setInput,
   editMessage,
@@ -71,6 +71,11 @@ export const ChatScreen = ({
   const listRef = useRef(null);
   const [showScrollToButton, setShowScrollToButton] = useState(false);
   const [editMessageHeight, setEditMessageHeight] = useState(0);
+  const headerTitle =
+    typeof chatDetails[chatIndex] === "string" ||
+    typeof chatDetails[chatIndex] === "undefined"
+      ? chatDetails[chatIndex]
+      : chatDetails[chatIndex][0];
 
   const onLayout = (event) => {
     const { x, y, height, width } = event.nativeEvent.layout;
@@ -174,10 +179,10 @@ export const ChatScreen = ({
       "keyboardDidHide",
       () => {
         setIsHeaderEditable(false); // or some other action
-        if (chatTitles[chatIndex] == "") {
-          setChatTitles((oldChatTitles) => [
+        if (chatDetails[chatIndex] == "") {
+          setChatDetails((oldChatTitles) => [
             ...oldChatTitles.slice(0, chatIndex),
-            "New chat",
+            ["New chat", oldChatTitles[chatIndex][1]],
             ...oldChatTitles.slice(chatIndex + 1),
           ]);
         }
@@ -187,7 +192,7 @@ export const ChatScreen = ({
     return () => {
       keyboardDidHideListener.remove();
     };
-  }, [chatTitles]);
+  }, [chatDetails]);
 
   const generateInputId = () => {
     const char =
@@ -388,9 +393,9 @@ export const ChatScreen = ({
         ]);
       }
       if (shouldCreateTitle) {
-        setChatTitles((oldChatTitles) => [
+        setChatDetails((oldChatTitles) => [
           ...oldChatTitles.slice(0, chatIndex),
-          chatTitle,
+          [chatTitle, oldChatTitles[chatIndex][1]],
           ...oldChatTitles.slice(chatIndex + 1),
         ]);
       }
@@ -422,7 +427,7 @@ export const ChatScreen = ({
     } finally {
       setLoading(false);
     }
-  }, [chats, input, regen, retry, index, editMessage, chatTitles]);
+  }, [chats, input, regen, retry, index, editMessage, chatDetails]);
   return (
     <SafeAreaProvider>
       <SafeAreaView
@@ -483,10 +488,10 @@ export const ChatScreen = ({
             onOpen={onOpen}
             modalizeRef={modalizeRef}
             navigation={navigation}
-            headerTitle={`${chatTitles[chatIndex]}`}
+            headerTitle={`${headerTitle}`}
             textInputRef={headerTextInputRef}
-            setChatTitles={setChatTitles}
-            chatTitles={chatTitles}
+            setChatDetails={setChatDetails}
+            chatDetails={chatDetails}
             chatIndex={chatIndex}
             isHeaderEditable={isHeaderEditable}
             setIsHeaderEditable={setIsHeaderEditable}
