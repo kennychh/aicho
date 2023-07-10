@@ -44,7 +44,6 @@ import * as SecureStore from "expo-secure-store";
 import * as LocalAuthentication from "expo-local-authentication";
 import { HoldMenu } from "./components/HoldMenu";
 import { useSharedValue } from "react-native-reanimated";
-import { getTimeCreated } from "./helpers";
 
 if (
   Platform.OS === "android" &&
@@ -211,7 +210,7 @@ export default function App() {
   };
 
   const clearConversation = (i) => {
-    setChatIndex(i == 0 ? 0 : i - 1);
+    setChatIndex(i);
     setDeleteChat(true);
     if (chats.length == 1) {
       setChats([[]]);

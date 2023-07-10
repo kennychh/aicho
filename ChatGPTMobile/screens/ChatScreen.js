@@ -340,7 +340,6 @@ export const ChatScreen = ({
         }),
       });
       let data = await response.json();
-      console.log(chats[index]);
       const ctIndex = data?.result?.text.indexOf("CT:");
       let chatTitle =
         data?.result?.text.substring(ctIndex).substring(3).trimStart() ||

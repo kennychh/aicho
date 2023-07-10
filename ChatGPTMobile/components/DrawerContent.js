@@ -11,6 +11,11 @@ import {
 import { Message, Delete, Moon, Plus, Sun, Settings } from "../icons";
 import { getTheme } from "../theme";
 import { DrawerChats } from "./DrawerChats";
+import {
+  getMonthsAgo,
+  getMonthsAgoStr,
+  getToday,
+} from "../helpers/getTimeCreated";
 
 export const DrawerContent = ({
   props,
@@ -37,15 +42,50 @@ export const DrawerContent = ({
     typeof chatDetails[index] === "undefined"
       ? chatDetails[index]
       : chatDetails[index][0];
+
+  useEffect(() => {
+    navigation.closeDrawer();
+  }, [chatIndex]);
+
+  const chatDetailsByMonths = getMonthsAgo(chatDetails);
+  const stickyHeadersData = getMonthsAgoStr(Object.keys(chatDetailsByMonths));
+  const drawerChatData = Object.values(chatDetailsByMonths);
   const drawerChatsOnPress = (index) => {
     setInput("");
     setEditMessage(null);
     setChatIndex(index);
   };
-
-  useEffect(() => {
-    navigation.closeDrawer();
-  }, [chatIndex]);
+  const renderItem = ({ item, index }) => {
+    return (
+      <View>
+        <Text
+          style={[
+            styles.drawerChatsHeaderText(theme),
+            index == 0 ? { paddingTop: 0 } : {},
+          ]}
+        >
+          {stickyHeadersData[index]}
+        </Text>
+        {item.reverse().map((drawerChatIndex) => {
+          return (
+            <DrawerChats
+              theme={theme}
+              onPress={() => {
+                drawerChatsOnPress(drawerChatIndex);
+              }}
+              text={chatTitle(drawerChatIndex)}
+              selected={chatIndex == drawerChatIndex}
+              openHoldPreview={openHoldPreview}
+              data={chats[drawerChatIndex].slice(0, 10)}
+              index={drawerChatIndex}
+              holdPreviewFunctions={holdPreviewFunctions}
+              navigation={navigation}
+            />
+          );
+        })}
+      </View>
+    );
+  };
 
   return (
     <DrawerContentScrollView
@@ -58,29 +98,14 @@ export const DrawerContent = ({
       </View>
       <View style={{ flex: 1, overflow: "hidden" }}>
         <FlatList
-          inverted
-          data={chats}
+          data={drawerChatData}
           indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
           style={styles.componentContainer(theme)}
           contentContainerStyle={{
             flexGrow: 1,
-            justifyContent: "flex-end",
+            justifyContent: "flex-start",
           }}
-          renderItem={({ item, index }) => (
-            <DrawerChats
-              theme={theme}
-              onPress={() => {
-                drawerChatsOnPress(index);
-              }}
-              text={chatTitle(index)}
-              selected={chatIndex == index}
-              openHoldPreview={openHoldPreview}
-              data={item.slice(0, 10)}
-              index={index}
-              holdPreviewFunctions={holdPreviewFunctions}
-              navigation={navigation}
-            />
-          )}
+          renderItem={renderItem}
           keyExtractor={(item, index) => {
             return index;
           }}
@@ -99,11 +124,12 @@ export const DrawerContent = ({
         <TouchableOpacity
           style={[styles.drawerOptions, { marginTop: 24 }]}
           onPress={() => {
+            const date = new Date();
             setChats((oldChats) => [...oldChats, []]);
             setChatIndex(chats.length);
             setChatDetails((oldChatTitles) => [
               ...oldChatTitles.slice(0, chats.length),
-              ["New chat", new Date().toString()],
+              ["New chat", date.toString()],
               ...oldChatTitles.slice(chats.length + 1),
             ]);
             setInput("");
@@ -178,6 +204,15 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     marginLeft: 16,
   },
+  drawerChatsHeaderText: (theme) => ({
+    fontSize: 14,
+    lineHeight: 16,
+    color: theme.secondaryIconColor,
+    fontWeight: "500",
+    paddingHorizontal: 32,
+    paddingBottom: 8,
+    paddingTop: 16,
+  }),
   chatItemText: (theme) => ({
     fontSize: 16,
     lineHeight: 18,
