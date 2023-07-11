@@ -14,14 +14,16 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import {
   Header,
   Input,
-  MenuModal,
-  MessageModal,
   BottomToast,
   ScrollToButton,
+  PanModal,
+  ChatMenuModal,
 } from "../components";
 import MessageList from "../components/MessageList";
 import * as Device from "expo-device";
 import { getTheme } from "../theme";
+import { useSharedValue } from "react-native-reanimated";
+import * as Clipboard from "expo-clipboard";
 
 export const ChatScreen = ({
   navigation,
@@ -71,6 +73,7 @@ export const ChatScreen = ({
   const listRef = useRef(null);
   const [showScrollToButton, setShowScrollToButton] = useState(false);
   const [editMessageHeight, setEditMessageHeight] = useState(0);
+  const panModalVisible = useSharedValue(false);
   const headerTitle =
     typeof chatDetails[chatIndex] === "string" ||
     typeof chatDetails[chatIndex] === "undefined"
@@ -92,6 +95,32 @@ export const ChatScreen = ({
 
   const removeData = () => {
     clearConversation(chatIndex);
+  };
+
+  const ChatMenuModalOnPressOptions = {
+    copy: () => {
+      panModalVisible.value = false;
+      const chatTexts = chats[index]
+        .map((chat) => chat.result?.text + "*#")
+        .reverse()
+        .toString()
+        .split("*#,")
+        .join("\n\n")
+        .replace("*#", "");
+      Clipboard.setStringAsync(chatTexts);
+    },
+    rename: () => {
+      panModalVisible.value = false;
+      setTimeout(() => {
+        setIsHeaderEditable(true);
+      }, 200);
+    },
+    delete: () => {
+      panModalVisible.value = false;
+      setTimeout(() => {
+        deleteChatFromModal();
+      }, 200);
+    },
   };
 
   const toggleExpandMessage = () => {
@@ -486,6 +515,7 @@ export const ChatScreen = ({
           <Header
             onOpen={onOpen}
             modalizeRef={modalizeRef}
+            panModalVisible={panModalVisible}
             navigation={navigation}
             headerTitle={`${headerTitle}`}
             textInputRef={headerTextInputRef}
@@ -499,25 +529,10 @@ export const ChatScreen = ({
           />
         </KeyboardAvoidingView>
         <BottomToast theme={theme} isEnabled={showBottomToast} />
-        <MenuModal
-          deleteConvo={deleteChatFromModal}
-          modalizeRef={modalizeRef}
-          onClose={onClose}
-          setChats={setChats}
-          headerTextInputRef={headerTextInputRef}
-          setIsHeaderEditable={setIsHeaderEditable}
+        <ChatMenuModal
+          visible={panModalVisible}
           theme={theme}
-          chatInfo={chats[index]}
-        />
-        <MessageModal
-          message={message}
-          modalizeRef={messageModalizeRef}
-          onClose={onClose}
-          setMessage={setMessage}
-          setEditMessage={setEditMessage}
-          textInputRef={textInputRef}
-          setInput={setInput}
-          theme={theme}
+          onPressOptions={ChatMenuModalOnPressOptions}
         />
       </SafeAreaView>
     </SafeAreaProvider>

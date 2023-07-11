@@ -1,55 +1,30 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Animated,
-} from "react-native";
+import Animated, { useAnimatedStyle } from "react-native-reanimated";
+import { PanModal } from "./PanModal";
+import { useMemo } from "react";
+import { Dimensions, StyleSheet, View } from "react-native";
+import { TouchableOpacity } from "react-native";
+import { Copy, Delete, Edit2 } from "../icons";
+import { Text } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Delete, Plus, Copy, Edit, Edit2 } from "../icons";
-import { Modalize } from "react-native-modalize";
-import * as Clipboard from "expo-clipboard";
-export const MenuModal = ({
-  deleteConvo,
-  modalizeRef,
-  onClose,
-  setChats,
-  headerTextInputRef,
-  setIsHeaderEditable,
-  theme,
-  chatInfo,
-}) => {
+
+export const ChatMenuModal = ({ visible, theme, onPressOptions }) => {
   const insets = useSafeAreaInsets();
-  return (
-    <Modalize
-      ref={modalizeRef}
-      modalStyle={styles.modalStyle(theme)}
-      handleStyle={styles.handleStyle(theme)}
-      handlePosition={"inside"}
-      openAnimationConfig={{
-        timing: { duration: 200 },
-        spring: { damping: 100, stiffness: 600 },
-      }}
-      closeAnimationConfig={{
-        timing: { duration: 200 },
-        spring: { damping: 100, stiffness: 600 },
-      }}
-      adjustToContentHeight={true}
-      closeSnapPointStraightEnabled={false}
-      // velocity={2000}
-    >
+  const windowHeight = Dimensions.get("window").height;
+  const animatedModalContainerStyle = useAnimatedStyle(() => {
+    return {};
+  });
+  const modalContainerStyle = useMemo(() => [
+    styles.modalContainerStyle(theme),
+    animatedModalContainerStyle,
+    { paddingBottom: 500 },
+  ]);
+  const modalContainer = (
+    <Animated.View style={modalContainerStyle}>
+      <View style={styles.handleStyle(theme)} />
       <View style={styles.modalOptionsContainer(theme)}>
         <TouchableOpacity
           onPress={() => {
-            modalizeRef.current.close();
-            const chatTexts = chatInfo
-              .map((chat) => chat.result?.text + "*#")
-              .reverse()
-              .toString()
-              .split("*#,")
-              .join("\n\n")
-              .replace("*#", "");
-            Clipboard.setStringAsync(chatTexts);
+            onPressOptions.copy();
           }}
         >
           <View style={styles.modalOption}>
@@ -60,10 +35,7 @@ export const MenuModal = ({
         <View style={styles.modalOptionDivider(theme)} />
         <TouchableOpacity
           onPress={() => {
-            modalizeRef.current.close();
-            setTimeout(() => {
-              setIsHeaderEditable(true);
-            }, 200);
+            onPressOptions.rename();
           }}
         >
           <View style={styles.modalOption}>
@@ -80,10 +52,7 @@ export const MenuModal = ({
       >
         <TouchableOpacity
           onPress={() => {
-            modalizeRef.current.close();
-            setTimeout(() => {
-              deleteConvo();
-            }, 400);
+            onPressOptions.delete();
           }}
         >
           <View style={styles.modalOption}>
@@ -94,23 +63,29 @@ export const MenuModal = ({
           </View>
         </TouchableOpacity>
       </View>
-    </Modalize>
+    </Animated.View>
+  );
+  return (
+    <PanModal visible={visible} theme={theme}>
+      {modalContainer}
+    </PanModal>
   );
 };
 
 const styles = StyleSheet.create({
-  childrenStyle: {},
   handleStyle: (theme) => ({
     width: 40,
     height: 4,
-    marginTop: 4,
-    backgroundColor: theme.modal.divider.backgroundColor,
+    marginTop: 8,
+    backgroundColor: theme.modal.handle.backgroundColor,
+    borderRadius: "100%",
   }),
-  modalStyle: (theme) => ({
+  modalContainerStyle: (theme) => ({
     paddingHorizontal: 16,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     backgroundColor: theme.modal.backgroundColor,
+    alignItems: "center",
   }),
   modalOptionText: (theme) => ({
     paddingLeft: 16,
@@ -133,7 +108,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalOptionsContainer: (theme) => ({
-    marginTop: 40,
+    marginTop: 32,
     backgroundColor: theme.modal.container.backgroundColor,
     width: "100%",
     borderRadius: 16,

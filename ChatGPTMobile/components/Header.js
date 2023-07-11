@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 export const Header = ({
   onOpen,
   modalizeRef,
+  panModalVisible,
   navigation,
   headerTitle,
   textInputRef,
@@ -151,7 +152,8 @@ export const Header = ({
         icon={<More stroke={theme.iconColor} />}
         onPress={() => {
           Keyboard.dismiss();
-          onOpen(modalizeRef);
+          panModalVisible.value = true;
+          // onOpen(modalizeRef);
         }}
       />
     </BlurView>

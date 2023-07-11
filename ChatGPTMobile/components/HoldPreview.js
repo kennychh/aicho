@@ -284,22 +284,23 @@ export const HoldPreview = ({
     () => [animatedHoldMenuContainerStyle],
     [animatedHoldMenuContainerStyle]
   );
+  const blurViewStyle = useMemo(() => [
+    {
+      position: "absolute",
+      bottom: 0,
+      left: 0,
+      right: 0,
+      paddingTop: insets.top + 16,
+    },
+    animatedBlurViewStyle,
+  ], [animatedBlurViewStyle])
 
   return (
     <PanGestureHandler onGestureEvent={panGesture}>
       <AnimatedBlurView
         intensity={0}
         tint={theme === getTheme("dark") ? "dark" : "light"}
-        style={[
-          {
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            paddingTop: insets.top + 16,
-          },
-          animatedBlurViewStyle,
-        ]}
+        style={blurViewStyle}
       >
         <Animated.View style={containerStyle}>
           <Animated.View style={tileBarStyle}>

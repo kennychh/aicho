@@ -39,6 +39,9 @@ const lightTheme = {
   modal: {
     fontColor: "black",
     backgroundColor: "white",
+    handle: {
+      backgroundColor: "#DBDBDB",
+    },
     container: {
       backgroundColor: "#EFEFEF",
     },
@@ -143,6 +146,9 @@ const darkTheme = {
   modal: {
     fontColor: "white",
     backgroundColor: "#1C1C1D",
+    handle: {
+      backgroundColor: "#4C4C4D",
+    },
     container: {
       backgroundColor: "#2C2C2D",
     },
