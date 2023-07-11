@@ -1,9 +1,6 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import {
-  ConfirmDeleteChatModal,
-  DrawerContent,
-  HoldPreview,
-} from "../components";
+import { ConfirmDeleteChatModal, HoldPreview } from "../components";
+import DrawerContent from "../components/DrawerContent";
 import { ChatScreen } from "./ChatScreen";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PortalProvider } from "@gorhom/portal";

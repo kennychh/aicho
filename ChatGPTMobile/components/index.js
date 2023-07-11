@@ -21,3 +21,4 @@ export * from "./HoldPreview";
 export * from "./DrawerChats";
 export * from "./Divider";
 export * from "./ConfirmDeleteChatModal";
+export * from "./DrawerChatsList";

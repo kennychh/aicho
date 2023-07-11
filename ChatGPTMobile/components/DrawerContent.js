@@ -1,4 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+  memo,
+} from "react";
 import { DrawerContentScrollView } from "@react-navigation/drawer";
 import {
   FlatList,
@@ -16,8 +23,9 @@ import {
   getMonthsAgoStr,
   getToday,
 } from "../helpers/getTimeCreated";
+import DrawerChatsList from "./DrawerChatsList";
 
-export const DrawerContent = ({
+const DrawerContent = ({
   props,
   chats,
   setChatIndex,
@@ -37,12 +45,6 @@ export const DrawerContent = ({
 }) => {
   const navigation = props.navigation;
 
-  const chatTitle = (index) =>
-    typeof chatDetails[index] === "string" ||
-    typeof chatDetails[index] === "undefined"
-      ? chatDetails[index]
-      : chatDetails[index][0];
-
   useEffect(() => {
     navigation.closeDrawer();
   }, [chatIndex]);
@@ -55,37 +57,38 @@ export const DrawerContent = ({
     setEditMessage(null);
     setChatIndex(index);
   };
-  const renderItem = ({ item, index }) => {
-    return (
-      <View>
-        <Text
-          style={[
-            styles.drawerChatsHeaderText(theme),
-            index == 0 ? { paddingTop: 0 } : {},
-          ]}
-        >
-          {stickyHeadersData[index]}
-        </Text>
-        {item.reverse().map((drawerChatIndex) => {
-          return (
-            <DrawerChats
-              theme={theme}
-              onPress={() => {
-                drawerChatsOnPress(drawerChatIndex);
-              }}
-              text={chatTitle(drawerChatIndex)}
-              selected={chatIndex == drawerChatIndex}
-              openHoldPreview={openHoldPreview}
-              data={chats[drawerChatIndex].slice(0, 10)}
-              index={drawerChatIndex}
-              holdPreviewFunctions={holdPreviewFunctions}
-              navigation={navigation}
-            />
-          );
-        })}
-      </View>
-    );
-  };
+  const memoizedStickyHeadersData = useMemo(
+    () => stickyHeadersData,
+    [stickyHeadersData]
+  );
+  const memoizedTheme = useMemo(() => theme, [theme]);
+  const memoizedChatIndex = useMemo(() => chatIndex, [chatIndex]);
+  const memoizedChatDetails = useMemo(() => chatDetails, [chatDetails]);
+  const renderItem = useCallback(
+    ({ item, index }) => {
+      return (
+        <DrawerChatsList
+          item={item}
+          index={index}
+          stickyHeadersData={memoizedStickyHeadersData}
+          theme={memoizedTheme}
+          chatIndex={memoizedChatIndex}
+          chats={chats}
+          chatDetails={memoizedChatDetails}
+          openHoldPreview={openHoldPreview}
+          holdPreviewFunctions={holdPreviewFunctions}
+          drawerChatsOnPress={drawerChatsOnPress}
+          navigation={navigation}
+        />
+      );
+    },
+    [
+      memoizedStickyHeadersData,
+      memoizedTheme,
+      memoizedChatIndex,
+      memoizedChatDetails,
+    ]
+  );
 
   return (
     <DrawerContentScrollView
@@ -246,3 +249,13 @@ const styles = StyleSheet.create({
     // maxHeight: 400,
   }),
 });
+function arePropsEqual(prevProps, nextProps) {
+  return (
+    prevProps.props === nextProps.props &&
+    prevProps.theme === nextProps.theme &&
+    prevProps.chatIndex === nextProps.chatIndex &&
+    prevProps.chatDetails === nextProps.chatDetails &&
+    prevProps.confirmDeleteVisible === nextProps.confirmDeleteVisible
+  );
+}
+export default memo(DrawerContent, arePropsEqual);
