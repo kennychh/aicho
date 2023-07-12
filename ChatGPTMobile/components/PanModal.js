@@ -34,6 +34,7 @@ export const PanModal = ({
   snap = true,
   fullHeight = false,
   translateY,
+  title,
 }) => {
   const insets = useSafeAreaInsets();
   const DURATION = 200;
@@ -189,6 +190,15 @@ export const PanModal = ({
           >
             <Animated.View style={childrenStyle}>
               <View style={styles.handleStyle(theme)} />
+              {title && <Text style={styles.titleText(theme)}>History</Text>}
+              {title && (
+                <Divider
+                  backgroundColor={theme.modal.divider.backgroundColor}
+                  spacerColor={theme.onBackgroundColor}
+                  style={{ width: "100%" }}
+                  marginHorizontal={0}
+                />
+              )}
               {children}
             </Animated.View>
           </Animated.View>
@@ -207,7 +217,7 @@ const styles = StyleSheet.create({
     borderRadius: "100%",
   }),
   modalContainerStyle: (theme) => ({
-    paddingHorizontal: 16,
+    // paddingHorizontal: 16,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     backgroundColor: theme.modal.backgroundColor,
@@ -222,6 +232,15 @@ const styles = StyleSheet.create({
     backgroundColor: theme.bottomModal.backgroundColor,
     zIndex: 10,
     justifyContent: "flex-end",
+  }),
+  titleText: (theme) => ({
+    fontSize: 16,
+    lineHeight: 18,
+    alignSelf: "center",
+    fontWeight: "600",
+    paddingTop: 32,
+    paddingBottom: 16,
+    color: theme.fontColor,
   }),
   text: (theme) => ({
     fontSize: 16,

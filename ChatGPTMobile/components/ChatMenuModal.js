@@ -18,7 +18,7 @@ export const ChatMenuModal = ({ visible, theme, onPressOptions }) => {
     return {};
   });
   const modalContainer = (
-    <Animated.View style={{ width: "100%" }}>
+    <Animated.View style={{ width: "100%", paddingHorizontal: 16 }}>
       <View style={styles.modalOptionsContainer(theme)}>
         <TouchableOpacity
           onPress={() => {

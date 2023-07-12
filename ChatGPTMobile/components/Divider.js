@@ -4,9 +4,10 @@ export const Divider = ({
   backgroundColor = "red",
   marginHorizontal = 16,
   spacerColor = "transparent",
+  style = {},
 }) => {
   return (
-    <View style={{ marginHorizontal: marginHorizontal }}>
+    <View style={[{ marginHorizontal: marginHorizontal }, style]}>
       <View
         style={[
           styles.border,

@@ -10,6 +10,7 @@ import { Copy, Delete, Edit2 } from "../icons";
 import { Text } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { FlatList } from "react-native-gesture-handler";
+import { Divider } from "./Divider";
 
 export const ChatHistoryModal = ({ visible, theme, onPressOptions }) => {
   const insets = useSafeAreaInsets();
@@ -28,7 +29,6 @@ export const ChatHistoryModal = ({ visible, theme, onPressOptions }) => {
 
   const modalContainer = (
     <Animated.View style={modalContainerStyle}>
-      <Text style={styles.text(theme)}>History</Text>
       <FlatList
         style={{
           flex: 1,
@@ -45,6 +45,7 @@ export const ChatHistoryModal = ({ visible, theme, onPressOptions }) => {
       theme={theme}
       translateY={translateY}
       fullHeight={true}
+      title="History"
     >
       {modalContainer}
     </PanModal>
@@ -60,6 +61,7 @@ const styles = StyleSheet.create({
     borderRadius: "100%",
   }),
   modalContainerStyle: (theme) => ({
+    paddingHorizontal: 16,
     alignItems: "center",
     width: "100%",
     flex: 1,
