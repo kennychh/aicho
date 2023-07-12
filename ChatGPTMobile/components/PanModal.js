@@ -17,6 +17,7 @@ import Animated, {
   withDelay,
   withSpring,
   withTiming,
+  runOnJS,
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Divider } from "./Divider";
@@ -34,7 +35,9 @@ export const PanModal = ({
   snap = true,
   fullHeight = false,
   translateY,
+  setScrollEnabled,
   title,
+  flatListRef,
 }) => {
   const insets = useSafeAreaInsets();
   const DURATION = 200;
@@ -50,6 +53,9 @@ export const PanModal = ({
     {
       onStart: (e, ctx) => {
         ctx.startY = translateY.value;
+        if (setScrollEnabled) {
+          runOnJS(setScrollEnabled)(true);
+        }
       },
       onActive: (e, ctx) => {
         if (
@@ -179,7 +185,11 @@ export const PanModal = ({
         <Animated.View style={viewStyle} />
       </PanGestureHandler>
       <Animated.View style={containerStyle}>
-        <PanGestureHandler onGestureEvent={panGesture}>
+        <PanGestureHandler
+          onGestureEvent={panGesture}
+          waitFor={flatListRef}
+          activeOffsetY={[-30, 30]}
+        >
           <Animated.View
             onLayout={(event) => {
               var { x, y, width, height } = event.nativeEvent.layout;

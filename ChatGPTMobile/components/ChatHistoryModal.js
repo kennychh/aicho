@@ -3,7 +3,7 @@ import Animated, {
   useSharedValue,
 } from "react-native-reanimated";
 import { PanModal } from "./PanModal";
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { Copy, Delete, Edit2 } from "../icons";
@@ -15,6 +15,9 @@ import { Divider } from "./Divider";
 export const ChatHistoryModal = ({ visible, theme, onPressOptions }) => {
   const insets = useSafeAreaInsets();
   const windowHeight = Dimensions.get("window").height;
+  const [scrollEnabled, setScrollEnabled] = useState(false);
+  const [topReached, setTopReached] = useState(false);
+  const flatListRef = useRef();
   const translateY = useSharedValue(0);
   const animatedModalContainerStyle = useAnimatedStyle(() => {
     return {
@@ -22,18 +25,50 @@ export const ChatHistoryModal = ({ visible, theme, onPressOptions }) => {
     };
   });
 
+  useEffect(() => {
+    console.log(scrollEnabled);
+  }, [scrollEnabled]);
+
   const modalContainerStyle = useMemo(
     () => [styles.modalContainerStyle(theme), animatedModalContainerStyle],
     [animatedModalContainerStyle]
   );
+  const data = [...Array(50)];
 
   const modalContainer = (
     <Animated.View style={modalContainerStyle}>
       <FlatList
+        ref={flatListRef}
+        scrollEnabled={scrollEnabled}
+        data={data}
+        onGestureEvent={(event) => {
+          y = event.nativeEvent.contentOffset.y;
+          console.log(y);
+        }}
+        onScroll={(event) => {
+          y = event.nativeEvent.contentOffset.y;
+          if (topReached && y == 0) {
+            setScrollEnabled(false);
+          }
+          if (y < 0 && scrollEnabled) {
+            console.log(y);
+            setTopReached(true);
+          } else if (y > 0 && !scrollEnabled) {
+            setScrollEnabled(true);
+          }
+        }}
+        scrollEventThrottle={16}
+        renderItem={({ index }) => {
+          return (
+            <View style={{ backgroundColor: "red" }}>
+              <Text style={styles.text(theme)}>{index}</Text>
+            </View>
+          );
+        }}
         style={{
           flex: 1,
           flexGrow: 1,
-          backgroundColor: "red",
+          // backgroundColor: "red",
           width: "100%",
         }}
       />
@@ -45,6 +80,8 @@ export const ChatHistoryModal = ({ visible, theme, onPressOptions }) => {
       theme={theme}
       translateY={translateY}
       fullHeight={true}
+      setScrollEnabled={setScrollEnabled}
+      flatListRef={flatListRef}
       title="History"
     >
       {modalContainer}
@@ -61,7 +98,7 @@ const styles = StyleSheet.create({
     borderRadius: "100%",
   }),
   modalContainerStyle: (theme) => ({
-    paddingHorizontal: 16,
+    // paddingHorizontal: 16,
     alignItems: "center",
     width: "100%",
     flex: 1,
