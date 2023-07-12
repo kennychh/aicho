@@ -83,15 +83,19 @@ export const PanModal = ({
       onEnd: (e, ctx) => {
         if (e.velocityY > 2000) {
           visible.value = false;
-          translateY.value = withTiming(0, 200);
+          translateY.value = withTiming(0, {
+            duration: DURATION,
+          });
         } else if (
           (ctx.startY + e.translationY <= -maxTranslateY.value + 100 ||
             e.velocityY < -1000) &&
           fullHeight
         ) {
-          translateY.value = withTiming(-maxTranslateY.value, 200);
+          translateY.value = withTiming(-maxTranslateY.value, {
+            duration: DURATION,
+          });
         } else {
-          translateY.value = withTiming(0, 200);
+          translateY.value = withTiming(0, { duration: DURATION });
         }
       },
     },
@@ -145,7 +149,7 @@ export const PanModal = ({
                 damping: 100,
                 stiffness: 500,
               })
-            : withSpring(0, { damping: 100, stiffness: 600 }),
+            : withSpring(100, { damping: 100, stiffness: 600 }),
         },
       ],
     };
