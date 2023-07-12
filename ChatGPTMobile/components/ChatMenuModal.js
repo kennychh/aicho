@@ -58,7 +58,6 @@ export const ChatMenuModal = ({ visible, theme, onPressOptions }) => {
           </View>
         </TouchableOpacity>
       </Animated.View>
-      <View style={{ height: insets.bottom + 8 }} />
     </Animated.View>
   );
   return (

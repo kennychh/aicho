@@ -18,10 +18,7 @@ import {
 import { Message, Delete, Moon, Plus, Sun, Settings } from "../icons";
 import { getTheme } from "../theme";
 import { DrawerChats } from "./DrawerChats";
-import {
-  getMonthsAgo,
-  getMonthsAgoStr,
-} from "../helpers/getTimeCreated";
+import { getMonthsAgo, getMonthsAgoStr } from "../helpers/getTimeCreated";
 import DrawerChatsList from "./DrawerChatsList";
 
 const DrawerContent = ({
@@ -41,6 +38,7 @@ const DrawerContent = ({
   confirmDeleteVisible,
   openHoldPreview,
   holdPreviewFunctions,
+  panModalVisible,
 }) => {
   const navigation = props.navigation;
 
@@ -66,19 +64,30 @@ const DrawerContent = ({
   const renderItem = useCallback(
     ({ item, index }) => {
       return (
-        <DrawerChatsList
-          item={item}
-          index={index}
-          stickyHeadersData={memoizedStickyHeadersData}
-          theme={memoizedTheme}
-          chatIndex={memoizedChatIndex}
-          chats={chats}
-          chatDetails={memoizedChatDetails}
-          openHoldPreview={openHoldPreview}
-          holdPreviewFunctions={holdPreviewFunctions}
-          drawerChatsOnPress={drawerChatsOnPress}
-          navigation={navigation}
-        />
+        <View>
+          <DrawerChatsList
+            item={item}
+            index={index}
+            stickyHeadersData={memoizedStickyHeadersData}
+            theme={memoizedTheme}
+            chatIndex={memoizedChatIndex}
+            chats={chats}
+            chatDetails={memoizedChatDetails}
+            openHoldPreview={openHoldPreview}
+            holdPreviewFunctions={holdPreviewFunctions}
+            drawerChatsOnPress={drawerChatsOnPress}
+            navigation={navigation}
+          />
+          {index == drawerChatData.length - 1 && (
+            <TouchableOpacity
+              onPress={() => {
+                panModalVisible.value = true;
+              }}
+            >
+              <Text style={styles.chatItemText(theme)}>Show full history</Text>
+            </TouchableOpacity>
+          )}
+        </View>
       );
     },
     [

@@ -1,5 +1,9 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { ConfirmDeleteChatModal, HoldPreview } from "../components";
+import {
+  ChatHistoryModal,
+  ConfirmDeleteChatModal,
+  HoldPreview,
+} from "../components";
 import DrawerContent from "../components/DrawerContent";
 import { ChatScreen } from "./ChatScreen";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -49,6 +53,7 @@ export const HomeScreen = ({
   const [holdMenuData, setHoldMenuData] = useState();
   const [confirmDeleteChatIndex, setConfirmDeleteChatIndex] = useState(0);
   const confirmDeleteChatVisible = useSharedValue(false);
+  const panModalVisible = useSharedValue(false);
   const [previewData, setPreviewData] = useState(chats[0].slice(0, 10));
   const [origin, setOrigin] = useState({ x: 0, y: 0, width: 0, height: 0 });
   const [isHeaderEditable, setIsHeaderEditable] = useState(false);
@@ -119,6 +124,7 @@ export const HomeScreen = ({
               confirmDeleteVisible={confirmDeleteVisible}
               openHoldPreview={openHoldPreview}
               holdPreviewFunctions={holdPreviewFunctions}
+              panModalVisible={panModalVisible}
             />
           )}
           initialRouteName="Chat"
@@ -186,6 +192,7 @@ export const HomeScreen = ({
           theme={theme}
           visible={confirmDeleteChatVisible}
         ></ConfirmDeleteChatModal>
+        <ChatHistoryModal visible={panModalVisible} theme={theme} />
       </PortalProvider>
     </GestureHandlerRootView>
   );

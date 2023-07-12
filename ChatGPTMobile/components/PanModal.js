@@ -134,10 +134,11 @@ export const PanModal = ({
     };
   });
   const animatedChildrenStyle = useAnimatedStyle(() => {
+    const bottomPadding = fullHeight ? 0 : insets.bottom + 8;
     return {
-      ...(containerHeight.value != 0 && translateY.value < 0
+      ...(containerHeight.value != 0 && translateY.value <= 0
         ? {
-            height: containerHeight.value - translateY.value,
+            height: containerHeight.value - translateY.value + bottomPadding,
           }
         : {}),
       transform: [{ translateY: translateY.value >= 0 ? translateY.value : 0 }],
