@@ -22,3 +22,4 @@ export * from "./ConfirmDeleteChatModal";
 export * from "./DrawerChatsList";
 export * from "./PanModal";
 export * from "./ChatMenuModal";
+export * from "./ChatHistoryModal";

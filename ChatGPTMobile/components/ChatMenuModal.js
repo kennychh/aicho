@@ -1,4 +1,7 @@
-import Animated, { useAnimatedStyle } from "react-native-reanimated";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+} from "react-native-reanimated";
 import { PanModal } from "./PanModal";
 import { useMemo } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
@@ -10,17 +13,12 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 export const ChatMenuModal = ({ visible, theme, onPressOptions }) => {
   const insets = useSafeAreaInsets();
   const windowHeight = Dimensions.get("window").height;
+  const translateY = useSharedValue(0);
   const animatedModalContainerStyle = useAnimatedStyle(() => {
     return {};
   });
-  const modalContainerStyle = useMemo(() => [
-    styles.modalContainerStyle(theme),
-    animatedModalContainerStyle,
-    { paddingBottom: 500 },
-  ]);
   const modalContainer = (
-    <Animated.View style={modalContainerStyle}>
-      <View style={styles.handleStyle(theme)} />
+    <Animated.View style={{ width: "100%" }}>
       <View style={styles.modalOptionsContainer(theme)}>
         <TouchableOpacity
           onPress={() => {
@@ -44,11 +42,8 @@ export const ChatMenuModal = ({ visible, theme, onPressOptions }) => {
           </View>
         </TouchableOpacity>
       </View>
-      <View
-        style={[
-          styles.modalOptionsContainer(theme),
-          { marginTop: 16, marginBottom: insets.bottom + 8 },
-        ]}
+      <Animated.View
+        style={[styles.modalOptionsContainer(theme), { marginTop: 16 }]}
       >
         <TouchableOpacity
           onPress={() => {
@@ -62,11 +57,12 @@ export const ChatMenuModal = ({ visible, theme, onPressOptions }) => {
             </Text>
           </View>
         </TouchableOpacity>
-      </View>
+      </Animated.View>
+      <View style={{ height: insets.bottom + 8 }} />
     </Animated.View>
   );
   return (
-    <PanModal visible={visible} theme={theme}>
+    <PanModal visible={visible} theme={theme} translateY={translateY}>
       {modalContainer}
     </PanModal>
   );

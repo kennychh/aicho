@@ -21,7 +21,6 @@ import { DrawerChats } from "./DrawerChats";
 import {
   getMonthsAgo,
   getMonthsAgoStr,
-  getToday,
 } from "../helpers/getTimeCreated";
 import DrawerChatsList from "./DrawerChatsList";
 

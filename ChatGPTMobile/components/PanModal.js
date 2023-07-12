@@ -4,6 +4,7 @@ import {
   Text,
   TouchableHighlight,
   Dimensions,
+  TouchableWithoutFeedback,
 } from "react-native";
 import Modal from "react-native-modal";
 import Animated, {
@@ -26,29 +27,69 @@ import {
   TapGestureHandler,
 } from "react-native-gesture-handler";
 
-export const PanModal = ({ visible, theme, children }) => {
+export const PanModal = ({
+  visible,
+  theme,
+  children,
+  snap = true,
+  fullHeight = false,
+  translateY,
+}) => {
   const insets = useSafeAreaInsets();
   const DURATION = 200;
   const windowHeight = Dimensions.get("window").height;
   const containerHeight = useSharedValue(0);
-  const translateY = useSharedValue(0);
+
+  const maxTranslateY = useDerivedValue(
+    () => windowHeight - containerHeight.value - insets.top,
+    [containerHeight.value]
+  );
 
   const panGesture = useAnimatedGestureHandler(
     {
-      onActive: (e) => {
-        translateY.value =
-          e.translationY < 0
-            ? e.translationY - e.translationY / 1.08
-            : e.translationY;
+      onStart: (e, ctx) => {
+        ctx.startY = translateY.value;
       },
-      onEnd: (e) => {
+      onActive: (e, ctx) => {
+        if (
+          ctx.startY + e.translationY <= -maxTranslateY.value &&
+          (!snap || fullHeight)
+        ) {
+          translateY.value =
+            -maxTranslateY.value +
+            (ctx.startY + e.translationY + maxTranslateY.value) / 4;
+        } else if (e.translationY < 0 && snap && !fullHeight) {
+          translateY.value = ctx.startY + e.translationY - e.translationY / 1.3;
+        } else {
+          translateY.value = ctx.startY + e.translationY;
+        }
+      },
+      onEnd: (e, ctx) => {
         if (e.velocityY > 2000) {
           visible.value = false;
+          translateY.value = withTiming(0, 200);
+        } else if (
+          ctx.startY + e.translationY <= -maxTranslateY.value + 100 &&
+          fullHeight
+        ) {
+          translateY.value = withTiming(-maxTranslateY.value, 200);
+        } else {
+          translateY.value = withTiming(0, 200);
         }
-        translateY.value = withTiming(0, 200);
       },
     },
     [translateY]
+  );
+
+  const backDropPanGesture = useAnimatedGestureHandler(
+    {
+      onFinish: (e) => {
+        if (e.translationY == 0) {
+          visible.value = false;
+        }
+      },
+    },
+    []
   );
   const progress = useDerivedValue(() => {
     return visible.value
@@ -83,7 +124,7 @@ export const PanModal = ({ visible, theme, children }) => {
       transform: [
         {
           translateY: visible.value
-            ? withSpring(-containerHeight.value + 500, {
+            ? withSpring(-containerHeight.value, {
                 damping: 100,
                 stiffness: 500,
               })
@@ -94,7 +135,12 @@ export const PanModal = ({ visible, theme, children }) => {
   });
   const animatedChildrenStyle = useAnimatedStyle(() => {
     return {
-      transform: [{ translateY: translateY.value }],
+      ...(containerHeight.value != 0 && translateY.value < 0
+        ? {
+            height: containerHeight.value - translateY.value,
+          }
+        : {}),
+      transform: [{ translateY: translateY.value >= 0 ? translateY.value : 0 }],
     };
   });
 
@@ -118,30 +164,32 @@ export const PanModal = ({ visible, theme, children }) => {
   );
 
   const childrenStyle = useMemo(
-    () => [animatedChildrenStyle],
+    () => [
+      styles.modalContainerStyle(theme),
+      fullHeight && { minHeight: 500 },
+      animatedChildrenStyle,
+    ],
     [animatedChildrenStyle]
   );
   return (
     <Animated.View style={parentViewStyle}>
-      <TapGestureHandler
-        onHandlerStateChange={() => {
-          visible.value = false;
-        }}
-      >
+      <PanGestureHandler onGestureEvent={backDropPanGesture}>
         <Animated.View style={viewStyle} />
-      </TapGestureHandler>
+      </PanGestureHandler>
       <Animated.View style={containerStyle}>
         <PanGestureHandler onGestureEvent={panGesture}>
           <Animated.View
-            style={childrenStyle}
             onLayout={(event) => {
               var { x, y, width, height } = event.nativeEvent.layout;
-              if (height != 0) {
+              if (height != 0 && containerHeight.value == 0) {
                 containerHeight.value = height;
               }
             }}
           >
-            {children}
+            <Animated.View style={childrenStyle}>
+              <View style={styles.handleStyle(theme)} />
+              {children}
+            </Animated.View>
           </Animated.View>
         </PanGestureHandler>
       </Animated.View>
@@ -150,6 +198,20 @@ export const PanModal = ({ visible, theme, children }) => {
 };
 
 const styles = StyleSheet.create({
+  handleStyle: (theme) => ({
+    width: 40,
+    height: 4,
+    marginTop: 8,
+    backgroundColor: theme.modal.handle.backgroundColor,
+    borderRadius: "100%",
+  }),
+  modalContainerStyle: (theme) => ({
+    paddingHorizontal: 16,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    backgroundColor: theme.modal.backgroundColor,
+    alignItems: "center",
+  }),
   view: (theme) => ({
     position: "absolute",
     top: 0,

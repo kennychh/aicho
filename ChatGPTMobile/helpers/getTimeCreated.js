@@ -41,12 +41,18 @@ export const getDiffInMonths = (date_1, date_2) => {
 };
 
 const diffDays = (date1, date2) => {
-  const ONE_DAY = 1000 * 60 * 60 * 24;
-
-  // Calculate the difference in milliseconds
-  const differenceMs = Math.abs(date1 - date2);
-  // Convert back to days and return
-  return Math.round(differenceMs / ONE_DAY);
+  var Difference_In_Time = date1.getTime() - date2.getTime();
+  var Difference_In_Days = Math.floor(Difference_In_Time / (1000 * 3600 * 24));
+  return Difference_In_Days;
+};
+const isDaysAgo = (someDate, daysAgo) => {
+  const today = new Date();
+  today.setDate(today.getDate() - daysAgo);
+  return (
+    someDate.getDate() == today.getDate() &&
+    someDate.getMonth() == today.getMonth() &&
+    someDate.getFullYear() == today.getFullYear()
+  );
 };
 
 export const getMonthsAgo = (chatDetails) => {
@@ -57,9 +63,7 @@ export const getMonthsAgo = (chatDetails) => {
       const diff = diffDays(currentDate, new Date(date));
       var diffInMonths =
         getDiffInMonths(currentDate, new Date(date)) + monthsAgoStr.length - 14;
-      if (
-        currentDate.setHours(0, 0, 0, 0) == new Date(date).setHours(0, 0, 0, 0)
-      ) {
+      if (diff == 0) {
         diffInMonths = 0;
       } else if (diff <= 6) {
         diffInMonths = diff;
@@ -70,7 +74,7 @@ export const getMonthsAgo = (chatDetails) => {
       } else if (diff <= 28) {
         diffInMonths = 9;
       } else if (diffInMonths > monthsAgoStr.length - 1) {
-        diffInMonths = monthsAgoStr.length -1;
+        diffInMonths = monthsAgoStr.length - 1;
       }
       const month = monthsAgo[diffInMonths];
 
@@ -93,21 +97,4 @@ export const getMonthsAgoStr = (months) => {
     });
   }
   return result;
-};
-
-export const getToday = (data, chatDetails) => {
-  const currentDate = new Date();
-  const todayData = [];
-  const thisMonthData = [];
-  if (data) {
-    data.map((i) => {
-      const date = new Date(chatDetails[i][1]);
-      if (date.setHours(0, 0, 0, 0) == currentDate.setHours(0, 0, 0, 0)) {
-        todayData.push(i);
-      } else {
-        thisMonthData.push(i);
-      }
-    });
-  }
-  return { todayData, thisMonthData };
 };
