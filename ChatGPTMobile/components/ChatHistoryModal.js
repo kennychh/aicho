@@ -15,19 +15,16 @@ import { Divider } from "./Divider";
 export const ChatHistoryModal = ({ visible, theme, onPressOptions }) => {
   const insets = useSafeAreaInsets();
   const windowHeight = Dimensions.get("window").height;
-  const [scrollEnabled, setScrollEnabled] = useState(false);
+  const [scrollEnabled, setScrollEnabled] = useState(true);
   const [topReached, setTopReached] = useState(false);
   const flatListRef = useRef();
+  const isFullHeight = useSharedValue(false);
   const translateY = useSharedValue(0);
   const animatedModalContainerStyle = useAnimatedStyle(() => {
     return {
       minHeight: 400,
     };
   });
-
-  useEffect(() => {
-    console.log(scrollEnabled);
-  }, [scrollEnabled]);
 
   const modalContainerStyle = useMemo(
     () => [styles.modalContainerStyle(theme), animatedModalContainerStyle],
@@ -41,17 +38,12 @@ export const ChatHistoryModal = ({ visible, theme, onPressOptions }) => {
         ref={flatListRef}
         scrollEnabled={scrollEnabled}
         data={data}
-        onGestureEvent={(event) => {
-          y = event.nativeEvent.contentOffset.y;
-          console.log(y);
-        }}
         onScroll={(event) => {
           y = event.nativeEvent.contentOffset.y;
-          if (topReached && y == 0) {
+          if (topReached && y == 0 && isFullHeight.value) {
             setScrollEnabled(false);
           }
           if (y < 0 && scrollEnabled) {
-            console.log(y);
             setTopReached(true);
           } else if (y > 0 && !scrollEnabled) {
             setScrollEnabled(true);
@@ -82,6 +74,7 @@ export const ChatHistoryModal = ({ visible, theme, onPressOptions }) => {
       fullHeight={true}
       setScrollEnabled={setScrollEnabled}
       flatListRef={flatListRef}
+      isFullHeight={isFullHeight}
       title="History"
     >
       {modalContainer}

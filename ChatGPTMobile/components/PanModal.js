@@ -36,6 +36,7 @@ export const PanModal = ({
   fullHeight = false,
   translateY,
   setScrollEnabled,
+  isFullHeight,
   title,
   flatListRef,
 }) => {
@@ -53,6 +54,14 @@ export const PanModal = ({
     {
       onStart: (e, ctx) => {
         ctx.startY = translateY.value;
+        if (
+          ctx.startY + e.translationY <= -maxTranslateY.value &&
+          isFullHeight
+        ) {
+          isFullHeight.value = true;
+        } else if (isFullHeight) {
+          isFullHeight.value = false;
+        }
         if (setScrollEnabled) {
           runOnJS(setScrollEnabled)(true);
         }
@@ -76,7 +85,8 @@ export const PanModal = ({
           visible.value = false;
           translateY.value = withTiming(0, 200);
         } else if (
-          ctx.startY + e.translationY <= -maxTranslateY.value + 100 &&
+          (ctx.startY + e.translationY <= -maxTranslateY.value + 100 ||
+            e.velocityY < -1000) &&
           fullHeight
         ) {
           translateY.value = withTiming(-maxTranslateY.value, 200);
@@ -187,7 +197,7 @@ export const PanModal = ({
       <Animated.View style={containerStyle}>
         <PanGestureHandler
           onGestureEvent={panGesture}
-          waitFor={flatListRef}
+          simultaneousHandlers={flatListRef}
           activeOffsetY={[-30, 30]}
         >
           <Animated.View
