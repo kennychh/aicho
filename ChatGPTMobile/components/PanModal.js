@@ -38,7 +38,6 @@ export const PanModal = ({
   setScrollEnabled,
   isFullHeight,
   title,
-  flatListRef,
 }) => {
   const insets = useSafeAreaInsets();
   const DURATION = 200;
@@ -201,8 +200,6 @@ export const PanModal = ({
       <Animated.View style={containerStyle}>
         <PanGestureHandler
           onGestureEvent={panGesture}
-          simultaneousHandlers={flatListRef}
-          activeOffsetY={[-30, 30]}
         >
           <Animated.View
             onLayout={(event) => {
@@ -214,15 +211,6 @@ export const PanModal = ({
           >
             <Animated.View style={childrenStyle}>
               <View style={styles.handleStyle(theme)} />
-              {title && <Text style={styles.titleText(theme)}>History</Text>}
-              {title && (
-                <Divider
-                  backgroundColor={theme.modal.divider.backgroundColor}
-                  spacerColor={theme.onBackgroundColor}
-                  style={{ width: "100%" }}
-                  marginHorizontal={0}
-                />
-              )}
               {children}
             </Animated.View>
           </Animated.View>

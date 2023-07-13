@@ -38,7 +38,7 @@ const DrawerContent = ({
   confirmDeleteVisible,
   openHoldPreview,
   holdPreviewFunctions,
-  panModalVisible,
+  bottomSheetRef,
 }) => {
   const navigation = props.navigation;
 
@@ -81,7 +81,7 @@ const DrawerContent = ({
           {index == drawerChatData.length - 1 && (
             <TouchableOpacity
               onPress={() => {
-                panModalVisible.value = true;
+                bottomSheetRef?.current?.snapToIndex(0);
               }}
             >
               <Text style={styles.chatItemText(theme)}>Show full history</Text>

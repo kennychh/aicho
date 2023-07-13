@@ -54,10 +54,12 @@ export const HomeScreen = ({
   const [confirmDeleteChatIndex, setConfirmDeleteChatIndex] = useState(0);
   const confirmDeleteChatVisible = useSharedValue(false);
   const panModalVisible = useSharedValue(false);
+  const bottomSheetRef = useRef(null);
   const [previewData, setPreviewData] = useState(chats[0].slice(0, 10));
   const [origin, setOrigin] = useState({ x: 0, y: 0, width: 0, height: 0 });
   const [isHeaderEditable, setIsHeaderEditable] = useState(false);
   const windowWidth = Dimensions.get("window").width;
+
   const openHoldPreview = (layout, title, data, holdMenuData) => {
     setOrigin({
       x: layout.x,
@@ -103,7 +105,6 @@ export const HomeScreen = ({
     confirmDeleteChatVisible.value = true;
   };
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
       <PortalProvider>
         <Drawer.Navigator
           drawerContent={(props) => (
@@ -124,7 +125,7 @@ export const HomeScreen = ({
               confirmDeleteVisible={confirmDeleteVisible}
               openHoldPreview={openHoldPreview}
               holdPreviewFunctions={holdPreviewFunctions}
-              panModalVisible={panModalVisible}
+              bottomSheetRef={bottomSheetRef}
             />
           )}
           initialRouteName="Chat"
@@ -192,8 +193,7 @@ export const HomeScreen = ({
           theme={theme}
           visible={confirmDeleteChatVisible}
         ></ConfirmDeleteChatModal>
-        <ChatHistoryModal visible={panModalVisible} theme={theme} />
+        <ChatHistoryModal bottomSheetRef={bottomSheetRef} theme={theme} />
       </PortalProvider>
-    </GestureHandlerRootView>
   );
 };

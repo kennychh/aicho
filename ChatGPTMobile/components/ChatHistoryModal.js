@@ -11,48 +11,72 @@ import { Text } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { FlatList } from "react-native-gesture-handler";
 import { Divider } from "./Divider";
+import BottomSheet, {
+  BottomSheetBackdrop,
+  BottomSheetFlatList,
+} from "@gorhom/bottom-sheet";
 
-export const ChatHistoryModal = ({ visible, theme, onPressOptions }) => {
+export const ChatHistoryModal = ({ bottomSheetRef, theme, onPressOptions }) => {
   const insets = useSafeAreaInsets();
   const windowHeight = Dimensions.get("window").height;
-  const [scrollEnabled, setScrollEnabled] = useState(true);
-  const [topReached, setTopReached] = useState(false);
+  const snapPoints = useMemo(() => ["60%", windowHeight - insets.top], []);
   const flatListRef = useRef();
-  const isFullHeight = useSharedValue(false);
-  const translateY = useSharedValue(0);
-  const animatedModalContainerStyle = useAnimatedStyle(() => {
-    return {
-      minHeight: 400,
-    };
-  });
-
-  const modalContainerStyle = useMemo(
-    () => [styles.modalContainerStyle(theme), animatedModalContainerStyle],
-    [animatedModalContainerStyle]
-  );
   const data = [...Array(50)];
+  const BottomSheetBackground = ({ style }) => {
+    return (
+      <View
+        style={[
+          {
+            borderRadius: 16,
+          },
+          { ...style },
+        ]}
+      />
+    );
+  };
 
-  const modalContainer = (
-    <Animated.View style={modalContainerStyle}>
-      <FlatList
+  return (
+    <BottomSheet
+      ref={bottomSheetRef}
+      index={-1}
+      snapPoints={snapPoints}
+      style={{ width: "100%" }}
+      backgroundStyle={{ backgroundColor: theme.onBackgroundColor }}
+      handleIndicatorStyle={{
+        backgroundColor: theme.modal.handle.backgroundColor,
+        width: 40,
+      }}
+      enablePanDownToClose
+      backgroundComponent={(props) => <BottomSheetBackground {...props} />}
+      backdropComponent={(props) => (
+        <BottomSheetBackdrop
+          {...props}
+          opacity={1}
+          enableTouchThrough={false}
+          appearsOnIndex={0}
+          disappearsOnIndex={-1}
+          style={[
+            { backgroundColor: theme.bottomModal.backgroundColor },
+            StyleSheet.absoluteFillObject,
+          ]}
+        />
+      )}
+    >
+      <Text style={styles.titleText(theme)}>History</Text>
+      <Divider
+        backgroundColor={theme.modal.divider.backgroundColor}
+        spacerColor={theme.onBackgroundColor}
+        style={{ width: "100%" }}
+        marginHorizontal={0}
+      />
+      <BottomSheetFlatList
         ref={flatListRef}
-        scrollEnabled={scrollEnabled}
+        // bounces={false}
         data={data}
-        onScroll={(event) => {
-          y = event.nativeEvent.contentOffset.y;
-          if (topReached && y == 0 && isFullHeight.value) {
-            setScrollEnabled(false);
-          }
-          if (y < 0 && scrollEnabled) {
-            setTopReached(true);
-          } else if (y > 0 && !scrollEnabled) {
-            setScrollEnabled(true);
-          }
-        }}
         scrollEventThrottle={16}
         renderItem={({ index }) => {
           return (
-            <View style={{ backgroundColor: "red" }}>
+            <View style={{ backgroundColor: "transparent" }}>
               <Text style={styles.text(theme)}>{index}</Text>
             </View>
           );
@@ -64,21 +88,7 @@ export const ChatHistoryModal = ({ visible, theme, onPressOptions }) => {
           width: "100%",
         }}
       />
-    </Animated.View>
-  );
-  return (
-    <PanModal
-      visible={visible}
-      theme={theme}
-      translateY={translateY}
-      fullHeight={true}
-      setScrollEnabled={setScrollEnabled}
-      flatListRef={flatListRef}
-      isFullHeight={isFullHeight}
-      title="History"
-    >
-      {modalContainer}
-    </PanModal>
+    </BottomSheet>
   );
 };
 
@@ -102,6 +112,15 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontWeight: "600",
     paddingTop: 32,
+    paddingBottom: 16,
+    color: theme.fontColor,
+  }),
+  titleText: (theme) => ({
+    fontSize: 16,
+    lineHeight: 18,
+    alignSelf: "center",
+    fontWeight: "600",
+    paddingTop: 16,
     paddingBottom: 16,
     color: theme.fontColor,
   }),
