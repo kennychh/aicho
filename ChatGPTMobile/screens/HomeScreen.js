@@ -105,6 +105,7 @@ export const HomeScreen = ({
     confirmDeleteChatVisible.value = true;
   };
   return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <PortalProvider>
         <Drawer.Navigator
           drawerContent={(props) => (
@@ -195,5 +196,6 @@ export const HomeScreen = ({
         ></ConfirmDeleteChatModal>
         <ChatHistoryModal bottomSheetRef={bottomSheetRef} theme={theme} />
       </PortalProvider>
+    </GestureHandlerRootView>
   );
 };
