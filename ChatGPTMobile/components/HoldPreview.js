@@ -122,7 +122,7 @@ export const HoldPreview = ({
         { translateY: translateY.value },
       ],
       maxHeight: showPreview.value
-        ? withTiming(MAX_HEIGHT, { duration: DURATION })
+        ? withTiming(MAX_HEIGHT, { duration: DURATION - 100})
         : withTiming(origin.height, { duration: END_DURATION }),
       maxWidth: showPreview.value
         ? withTiming(windowWidth, { duration: DURATION })
@@ -151,7 +151,6 @@ export const HoldPreview = ({
         maxWidth: windowWidth,
         // position: "absolute",
         // minHeight: 400,
-        maxHeight: MAX_HEIGHT,
         backgroundColor: theme.backgroundColor,
         borderBottomLeftRadius: 16,
         borderBottomRightRadius: 16,
@@ -192,8 +191,8 @@ export const HoldPreview = ({
         {
           translateX: showPreview.value
             ? withSpring(-originX, {
-                damping: 20,
-                stiffness: 200,
+                damping: 40,
+                stiffness: 400,
                 mass: 0.8,
               })
             : withTiming(0, { duration: END_DURATION }),
@@ -201,8 +200,8 @@ export const HoldPreview = ({
         {
           translateY: showPreview.value
             ? withSpring(-originY, {
-                damping: 20,
-                stiffness: 200,
+                damping: 50,
+                stiffness: 600,
                 mass: 0.8,
               })
             : withTiming(0, { duration: DURATION }),
@@ -233,7 +232,7 @@ export const HoldPreview = ({
   const animatedTitleBarStyle = useAnimatedStyle(() => {
     return {
       opacity: showPreview.value
-        ? withTiming(1, { duration: DURATION - 100 })
+        ? withTiming(1, { duration: DURATION - 150 })
         : withTiming(0, { duration: END_DURATION }),
       transform: [
         { translateX: translateX.value },
@@ -284,16 +283,19 @@ export const HoldPreview = ({
     () => [animatedHoldMenuContainerStyle],
     [animatedHoldMenuContainerStyle]
   );
-  const blurViewStyle = useMemo(() => [
-    {
-      position: "absolute",
-      bottom: 0,
-      left: 0,
-      right: 0,
-      paddingTop: insets.top + 16,
-    },
-    animatedBlurViewStyle,
-  ], [animatedBlurViewStyle])
+  const blurViewStyle = useMemo(
+    () => [
+      {
+        position: "absolute",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        paddingTop: insets.top + 16,
+      },
+      animatedBlurViewStyle,
+    ],
+    [animatedBlurViewStyle]
+  );
 
   return (
     <PanGestureHandler onGestureEvent={panGesture}>
@@ -378,7 +380,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 18,
     // marginRigt: 16,
-    flex: 1
+    flex: 1,
   }),
   flatList: (theme) => ({
     // paddingRight: 16,

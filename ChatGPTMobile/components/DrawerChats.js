@@ -88,7 +88,7 @@ export const DrawerChats = ({
                 holdMenuData
               );
             });
-          }, DURATION - 100);
+          }, DURATION - 200);
         }}
         onPressOut={() => {
           expandContainer.value = false;
