@@ -8,29 +8,23 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { BlurView } from "expo-blur";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Send, Refresh, Loading, Close } from "../icons";
 import { getTheme } from "../theme";
+import { AppContext } from "../context";
 export const Input = ({
   textInputRef,
-  input,
-  setInput,
   onSubmit,
   loading,
   isResultValid,
-  editMessage,
   onLayout,
   height,
-  error,
   result,
-  setRegen,
-  setRegenIndex,
   setError,
   setRetry,
-  setEditMessage,
-  theme,
-  color,
 }) => {
+  const { setInput, setEditMessage, theme, input, editMessage, color } =
+    useContext(AppContext);
   const windowWidth = Dimensions.get("window").width;
   const showSendIcon = isResultValid;
   const showRefreshIcon =

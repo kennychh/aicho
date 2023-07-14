@@ -46,9 +46,7 @@ export const ChatScreen = ({
     chatDetails,
     setChatDetails,
     setInput,
-    setEditMessage,
     theme,
-    clearConversation,
     input,
     editMessage,
     key,
@@ -57,12 +55,10 @@ export const ChatScreen = ({
     timeout,
     model,
     maxTokens,
-    color,
     retainContext,
     temperature,
     presencePenalty,
     frequencyPenalty,
-    holdMenuRef,
   } = useContext(AppContext);
   const API_URL = "https://chatgpt-api-blue.vercel.app/api";
   const result = chats[chatIndex];
@@ -96,14 +92,6 @@ export const ChatScreen = ({
 
   const onOpen = (modalizeRef) => {
     modalizeRef.current?.open();
-  };
-
-  const onClose = (modalizeRef) => {
-    modalizeRef.current?.close();
-  };
-
-  const removeData = () => {
-    clearConversation(chatIndex);
   };
 
   const ChatMenuModalOnPressOptions = {
@@ -484,25 +472,18 @@ export const ChatScreen = ({
             <MessageList
               data={result}
               inputOffset={inputHeight}
-              editMessage={editMessage}
               setMessage={setMessage}
-              setEditMessage={setEditMessage}
-              setInput={setInput}
               setRegen={setRegen}
               setRetry={setRetry}
               setError={setError}
-              theme={theme}
-              color={color}
               listRef={listRef}
               showScrollToButton={showScrollToButton}
               setShowScrollToButton={setShowScrollToButton}
               setEditMessageHeight={setEditMessageHeight}
               editMessageHeight={editMessageHeight}
-              holdMenuRef={holdMenuRef}
             />
             <Input
               textInputRef={textInputRef}
-              input={input}
               onSubmit={onSubmit}
               loading={loading}
               isResultValid={isResultValid}
@@ -510,14 +491,9 @@ export const ChatScreen = ({
               height={inputHeight}
               error={error}
               result={result}
-              editMessage={editMessage}
               setRegen={setRegen}
               setError={setError}
               setRetry={setRetry}
-              setEditMessage={setEditMessage}
-              setInput={setInput}
-              theme={theme}
-              color={color}
               listRef={listRef}
             />
           </View>
@@ -528,19 +504,13 @@ export const ChatScreen = ({
             navigation={navigation}
             headerTitle={`${headerTitle}`}
             textInputRef={headerTextInputRef}
-            setChatDetails={setChatDetails}
-            chatDetails={chatDetails}
-            chatIndex={chatIndex}
             isHeaderEditable={isHeaderEditable}
             setIsHeaderEditable={setIsHeaderEditable}
-            theme={theme}
-            color={color}
           />
         </KeyboardAvoidingView>
-        <BottomToast theme={theme} isEnabled={showBottomToast} />
+        <BottomToast isEnabled={showBottomToast} />
         <ChatMenuModal
           visible={panModalVisible}
-          theme={theme}
           onPressOptions={ChatMenuModalOnPressOptions}
         />
       </SafeAreaView>

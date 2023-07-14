@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -15,12 +15,10 @@ import { About, Alert, Close2 } from "../icons";
 import { useKeyboardVisible } from "./../hooks/useKeyboardVisible";
 import { BlurView } from "expo-blur";
 import { getTheme } from "../theme";
+import { AppContext } from "../context";
 
-export const BottomToast = ({
-  theme,
-  text = "An error has occured.",
-  isEnabled,
-}) => {
+export const BottomToast = ({ text = "An error has occured.", isEnabled }) => {
+  const { theme } = useContext(AppContext);
   const insets = useSafeAreaInsets();
   const [closeToast, setCloseToast] = useState(false);
   const [visible, setVisible] = useState(false);

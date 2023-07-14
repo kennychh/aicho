@@ -13,7 +13,8 @@ import { HeaderButton } from "./HeaderButton";
 import { getTheme } from "../theme";
 import { BlurView } from "expo-blur";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AppContext } from "../context";
 export const Header = ({
   onOpen,
   modalizeRef,
@@ -21,16 +22,13 @@ export const Header = ({
   navigation,
   headerTitle,
   textInputRef,
-  setChatDetails,
-  chatIndex,
   isHeaderEditable,
   setIsHeaderEditable,
-  theme,
   isSettingsHeader = false,
-  color,
   yOffset,
   setHeight,
 }) => {
+  const { chatIndex, setChatDetails, theme, color } = useContext(AppContext);
   const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
   const insets = useSafeAreaInsets();
   const onLayout = (event) => {

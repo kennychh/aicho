@@ -3,14 +3,16 @@ import Animated, {
   useSharedValue,
 } from "react-native-reanimated";
 import { PanModal } from "./PanModal";
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { Copy, Delete, Edit2 } from "../icons";
 import { Text } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { AppContext } from "../context";
 
-export const ChatMenuModal = ({ visible, theme, onPressOptions }) => {
+export const ChatMenuModal = ({ visible, onPressOptions }) => {
+  const { theme } = useContext(AppContext);
   const insets = useSafeAreaInsets();
   const windowHeight = Dimensions.get("window").height;
   const translateY = useSharedValue(0);

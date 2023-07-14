@@ -79,7 +79,7 @@ const lightTheme = {
     backgroundColor: "rgba(0,0,0,0.3)",
   },
   bottomModal: {
-    backgroundColor: "rgba(0,0,0,0.3)",
+    backgroundColor: "rgba(0,0,0,0.5)",
   },
   highlight: {
     color: "#DBDBDB",

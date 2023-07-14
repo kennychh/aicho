@@ -5,7 +5,15 @@ import {
   Dimensions,
   LayoutAnimation,
 } from "react-native";
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  memo,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import Message from "./Message";
 import { getTheme } from "../theme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -17,29 +25,25 @@ import Animated, {
   FadeInUp,
 } from "react-native-reanimated";
 import { ScrollToButton } from "./ScrollToButton";
+import { AppContext } from "../context";
 
 const MessageList = ({
   data,
   inputOffset,
   setMessage,
-  editMessage,
-  setEditMessage,
-  setInput,
   setRegen,
   setRetry,
   setError,
   regen,
-  regenIndex,
-  theme,
-  color,
   listRef,
   showScrollToButton,
   setShowScrollToButton,
   setEditMessageHeight,
   editMessageHeight,
   intensity,
-  holdMenuRef,
 }) => {
+  const { setInput, setEditMessage, theme, editMessage, color, holdMenuRef } =
+    useContext(AppContext);
   const insets = useSafeAreaInsets();
   const [showCurrentMessage, setShowCurrentMessage] = useState(false);
   const [isCurrentMessage, setIsCurrentMessage] = useState(false);
