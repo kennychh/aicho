@@ -36,7 +36,7 @@ export const HomeScreen = () => {
   const [holdMenuData, setHoldMenuData] = useState();
   const [confirmDeleteChatIndex, setConfirmDeleteChatIndex] = useState(0);
   const confirmDeleteChatVisible = useSharedValue(false);
-  const panModalVisible = useSharedValue(false);
+  const isFromModal = useSharedValue(false);
   const bottomSheetRef = useRef(null);
   const [previewData, setPreviewData] = useState(chats[0].slice(0, 10));
   const [origin, setOrigin] = useState({ x: 0, y: 0, width: 0, height: 0 });
@@ -62,7 +62,13 @@ export const HomeScreen = () => {
     () => Object.values(cutOffChatDetailsByMonths),
     [cutOffChatDetailsByMonths]
   );
-  const openHoldPreview = (layout, title, data, holdMenuData) => {
+  const openHoldPreview = (
+    layout,
+    title,
+    data,
+    holdMenuData,
+    fromModal = false
+  ) => {
     setOrigin({
       x: layout.x,
       y: layout.y,
@@ -72,6 +78,7 @@ export const HomeScreen = () => {
     setPreviewTitle(title);
     setPreviewData(data);
     setHoldMenuData(holdMenuData);
+    isFromModal.value = fromModal;
     showHoldMenu.value = true;
     showPreview.value = true;
     translateX.value = 0;
@@ -82,6 +89,7 @@ export const HomeScreen = () => {
     deleteChat: (index) => {
       setConfirmDeleteChatIndex(index);
       confirmDeleteChatVisible.value = true;
+      bottomSheetRef?.current?.close();
     },
     copyChat: (index) => {
       const chatTexts = chats[index]
@@ -92,13 +100,14 @@ export const HomeScreen = () => {
         .join("\n\n")
         .replace("*#", "");
       Clipboard.setStringAsync(chatTexts);
+      bottomSheetRef?.current?.close();
     },
-    editTitle: (index, navigation) => {
+    editTitle: (index) => {
       setChatIndex(index);
       setInput("");
       setEditMessage(null);
       setIsHeaderEditable(true);
-      navigation.closeDrawer();
+      bottomSheetRef?.current?.close();
     },
   };
 
@@ -151,6 +160,7 @@ export const HomeScreen = () => {
           origin={origin}
           title={previewTitle}
           data={previewData}
+          isFromModal={isFromModal}
         />
         <ConfirmDeleteChatModal
           onPress={() => {
@@ -158,7 +168,11 @@ export const HomeScreen = () => {
           }}
           visible={confirmDeleteChatVisible}
         ></ConfirmDeleteChatModal>
-        <ChatHistoryModal bottomSheetRef={bottomSheetRef} />
+        <ChatHistoryModal
+          bottomSheetRef={bottomSheetRef}
+          holdPreviewFunctions={holdPreviewFunctions}
+          openHoldPreview={openHoldPreview}
+        />
       </PortalProvider>
     </GestureHandlerRootView>
   );

@@ -3,7 +3,14 @@ import Animated, {
   useSharedValue,
 } from "react-native-reanimated";
 import { PanModal } from "./PanModal";
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { Copy, Delete, Edit2 } from "../icons";
@@ -16,10 +23,27 @@ import BottomSheet, {
   BottomSheetFlatList,
 } from "@gorhom/bottom-sheet";
 import { AppContext } from "../context";
+import { getMonthsAgo, getMonthsAgoStr } from "../helpers/getTimeCreated";
+import ChatHistoryList from "./ChatHistoryList";
 
-export const ChatHistoryModal = ({ bottomSheetRef }) => {
+export const ChatHistoryModal = ({
+  bottomSheetRef,
+  holdPreviewFunctions,
+  openHoldPreview,
+}) => {
   const insets = useSafeAreaInsets();
-  const { theme } = useContext(AppContext);
+  const { theme, chatDetails } = useContext(AppContext);
+  const fullChatDetailsByMonths = useMemo(
+    () => getMonthsAgo(chatDetails),
+    [chatDetails]
+  );
+  const fullStickyHeadersData = getMonthsAgoStr(
+    Object.keys(fullChatDetailsByMonths)
+  );
+  const fullChatHistoryData = useMemo(
+    () => Object.values(fullChatDetailsByMonths),
+    [fullChatDetailsByMonths]
+  );
   const windowHeight = Dimensions.get("window").height;
   const snapPoints = useMemo(() => ["60%", windowHeight - insets.top], []);
   const flatListRef = useRef();
@@ -36,6 +60,19 @@ export const ChatHistoryModal = ({ bottomSheetRef }) => {
       />
     );
   };
+
+  const renderItem = useCallback(({ item, index }) => {
+    return (
+      <ChatHistoryList
+        item={item}
+        index={index}
+        stickyHeadersData={fullStickyHeadersData}
+        holdPreviewFunctions={holdPreviewFunctions}
+        bottomSheetRef={bottomSheetRef}
+        openHoldPreview={openHoldPreview}
+      />
+    );
+  });
 
   return (
     <BottomSheet
@@ -74,15 +111,9 @@ export const ChatHistoryModal = ({ bottomSheetRef }) => {
       <BottomSheetFlatList
         ref={flatListRef}
         // bounces={false}
-        data={data}
+        data={fullChatHistoryData}
         scrollEventThrottle={16}
-        renderItem={({ index }) => {
-          return (
-            <View style={{ backgroundColor: "transparent" }}>
-              <Text style={styles.text(theme)}>{index}</Text>
-            </View>
-          );
-        }}
+        renderItem={renderItem}
         style={{
           flex: 1,
           flexGrow: 1,

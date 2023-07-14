@@ -27,6 +27,7 @@ import { getTheme } from "../theme";
 import { PreviewMessage } from "./PreviewMessage";
 import { HoldMenu } from "./HoldMenu";
 import { AppContext } from "../context";
+import { Divider } from "./Divider";
 
 export const HoldPreview = ({
   translateX,
@@ -37,6 +38,7 @@ export const HoldPreview = ({
   title,
   data,
   holdMenuData,
+  isFromModal,
 }) => {
   const { theme, color } = useContext(AppContext);
   const windowWidth =
@@ -99,6 +101,7 @@ export const HoldPreview = ({
         let end_y = END_POSITION_Y;
         if (e.translationY > 200) {
           showPreview.value = false;
+          isFromModal.value = false;
           end_y = originY;
           end_x = originX;
         } else {
@@ -122,7 +125,7 @@ export const HoldPreview = ({
         { translateY: translateY.value },
       ],
       maxHeight: showPreview.value
-        ? withTiming(MAX_HEIGHT, { duration: DURATION - 100})
+        ? withTiming(MAX_HEIGHT, { duration: DURATION - 100 })
         : withTiming(origin.height, { duration: END_DURATION }),
       maxWidth: showPreview.value
         ? withTiming(windowWidth, { duration: DURATION })
@@ -172,7 +175,12 @@ export const HoldPreview = ({
     const backgroundColor = interpolateColor(
       progress.value,
       [0, 1],
-      ["transparent", theme.blurView.backgroundColor]
+      [
+        "transparent",
+        isFromModal.value
+          ? theme.bottomModal.backgroundColor
+          : theme.blurView.backgroundColor,
+      ]
     );
     return {
       backgroundColor: backgroundColor,
@@ -251,6 +259,8 @@ export const HoldPreview = ({
       opacity: showHoldMenu.value
         ? withTiming(1, { duration: DURATION })
         : withTiming(0, { duration: END_DURATION - 100 }),
+      marginLeft: isFromModal.value ? "auto" : 16,
+      alignSelf: isFromModal.value ? "center" : "flex-start",
       transform: [
         {
           translateY: translateY.value,
@@ -291,6 +301,7 @@ export const HoldPreview = ({
         left: 0,
         right: 0,
         paddingTop: insets.top + 16,
+        zIndex: 100,
       },
       animatedBlurViewStyle,
     ],
@@ -306,15 +317,29 @@ export const HoldPreview = ({
       >
         <Animated.View style={containerStyle}>
           <Animated.View style={tileBarStyle}>
-            <Message style={{ marginRight: 8 }} stroke={theme.iconColor} />
-            <Text
-              style={styles.title(theme)}
-              numberOfLines={1}
-              ellipsizeMode="tail"
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                paddingHorizontal: 16,
+              }}
             >
-              {title}
-            </Text>
+              <Message style={{ marginRight: 8 }} stroke={theme.iconColor} />
+              <Text
+                style={styles.title(theme)}
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {title}
+              </Text>
+            </View>
+            <Divider
+              backgroundColor={theme.onBackgroundColor}
+              spacerColor={theme.modal.divider.backgroundColor}
+              marginHorizontal={0}
+            />
           </Animated.View>
+
           <Animated.View style={itemStyle}>
             <Animated.View
               style={{
@@ -346,6 +371,7 @@ export const HoldPreview = ({
               onPress={() => {
                 showPreview.value = false;
                 showHoldMenu.value = false;
+                isFromModal.value = false;
               }}
               data={holdMenuData}
               duration={END_DURATION}
@@ -368,9 +394,7 @@ const styles = StyleSheet.create({
   titleBar: (theme) => ({
     width: "100%",
     backgroundColor: theme.onBackgroundColor,
-    flexDirection: "row",
-    paddingHorizontal: 16,
-    alignItems: "center",
+    // paddingHorizontal: 16,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
   }),
@@ -389,7 +413,7 @@ const styles = StyleSheet.create({
   }),
   holdMenu: {
     marginTop: 16,
-    marginLeft: 16,
+    marginRight: "auto",
     zIndex: 0,
   },
 });

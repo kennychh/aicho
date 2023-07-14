@@ -1,24 +1,24 @@
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { Text } from "react-native";
 import { Copy, Delete, Edit, Edit2, Message } from "../icons";
-import { useMemo, useRef, useState } from "react";
+import { useContext, useMemo, useRef, useState } from "react";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
 import * as Haptics from "expo-haptics";
+import { AppContext } from "../context";
 
-export const DrawerChats = ({
-  theme,
+export const ChatHistoryItem = ({
   onPress,
   text,
-  selected,
   openHoldPreview,
   data,
   index,
   holdPreviewFunctions,
 }) => {
+  const { theme } = useContext(AppContext);
   const expandContainer = useSharedValue(false);
   const ref = useRef(null);
   const DURATION = 400;
@@ -74,7 +74,7 @@ export const DrawerChats = ({
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
           expandContainer.value = true;
           setTimeout(() => {
-            ref.current.measure((x, y, width, height, pageX, pageY) => {
+            ref?.current?.measure((x, y, width, height, pageX, pageY) => {
               openHoldPreview(
                 {
                   x: pageX,
@@ -84,7 +84,8 @@ export const DrawerChats = ({
                 },
                 text,
                 data,
-                holdMenuData
+                holdMenuData,
+                true
               );
             });
           }, DURATION - 200);
@@ -92,15 +93,7 @@ export const DrawerChats = ({
         onPressOut={() => {
           expandContainer.value = false;
         }}
-        style={[
-          styles.chatItem,
-          selected
-            ? {
-                backgroundColor:
-                  theme.drawerContent.chatItem.selected.backgroundColor,
-              }
-            : {},
-        ]}
+        style={[styles.chatItem]}
       >
         <Message style={{ marginRight: 8 }} stroke={theme.iconColor} />
         <Text
