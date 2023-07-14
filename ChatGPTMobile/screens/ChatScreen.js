@@ -9,7 +9,14 @@ import {
   Animated,
   LayoutAnimation,
 } from "react-native";
-import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+  useContext,
+} from "react";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import {
   Header,
@@ -24,39 +31,41 @@ import * as Device from "expo-device";
 import { getTheme } from "../theme";
 import { useSharedValue } from "react-native-reanimated";
 import * as Clipboard from "expo-clipboard";
+import { AppContext } from "../context";
 
 export const ChatScreen = ({
   navigation,
-  chats,
-  index,
-  chatIndex,
-  clearConversation,
-  setChats,
-  chatDetails,
-  setChatDetails,
-  input,
-  setInput,
-  editMessage,
-  setEditMessage,
-  theme,
-  apiKey,
-  keyChanged,
-  setKeyChanged,
-  timeout,
-  model,
-  maxTokens,
-  color,
-  retainContext,
-  temperature,
-  presencePenalty,
-  frequencyPenalty,
-  holdMenuRef,
   isHeaderEditable,
   setIsHeaderEditable,
   deleteChatFromModal,
 }) => {
+  const {
+    chats,
+    chatIndex,
+    setChats,
+    chatDetails,
+    setChatDetails,
+    setInput,
+    setEditMessage,
+    theme,
+    clearConversation,
+    input,
+    editMessage,
+    key,
+    keyChanged,
+    setKeyChanged,
+    timeout,
+    model,
+    maxTokens,
+    color,
+    retainContext,
+    temperature,
+    presencePenalty,
+    frequencyPenalty,
+    holdMenuRef,
+  } = useContext(AppContext);
   const API_URL = "https://chatgpt-api-blue.vercel.app/api";
-  const result = chats[index];
+  const result = chats[chatIndex];
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [showBottomToast, setShowBottomToast] = useState(false);
@@ -100,7 +109,7 @@ export const ChatScreen = ({
   const ChatMenuModalOnPressOptions = {
     copy: () => {
       panModalVisible.value = false;
-      const chatTexts = chats[index]
+      const chatTexts = chats[chatIndex]
         .map((chat) => chat.result?.text + "*#")
         .reverse()
         .toString()
@@ -297,29 +306,29 @@ export const ChatScreen = ({
     const res = getResult(result, regenIndex);
     const inputText = getInput(res);
     const shouldCreateTitle =
-      chats[index].length == 0 ||
-      editMessageIndex + 1 == chats[index].length ||
-      regenIndex + 2 == chats[index].length;
+      chats[chatIndex].length == 0 ||
+      editMessageIndex + 1 == chats[chatIndex].length ||
+      regenIndex + 2 == chats[chatIndex].length;
     if (editMessage != null) {
       toggleExpandMessage();
       setChats((oldResult) => [
-        ...oldResult?.slice(0, index),
-        [inputText, ...oldResult[index].slice(editMessageIndex + 1)],
-        ...oldResult?.slice(index + 1),
+        ...oldResult?.slice(0, chatIndex),
+        [inputText, ...oldResult[chatIndex].slice(editMessageIndex + 1)],
+        ...oldResult?.slice(chatIndex + 1),
       ]);
     } else if (!regen) {
       toggleExpandMessage();
       setChats((oldResult) => [
-        ...oldResult?.slice(0, index),
-        [inputText, ...oldResult[index]],
-        ...oldResult?.slice(index + 1),
+        ...oldResult?.slice(0, chatIndex),
+        [inputText, ...oldResult[chatIndex]],
+        ...oldResult?.slice(chatIndex + 1),
       ]);
     } else if (regen) {
       toggleExpandMessage();
       setChats((oldResult) => [
-        ...oldResult?.slice(0, index),
-        [...oldResult[index].slice(regenIndex + 1)],
-        ...oldResult?.slice(index + 1),
+        ...oldResult?.slice(0, chatIndex),
+        [...oldResult[chatIndex].slice(regenIndex + 1)],
+        ...oldResult?.slice(chatIndex + 1),
       ]);
     } else if (retry != null) {
       toggleExpandMessage();
@@ -337,7 +346,7 @@ export const ChatScreen = ({
       result?.length > 2 ? result[regenIndex + 2]?.result?.id : null;
     setInput("");
     try {
-      const bearer = `Bearer ${apiKey}`;
+      const bearer = `Bearer ${key}`;
       const responseInput =
         retry != null
           ? retry.result?.text
@@ -397,27 +406,27 @@ export const ChatScreen = ({
         toggleExpandMessage();
         if (!regen) {
           setChats((oldResult) => [
-            ...oldResult?.slice(0, index),
-            [errorInputText, ...oldResult[index].slice(1)],
-            ...oldResult?.slice(index + 1),
+            ...oldResult?.slice(0, chatIndex),
+            [errorInputText, ...oldResult[chatIndex].slice(1)],
+            ...oldResult?.slice(chatIndex + 1),
           ]);
         } else {
           setChats((oldResult) => [
-            ...oldResult?.slice(0, index),
+            ...oldResult?.slice(0, chatIndex),
             [
-              { ...oldResult[index][0], isError: true },
-              ...oldResult[index].slice(1),
+              { ...oldResult[chatIndex][0], isError: true },
+              ...oldResult[chatIndex].slice(1),
             ],
-            ...oldResult?.slice(index + 1),
+            ...oldResult?.slice(chatIndex + 1),
           ]);
         }
         setError(true);
       } else {
         toggleExpandMessage();
         setChats((oldResult) => [
-          ...oldResult?.slice(0, index),
-          [data, ...oldResult[index]],
-          ...oldResult?.slice(index + 1),
+          ...oldResult?.slice(0, chatIndex),
+          [data, ...oldResult[chatIndex]],
+          ...oldResult?.slice(chatIndex + 1),
         ]);
       }
       if (shouldCreateTitle) {
@@ -437,25 +446,25 @@ export const ChatScreen = ({
       toggleExpandMessage();
       if (!regen) {
         setChats((oldResult) => [
-          ...oldResult?.slice(0, index),
-          [errorInputText, ...oldResult[index].slice(1)],
-          ...oldResult?.slice(index + 1),
+          ...oldResult?.slice(0, chatIndex),
+          [errorInputText, ...oldResult[chatIndex].slice(1)],
+          ...oldResult?.slice(chatIndex + 1),
         ]);
       } else {
         setChats((oldResult) => [
-          ...oldResult?.slice(0, index),
+          ...oldResult?.slice(0, chatIndex),
           [
-            { ...oldResult[index][0], isError: true },
-            ...oldResult[index].slice(1),
+            { ...oldResult[chatIndex][0], isError: true },
+            ...oldResult[chatIndex].slice(1),
           ],
-          ...oldResult?.slice(index + 1),
+          ...oldResult?.slice(chatIndex + 1),
         ]);
       }
       setError(true);
     } finally {
       setLoading(false);
     }
-  }, [chats, input, regen, retry, index, editMessage, chatDetails]);
+  }, [chats, input, regen, retry, chatIndex, editMessage, chatDetails]);
   return (
     <SafeAreaProvider>
       <SafeAreaView

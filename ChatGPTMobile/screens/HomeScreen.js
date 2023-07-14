@@ -9,42 +9,45 @@ import { ChatScreen } from "./ChatScreen";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PortalProvider } from "@gorhom/portal";
 import { Dimensions, TouchableOpacity } from "react-native";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { useSharedValue } from "react-native-reanimated";
 import * as Clipboard from "expo-clipboard";
+import { getMonthsAgo, getMonthsAgoStr } from "../helpers/getTimeCreated";
+import { AppContext } from "../context";
 
 const Drawer = createDrawerNavigator();
 
-export const HomeScreen = ({
-  chats,
-  setChatIndex,
-  chatIndex,
-  setChats,
-  setDeleteChat,
-  chatDetails,
-  setChatDetails,
-  setInput,
-  setEditMessage,
-  theme,
-  setTheme,
-  darkModeModalizeRef,
-  clearConversation,
-  input,
-  editMessage,
-  apiKey,
-  keyChanged,
-  setKeyChanged,
-  timeout,
-  model,
-  maxTokens,
-  color,
-  retainContext,
-  confirmDeleteVisible,
-  temperature,
-  presencePenalty,
-  frequencyPenalty,
-  holdMenuRef,
-}) => {
+export const HomeScreen = () => {
+  const {
+    chats,
+    setChatIndex,
+    chatIndex,
+    setChats,
+    setDeleteChat,
+    chatDetails,
+    setChatDetails,
+    setInput,
+    setEditMessage,
+    theme,
+    setTheme,
+    darkModeModalizeRef,
+    clearConversation,
+    input,
+    editMessage,
+    key,
+    keyChanged,
+    setKeyChanged,
+    timeout,
+    model,
+    maxTokens,
+    color,
+    retainContext,
+    confirmDeleteVisible,
+    temperature,
+    presencePenalty,
+    frequencyPenalty,
+    holdMenuRef,
+  } = useContext(AppContext);
   const showPreview = useSharedValue(false);
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
@@ -60,6 +63,16 @@ export const HomeScreen = ({
   const [isHeaderEditable, setIsHeaderEditable] = useState(false);
   const windowWidth = Dimensions.get("window").width;
 
+  const MAX_CHATS_SHOWN = 10;
+  const cutOffNum =
+    chatDetails.length <= MAX_CHATS_SHOWN
+      ? 0
+      : chatDetails.length - MAX_CHATS_SHOWN;
+  const cutOffChatDetailsByMonths = getMonthsAgo(chatDetails, cutOffNum);
+  const stickyHeadersData = getMonthsAgoStr(
+    Object.keys(cutOffChatDetailsByMonths)
+  );
+  const drawerChatData = Object.values(cutOffChatDetailsByMonths);
   const openHoldPreview = (layout, title, data, holdMenuData) => {
     setOrigin({
       x: layout.x,
@@ -111,22 +124,11 @@ export const HomeScreen = ({
           drawerContent={(props) => (
             <DrawerContent
               props={props}
-              chats={chats}
-              setChatIndex={setChatIndex}
-              chatIndex={chatIndex}
-              setChats={setChats}
-              setDeleteChat={setDeleteChat}
-              chatDetails={chatDetails}
-              setChatDetails={setChatDetails}
-              setInput={setInput}
-              setEditMessage={setEditMessage}
-              theme={theme}
-              setTheme={setTheme}
-              darkModeModalizeRef={darkModeModalizeRef}
-              confirmDeleteVisible={confirmDeleteVisible}
               openHoldPreview={openHoldPreview}
               holdPreviewFunctions={holdPreviewFunctions}
               bottomSheetRef={bottomSheetRef}
+              stickyHeadersData={stickyHeadersData}
+              drawerChatData={drawerChatData}
             />
           )}
           initialRouteName="Chat"
@@ -144,30 +146,6 @@ export const HomeScreen = ({
             {(props) => (
               <ChatScreen
                 {...props}
-                chats={chats}
-                index={chatIndex}
-                chatIndex={chatIndex}
-                clearConversation={clearConversation}
-                setChats={setChats}
-                chatDetails={chatDetails}
-                setChatDetails={setChatDetails}
-                input={input}
-                setInput={setInput}
-                editMessage={editMessage}
-                setEditMessage={setEditMessage}
-                theme={theme}
-                apiKey={apiKey}
-                keyChanged={keyChanged}
-                setKeyChanged={setKeyChanged}
-                timeout={timeout}
-                model={model}
-                maxTokens={maxTokens}
-                color={color}
-                retainContext={retainContext}
-                temperature={temperature}
-                presencePenalty={presencePenalty}
-                frequencyPenalty={frequencyPenalty}
-                holdMenuRef={holdMenuRef}
                 isHeaderEditable={isHeaderEditable}
                 setIsHeaderEditable={setIsHeaderEditable}
                 deleteChatFromModal={deleteChatFromModal}

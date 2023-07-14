@@ -55,9 +55,9 @@ const isDaysAgo = (someDate, daysAgo) => {
   );
 };
 
-export const getMonthsAgo = (chatDetails) => {
+export const getMonthsAgo = (chatDetails, cutOffNum = 0) => {
   if (chatDetails[0]) {
-    const chatDates = chatDetails.map((item) => item[1]);
+    const chatDates = chatDetails.map((item) => item[1]).slice(cutOffNum);
     const currentDate = new Date();
     return chatDates.reduce((result, date, index) => {
       const diff = diffDays(currentDate, new Date(date));
@@ -81,7 +81,7 @@ export const getMonthsAgo = (chatDetails) => {
       if (!result[month]) {
         result[month] = [];
       }
-      result[month].push(index);
+      result[month].push(index + cutOffNum);
       return result;
     }, {});
   }

@@ -5,6 +5,7 @@ import React, {
   useCallback,
   useMemo,
   memo,
+  useContext,
 } from "react";
 import { DrawerContentScrollView } from "@react-navigation/drawer";
 import {
@@ -20,35 +21,35 @@ import { getTheme } from "../theme";
 import { DrawerChats } from "./DrawerChats";
 import { getMonthsAgo, getMonthsAgoStr } from "../helpers/getTimeCreated";
 import DrawerChatsList from "./DrawerChatsList";
+import { AppContext } from "../context";
 
 const DrawerContent = ({
   props,
-  chats,
-  setChatIndex,
-  chatIndex,
-  setChats,
-  setDeleteChat,
-  chatDetails,
-  setChatDetails,
-  setInput,
-  setEditMessage,
-  theme,
-  setTheme,
-  darkModeModalizeRef,
-  confirmDeleteVisible,
   openHoldPreview,
   holdPreviewFunctions,
   bottomSheetRef,
+  stickyHeadersData,
+  drawerChatData,
 }) => {
+  const {
+    chats,
+    setChatIndex,
+    chatIndex,
+    setChats,
+    chatDetails,
+    setChatDetails,
+    setInput,
+    setEditMessage,
+    theme,
+    confirmDeleteVisible,
+  } = useContext(AppContext);
   const navigation = props.navigation;
 
   useEffect(() => {
     navigation.closeDrawer();
   }, [chatIndex]);
 
-  const chatDetailsByMonths = getMonthsAgo(chatDetails);
-  const stickyHeadersData = getMonthsAgoStr(Object.keys(chatDetailsByMonths));
-  const drawerChatData = Object.values(chatDetailsByMonths);
+  const MAX_CHATS_SHOWN = 10;
   const drawerChatsOnPress = (index) => {
     setInput("");
     setEditMessage(null);
@@ -78,15 +79,18 @@ const DrawerContent = ({
             drawerChatsOnPress={drawerChatsOnPress}
             navigation={navigation}
           />
-          {index == drawerChatData.length - 1 && (
-            <TouchableOpacity
-              onPress={() => {
-                bottomSheetRef?.current?.snapToIndex(0);
-              }}
-            >
-              <Text style={styles.chatItemText(theme)}>Show full history</Text>
-            </TouchableOpacity>
-          )}
+          {index == drawerChatData.length - 1 &&
+            chatDetails.length > MAX_CHATS_SHOWN && (
+              <TouchableOpacity
+                onPress={() => {
+                  bottomSheetRef?.current?.snapToIndex(0);
+                }}
+              >
+                <Text style={styles.historyButtonText(theme)}>
+                  Show full history
+                </Text>
+              </TouchableOpacity>
+            )}
         </View>
       );
     },
@@ -230,6 +234,14 @@ const styles = StyleSheet.create({
     // fontWeight: "500",
     color: theme.fontColor,
     paddingVertical: 16,
+  }),
+  historyButtonText: (theme) => ({
+    fontSize: 14,
+    lineHeight: 16,
+    fontWeight: "500",
+    color: theme.secondaryIconColor,
+    paddingVertical: 16,
+    alignSelf: "center",
   }),
   chatItemIcon: { marginRight: 16 },
   chatItem: {
