@@ -100,8 +100,8 @@ export const HoldPreview = ({
         let end_x = END_POSITION_X;
         let end_y = END_POSITION_Y;
         if (e.translationY > 200) {
-          showPreview.value = false;
           isFromModal.value = false;
+          showPreview.value = false;
           end_y = originY;
           end_x = originX;
         } else {

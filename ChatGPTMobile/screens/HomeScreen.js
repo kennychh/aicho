@@ -69,6 +69,7 @@ export const HomeScreen = () => {
     holdMenuData,
     fromModal = false
   ) => {
+    isFromModal.value = fromModal;
     setOrigin({
       x: layout.x,
       y: layout.y,
@@ -78,7 +79,6 @@ export const HomeScreen = () => {
     setPreviewTitle(title);
     setPreviewData(data);
     setHoldMenuData(holdMenuData);
-    isFromModal.value = fromModal;
     showHoldMenu.value = true;
     showPreview.value = true;
     translateX.value = 0;
