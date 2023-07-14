@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { memo, useContext } from "react";
 import { ChatHistoryItem } from "./ChatHistoryItem";
 import { AppContext } from "../context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const ChatHistoryList = ({
   item,
@@ -10,6 +11,7 @@ const ChatHistoryList = ({
   openHoldPreview,
   holdPreviewFunctions,
   bottomSheetRef,
+  paddingBottom,
 }) => {
   const {
     theme,
@@ -20,23 +22,19 @@ const ChatHistoryList = ({
     chatDetails,
     chatIndex,
   } = useContext(AppContext);
+  const insets = useSafeAreaInsets();
   const chatTitle = (index) =>
     typeof chatDetails[index] === "string" ||
     typeof chatDetails[index] === "undefined"
       ? chatDetails[index]
       : chatDetails[index][0];
   return (
-    <View>
-      <Text
-        style={[
-          styles.drawerChatsHeaderText(theme),
-          index == 0 ? { paddingTop: 0 } : {},
-        ]}
-      >
+    <View style={paddingBottom && { paddingBottom: insets.bottom + 16 }}>
+      <Text style={[styles.drawerChatsHeaderText(theme)]}>
         {stickyHeadersData[index]}
       </Text>
       {item
-        .map((chatHistoryIndex) => {
+        .map((chatHistoryIndex, itemIndex) => {
           return (
             <ChatHistoryItem
               onPress={() => {
@@ -50,6 +48,10 @@ const ChatHistoryList = ({
               openHoldPreview={openHoldPreview}
               data={chats[chatHistoryIndex].slice(0, 10)}
               index={chatHistoryIndex}
+              borderTopRadius={itemIndex == item.length - 1}
+              borderBottomRadius={itemIndex == 0}
+              showDivider={itemIndex != 0}
+              previewText={chats[chatHistoryIndex][0]?.result?.text}
               holdPreviewFunctions={holdPreviewFunctions}
             />
           );
@@ -67,7 +69,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     paddingHorizontal: 32,
     paddingBottom: 8,
-    paddingTop: 16,
+    paddingTop: 24,
   }),
 });
 

@@ -9,6 +9,7 @@ import Animated, {
 } from "react-native-reanimated";
 import * as Haptics from "expo-haptics";
 import { AppContext } from "../context";
+import { Divider } from "./Divider";
 
 export const ChatHistoryItem = ({
   onPress,
@@ -17,6 +18,10 @@ export const ChatHistoryItem = ({
   data,
   index,
   holdPreviewFunctions,
+  borderTopRadius,
+  borderBottomRadius,
+  showDivider,
+  previewText,
 }) => {
   const { theme } = useContext(AppContext);
   const expandContainer = useSharedValue(false);
@@ -65,45 +70,70 @@ export const ChatHistoryItem = ({
     },
   ];
   return (
-    <Animated.View style={containerStyle}>
-      <TouchableOpacity
-        ref={ref}
-        onPress={onPress}
-        delayLongPress={200}
-        onLongPress={() => {
-          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-          expandContainer.value = true;
-          setTimeout(() => {
-            ref?.current?.measure((x, y, width, height, pageX, pageY) => {
-              openHoldPreview(
-                {
-                  x: pageX,
-                  y: pageY,
-                  width: width,
-                  height: height,
-                },
-                text,
-                data,
-                holdMenuData,
-                true
-              );
-            });
-          }, DURATION - 200);
-        }}
-        onPressOut={() => {
-          expandContainer.value = false;
-        }}
-        style={[styles.chatItem]}
-      >
-        <Message style={{ marginRight: 8 }} stroke={theme.iconColor} />
-        <Text
-          style={[styles.chatItemText(theme), { flex: 1 }]}
-          numberOfLines={1}
-          ellipsizeMode="tail"
+    <Animated.View>
+      <Animated.View style={containerStyle}>
+        <TouchableOpacity
+          ref={ref}
+          onPress={onPress}
+          delayLongPress={200}
+          onLongPress={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+            expandContainer.value = true;
+            setTimeout(() => {
+              ref?.current?.measure((x, y, width, height, pageX, pageY) => {
+                openHoldPreview(
+                  {
+                    x: pageX,
+                    y: pageY,
+                    width: width,
+                    height: height,
+                  },
+                  text,
+                  data,
+                  holdMenuData,
+                  true
+                );
+              });
+            }, DURATION - 200);
+          }}
+          onPressOut={() => {
+            expandContainer.value = false;
+          }}
+          style={[
+            styles.chatItem(theme),
+            borderTopRadius && {
+              borderTopLeftRadius: 16,
+              borderTopRightRadius: 16,
+            },
+            borderBottomRadius && {
+              borderBottomLeftRadius: 16,
+              borderBottomRightRadius: 16,
+            },
+          ]}
         >
-          {text}
-        </Text>
-      </TouchableOpacity>
+          {/* <Message style={{ marginRight: 8 }} stroke={theme.iconColor} /> */}
+          <Text
+            style={[styles.chatItemText(theme), { flex: 1 }]}
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
+            {text}
+          </Text>
+          <Text
+            style={[styles.previewText(theme), { flex: 1 }]}
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
+            {previewText}
+          </Text>
+        </TouchableOpacity>
+      </Animated.View>
+      {showDivider && (
+        <Divider
+          backgroundColor={theme.modal.divider.backgroundColor}
+          spacerColor={theme.modal.container.backgroundColor}
+        />
+      )}
     </Animated.View>
   );
 };
@@ -114,16 +144,22 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     // fontWeight: "500",
     color: theme.fontColor,
-    paddingVertical: 16,
+    paddingTop: 16,
+    // paddingBottom: 4,
+  }),
+  previewText: (theme) => ({
+    fontSize: 14,
+    lineHeight: 16,
+    // fontWeight: "500",
+    color: theme.secondaryIconColor,
+    paddingBottom: 16,
   }),
   chatItemIcon: { marginRight: 16 },
-  chatItem: {
+  chatItem: (theme) => ({
     paddingHorizontal: 16,
     marginHorizontal: 16,
-    borderRadius: 16,
-    marginBottom: 8,
-    flexDirection: "row",
     flex: 1,
-    alignItems: "center",
-  },
+    justifyContent: "center",
+    backgroundColor: theme.modal.container.backgroundColor,
+  }),
 });

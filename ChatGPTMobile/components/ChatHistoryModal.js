@@ -70,6 +70,7 @@ export const ChatHistoryModal = ({
         holdPreviewFunctions={holdPreviewFunctions}
         bottomSheetRef={bottomSheetRef}
         openHoldPreview={openHoldPreview}
+        paddingBottom={index == fullChatHistoryData.length - 1}
       />
     );
   });
@@ -119,6 +120,12 @@ export const ChatHistoryModal = ({
           flexGrow: 1,
           // backgroundColor: "red",
           width: "100%",
+        }}
+        scrollIndicatorInsets={{
+          top: 0,
+          left: 0,
+          bottom: insets.bottom + 16,
+          right: 0,
         }}
       />
     </BottomSheet>
