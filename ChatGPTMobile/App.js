@@ -75,7 +75,7 @@ export default function App() {
   const [model, setModel] = useState("");
   const [timeout, setChatTimeOut] = useState();
   const [temperature, setTemperature] = useState();
-  const [presencePenalty, setPrescencePenalty] = useState();
+  const [presencePenalty, setPresencePenalty] = useState();
   const [frequencyPenalty, setFrequencyPenalty] = useState();
   const [color, setColor] = useState("");
   const [retainContext, setRetainContext] = useState();
@@ -244,7 +244,7 @@ export default function App() {
     setIsDarkMode(true);
     setUseDeviceSettings(true);
     setTemperature(1);
-    setPrescencePenalty(0);
+    setPresencePenalty(0);
     setFrequencyPenalty(0);
   };
 
@@ -485,7 +485,7 @@ export default function App() {
           setTemperature(storedTemperature);
         }
         if (storedPresence != null) {
-          setPrescencePenalty(storedPresence);
+          setPresencePenalty(storedPresence);
         }
         if (storedFrequency != null) {
           setFrequencyPenalty(storedFrequency);
@@ -562,7 +562,7 @@ export default function App() {
         setUseDeviceSettings,
         setIsDarkMode,
         setFrequencyPenalty,
-        setPrescencePenalty,
+        setPresencePenalty,
         resetData,
         setRetainContext,
         setAuthenticate,
@@ -570,8 +570,7 @@ export default function App() {
         setMaxTokens,
         setChatTimeOut,
         setModel,
-        setTemperature
-
+        setTemperature,
       }}
     >
       <SafeAreaProvider>
@@ -589,143 +588,48 @@ export default function App() {
               {(props) => <HomeScreen />}
             </Stack.Screen>
             <Stack.Screen name="Settings" options={{ headerShown: false }}>
-              {(props) => (
-                <SettingsScreen
-                  props={props}
-                  theme={theme}
-                  confirmResetVisible={confirmResetVisible}
-                />
-              )}
+              {(props) => <SettingsScreen props={props} />}
             </Stack.Screen>
             <Stack.Screen name="Account" options={{ headerShown: false }}>
-              {(props) => (
-                <AccountScreen
-                  props={props}
-                  theme={theme}
-                  setKey={setKey}
-                  apiKey={key}
-                  setKeyChanged={setKeyChanged}
-                  color={color}
-                />
-              )}
+              {(props) => <AccountScreen props={props} />}
             </Stack.Screen>
             <Stack.Screen name="Privacy" options={{ headerShown: false }}>
-              {(props) => (
-                <PrivacyScreen
-                  props={props}
-                  theme={theme}
-                  color={color}
-                  retainContext={retainContext}
-                  setRetainContext={setRetainContext}
-                  authenticate={authenticate}
-                  setAuthenticate={setAuthenticate}
-                />
-              )}
+              {(props) => <PrivacyScreen props={props} />}
             </Stack.Screen>
             <Stack.Screen
               name="Chat Preferences"
               options={{ headerShown: false }}
             >
-              {(props) => (
-                <ChatPreferencesScreen
-                  props={props}
-                  theme={theme}
-                  maxTokens={maxTokens}
-                  timeout={timeout}
-                  model={model}
-                  temperature={temperature}
-                  presencePenalty={presencePenalty}
-                  frequencyPenalty={frequencyPenalty}
-                />
-              )}
+              {(props) => <ChatPreferencesScreen props={props} />}
             </Stack.Screen>
             <Stack.Screen name="Max Tokens" options={{ headerShown: false }}>
-              {(props) => (
-                <MaxTokensScreen
-                  props={props}
-                  theme={theme}
-                  maxTokens={maxTokens}
-                  setMaxTokens={setMaxTokens}
-                  color={color}
-                />
-              )}
+              {(props) => <MaxTokensScreen props={props} />}
             </Stack.Screen>
             <Stack.Screen name="Timeout" options={{ headerShown: false }}>
-              {(props) => (
-                <TimeoutScreen
-                  props={props}
-                  theme={theme}
-                  timeout={timeout}
-                  setTimeout={setChatTimeOut}
-                  color={color}
-                />
-              )}
+              {(props) => <TimeoutScreen props={props} />}
             </Stack.Screen>
             <Stack.Screen name="Model" options={{ headerShown: false }}>
-              {(props) => (
-                <ModelScreen
-                  props={props}
-                  theme={theme}
-                  model={model}
-                  setModel={setModel}
-                  color={color}
-                />
-              )}
+              {(props) => <ModelScreen props={props} />}
             </Stack.Screen>
             <Stack.Screen name="Temperature" options={{ headerShown: false }}>
-              {(props) => (
-                <TemperatureScreen
-                  props={props}
-                  theme={theme}
-                  temperature={temperature}
-                  setTemperature={setTemperature}
-                  color={color}
-                />
-              )}
+              {(props) => <TemperatureScreen props={props} />}
             </Stack.Screen>
             <Stack.Screen
               name="Presence penalty"
               options={{ headerShown: false }}
             >
-              {(props) => (
-                <PresencePenaltyScreen
-                  props={props}
-                  theme={theme}
-                  presencePenalty={presencePenalty}
-                  setPresencePenalty={setPrescencePenalty}
-                  color={color}
-                />
-              )}
+              {(props) => <PresencePenaltyScreen props={props} />}
             </Stack.Screen>
             <Stack.Screen
               name="Frequency penalty"
               options={{ headerShown: false }}
             >
-              {(props) => (
-                <FrequencyPenaltyScreen
-                  props={props}
-                  theme={theme}
-                  frequencyPenalty={frequencyPenalty}
-                  setFrequencyPenalty={setFrequencyPenalty}
-                  color={color}
-                />
-              )}
+              {(props) => <FrequencyPenaltyScreen props={props} />}
             </Stack.Screen>
             <Stack.Screen name="Appearance" options={{ headerShown: false }}>
-              {(props) => (
-                <AppearanceScreen
-                  props={props}
-                  theme={theme}
-                  isDarkMode={isDarkMode}
-                  setIsDarkMode={setIsDarkMode}
-                  useDeviceSettings={useDeviceSettings}
-                  setUseDeviceSettings={setUseDeviceSettings}
-                  color={color}
-                  setColor={setColor}
-                />
-              )}
+              {(props) => <AppearanceScreen props={props} />}
             </Stack.Screen>
-            <Stack.Screen name="AIcho Pro" options={{ headerShown: false }}>
+            {/* <Stack.Screen name="AIcho Pro" options={{ headerShown: false }}>
               {(props) => (
                 <ProScreen
                   props={props}
@@ -734,26 +638,13 @@ export default function App() {
                   color={color}
                 />
               )}
-            </Stack.Screen>
+            </Stack.Screen> */}
             <Stack.Screen name="About" options={{ headerShown: false }}>
-              {(props) => <AboutScreen props={props} theme={theme} />}
+              {(props) => <AboutScreen props={props} />}
             </Stack.Screen>
           </Stack.Navigator>
-          <ConfirmDeleteConvosModal
-            setChatIndex={setChatIndex}
-            setChats={setChats}
-            setDeleteChat={setDeleteChat}
-            setChatDetails={setChatDetails}
-            setInput={setInput}
-            setEditMessage={setEditMessage}
-            theme={theme}
-            confirmDeleteVisible={confirmDeleteVisible}
-          ></ConfirmDeleteConvosModal>
-          <ConfirmResetDataModal
-            onPress={resetData}
-            theme={theme}
-            visible={confirmResetVisible}
-          ></ConfirmResetDataModal>
+          <ConfirmDeleteConvosModal />
+          <ConfirmResetDataModal />
         </NavigationContainer>
       </SafeAreaProvider>
     </AppContext.Provider>

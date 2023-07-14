@@ -1,6 +1,9 @@
+import { useContext } from "react";
 import { InputScreen } from "./InputScreen";
+import { AppContext } from "../context";
 
-export const TimeoutScreen = ({ props, theme, setTimeout, timeout, color }) => {
+export const TimeoutScreen = ({ props }) => {
+  const { theme, setTimeout, timeout, color } = useContext(AppContext);
   const navigation = props.navigation;
   return (
     <InputScreen

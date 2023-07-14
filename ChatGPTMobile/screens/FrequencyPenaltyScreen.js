@@ -1,13 +1,11 @@
+import { useContext } from "react";
 import { InputScreen } from "./InputScreen";
+import { AppContext } from "../context";
 
-export const FrequencyPenaltyScreen = ({
-  props,
-  theme,
-  setFrequencyPenalty,
-  frequencyPenalty,
-  color,
-}) => {
+export const FrequencyPenaltyScreen = ({ props }) => {
   const navigation = props.navigation;
+  const { theme, setFrequencyPenalty, frequencyPenalty, color } =
+    useContext(AppContext);
   return (
     <InputScreen
       props={props}

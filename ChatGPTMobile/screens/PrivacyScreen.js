@@ -16,17 +16,18 @@ import {
 } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { getTheme } from "../theme";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
+import { AppContext } from "../context";
 
-export const PrivacyScreen = ({
-  props,
-  theme,
-  color,
-  retainContext,
-  setRetainContext,
-  authenticate,
-  setAuthenticate,
-}) => {
+export const PrivacyScreen = ({ props }) => {
+  const {
+    theme,
+    color,
+    retainContext,
+    setRetainContext,
+    authenticate,
+    setAuthenticate,
+  } = useContext(AppContext);
   const insets = useSafeAreaInsets();
   const yOffset = useRef(new Animated.Value(0)).current;
   const [headerHeight, setHeaderHeight] = useState(0);

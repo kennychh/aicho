@@ -68,7 +68,6 @@ export const ChatScreen = ({
   const [message, setMessage] = useState(null);
   const [retry, setRetry] = useState(null);
   const [regen, setRegen] = useState(false);
-  const [isResultValid, setResultValid] = useState(false);
   const [inputHeight, setInputHeight] = useState(0);
   const [deviceType, setDeviceType] = useState(0);
   const modalizeRef = useRef(null);
@@ -140,14 +139,6 @@ export const ChatScreen = ({
       setDeviceType(deviceType);
     });
   }, []);
-
-  useEffect(() => {
-    if (input.replace(/\s+/g, "") != "") {
-      setResultValid(true);
-    } else {
-      setResultValid(false);
-    }
-  }, [input]);
 
   useEffect(() => {
     if (message) {
@@ -486,7 +477,6 @@ export const ChatScreen = ({
               textInputRef={textInputRef}
               onSubmit={onSubmit}
               loading={loading}
-              isResultValid={isResultValid}
               onLayout={onLayout}
               height={inputHeight}
               error={error}

@@ -1,13 +1,10 @@
+import { useContext } from "react";
 import { InputScreen } from "./InputScreen";
+import { AppContext } from "../context";
 
-export const MaxTokensScreen = ({
-  props,
-  theme,
-  setMaxTokens,
-  maxTokens,
-  color,
-}) => {
+export const MaxTokensScreen = ({ props }) => {
   const navigation = props.navigation;
+  const { theme, setMaxTokens, maxTokens, color } = useContext(AppContext);
   return (
     <InputScreen
       props={props}

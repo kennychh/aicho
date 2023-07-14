@@ -1,5 +1,5 @@
 import { BlurView } from "expo-blur";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useContext, useEffect, useMemo } from "react";
 import { Dimensions, FlatList, StyleSheet, Text, View } from "react-native";
 import {
   Gesture,
@@ -26,6 +26,7 @@ import { Message } from "../icons";
 import { getTheme } from "../theme";
 import { PreviewMessage } from "./PreviewMessage";
 import { HoldMenu } from "./HoldMenu";
+import { AppContext } from "../context";
 
 export const HoldPreview = ({
   translateX,
@@ -34,11 +35,10 @@ export const HoldPreview = ({
   showHoldMenu,
   origin = { x: 0, y: 0, width: 0, height: 0 },
   title,
-  theme,
   data,
-  color,
   holdMenuData,
 }) => {
+  const { theme, color } = useContext(AppContext);
   const windowWidth =
     Dimensions.get("window").width > 390 ? 390 : Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;

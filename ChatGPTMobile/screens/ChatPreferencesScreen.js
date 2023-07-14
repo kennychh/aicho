@@ -16,18 +16,19 @@ import {
 } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { getTheme } from "../theme";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
+import { AppContext } from "../context";
 
-export const ChatPreferencesScreen = ({
-  props,
-  theme,
-  maxTokens,
-  temperature,
-  presencePenalty,
-  frequencyPenalty,
-  timeout,
-  model,
-}) => {
+export const ChatPreferencesScreen = ({ props }) => {
+  const {
+    theme,
+    maxTokens,
+    temperature,
+    presencePenalty,
+    frequencyPenalty,
+    timeout,
+    model,
+  } = useContext(AppContext);
   const navigation = props.navigation;
   const insets = useSafeAreaInsets();
   const yOffset = useRef(new Animated.Value(0)).current;
@@ -105,7 +106,7 @@ export const ChatPreferencesScreen = ({
             yOffset.setValue(offset);
           }}
           onScrollBeginDrag={Keyboard.dismiss}
-          style={{ flex: 1, paddingTop: headerHeight}}
+          style={{ flex: 1, paddingTop: headerHeight }}
           indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
           renderItem={({ item }) => item}
         />

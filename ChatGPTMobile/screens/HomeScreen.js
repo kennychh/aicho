@@ -9,7 +9,7 @@ import { ChatScreen } from "./ChatScreen";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PortalProvider } from "@gorhom/portal";
 import { Dimensions, TouchableOpacity } from "react-native";
-import { useContext, useRef, useState } from "react";
+import { useContext, useMemo, useRef, useState } from "react";
 import { useSharedValue } from "react-native-reanimated";
 import * as Clipboard from "expo-clipboard";
 import { getMonthsAgo, getMonthsAgoStr } from "../helpers/getTimeCreated";
@@ -22,31 +22,11 @@ export const HomeScreen = () => {
     chats,
     setChatIndex,
     chatIndex,
-    setChats,
-    setDeleteChat,
     chatDetails,
-    setChatDetails,
     setInput,
     setEditMessage,
     theme,
-    setTheme,
-    darkModeModalizeRef,
     clearConversation,
-    input,
-    editMessage,
-    key,
-    keyChanged,
-    setKeyChanged,
-    timeout,
-    model,
-    maxTokens,
-    color,
-    retainContext,
-    confirmDeleteVisible,
-    temperature,
-    presencePenalty,
-    frequencyPenalty,
-    holdMenuRef,
   } = useContext(AppContext);
   const showPreview = useSharedValue(false);
   const translateX = useSharedValue(0);
@@ -64,15 +44,24 @@ export const HomeScreen = () => {
   const windowWidth = Dimensions.get("window").width;
 
   const MAX_CHATS_SHOWN = 10;
-  const cutOffNum =
-    chatDetails.length <= MAX_CHATS_SHOWN
-      ? 0
-      : chatDetails.length - MAX_CHATS_SHOWN;
-  const cutOffChatDetailsByMonths = getMonthsAgo(chatDetails, cutOffNum);
+  const cutOffNum = useMemo(
+    () =>
+      chatDetails.length <= MAX_CHATS_SHOWN
+        ? 0
+        : chatDetails.length - MAX_CHATS_SHOWN,
+    [chatDetails]
+  );
+  const cutOffChatDetailsByMonths = useMemo(
+    () => getMonthsAgo(chatDetails, cutOffNum),
+    [chatDetails, cutOffNum]
+  );
   const stickyHeadersData = getMonthsAgoStr(
     Object.keys(cutOffChatDetailsByMonths)
   );
-  const drawerChatData = Object.values(cutOffChatDetailsByMonths);
+  const drawerChatData = useMemo(
+    () => Object.values(cutOffChatDetailsByMonths),
+    [cutOffChatDetailsByMonths]
+  );
   const openHoldPreview = (layout, title, data, holdMenuData) => {
     setOrigin({
       x: layout.x,
@@ -160,19 +149,16 @@ export const HomeScreen = () => {
           translateX={translateX}
           translateY={translateY}
           origin={origin}
-          theme={theme}
           title={previewTitle}
           data={previewData}
-          color={color}
         />
         <ConfirmDeleteChatModal
           onPress={() => {
             clearConversation(confirmDeleteChatIndex);
           }}
-          theme={theme}
           visible={confirmDeleteChatVisible}
         ></ConfirmDeleteChatModal>
-        <ChatHistoryModal bottomSheetRef={bottomSheetRef} theme={theme} />
+        <ChatHistoryModal bottomSheetRef={bottomSheetRef} />
       </PortalProvider>
     </GestureHandlerRootView>
   );

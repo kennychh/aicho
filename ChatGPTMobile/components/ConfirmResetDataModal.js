@@ -1,14 +1,13 @@
+import { useContext } from "react";
 import { BottomModal } from "./BottomModal";
+import { AppContext } from "../context";
 
-export const ConfirmResetDataModal = ({
-  onPress,
-  theme,
-  visible,
-}) => {
+export const ConfirmResetDataModal = ({}) => {
+  const { theme, resetData, confirmResetVisible } = useContext(AppContext);
   return (
     <BottomModal
-      visible={visible}
-      onPress={onPress}
+      visible={confirmResetVisible}
+      onPress={resetData}
       theme={theme}
       title={"Reset data?"}
       buttonText={"Reset"}

@@ -1,13 +1,10 @@
+import { useContext } from "react";
 import { InputScreen } from "./InputScreen";
+import { AppContext } from "../context";
 
-export const TemperatureScreen = ({
-  props,
-  theme,
-  setTemperature,
-  temperature,
-  color,
-}) => {
+export const TemperatureScreen = ({ props }) => {
   const navigation = props.navigation;
+  const { theme, setTemperature, temperature, color } = useContext(AppContext);
   return (
     <InputScreen
       props={props}

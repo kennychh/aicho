@@ -1,7 +1,15 @@
 import { Portal } from "@gorhom/portal";
 import { BlurView } from "expo-blur";
 import { nanoid } from "nanoid/non-secure";
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  memo,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Dimensions, StyleSheet, Text } from "react-native";
 import Animated, {
   measure,
@@ -26,18 +34,15 @@ import {
 } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { HoldMenu } from "./HoldMenu";
+import { AppContext } from "../context";
 
 const HoldItem = ({
   children,
-  isActive,
-  setIsActive,
   tint,
   isInput,
   isError,
   listRef,
   setSwipeEnabled,
-  theme,
-  holdMenuRef,
   holdMenuData,
   active,
   itemRectHeight,
@@ -47,10 +52,10 @@ const HoldItem = ({
   containerRef,
   menuWidth,
   menuHeight,
-  menuRef,
   showPortal,
   setShowPortal,
 }) => {
+  const { theme } = useContext(AppContext);
   const windowHeight = Dimensions.get("window").height;
   const windowWidth = Dimensions.get("window").width;
   const insets = useSafeAreaInsets();

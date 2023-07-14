@@ -62,6 +62,7 @@ const DrawerContent = ({
   const memoizedTheme = useMemo(() => theme, [theme]);
   const memoizedChatIndex = useMemo(() => chatIndex, [chatIndex]);
   const memoizedChatDetails = useMemo(() => chatDetails, [chatDetails]);
+  const memoizedChats = useMemo(() => chats, [chats]);
   const renderItem = useCallback(
     ({ item, index }) => {
       return (
@@ -72,7 +73,7 @@ const DrawerContent = ({
             stickyHeadersData={memoizedStickyHeadersData}
             theme={memoizedTheme}
             chatIndex={memoizedChatIndex}
-            chats={chats}
+            chats={memoizedChats}
             chatDetails={memoizedChatDetails}
             openHoldPreview={openHoldPreview}
             holdPreviewFunctions={holdPreviewFunctions}
@@ -99,6 +100,7 @@ const DrawerContent = ({
       memoizedTheme,
       memoizedChatIndex,
       memoizedChatDetails,
+      memoizedChats,
     ]
   );
 
@@ -141,11 +143,11 @@ const DrawerContent = ({
           onPress={() => {
             const date = new Date();
             setChats((oldChats) => [...oldChats, []]);
-            setChatIndex(chats.length);
+            setChatIndex(chatDetails.length);
             setChatDetails((oldChatTitles) => [
-              ...oldChatTitles.slice(0, chats.length),
+              ...oldChatTitles.slice(0, chatDetails.length),
               ["New chat", date.toString()],
-              ...oldChatTitles.slice(chats.length + 1),
+              ...oldChatTitles.slice(chatDetails.length + 1),
             ]);
             setInput("");
             setEditMessage(null);
@@ -275,7 +277,8 @@ function arePropsEqual(prevProps, nextProps) {
     prevProps.theme === nextProps.theme &&
     prevProps.chatIndex === nextProps.chatIndex &&
     prevProps.chatDetails === nextProps.chatDetails &&
-    prevProps.confirmDeleteVisible === nextProps.confirmDeleteVisible
+    prevProps.confirmDeleteVisible === nextProps.confirmDeleteVisible &&
+    prevProps.drawerChatData === nextProps.drawerChatData
   );
 }
 export default memo(DrawerContent, arePropsEqual);

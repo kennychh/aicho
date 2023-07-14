@@ -16,7 +16,6 @@ export const Input = ({
   textInputRef,
   onSubmit,
   loading,
-  isResultValid,
   onLayout,
   height,
   result,
@@ -26,9 +25,17 @@ export const Input = ({
   const { setInput, setEditMessage, theme, input, editMessage, color } =
     useContext(AppContext);
   const windowWidth = Dimensions.get("window").width;
-  const showSendIcon = isResultValid;
+  const [isResultValid, setResultValid] = useState(false);
   const showRefreshIcon =
     (!isResultValid && !loading && result[0]?.isInput) || result[0]?.isError;
+
+  useEffect(() => {
+    if (input.replace(/\s+/g, "") != "") {
+      setResultValid(true);
+    } else {
+      setResultValid(false);
+    }
+  }, [input]);
 
   const showLoadingIcon = loading;
   const [editable, setEditable] = useState(!result[0]?.isError);
@@ -39,7 +46,7 @@ export const Input = ({
       return <Send width="20px" height="20px" stroke="#fff" />;
     } else if (showRefreshIcon) {
       return <Refresh width="20px" height="20px" stroke="#fff" />;
-    } else if (showSendIcon) {
+    } else if (isResultValid) {
       return <Send width="20px" height="20px" stroke="#fff" />;
     }
     return <Send width="20px" height="20px" stroke="#fff" />;

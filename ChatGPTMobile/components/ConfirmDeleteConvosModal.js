@@ -6,22 +6,21 @@ import {
   useColorScheme,
   TouchableOpacity,
 } from "react-native";
-import { Modalize } from "react-native-modalize";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BottomModal } from "./BottomModal";
+import { useContext } from "react";
+import { AppContext } from "../context";
 
-export const ConfirmDeleteConvosModal = ({
-  setChatIndex,
-  setChats,
-  setDeleteChat,
-  setChatDetails,
-  setInput,
-  setEditMessage,
-  theme,
-  modalizeRef,
-  confirmDeleteVisible,
-}) => {
-  const insets = useSafeAreaInsets();
+export const ConfirmDeleteConvosModal = () => {
+  const {
+    setChatIndex,
+    setChats,
+    setDeleteChat,
+    setChatDetails,
+    setInput,
+    setEditMessage,
+    theme,
+    confirmDeleteVisible,
+  } = useContext(AppContext);
   return (
     <BottomModal
       visible={confirmDeleteVisible}

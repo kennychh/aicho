@@ -3,7 +3,7 @@ import Animated, {
   useSharedValue,
 } from "react-native-reanimated";
 import { PanModal } from "./PanModal";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { Copy, Delete, Edit2 } from "../icons";
@@ -15,9 +15,11 @@ import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetFlatList,
 } from "@gorhom/bottom-sheet";
+import { AppContext } from "../context";
 
-export const ChatHistoryModal = ({ bottomSheetRef, theme, onPressOptions }) => {
+export const ChatHistoryModal = ({ bottomSheetRef }) => {
   const insets = useSafeAreaInsets();
+  const { theme } = useContext(AppContext);
   const windowHeight = Dimensions.get("window").height;
   const snapPoints = useMemo(() => ["60%", windowHeight - insets.top], []);
   const flatListRef = useRef();

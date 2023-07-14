@@ -16,20 +16,21 @@ import {
 } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { getTheme } from "../theme";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Check, DarkTheme, LightTheme, SystemTheme } from "../icons";
+import { AppContext } from "../context";
 
-export const AppearanceScreen = ({
-  props,
-  theme,
-  isDarkMode,
-  setIsDarkMode,
-  useDeviceSettings,
-  setUseDeviceSettings,
-  color,
-  setColor,
-}) => {
+export const AppearanceScreen = ({ props }) => {
   const navigation = props.navigation;
+  const {
+    theme,
+    isDarkMode,
+    setIsDarkMode,
+    useDeviceSettings,
+    setUseDeviceSettings,
+    color,
+    setColor,
+  } = useContext(AppContext);
   const insets = useSafeAreaInsets();
   const yOffset = useRef(new Animated.Value(0)).current;
   const [headerHeight, setHeaderHeight] = useState(0);
@@ -122,7 +123,7 @@ export const AppearanceScreen = ({
             yOffset.setValue(offset);
           }}
           onScrollBeginDrag={Keyboard.dismiss}
-          style={{ flex: 1, paddingTop: headerHeight}}
+          style={{ flex: 1, paddingTop: headerHeight }}
           indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
           renderItem={({ item }) => item}
         />

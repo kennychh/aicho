@@ -16,10 +16,12 @@ import {
 } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { getTheme } from "../theme";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
+import { AppContext } from "../context";
 
-export const AboutScreen = ({ props, theme }) => {
+export const AboutScreen = ({ props }) => {
   const navigation = props.navigation;
+  const { theme } = useContext(AppContext);
   const insets = useSafeAreaInsets();
   const [headerHeight, setHeaderHeight] = useState(0);
   const yOffset = useRef(new Animated.Value(0)).current;

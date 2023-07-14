@@ -30,23 +30,25 @@ const DrawerChatsList = ({
       >
         {stickyHeadersData[index]}
       </Text>
-      {item.reverse().map((drawerChatIndex) => {
-        return (
-          <DrawerChats
-            theme={theme}
-            onPress={() => {
-              drawerChatsOnPress(drawerChatIndex);
-            }}
-            text={chatTitle(drawerChatIndex)}
-            selected={chatIndex == drawerChatIndex}
-            openHoldPreview={openHoldPreview}
-            data={chats[drawerChatIndex].slice(0, 10)}
-            index={drawerChatIndex}
-            holdPreviewFunctions={holdPreviewFunctions}
-            navigation={navigation}
-          />
-        );
-      })}
+      {item
+        .map((drawerChatIndex) => {
+          return (
+            <DrawerChats
+              theme={theme}
+              onPress={() => {
+                drawerChatsOnPress(drawerChatIndex);
+              }}
+              text={chatTitle(drawerChatIndex)}
+              selected={chatIndex == drawerChatIndex}
+              openHoldPreview={openHoldPreview}
+              data={chats[drawerChatIndex].slice(0, 10)}
+              index={drawerChatIndex}
+              holdPreviewFunctions={holdPreviewFunctions}
+              navigation={navigation}
+            />
+          );
+        })
+        .reverse()}
     </View>
   );
 };

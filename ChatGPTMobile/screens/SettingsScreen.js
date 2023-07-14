@@ -10,10 +10,12 @@ import { getTheme } from "../theme";
 import { SettingsOption } from "./../components/SettingsOption";
 import * as WebBrowser from "expo-web-browser";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { Animated } from "react-native";
+import { AppContext } from "../context";
 
-export const SettingsScreen = ({ props, theme, confirmResetVisible }) => {
+export const SettingsScreen = ({ props }) => {
+  const { theme, confirmResetVisible } = useContext(AppContext);
   const navigation = props.navigation;
   const yOffset = useRef(new Animated.Value(0)).current;
   const insets = useSafeAreaInsets();
