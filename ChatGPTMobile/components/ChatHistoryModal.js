@@ -81,7 +81,7 @@ export const ChatHistoryModal = ({
       index={-1}
       snapPoints={snapPoints}
       style={{ width: "100%" }}
-      backgroundStyle={{ backgroundColor: theme.onBackgroundColor }}
+      backgroundStyle={{ backgroundColor: theme.modal.backgroundColor }}
       handleIndicatorStyle={{
         backgroundColor: theme.modal.handle.backgroundColor,
         width: 40,
