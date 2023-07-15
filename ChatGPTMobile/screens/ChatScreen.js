@@ -45,7 +45,6 @@ export const ChatScreen = ({
     setChats,
     chatDetails,
     setChatDetails,
-    setInput,
     theme,
     input,
     editMessage,
@@ -65,7 +64,7 @@ export const ChatScreen = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [showBottomToast, setShowBottomToast] = useState(false);
-  const [message, setMessage] = useState(null);
+  // const [message, setMessage] = useState(null);
   const [retry, setRetry] = useState(null);
   const [regen, setRegen] = useState(false);
   const [inputHeight, setInputHeight] = useState(0);
@@ -76,7 +75,6 @@ export const ChatScreen = ({
   const headerTextInputRef = useRef(null);
   const listRef = useRef(null);
   const [showScrollToButton, setShowScrollToButton] = useState(false);
-  const [editMessageHeight, setEditMessageHeight] = useState(0);
   const panModalVisible = useSharedValue(false);
   const headerTitle = useMemo(
     () =>
@@ -143,11 +141,11 @@ export const ChatScreen = ({
     });
   }, []);
 
-  useEffect(() => {
-    if (message) {
-      onOpen(messageModalizeRef);
-    }
-  }, [message]);
+  // useEffect(() => {
+  //   if (message) {
+  //     onOpen(messageModalizeRef);
+  //   }
+  // }, [message]);
 
   // useEffect(() => {
   //   const errorFound = chats[chatIndex][0]?.isError;
@@ -465,15 +463,12 @@ export const ChatScreen = ({
             <MessageList
               data={result}
               inputOffset={inputHeight}
-              setMessage={setMessage}
               setRegen={setRegen}
               setRetry={setRetry}
               setError={setError}
               listRef={listRef}
               showScrollToButton={showScrollToButton}
               setShowScrollToButton={setShowScrollToButton}
-              setEditMessageHeight={setEditMessageHeight}
-              editMessageHeight={editMessageHeight}
             />
             <Input
               textInputRef={textInputRef}

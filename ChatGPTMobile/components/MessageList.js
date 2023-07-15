@@ -25,34 +25,33 @@ import { AppContext } from "../context";
 const MessageList = ({
   data,
   inputOffset,
-  setMessage,
   setRegen,
   setRetry,
   setError,
   regen,
-  listRef,
   showScrollToButton,
   setShowScrollToButton,
-  setEditMessageHeight,
-  editMessageHeight,
   intensity,
 }) => {
-  const { setInput, setEditMessage, theme, editMessage, color, holdMenuRef } =
-    useContext(AppContext);
+  const { theme, editMessage, color, chatIndex } = useContext(AppContext);
+  const [editMessageHeight, setEditMessageHeight] = useState(0);
   const ref = useRef();
   const insets = useSafeAreaInsets();
   const [scrollEnabled, setScrollEnabled] = useState(true);
   const memoizedColor = useMemo(() => color, [color]);
   const memoizedTheme = useMemo(() => theme, [theme]);
+  const [page, setPage] = useState(1);
+  const PAGE_LIMIT = 10;
+  const pageData = useMemo(
+    () => data.slice(0, PAGE_LIMIT * page),
+    [data, page]
+  );
   const renderItem = useCallback(
     ({ item, index }) => {
       return (
         <Message
           item={item}
           index={index}
-          setMessage={setMessage}
-          setEditMessage={setEditMessage}
-          setInput={setInput}
           setRegen={setRegen}
           setRetry={setRetry}
           setError={setError}
@@ -62,7 +61,6 @@ const MessageList = ({
           listRef={ref}
           setScrollEnabled={setScrollEnabled}
           intensity={intensity}
-          holdMenuRef={holdMenuRef}
         />
       );
     },
@@ -70,6 +68,16 @@ const MessageList = ({
   );
 
   const keyExtractor = (item, index) => item?.result?.id || index;
+
+  const onEndReached = () => {
+    if (pageData.length < data.length) {
+      setPage((oldPage) => oldPage + 1);
+    }
+  };
+
+  useEffect(() => {
+    setPage(1);
+  }, [chatIndex]);
   return (
     <View
       style={{
@@ -87,17 +95,12 @@ const MessageList = ({
         editMessageHeight={editMessageHeight}
       />
       <EditMessage
-        theme={theme}
         inputOffset={inputOffset}
-        setEditMessage={setEditMessage}
-        setInput={setInput}
-        editMessage={editMessage}
-        listRef={listRef}
         setEditMessageHeight={setEditMessageHeight}
       />
       <FlatList
         ref={ref}
-        data={data}
+        data={pageData}
         indicator
         onScroll={(event) => {
           y = event.nativeEvent.contentOffset.y;
@@ -107,6 +110,8 @@ const MessageList = ({
             setShowScrollToButton(false);
           }
         }}
+        onEndReachedThreshold={0}
+        onEndReached={onEndReached}
         scrollEnabled={scrollEnabled}
         keyboardShouldPersistTaps="always"
         onScrollBeginDrag={Keyboard.dismiss}
@@ -142,12 +147,10 @@ function arePropsEqual(prevProps, nextProps) {
     prevProps.theme === nextProps.theme &&
     prevProps.showScrollToButton === nextProps.showScrollToButton &&
     prevProps.inputOffset === nextProps.inputOffset &&
-    prevProps.editMessage === nextProps.editMessage &&
     prevProps.regen === nextProps.regen &&
-    prevProps.listRef === nextProps.listRef &&
     prevProps.editMessageHeight === nextProps.editMessageHeight &&
     prevProps.intensity === nextProps.intensity &&
     prevProps.holdMenuRef === nextProps.holdMenuRef
   );
 }
-export default MessageList;
+export default memo(MessageList, arePropsEqual);

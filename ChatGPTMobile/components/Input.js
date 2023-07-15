@@ -64,7 +64,7 @@ export const Input = ({
   useEffect(() => {
     if (tempInput == input) {
       getInputOnPress();
-      setEditMessage(null);
+      // setEditMessage(null);
       setTempInput("");
     }
   }, [input]);

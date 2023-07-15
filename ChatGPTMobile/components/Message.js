@@ -12,7 +12,15 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import * as Haptics from "expo-haptics";
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  memo,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Alert, Copy, Edit, Edit2, Refresh } from "../icons";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -20,32 +28,23 @@ import * as Clipboard from "expo-clipboard";
 import HoldItem from "./HoldItem";
 import { getTheme } from "../theme";
 import { useAnimatedRef, useSharedValue } from "react-native-reanimated";
+import { AppContext } from "../context";
 
 const Message = ({
   item,
   index,
-  setMessage,
-  setEditMessage,
-  setInput,
   setRegen,
-  regen,
-  setRetry,
   setError,
-  theme,
-  color,
   listRef,
-  holdMenuRef,
   setScrollEnabled,
 }) => {
+  const { setEditMessage, theme, color, holdMenuRef } = useContext(AppContext);
   const text = item?.result?.text || "";
   const isInput = item?.isInput;
   const isError = item?.isError;
   const windowWidth = Dimensions.get("window").width;
-  const windowHeight = Dimensions.get("window").height;
   const swipeableRef = useRef(null);
-  const [progressValue, setProgressValue] = useState();
-  const progressRef = useRef();
-  const [expandMessage, setExpandMessage] = useState(index != 0);
+  const progressValue = useRef();
   const [haptic, setHaptic] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const animation = useRef(new Animated.Value(0)).current;
@@ -79,7 +78,7 @@ const Message = ({
       icon: <Edit2 stroke={theme.iconColor} width={20} height={20} />,
       onPress: () => {
         setEditMessage(item);
-        setInput(text);
+        // setInput(text);
       },
     },
   ];
@@ -269,7 +268,7 @@ const Message = ({
             rightThreshold={48}
             leftThreshold={48}
             renderRightActions={(progress, dragX) => {
-              setProgressValue(progress);
+              progressValue.current = progress;
               progress.addListener(({ value }) => {
                 if (value >= 1 && !haptic) {
                   setHaptic(true);
@@ -278,7 +277,7 @@ const Message = ({
               return isInput && renderRightAction(progress, dragX);
             }}
             renderLeftActions={(progress, dragX) => {
-              setProgressValue(progress);
+              progressValue.current = progress;
               progress.addListener(({ value }) => {
                 if (value >= 1 && !haptic) {
                   setHaptic(true);
@@ -290,9 +289,8 @@ const Message = ({
             hitSlop={{ left: -60 }}
             onSwipeableWillOpen={(direction) => {
               if (direction == "right") {
-                setMessage(null);
                 setEditMessage(item);
-                setInput(text);
+                // setInput(text);
               } else {
                 setError(false);
                 setRegen(item);
@@ -303,8 +301,8 @@ const Message = ({
             }}
             onSwipeableClose={() => {
               setHaptic(false);
-              progressValue.removeAllListeners();
-              setProgressValue(null);
+              progressValue?.current?.removeAllListeners();
+              progressValue.current = null;
             }}
           >
             <View style={styles.messageContainer}>

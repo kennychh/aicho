@@ -7,18 +7,13 @@ import {
 } from "react-native";
 import { View } from "react-native";
 import { Close } from "../icons";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AppContext } from "../context";
 
-export const EditMessage = ({
-  theme,
-  inputOffset,
-  setEditMessage,
-  setInput,
-  editMessage,
-  listRef,
-  setEditMessageHeight,
-}) => {
+export const EditMessage = ({ inputOffset, setEditMessageHeight }) => {
   const windowWidth = Dimensions.get("window").width;
+  const { setEditMessage, theme, editMessage, setInput } =
+    useContext(AppContext);
 
   const [showEdit, setShowEdit] = useState(false);
   useEffect(() => {
