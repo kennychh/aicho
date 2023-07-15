@@ -54,6 +54,7 @@ const HoldItem = ({
   menuHeight,
   showPortal,
   setShowPortal,
+  setScrollEnabled,
 }) => {
   const { theme } = useContext(AppContext);
   const windowHeight = Dimensions.get("window").height;
@@ -71,9 +72,9 @@ const HoldItem = ({
   const closeHoldItem = () => {
     active.value = false;
     setTimeout(() => {
-      listRef?.current?.setNativeProps({ scrollEnabled: true });
       setSwipeEnabled(true);
       setShowPortal(false);
+      setScrollEnabled(true);
     }, duration);
   };
 

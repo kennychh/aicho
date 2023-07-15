@@ -1,24 +1,32 @@
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { Text } from "react-native";
 import { Copy, Delete, Edit, Edit2, Message } from "../icons";
-import { useMemo, useRef, useState } from "react";
+import { useContext, useMemo, useRef, useState } from "react";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
 import * as Haptics from "expo-haptics";
+import { AppContext } from "../context";
 
 export const DrawerChats = ({
-  theme,
   onPress,
-  text,
   selected,
   openHoldPreview,
-  data,
   index,
   holdPreviewFunctions,
 }) => {
+  const { chatDetails, chats, theme } = useContext(AppContext);
+  const data = useMemo(() => chats[index].slice(0, 10), [chats]);
+  const chatTitle = useMemo(
+    () =>
+      typeof chatDetails[index] === "string" ||
+      typeof chatDetails[index] === "undefined"
+        ? chatDetails[index]
+        : chatDetails[index][0],
+    [chatDetails]
+  );
   const expandContainer = useSharedValue(false);
   const ref = useRef(null);
   const DURATION = 400;
@@ -68,7 +76,9 @@ export const DrawerChats = ({
     <Animated.View style={containerStyle}>
       <TouchableOpacity
         ref={ref}
-        onPress={onPress}
+        onPress={() => {
+          onPress(index);
+        }}
         delayLongPress={200}
         onLongPress={() => {
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -82,7 +92,7 @@ export const DrawerChats = ({
                   width: width,
                   height: height,
                 },
-                text,
+                chatTitle,
                 data,
                 holdMenuData
               );
@@ -108,7 +118,7 @@ export const DrawerChats = ({
           numberOfLines={1}
           ellipsizeMode="tail"
         >
-          {text}
+          {chatTitle}
         </Text>
       </TouchableOpacity>
     </Animated.View>

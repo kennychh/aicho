@@ -17,14 +17,9 @@ import {
 import Message from "./Message";
 import { getTheme } from "../theme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { FlashList } from "@shopify/flash-list";
 import { EditMessage } from "./EditMessage";
-import Animated, {
-  FadeIn,
-  FadeInDown,
-  FadeInUp,
-} from "react-native-reanimated";
 import { ScrollToButton } from "./ScrollToButton";
+import { FlashList } from "@shopify/flash-list";
 import { AppContext } from "../context";
 
 const MessageList = ({
@@ -44,13 +39,11 @@ const MessageList = ({
 }) => {
   const { setInput, setEditMessage, theme, editMessage, color, holdMenuRef } =
     useContext(AppContext);
+  const ref = useRef();
   const insets = useSafeAreaInsets();
-  const [showCurrentMessage, setShowCurrentMessage] = useState(false);
-  const [isCurrentMessage, setIsCurrentMessage] = useState(false);
-  const [indexChanged, setIndexChanged] = useState(false);
+  const [scrollEnabled, setScrollEnabled] = useState(true);
   const memoizedColor = useMemo(() => color, [color]);
   const memoizedTheme = useMemo(() => theme, [theme]);
-  const scrollEnabled = useRef(true);
   const renderItem = useCallback(
     ({ item, index }) => {
       return (
@@ -66,7 +59,8 @@ const MessageList = ({
           regen={regen}
           theme={memoizedTheme}
           color={memoizedColor}
-          listRef={listRef}
+          listRef={ref}
+          setScrollEnabled={setScrollEnabled}
           intensity={intensity}
           holdMenuRef={holdMenuRef}
         />
@@ -85,7 +79,7 @@ const MessageList = ({
       }}
     >
       <ScrollToButton
-        listRef={listRef}
+        listRef={ref}
         theme={theme}
         inputOffset={inputOffset}
         showScrollToButton={showScrollToButton}
@@ -102,7 +96,7 @@ const MessageList = ({
         setEditMessageHeight={setEditMessageHeight}
       />
       <FlatList
-        ref={(list) => (listRef.current = list)}
+        ref={ref}
         data={data}
         indicator
         onScroll={(event) => {
@@ -113,13 +107,14 @@ const MessageList = ({
             setShowScrollToButton(false);
           }
         }}
-        scrollEnabled={listRef.current?.props?.scrollEnabled || true}
+        scrollEnabled={scrollEnabled}
         keyboardShouldPersistTaps="always"
         onScrollBeginDrag={Keyboard.dismiss}
         removeClippedSubviews={true}
         maxToRenderPerBatch={4}
         windowSize={8}
         initialNumToRender={4}
+        scrollEventThrottle={16}
         indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
         scrollIndicatorInsets={{
           top: 8,

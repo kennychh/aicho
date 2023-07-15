@@ -35,6 +35,7 @@ const Message = ({
   color,
   listRef,
   holdMenuRef,
+  setScrollEnabled,
 }) => {
   const text = item?.result?.text || "";
   const isInput = item?.isInput;
@@ -209,10 +210,10 @@ const Message = ({
         onScaleInOut();
         setSwipeEnabled(false);
         setShowPortal(true);
+        setScrollEnabled(false);
         // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
         // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
         Keyboard.dismiss();
-        listRef?.current?.setNativeProps({ scrollEnabled: false });
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
         containerRef?.current?.measure((x, y, width, height, pageX, pageY) => {
           if (itemRectY.value != pageY || !active.value) {
@@ -341,6 +342,7 @@ const Message = ({
                 menuRef={menuRef}
                 showPortal={showPortal}
                 setShowPortal={setShowPortal}
+                setScrollEnabled={setScrollEnabled}
               >
                 {messageItem}
               </HoldItem>

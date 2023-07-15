@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { BlurView } from "expo-blur";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { Send, Refresh, Loading, Close } from "../icons";
 import { getTheme } from "../theme";
 import { AppContext } from "../context";
@@ -22,20 +22,23 @@ export const Input = ({
   setError,
   setRetry,
 }) => {
-  const { setInput, setEditMessage, theme, input, editMessage, color } =
-    useContext(AppContext);
+  const {
+    setInput,
+    setEditMessage,
+    theme,
+    input,
+    editMessage,
+    color,
+    chatIndex,
+  } = useContext(AppContext);
   const windowWidth = Dimensions.get("window").width;
-  const [isResultValid, setResultValid] = useState(false);
+  const [tempInput, setTempInput] = useState("");
+  const isInputValid = (str) => {
+    return str.replace(/\s+/g, "") != "";
+  };
   const showRefreshIcon =
-    (!isResultValid && !loading && result[0]?.isInput) || result[0]?.isError;
-
-  useEffect(() => {
-    if (input.replace(/\s+/g, "") != "") {
-      setResultValid(true);
-    } else {
-      setResultValid(false);
-    }
-  }, [input]);
+    (!isInputValid(tempInput) && !loading && result[0]?.isInput) ||
+    result[0]?.isError;
 
   const showLoadingIcon = loading;
   const [editable, setEditable] = useState(!result[0]?.isError);
@@ -46,26 +49,46 @@ export const Input = ({
       return <Send width="20px" height="20px" stroke="#fff" />;
     } else if (showRefreshIcon) {
       return <Refresh width="20px" height="20px" stroke="#fff" />;
-    } else if (isResultValid) {
+    } else if (isInputValid(tempInput)) {
       return <Send width="20px" height="20px" stroke="#fff" />;
     }
     return <Send width="20px" height="20px" stroke="#fff" />;
   };
   const getInputIconColor = () => {
-    if (showLoadingIcon || (!isResultValid && !result[0]?.isError)) {
+    if (showLoadingIcon || (!isInputValid(tempInput) && !result[0]?.isError)) {
       return { backgroundColor: theme.input.button.disabled.backgroundColor };
     }
     return {};
   };
 
+  useEffect(() => {
+    if (tempInput == input) {
+      getInputOnPress();
+      setEditMessage(null);
+      setTempInput("");
+    }
+  }, [input]);
+
+  useEffect(() => {
+    if (editMessage) {
+      setTempInput(editMessage.result?.text);
+    } else {
+      setTempInput("");
+    }
+  }, [editMessage]);
+
+  useEffect(() => {
+    setTempInput("");
+  }, [chatIndex]);
+
   const getInputDisabled = () => {
     if (editMessage) {
-      return !isResultValid;
+      return !isInputValid(tempInput);
     } else if (showRefreshIcon) {
       return false;
     } else if (showLoadingIcon) {
       return true;
-    } else if (!isResultValid) {
+    } else if (!isInputValid(tempInput)) {
       return true;
     }
     return false;
@@ -75,7 +98,7 @@ export const Input = ({
     setError(false);
     if (editMessage) {
       onSubmit();
-    } else if (isResultValid) {
+    } else if (isInputValid(tempInput)) {
       onSubmit();
     } else if (showRefreshIcon) {
       setRetry({ ...result[0], isError: false });
@@ -92,15 +115,14 @@ export const Input = ({
           placeholderTextColor={theme.input.placeholderFontColor}
           style={styles.input(theme)}
           multiline={true}
-          value={input}
+          value={tempInput}
           editable={editable}
-          onChangeText={(s) => setInput(s)}
+          onChangeText={(s) => setTempInput(s)}
         />
       </View>
       <TouchableOpacity
         onPress={() => {
-          getInputOnPress();
-          setEditMessage(null);
+          setInput(tempInput);
         }}
         style={[styles.button(color), getInputIconColor()]}
         disabled={getInputDisabled()}

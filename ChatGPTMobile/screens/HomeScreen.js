@@ -9,7 +9,7 @@ import { ChatScreen } from "./ChatScreen";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PortalProvider } from "@gorhom/portal";
 import { Dimensions, TouchableOpacity } from "react-native";
-import { useContext, useMemo, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useSharedValue } from "react-native-reanimated";
 import * as Clipboard from "expo-clipboard";
 import { getMonthsAgo, getMonthsAgoStr } from "../helpers/getTimeCreated";
@@ -55,8 +55,9 @@ export const HomeScreen = () => {
     () => getMonthsAgo(chatDetails, cutOffNum),
     [chatDetails, cutOffNum]
   );
-  const stickyHeadersData = getMonthsAgoStr(
-    Object.keys(cutOffChatDetailsByMonths)
+  const stickyHeadersData = useMemo(
+    () => getMonthsAgoStr(Object.keys(cutOffChatDetailsByMonths)),
+    [cutOffChatDetailsByMonths]
   );
   const drawerChatData = useMemo(
     () => Object.values(cutOffChatDetailsByMonths),

@@ -61,7 +61,7 @@ export const ChatScreen = ({
     frequencyPenalty,
   } = useContext(AppContext);
   const API_URL = "https://chatgpt-api-blue.vercel.app/api";
-  const result = chats[chatIndex];
+  const result = useMemo(() => chats[chatIndex], [chats, chatIndex]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [showBottomToast, setShowBottomToast] = useState(false);
@@ -78,11 +78,14 @@ export const ChatScreen = ({
   const [showScrollToButton, setShowScrollToButton] = useState(false);
   const [editMessageHeight, setEditMessageHeight] = useState(0);
   const panModalVisible = useSharedValue(false);
-  const headerTitle =
-    typeof chatDetails[chatIndex] === "string" ||
-    typeof chatDetails[chatIndex] === "undefined"
-      ? chatDetails[chatIndex]
-      : chatDetails[chatIndex][0];
+  const headerTitle = useMemo(
+    () =>
+      typeof chatDetails[chatIndex] === "string" ||
+      typeof chatDetails[chatIndex] === "undefined"
+        ? chatDetails[chatIndex]
+        : chatDetails[chatIndex][0],
+    [chatDetails, chatIndex]
+  );
 
   const onLayout = (event) => {
     const { x, y, height, width } = event.nativeEvent.layout;
@@ -96,7 +99,7 @@ export const ChatScreen = ({
   const ChatMenuModalOnPressOptions = {
     copy: () => {
       panModalVisible.value = false;
-      const chatTexts = chats[chatIndex]
+      const chatTexts = result
         .map((chat) => chat.result?.text + "*#")
         .reverse()
         .toString()
@@ -323,7 +326,6 @@ export const ChatScreen = ({
     }
     const regenId =
       result?.length > 2 ? result[regenIndex + 2]?.result?.id : null;
-    setInput("");
     try {
       const bearer = `Bearer ${key}`;
       const responseInput =

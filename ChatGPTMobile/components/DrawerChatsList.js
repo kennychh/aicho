@@ -1,25 +1,19 @@
 import { StyleSheet, Text, View } from "react-native";
 import { DrawerChats } from "./DrawerChats";
-import { memo } from "react";
+import { memo, useContext, useMemo } from "react";
+import { AppContext } from "../context";
 
 const DrawerChatsList = ({
   item,
   index,
   stickyHeadersData,
-  theme,
   chatIndex,
   openHoldPreview,
-  chats,
-  chatDetails,
   holdPreviewFunctions,
   drawerChatsOnPress,
   navigation,
 }) => {
-  const chatTitle = (index) =>
-    typeof chatDetails[index] === "string" ||
-    typeof chatDetails[index] === "undefined"
-      ? chatDetails[index]
-      : chatDetails[index][0];
+  const { chats, theme } = useContext(AppContext);
   const showHeader = item.length > 1 || !!chats[0][0];
   return (
     <View>
@@ -33,17 +27,14 @@ const DrawerChatsList = ({
       </Text>
       {item
         .map((drawerChatIndex) => {
+          const showItem = chats[drawerChatIndex][0];
           return (
-            !!chats[drawerChatIndex][0] && (
+            !!showItem && (
               <DrawerChats
                 theme={theme}
-                onPress={() => {
-                  drawerChatsOnPress(drawerChatIndex);
-                }}
-                text={chatTitle(drawerChatIndex)}
+                onPress={drawerChatsOnPress}
                 selected={chatIndex == drawerChatIndex}
                 openHoldPreview={openHoldPreview}
-                data={chats[drawerChatIndex].slice(0, 10)}
                 index={drawerChatIndex}
                 holdPreviewFunctions={holdPreviewFunctions}
                 navigation={navigation}
@@ -72,8 +63,7 @@ function arePropsEqual(prevProps, nextProps) {
   return (
     prevProps.stickyHeadersData === nextProps.stickyHeadersData &&
     prevProps.theme === nextProps.theme &&
-    prevProps.chatIndex === nextProps.chatIndex &&
-    prevProps.chats === nextProps.chats
+    prevProps.chatIndex === nextProps.chatIndex
   );
 }
 export default memo(DrawerChatsList, arePropsEqual);
