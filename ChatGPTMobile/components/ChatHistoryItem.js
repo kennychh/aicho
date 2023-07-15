@@ -148,8 +148,8 @@ const styles = StyleSheet.create({
     // paddingBottom: 4,
   }),
   previewText: (theme) => ({
-    fontSize: 14,
-    lineHeight: 16,
+    fontSize: 13,
+    lineHeight: 15,
     // fontWeight: "500",
     color: theme.secondaryIconColor,
     paddingBottom: 16,

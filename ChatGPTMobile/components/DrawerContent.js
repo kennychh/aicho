@@ -49,7 +49,7 @@ const DrawerContent = ({
     navigation.closeDrawer();
   }, [chatIndex]);
 
-  const MAX_CHATS_SHOWN = 5;
+  const MAX_CHATS_SHOWN = 10;
   const drawerChatsOnPress = (index) => {
     setInput("");
     setEditMessage(null);
