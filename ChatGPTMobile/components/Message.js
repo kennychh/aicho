@@ -66,7 +66,6 @@ const Message = ({
   const copyToClipboard = async () => {
     await Clipboard.setStringAsync(text);
   };
-
   const holdMenuInputData = [
     {
       title: "Copy",

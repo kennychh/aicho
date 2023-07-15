@@ -111,9 +111,9 @@ const MessageList = ({
         keyboardShouldPersistTaps="always"
         onScrollBeginDrag={Keyboard.dismiss}
         removeClippedSubviews={true}
-        maxToRenderPerBatch={4}
-        windowSize={8}
-        initialNumToRender={4}
+        // maxToRenderPerBatch={4}
+        // // windowSize={8}
+        initialNumToRender={10}
         scrollEventThrottle={16}
         indicatorStyle={theme == getTheme("dark") ? "white" : "black"}
         scrollIndicatorInsets={{
@@ -150,4 +150,4 @@ function arePropsEqual(prevProps, nextProps) {
     prevProps.holdMenuRef === nextProps.holdMenuRef
   );
 }
-export default memo(MessageList, arePropsEqual);
+export default MessageList;
