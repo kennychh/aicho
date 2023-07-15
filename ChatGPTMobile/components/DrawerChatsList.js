@@ -20,6 +20,7 @@ const DrawerChatsList = ({
     typeof chatDetails[index] === "undefined"
       ? chatDetails[index]
       : chatDetails[index][0];
+  const showHeader = item.length > 1 || !!chats[0][0];
   return (
     <View>
       <Text
@@ -28,7 +29,7 @@ const DrawerChatsList = ({
           index == 0 ? { paddingTop: 0 } : {},
         ]}
       >
-        {stickyHeadersData[index]}
+        {showHeader && stickyHeadersData[index]}
       </Text>
       {item
         .map((drawerChatIndex) => {

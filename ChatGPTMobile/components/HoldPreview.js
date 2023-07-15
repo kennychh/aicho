@@ -333,11 +333,11 @@ export const HoldPreview = ({
                 {title}
               </Text>
             </View>
-            <Divider
+            {/* <Divider
               backgroundColor={theme.onBackgroundColor}
               spacerColor={theme.modal.divider.backgroundColor}
               marginHorizontal={0}
-            />
+            /> */}
           </Animated.View>
 
           <Animated.View style={itemStyle}>

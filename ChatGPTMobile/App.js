@@ -211,7 +211,7 @@ export default function App() {
   };
 
   const clearConversation = (i) => {
-    setChatIndex(i == chats.length - 1 ? i - 1 : i);
+    setChatIndex(i == chats.length - 1 && i > 0 ? i - 1 : i);
     setDeleteChat(true);
     if (chats.length == 1) {
       setChats([[]]);

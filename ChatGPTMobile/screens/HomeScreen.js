@@ -89,7 +89,6 @@ export const HomeScreen = () => {
     deleteChat: (index) => {
       setConfirmDeleteChatIndex(index);
       confirmDeleteChatVisible.value = true;
-      bottomSheetRef?.current?.close();
     },
     copyChat: (index) => {
       const chatTexts = chats[index]
@@ -165,6 +164,7 @@ export const HomeScreen = () => {
         <ConfirmDeleteChatModal
           onPress={() => {
             clearConversation(confirmDeleteChatIndex);
+            bottomSheetRef?.current?.close();
           }}
           visible={confirmDeleteChatVisible}
         ></ConfirmDeleteChatModal>
