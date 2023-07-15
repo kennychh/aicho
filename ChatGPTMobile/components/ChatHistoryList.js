@@ -35,25 +35,35 @@ const ChatHistoryList = ({
       </Text>
       {item
         .map((chatHistoryIndex, itemIndex) => {
+          let borderTopRadius = itemIndex == item.length - 1;
+          if (
+            chatHistoryIndex + 1 > 0 &&
+            chatHistoryIndex + 1 <= chats.length - 1 &&
+            !chats[chatHistoryIndex + 1][0]
+          ) {
+            borderTopRadius = itemIndex == item.length - 2;
+          }
           return (
-            <ChatHistoryItem
-              onPress={() => {
-                setInput("");
-                setEditMessage(null);
-                setChatIndex(chatHistoryIndex);
-                bottomSheetRef?.current?.close();
-              }}
-              text={chatTitle(chatHistoryIndex)}
-              selected={chatIndex == chatHistoryIndex}
-              openHoldPreview={openHoldPreview}
-              data={chats[chatHistoryIndex].slice(0, 10)}
-              index={chatHistoryIndex}
-              borderTopRadius={itemIndex == item.length - 1}
-              borderBottomRadius={itemIndex == 0}
-              showDivider={itemIndex != 0}
-              previewText={chats[chatHistoryIndex][0]?.result?.text}
-              holdPreviewFunctions={holdPreviewFunctions}
-            />
+            !!chats[chatHistoryIndex][0] && (
+              <ChatHistoryItem
+                onPress={() => {
+                  setInput("");
+                  setEditMessage(null);
+                  setChatIndex(chatHistoryIndex);
+                  bottomSheetRef?.current?.close();
+                }}
+                text={chatTitle(chatHistoryIndex)}
+                selected={chatIndex == chatHistoryIndex}
+                openHoldPreview={openHoldPreview}
+                data={chats[chatHistoryIndex].slice(0, 10)}
+                index={chatHistoryIndex}
+                borderTopRadius={borderTopRadius}
+                borderBottomRadius={itemIndex == 0}
+                showDivider={itemIndex != 0}
+                previewText={chats[chatHistoryIndex][0]?.result?.text}
+                holdPreviewFunctions={holdPreviewFunctions}
+              />
+            )
           );
         })
         .reverse()}

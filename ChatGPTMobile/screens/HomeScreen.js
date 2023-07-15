@@ -43,7 +43,7 @@ export const HomeScreen = () => {
   const [isHeaderEditable, setIsHeaderEditable] = useState(false);
   const windowWidth = Dimensions.get("window").width;
 
-  const MAX_CHATS_SHOWN = 10;
+  const MAX_CHATS_SHOWN = 5;
   const cutOffNum = useMemo(
     () =>
       chatDetails.length <= MAX_CHATS_SHOWN

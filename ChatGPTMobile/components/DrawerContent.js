@@ -49,7 +49,7 @@ const DrawerContent = ({
     navigation.closeDrawer();
   }, [chatIndex]);
 
-  const MAX_CHATS_SHOWN = 10;
+  const MAX_CHATS_SHOWN = 5;
   const drawerChatsOnPress = (index) => {
     setInput("");
     setEditMessage(null);
@@ -142,13 +142,17 @@ const DrawerContent = ({
           style={[styles.drawerOptions, { marginTop: 24 }]}
           onPress={() => {
             const date = new Date();
-            setChats((oldChats) => [...oldChats, []]);
-            setChatIndex(chatDetails.length);
-            setChatDetails((oldChatTitles) => [
-              ...oldChatTitles.slice(0, chatDetails.length),
-              ["New chat", date.toString()],
-              ...oldChatTitles.slice(chatDetails.length + 1),
-            ]);
+            if (!!chats[chats.length - 1][0]) {
+              setChats((oldChats) => [...oldChats, []]);
+              setChatDetails((oldChatTitles) => [
+                ...oldChatTitles.slice(0, chatDetails.length),
+                ["New chat", date.toString()],
+                ...oldChatTitles.slice(chatDetails.length + 1),
+              ]);
+              setChatIndex(chatDetails.length);
+            } else {
+              setChatIndex(chatDetails.length - 1);
+            }
             setInput("");
             setEditMessage(null);
             navigation.closeDrawer();

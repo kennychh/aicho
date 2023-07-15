@@ -33,19 +33,21 @@ const DrawerChatsList = ({
       {item
         .map((drawerChatIndex) => {
           return (
-            <DrawerChats
-              theme={theme}
-              onPress={() => {
-                drawerChatsOnPress(drawerChatIndex);
-              }}
-              text={chatTitle(drawerChatIndex)}
-              selected={chatIndex == drawerChatIndex}
-              openHoldPreview={openHoldPreview}
-              data={chats[drawerChatIndex].slice(0, 10)}
-              index={drawerChatIndex}
-              holdPreviewFunctions={holdPreviewFunctions}
-              navigation={navigation}
-            />
+            !!chats[drawerChatIndex][0] && (
+              <DrawerChats
+                theme={theme}
+                onPress={() => {
+                  drawerChatsOnPress(drawerChatIndex);
+                }}
+                text={chatTitle(drawerChatIndex)}
+                selected={chatIndex == drawerChatIndex}
+                openHoldPreview={openHoldPreview}
+                data={chats[drawerChatIndex].slice(0, 10)}
+                index={drawerChatIndex}
+                holdPreviewFunctions={holdPreviewFunctions}
+                navigation={navigation}
+              />
+            )
           );
         })
         .reverse()}
