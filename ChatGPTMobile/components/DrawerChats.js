@@ -1,7 +1,7 @@
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { Text } from "react-native";
 import { Copy, Delete, Edit, Edit2, Message } from "../icons";
-import { useContext, useMemo, useRef, useState } from "react";
+import { useContext, useMemo, useRef } from "react";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -18,7 +18,24 @@ export const DrawerChats = ({
   holdPreviewFunctions,
 }) => {
   const { chatDetails, chats, theme } = useContext(AppContext);
-  const data = useMemo(() => chats[index].slice(0, 10), [chats]);
+
+  const openPreview = () => {
+    setTimeout(() => {
+      ref.current.measure((x, y, width, height, pageX, pageY) => {
+        openHoldPreview(
+          {
+            x: pageX,
+            y: pageY,
+            width: width,
+            height: height,
+          },
+          chatTitle,
+          chats?.current[index].slice(0, 10),
+          holdMenuData
+        );
+      });
+    }, DURATION - 200);
+  };
   const chatTitle = useMemo(
     () =>
       typeof chatDetails[index] === "string" ||
@@ -83,21 +100,7 @@ export const DrawerChats = ({
         onLongPress={() => {
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
           expandContainer.value = true;
-          setTimeout(() => {
-            ref.current.measure((x, y, width, height, pageX, pageY) => {
-              openHoldPreview(
-                {
-                  x: pageX,
-                  y: pageY,
-                  width: width,
-                  height: height,
-                },
-                chatTitle,
-                data,
-                holdMenuData
-              );
-            });
-          }, DURATION - 200);
+          openPreview();
         }}
         onPressOut={() => {
           expandContainer.value = false;

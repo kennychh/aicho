@@ -13,11 +13,11 @@ import { AppContext } from "../context";
 export const ConfirmDeleteConvosModal = () => {
   const {
     setChatIndex,
-    setChats,
+    handleChats,
     setDeleteChat,
     setChatDetails,
     setInput,
-    setEditMessage,
+    handleEditMessage,
     theme,
     confirmDeleteVisible,
   } = useContext(AppContext);
@@ -26,11 +26,11 @@ export const ConfirmDeleteConvosModal = () => {
       visible={confirmDeleteVisible}
       onPress={() => {
         setDeleteChat(true);
-        setChats([[]]);
+        handleChats([[]]);
         setChatIndex(0);
         setChatDetails([["New chat", new Date().toString()]]);
         setInput("");
-        setEditMessage(null);
+        handleEditMessage(null);
       }}
       theme={theme}
       title={"Clear conversations?"}

@@ -10,14 +10,19 @@ import { Close } from "../icons";
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context";
 
-export const EditMessage = ({ inputOffset, setEditMessageHeight }) => {
+export const EditMessage = ({
+  inputOffset,
+  setEditMessageHeight,
+  showEditMessage,
+  setShowEditMessage,
+}) => {
   const windowWidth = Dimensions.get("window").width;
-  const { setEditMessage, theme, editMessage, setInput } =
+  const { handleEditMessage, theme, editMessage, setInput } =
     useContext(AppContext);
 
   const [showEdit, setShowEdit] = useState(false);
   useEffect(() => {
-    if (editMessage) {
+    if (showEditMessage) {
       // listRef.current?.prepareForLayoutAnimationRender();
       LayoutAnimation.configureNext({
         duration: 300,
@@ -47,9 +52,10 @@ export const EditMessage = ({ inputOffset, setEditMessageHeight }) => {
         },
       });
       setShowEdit(false);
+      setShowEditMessage(false);
       setEditMessageHeight(0);
     }
-  }, [editMessage]);
+  }, [showEditMessage]);
   return (
     showEdit && (
       <View
@@ -77,7 +83,8 @@ export const EditMessage = ({ inputOffset, setEditMessageHeight }) => {
           <TouchableOpacity
             style={styles.closeIcon}
             onPress={() => {
-              setEditMessage(null);
+              handleEditMessage(null);
+              setShowEditMessage(false);
               setInput("");
             }}
           >

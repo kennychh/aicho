@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, createContext } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  createContext,
+  useCallback,
+} from "react";
 import {
   HomeScreen,
   SettingsScreen,
@@ -55,11 +61,11 @@ if (
 
 export default function App() {
   const Stack = createNativeStackNavigator();
-  const [chats, setChats] = useState([[]]);
+  const chats = useRef();
   const [chatIndex, setChatIndex] = useState(0);
   const [chatDetails, setChatDetails] = useState([undefined, undefined]);
   const [deleteChat, setDeleteChat] = useState(false);
-  const [editMessage, setEditMessage] = useState(null);
+  const editMessage = useRef();
   const [isDarkMode, setIsDarkMode] = useState(colorScheme === "dark");
   const [useDeviceSettings, setUseDeviceSettings] = useState(true);
   const [count, setCount] = useState(0);
@@ -162,7 +168,7 @@ export default function App() {
   const storeChats = async () => {
     try {
       setDeleteChat(false);
-      const jsonValue = JSON.stringify(chats);
+      const jsonValue = JSON.stringify(chats?.current);
       await AsyncStorage.setItem("@chatgpt", jsonValue);
     } catch (e) {
       // saving error
@@ -211,15 +217,15 @@ export default function App() {
   };
 
   const clearConversation = (i) => {
-    setChatIndex(i == chats.length - 1 && i > 0 ? i - 1 : i);
+    setChatIndex(i == chats?.current?.length - 1 && i > 0 ? i - 1 : i);
     setDeleteChat(true);
-    if (chats.length == 1) {
-      setChats([[]]);
+    if (chats?.current?.length == 1) {
+      handleChats([[]]);
       setChatDetails([["New chat", new Date().toString()]]);
     } else {
-      setChats((oldChats) => [
-        ...oldChats.slice(0, i),
-        ...oldChats.slice(i + 1),
+      handleChats([
+        ...chats?.current.slice(0, i),
+        ...chats?.current.slice(i + 1),
       ]);
       setChatDetails((oldChatTitles) => [
         ...oldChatTitles.slice(0, i),
@@ -228,13 +234,24 @@ export default function App() {
     }
   };
 
+  const handleEditMessage = (message) => {
+    editMessage.current = message;
+  };
+
+  const handleChats = (c) => {
+    chats.current = c;
+    storeChats();
+  };
+
+  console.log("app");
+
   const resetData = () => {
     setDeleteChat(true);
-    setChats([[]]);
+    handleChats([[]]);
     setChatIndex(0);
     setChatDetails([["New chat", new Date().toString()]]);
     setInput("");
-    setEditMessage(null);
+    handleEditMessage(null);
     setKey("test");
     setModel("gpt-3.5-turbo");
     setColor("#10a37f");
@@ -259,12 +276,13 @@ export default function App() {
     });
   }
 
-  useEffect(() => {
-    const dontStoreChat = chats.length == 1 && chats[0].length == 0;
-    if (!dontStoreChat || deleteChat) {
-      storeChats();
-    }
-  }, [chats, chatIndex]);
+  // useEffect(() => {
+  //   const dontStoreChat =
+  //     chats?.current.length == 1 && chats?.current[0]?.length == 0;
+  //   if (!dontStoreChat || deleteChat) {
+  //     storeChats();
+  //   }
+  // }, [chats, chatIndex]);
 
   useEffect(() => {
     if (key != "") {
@@ -433,7 +451,7 @@ export default function App() {
           frequencyJsonValue != null ? JSON.parse(frequencyJsonValue) : 0;
 
         if (storedRes) {
-          setChats(storedRes);
+          handleChats(storedRes);
           setChatIndex(storedRes.length - 1);
         }
         if (storedChatTitles) {
@@ -494,7 +512,7 @@ export default function App() {
         setUseDeviceSettings(storedUseDeviceSettings);
       } catch (e) {
         // error reading value
-        Alert.alert("Couldn't retrieve chats", e.message);
+        Alert.alert("Couldn't retrieve chats?.current", e.message);
       }
     };
     getData();
@@ -527,12 +545,12 @@ export default function App() {
         chats,
         setChatIndex,
         chatIndex,
-        setChats,
+        handleChats,
         setDeleteChat,
         chatDetails,
         setChatDetails,
         setInput,
-        setEditMessage,
+        handleEditMessage,
         theme,
         setTheme,
         darkModeModalizeRef,

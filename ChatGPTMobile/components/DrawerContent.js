@@ -35,11 +35,11 @@ const DrawerContent = ({
     chats,
     setChatIndex,
     chatIndex,
-    setChats,
+    handleChats,
     chatDetails,
     setChatDetails,
     setInput,
-    setEditMessage,
+    handleEditMessage,
     theme,
     confirmDeleteVisible,
   } = useContext(AppContext);
@@ -52,7 +52,7 @@ const DrawerContent = ({
   const MAX_CHATS_SHOWN = 10;
   const drawerChatsOnPress = (index) => {
     setInput("");
-    setEditMessage(null);
+    handleEditMessage(null);
     setChatIndex(index);
   };
   const memoizedStickyHeadersData = useMemo(
@@ -62,7 +62,6 @@ const DrawerContent = ({
   const memoizedTheme = useMemo(() => theme, [theme]);
   const memoizedChatIndex = useMemo(() => chatIndex, [chatIndex]);
   const memoizedChatDetails = useMemo(() => chatDetails, [chatDetails]);
-  const memoizedChats = useMemo(() => chats, [chats]);
   const renderItem = useCallback(
     ({ item, index }) => {
       return (
@@ -73,7 +72,7 @@ const DrawerContent = ({
             stickyHeadersData={memoizedStickyHeadersData}
             theme={memoizedTheme}
             chatIndex={memoizedChatIndex}
-            chats={memoizedChats}
+            chats={chats?.current}
             chatDetails={memoizedChatDetails}
             openHoldPreview={openHoldPreview}
             holdPreviewFunctions={holdPreviewFunctions}
@@ -100,7 +99,6 @@ const DrawerContent = ({
       memoizedTheme,
       memoizedChatIndex,
       memoizedChatDetails,
-      memoizedChats,
     ]
   );
 
@@ -142,8 +140,8 @@ const DrawerContent = ({
           style={[styles.drawerOptions, { marginTop: 24 }]}
           onPress={() => {
             const date = new Date();
-            if (!!chats[chats.length - 1][0]) {
-              setChats((oldChats) => [...oldChats, []]);
+            if (!!chats?.current[chats?.current.length - 1][0]) {
+              handleChats([...chats?.current, []]);
               setChatDetails((oldChatTitles) => [
                 ...oldChatTitles.slice(0, chatDetails.length),
                 ["New chat", date.toString()],
@@ -154,7 +152,7 @@ const DrawerContent = ({
               setChatIndex(chatDetails.length - 1);
             }
             setInput("");
-            setEditMessage(null);
+            handleEditMessage(null);
             navigation.closeDrawer();
           }}
         >

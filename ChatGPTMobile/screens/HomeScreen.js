@@ -24,7 +24,7 @@ export const HomeScreen = () => {
     chatIndex,
     chatDetails,
     setInput,
-    setEditMessage,
+    handleEditMessage,
     theme,
     clearConversation,
   } = useContext(AppContext);
@@ -38,7 +38,7 @@ export const HomeScreen = () => {
   const confirmDeleteChatVisible = useSharedValue(false);
   const isFromModal = useSharedValue(false);
   const bottomSheetRef = useRef(null);
-  const [previewData, setPreviewData] = useState(chats[0].slice(0, 10));
+  const [previewData, setPreviewData] = useState();
   const [origin, setOrigin] = useState({ x: 0, y: 0, width: 0, height: 0 });
   const [isHeaderEditable, setIsHeaderEditable] = useState(false);
   const windowWidth = Dimensions.get("window").width;
@@ -55,6 +55,7 @@ export const HomeScreen = () => {
     () => getMonthsAgo(chatDetails, cutOffNum),
     [chatDetails, cutOffNum]
   );
+
   const stickyHeadersData = useMemo(
     () => getMonthsAgoStr(Object.keys(cutOffChatDetailsByMonths)),
     [cutOffChatDetailsByMonths]
@@ -92,20 +93,22 @@ export const HomeScreen = () => {
       confirmDeleteChatVisible.value = true;
     },
     copyChat: (index) => {
-      const chatTexts = chats[index]
-        .map((chat) => chat.result?.text + "*#")
-        .reverse()
-        .toString()
-        .split("*#,")
-        .join("\n\n")
-        .replace("*#", "");
+      const chatTexts = chats.current
+        ? chats?.current[index]
+            .map((chat) => chat.result?.text + "*#")
+            .reverse()
+            .toString()
+            .split("*#,")
+            .join("\n\n")
+            .replace("*#", "")
+        : "";
       Clipboard.setStringAsync(chatTexts);
       bottomSheetRef?.current?.close();
     },
     editTitle: (index) => {
       setChatIndex(index);
       setInput("");
-      setEditMessage(null);
+      handleEditMessage(null);
       setIsHeaderEditable(true);
       bottomSheetRef?.current?.close();
     },

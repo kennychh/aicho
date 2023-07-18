@@ -14,7 +14,8 @@ const DrawerChatsList = ({
   navigation,
 }) => {
   const { chats, theme } = useContext(AppContext);
-  const showHeader = item.length > 1 || !!chats[0][0];
+  const showHeader =
+    item.length > 1 || (chats?.current && !!chats?.current[0][0]);
   return (
     <View>
       <Text
@@ -27,20 +28,26 @@ const DrawerChatsList = ({
       </Text>
       {item
         .map((drawerChatIndex) => {
-          const showItem = chats[drawerChatIndex][0];
-          return (
-            !!showItem && (
-              <DrawerChats
-                theme={theme}
-                onPress={drawerChatsOnPress}
-                selected={chatIndex == drawerChatIndex}
-                openHoldPreview={openHoldPreview}
-                index={drawerChatIndex}
-                holdPreviewFunctions={holdPreviewFunctions}
-                navigation={navigation}
-              />
-            )
-          );
+          if (
+            chats.current &&
+            chats.current.length >= drawerChatIndex &&
+            chats.current[drawerChatIndex]?.length >= 0
+          ) {
+            const showItem = chats?.current[drawerChatIndex][0];
+            return (
+              !!showItem && (
+                <DrawerChats
+                  theme={theme}
+                  onPress={drawerChatsOnPress}
+                  selected={chatIndex == drawerChatIndex}
+                  openHoldPreview={openHoldPreview}
+                  index={drawerChatIndex}
+                  holdPreviewFunctions={holdPreviewFunctions}
+                  navigation={navigation}
+                />
+              )
+            );
+          }
         })
         .reverse()}
     </View>

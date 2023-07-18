@@ -21,31 +21,34 @@ export const Input = ({
   result,
   setError,
   setRetry,
+  showEditMessage,
+  setShowEditMessage,
 }) => {
   const {
     setInput,
-    setEditMessage,
+    handleEditMessage,
     theme,
     input,
     editMessage,
     color,
     chatIndex,
   } = useContext(AppContext);
+
   const windowWidth = Dimensions.get("window").width;
   const [tempInput, setTempInput] = useState("");
   const isInputValid = (str) => {
     return str.replace(/\s+/g, "") != "";
   };
   const showRefreshIcon =
-    (!isInputValid(tempInput) && !loading && result[0]?.isInput) ||
+    (!isInputValid(tempInput) && !loading && result && result[0]?.isInput) ||
     result[0]?.isError;
 
   const showLoadingIcon = loading;
-  const [editable, setEditable] = useState(!result[0]?.isError);
+  const [editable, setEditable] = useState(result && !result[0]?.isError);
   const showInputIcon = () => {
     if (showLoadingIcon) {
       return <ActivityIndicator size="small" color="#fff" />;
-    } else if (editMessage) {
+    } else if (showEditMessage) {
       return <Send width="20px" height="20px" stroke="#fff" />;
     } else if (showRefreshIcon) {
       return <Refresh width="20px" height="20px" stroke="#fff" />;
@@ -55,7 +58,7 @@ export const Input = ({
     return <Send width="20px" height="20px" stroke="#fff" />;
   };
   const getInputIconColor = () => {
-    if (showLoadingIcon || (!isInputValid(tempInput) && !result[0]?.isError)) {
+    if (showLoadingIcon || (!isInputValid(tempInput) && result && !result[0]?.isError)) {
       return { backgroundColor: theme.input.button.disabled.backgroundColor };
     }
     return {};
@@ -64,25 +67,25 @@ export const Input = ({
   useEffect(() => {
     if (tempInput == input) {
       getInputOnPress();
-      // setEditMessage(null);
+      // handleEditMessage(null);
       setTempInput("");
     }
   }, [input]);
 
   useEffect(() => {
-    if (editMessage) {
-      setTempInput(editMessage.result?.text);
+    if (showEditMessage) {
+      setTempInput(editMessage?.current.result?.text);
     } else {
       setTempInput("");
     }
-  }, [editMessage]);
+  }, [showEditMessage]);
 
   useEffect(() => {
     setTempInput("");
   }, [chatIndex]);
 
   const getInputDisabled = () => {
-    if (editMessage) {
+    if (showEditMessage) {
       return !isInputValid(tempInput);
     } else if (showRefreshIcon) {
       return false;
@@ -96,7 +99,8 @@ export const Input = ({
 
   const getInputOnPress = () => {
     setError(false);
-    if (editMessage) {
+    if (showEditMessage) {
+      setShowEditMessage(false);
       onSubmit();
     } else if (isInputValid(tempInput)) {
       onSubmit();
@@ -133,14 +137,14 @@ export const Input = ({
   );
 
   useEffect(() => {
-    setEditable(!!editMessage || !result[0]?.isError);
-  }, [editMessage, result]);
+    setEditable(!!showEditMessage || !result[0]?.isError);
+  }, [showEditMessage, result]);
 
   useEffect(() => {
-    if (editable && !!editMessage) {
+    if (editable && !!showEditMessage) {
       textInputRef.current.focus();
     }
-  }, [editable, editMessage]);
+  }, [editable, showEditMessage]);
 
   return (
     <View style={{ zIndex: 6 }}>
@@ -154,7 +158,7 @@ export const Input = ({
         <View
           style={[
             { overflow: "hidden", borderRadius: 24 },
-            editMessage && { backgroundColor: theme.backgroundColor },
+            showEditMessage && { backgroundColor: theme.backgroundColor },
           ]}
         >
           <BlurView

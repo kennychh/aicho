@@ -32,6 +32,8 @@ const MessageList = ({
   showScrollToButton,
   setShowScrollToButton,
   intensity,
+  showEditMessage,
+  setShowEditMessage,
 }) => {
   const { theme, editMessage, color, chatIndex } = useContext(AppContext);
   const [editMessageHeight, setEditMessageHeight] = useState(0);
@@ -43,9 +45,10 @@ const MessageList = ({
   const [page, setPage] = useState(1);
   const PAGE_LIMIT = 10;
   const pageData = useMemo(
-    () => data.slice(0, PAGE_LIMIT * page),
+    () => (data ? data.slice(0, PAGE_LIMIT * page) : []),
     [data, page]
   );
+  console.log("messagelist");
   const renderItem = useCallback(
     ({ item, index }) => {
       return (
@@ -61,6 +64,7 @@ const MessageList = ({
           listRef={ref}
           setScrollEnabled={setScrollEnabled}
           intensity={intensity}
+          setShowEditMessage={setShowEditMessage}
         />
       );
     },
@@ -97,6 +101,8 @@ const MessageList = ({
       <EditMessage
         inputOffset={inputOffset}
         setEditMessageHeight={setEditMessageHeight}
+        showEditMessage={showEditMessage}
+        setShowEditMessage={setShowEditMessage}
       />
       <FlatList
         ref={ref}
@@ -131,7 +137,7 @@ const MessageList = ({
         contentContainerStyle={{
           // paddingBottom: insets.top + 56,
           // paddingTop: inputOffset,
-          paddingTop: !!editMessage ? 8 : inputOffset + 8,
+          paddingTop: !!showEditMessage ? 8 : inputOffset + 8,
           paddingBottom: insets.top + 56,
         }}
         keyExtractor={keyExtractor}
@@ -150,7 +156,8 @@ function arePropsEqual(prevProps, nextProps) {
     prevProps.regen === nextProps.regen &&
     prevProps.editMessageHeight === nextProps.editMessageHeight &&
     prevProps.intensity === nextProps.intensity &&
-    prevProps.holdMenuRef === nextProps.holdMenuRef
+    prevProps.holdMenuRef === nextProps.holdMenuRef &&
+    prevProps.showEditMessage === nextProps.showEditMessage
   );
 }
 export default memo(MessageList, arePropsEqual);

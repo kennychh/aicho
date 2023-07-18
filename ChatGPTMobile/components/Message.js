@@ -37,8 +37,10 @@ const Message = ({
   setError,
   listRef,
   setScrollEnabled,
+  setShowEditMessage,
 }) => {
-  const { setEditMessage, theme, color, holdMenuRef } = useContext(AppContext);
+  const { handleEditMessage, theme, color, holdMenuRef } =
+    useContext(AppContext);
   const text = item?.result?.text || "";
   const isInput = item?.isInput;
   const isError = item?.isError;
@@ -62,6 +64,7 @@ const Message = ({
   const [showPortal, setShowPortal] = useState(false);
   const menuWidth = useSharedValue(0);
   const menuHeight = useSharedValue(0);
+  console.log("message", index);
   const copyToClipboard = async () => {
     await Clipboard.setStringAsync(text);
   };
@@ -77,7 +80,7 @@ const Message = ({
       title: "Edit",
       icon: <Edit2 stroke={theme.iconColor} width={20} height={20} />,
       onPress: () => {
-        setEditMessage(item);
+        handleEditMessage(item);
         // setInput(text);
       },
     },
@@ -289,7 +292,8 @@ const Message = ({
             hitSlop={{ left: -60 }}
             onSwipeableWillOpen={(direction) => {
               if (direction == "right") {
-                setEditMessage(item);
+                setShowEditMessage(true);
+                handleEditMessage(item);
                 // setInput(text);
               } else {
                 setError(false);

@@ -42,7 +42,7 @@ export const ChatScreen = ({
   const {
     chats,
     chatIndex,
-    setChats,
+    handleChats,
     chatDetails,
     setChatDetails,
     theme,
@@ -60,7 +60,10 @@ export const ChatScreen = ({
     frequencyPenalty,
   } = useContext(AppContext);
   const API_URL = "https://chatgpt-api-blue.vercel.app/api";
-  const result = useMemo(() => chats[chatIndex], [chats, chatIndex]);
+  const result =
+    chats.current && chats.current.length >= chatIndex
+      ? chats?.current[chatIndex]
+      : [[{}]];
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [showBottomToast, setShowBottomToast] = useState(false);
@@ -73,6 +76,7 @@ export const ChatScreen = ({
   const messageModalizeRef = useRef(null);
   const textInputRef = useRef(null);
   const headerTextInputRef = useRef(null);
+  const [showEditMessage, setShowEditMessage] = useState(false);
   const listRef = useRef(null);
   const [showScrollToButton, setShowScrollToButton] = useState(false);
   const panModalVisible = useSharedValue(false);
@@ -148,7 +152,7 @@ export const ChatScreen = ({
   // }, [message]);
 
   // useEffect(() => {
-  //   const errorFound = chats[chatIndex][0]?.isError;
+  //   const errorFound = chats?.current[chatIndex][0]?.isError;
   //   if (errorFound != error) {
   //     setError(errorFound);
   //   }
@@ -157,14 +161,14 @@ export const ChatScreen = ({
   useEffect(() => {
     if (retry != null) {
       toggleExpandMessage();
-      setChats((oldResult) => [
-        ...oldResult?.slice(0, chatIndex),
+      handleChats([
+        ...chats?.current?.slice(0, chatIndex),
         [
-          ...oldResult[chatIndex].filter(
+          ...chats?.current[chatIndex].filter(
             (message) => message?.result?.id !== retry?.result?.id
           ),
         ],
-        ...oldResult?.slice(chatIndex + 1),
+        ...chats?.current?.slice(chatIndex + 1),
       ]);
       onSubmit();
       setRetry(null);
@@ -225,21 +229,21 @@ export const ChatScreen = ({
 
   const getResult = useCallback(
     (result, regenIndex) => {
-      const editMessageIndex = editMessage
+      const editMessageIndex = editMessage?.current
         ? result.findIndex(
-            (message) => message.result?.id == editMessage?.result?.id
+            (message) => message.result?.id == editMessage?.current?.result?.id
           )
         : 0;
       if (regen && result?.length > 1) {
         return result[regenIndex + 1];
       } else if (retry && result?.length > 1) {
         return result[1];
-      } else if (editMessage != null && editMessageIndex >= 1) {
+      } else if (editMessage?.current != null && editMessageIndex >= 1) {
         return result[editMessageIndex + 1];
       }
       return result[0];
     },
-    [editMessage, retry, regen]
+    [editMessage?.current, retry, regen]
   );
 
   const getInput = useCallback(
@@ -249,11 +253,11 @@ export const ChatScreen = ({
         return res;
       } else if (retry != null) {
         return retry;
-      } else if (editMessage != null) {
+      } else if (editMessage?.current != null) {
         return {
           result: {
             text: input,
-            id: editMessage?.result?.id,
+            id: editMessage?.current?.result?.id,
           },
           isInput: true,
           isError: false,
@@ -267,7 +271,7 @@ export const ChatScreen = ({
         isInput: true,
       };
     },
-    [input, editMessage, regen, retry]
+    [input, editMessage?.current, regen, retry]
   );
 
   const onSubmit = useCallback(async () => {
@@ -275,9 +279,9 @@ export const ChatScreen = ({
       return;
     }
     setLoading(true);
-    const editMessageIndex = editMessage
+    const editMessageIndex = editMessage?.current
       ? result.findIndex(
-          (message) => message.result?.id == editMessage?.result?.id
+          (message) => message.result?.id == editMessage?.current?.result?.id
         )
       : -1;
     const regenIndex = regen
@@ -286,39 +290,39 @@ export const ChatScreen = ({
     const res = getResult(result, regenIndex);
     const inputText = getInput(res);
     const shouldCreateTitle =
-      chats[chatIndex].length == 0 ||
-      editMessageIndex + 1 == chats[chatIndex].length ||
-      regenIndex + 2 == chats[chatIndex].length;
-    if (editMessage != null) {
+      chats?.current[chatIndex].length == 0 ||
+      editMessageIndex + 1 == chats?.current[chatIndex].length ||
+      regenIndex + 2 == chats?.current[chatIndex].length;
+    if (editMessage?.current != null) {
       toggleExpandMessage();
-      setChats((oldResult) => [
-        ...oldResult?.slice(0, chatIndex),
-        [inputText, ...oldResult[chatIndex].slice(editMessageIndex + 1)],
-        ...oldResult?.slice(chatIndex + 1),
+      handleChats([
+        ...chats?.current?.slice(0, chatIndex),
+        [inputText, ...chats?.current[chatIndex].slice(editMessageIndex + 1)],
+        ...chats?.current?.slice(chatIndex + 1),
       ]);
     } else if (!regen) {
       toggleExpandMessage();
-      setChats((oldResult) => [
-        ...oldResult?.slice(0, chatIndex),
-        [inputText, ...oldResult[chatIndex]],
-        ...oldResult?.slice(chatIndex + 1),
+      handleChats([
+        ...chats?.current?.slice(0, chatIndex),
+        [inputText, ...chats?.current[chatIndex]],
+        ...chats?.current?.slice(chatIndex + 1),
       ]);
     } else if (regen) {
       toggleExpandMessage();
-      setChats((oldResult) => [
-        ...oldResult?.slice(0, chatIndex),
-        [...oldResult[chatIndex].slice(regenIndex + 1)],
-        ...oldResult?.slice(chatIndex + 1),
+      handleChats([
+        ...chats?.current?.slice(0, chatIndex),
+        [...chats?.current[chatIndex].slice(regenIndex + 1)],
+        ...chats?.current?.slice(chatIndex + 1),
       ]);
     } else if (retry != null) {
       toggleExpandMessage();
-      setChats((oldResult) => [
-        ...oldResult?.slice(0, chatIndex),
+      handleChats([
+        ...chats?.current?.slice(0, chatIndex),
         [
-          ...oldResult[chatIndex].filter(
+          ...chats?.current[chatIndex].filter(
             (message) => message?.result?.id !== retry?.result?.id
           ),
-          ...oldResult?.slice(chatIndex + 1),
+          ...chats?.current?.slice(chatIndex + 1),
         ],
       ]);
     }
@@ -384,28 +388,28 @@ export const ChatScreen = ({
         };
         toggleExpandMessage();
         if (!regen) {
-          setChats((oldResult) => [
-            ...oldResult?.slice(0, chatIndex),
-            [errorInputText, ...oldResult[chatIndex].slice(1)],
-            ...oldResult?.slice(chatIndex + 1),
+          handleChats([
+            ...chats?.current?.slice(0, chatIndex),
+            [errorInputText, ...chats?.current[chatIndex].slice(1)],
+            ...chats?.current?.slice(chatIndex + 1),
           ]);
         } else {
-          setChats((oldResult) => [
-            ...oldResult?.slice(0, chatIndex),
+          handleChats([
+            ...chats?.current?.slice(0, chatIndex),
             [
-              { ...oldResult[chatIndex][0], isError: true },
-              ...oldResult[chatIndex].slice(1),
+              { ...chats?.current[chatIndex][0], isError: true },
+              ...chats?.current[chatIndex].slice(1),
             ],
-            ...oldResult?.slice(chatIndex + 1),
+            ...chats?.current?.slice(chatIndex + 1),
           ]);
         }
         setError(true);
       } else {
         toggleExpandMessage();
-        setChats((oldResult) => [
-          ...oldResult?.slice(0, chatIndex),
-          [data, ...oldResult[chatIndex]],
-          ...oldResult?.slice(chatIndex + 1),
+        handleChats([
+          ...chats?.current?.slice(0, chatIndex),
+          [data, ...chats?.current[chatIndex]],
+          ...chats?.current?.slice(chatIndex + 1),
         ]);
       }
       if (shouldCreateTitle) {
@@ -424,19 +428,19 @@ export const ChatScreen = ({
       };
       toggleExpandMessage();
       if (!regen) {
-        setChats((oldResult) => [
-          ...oldResult?.slice(0, chatIndex),
-          [errorInputText, ...oldResult[chatIndex].slice(1)],
-          ...oldResult?.slice(chatIndex + 1),
+        handleChats([
+          ...chats?.current?.slice(0, chatIndex),
+          [errorInputText, ...chats?.current[chatIndex].slice(1)],
+          ...chats?.current?.slice(chatIndex + 1),
         ]);
       } else {
-        setChats((oldResult) => [
-          ...oldResult?.slice(0, chatIndex),
+        handleChats([
+          ...chats?.current?.slice(0, chatIndex),
           [
-            { ...oldResult[chatIndex][0], isError: true },
-            ...oldResult[chatIndex].slice(1),
+            { ...chats?.current[chatIndex][0], isError: true },
+            ...chats?.current[chatIndex].slice(1),
           ],
-          ...oldResult?.slice(chatIndex + 1),
+          ...chats?.current?.slice(chatIndex + 1),
         ]);
       }
       setError(true);
@@ -469,6 +473,8 @@ export const ChatScreen = ({
               listRef={listRef}
               showScrollToButton={showScrollToButton}
               setShowScrollToButton={setShowScrollToButton}
+              showEditMessage={showEditMessage}
+              setShowEditMessage={setShowEditMessage}
             />
             <Input
               textInputRef={textInputRef}
@@ -482,6 +488,8 @@ export const ChatScreen = ({
               setError={setError}
               setRetry={setRetry}
               listRef={listRef}
+              showEditMessage={showEditMessage}
+              setShowEditMessage={setShowEditMessage}
             />
           </View>
           <Header
