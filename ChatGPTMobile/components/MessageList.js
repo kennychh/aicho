@@ -48,7 +48,6 @@ const MessageList = ({
     () => (data ? data.slice(0, PAGE_LIMIT * page) : []),
     [data, page]
   );
-  console.log("messagelist");
   const renderItem = useCallback(
     ({ item, index }) => {
       return (
