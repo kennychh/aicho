@@ -16,7 +16,7 @@ export const ConfirmDeleteConvosModal = () => {
     handleChats,
     setDeleteChat,
     setChatDetails,
-    setInput,
+    handleInput,
     handleEditMessage,
     theme,
     confirmDeleteVisible,
@@ -29,7 +29,7 @@ export const ConfirmDeleteConvosModal = () => {
         handleChats([[]]);
         setChatIndex(0);
         setChatDetails([["New chat", new Date().toString()]]);
-        setInput("");
+        handleInput("");
         handleEditMessage(null);
       }}
       theme={theme}

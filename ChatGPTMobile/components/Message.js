@@ -64,7 +64,6 @@ const Message = ({
   const [showPortal, setShowPortal] = useState(false);
   const menuWidth = useSharedValue(0);
   const menuHeight = useSharedValue(0);
-  console.log("message", index);
   const copyToClipboard = async () => {
     await Clipboard.setStringAsync(text);
   };
@@ -81,7 +80,7 @@ const Message = ({
       icon: <Edit2 stroke={theme.iconColor} width={20} height={20} />,
       onPress: () => {
         handleEditMessage(item);
-        // setInput(text);
+        // handleInput(text);
       },
     },
   ];
@@ -294,7 +293,7 @@ const Message = ({
               if (direction == "right") {
                 setShowEditMessage(true);
                 handleEditMessage(item);
-                // setInput(text);
+                // handleInput(text);
               } else {
                 setError(false);
                 setRegen(item);

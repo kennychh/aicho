@@ -25,10 +25,9 @@ export const Input = ({
   setShowEditMessage,
 }) => {
   const {
-    setInput,
+    handleInput,
     handleEditMessage,
     theme,
-    input,
     editMessage,
     color,
     chatIndex,
@@ -58,19 +57,22 @@ export const Input = ({
     return <Send width="20px" height="20px" stroke="#fff" />;
   };
   const getInputIconColor = () => {
-    if (showLoadingIcon || (!isInputValid(tempInput) && result && !result[0]?.isError)) {
+    if (
+      showLoadingIcon ||
+      (!isInputValid(tempInput) && result && !result[0]?.isError)
+    ) {
       return { backgroundColor: theme.input.button.disabled.backgroundColor };
     }
     return {};
   };
 
-  useEffect(() => {
-    if (tempInput == input) {
-      getInputOnPress();
-      // handleEditMessage(null);
-      setTempInput("");
-    }
-  }, [input]);
+  // useEffect(() => {
+  //   if (tempInput == input) {
+  //     getInputOnPress();
+  //     // handleEditMessage(null);
+  //     setTempInput("");
+  //   }
+  // }, [input]);
 
   useEffect(() => {
     if (showEditMessage) {
@@ -126,7 +128,10 @@ export const Input = ({
       </View>
       <TouchableOpacity
         onPress={() => {
-          setInput(tempInput);
+          handleInput(tempInput);
+          getInputOnPress();
+          handleEditMessage(null);
+          setTempInput("");
         }}
         style={[styles.button(color), getInputIconColor()]}
         disabled={getInputDisabled()}

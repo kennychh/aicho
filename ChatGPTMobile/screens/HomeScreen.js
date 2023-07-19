@@ -23,7 +23,7 @@ export const HomeScreen = () => {
     setChatIndex,
     chatIndex,
     chatDetails,
-    setInput,
+    handleInput,
     handleEditMessage,
     theme,
     clearConversation,
@@ -107,7 +107,7 @@ export const HomeScreen = () => {
     },
     editTitle: (index) => {
       setChatIndex(index);
-      setInput("");
+      handleInput("");
       handleEditMessage(null);
       setIsHeaderEditable(true);
       bottomSheetRef?.current?.close();

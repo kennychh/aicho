@@ -38,7 +38,7 @@ const DrawerContent = ({
     handleChats,
     chatDetails,
     setChatDetails,
-    setInput,
+    handleInput,
     handleEditMessage,
     theme,
     confirmDeleteVisible,
@@ -51,7 +51,7 @@ const DrawerContent = ({
 
   const MAX_CHATS_SHOWN = 10;
   const drawerChatsOnPress = (index) => {
-    setInput("");
+    handleInput("");
     handleEditMessage(null);
     setChatIndex(index);
   };
@@ -151,7 +151,7 @@ const DrawerContent = ({
             } else {
               setChatIndex(chatDetails.length - 1);
             }
-            setInput("");
+            handleInput("");
             handleEditMessage(null);
             navigation.closeDrawer();
           }}

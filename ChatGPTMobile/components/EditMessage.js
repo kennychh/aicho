@@ -17,7 +17,7 @@ export const EditMessage = ({
   setShowEditMessage,
 }) => {
   const windowWidth = Dimensions.get("window").width;
-  const { handleEditMessage, theme, editMessage, setInput } =
+  const { handleEditMessage, theme, editMessage, handleInput } =
     useContext(AppContext);
 
   const [showEdit, setShowEdit] = useState(false);
@@ -85,7 +85,7 @@ export const EditMessage = ({
             onPress={() => {
               handleEditMessage(null);
               setShowEditMessage(false);
-              setInput("");
+              handleInput("");
             }}
           >
             <Close

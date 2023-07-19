@@ -68,6 +68,7 @@ export const ChatScreen = ({
   const [error, setError] = useState(false);
   const [showBottomToast, setShowBottomToast] = useState(false);
   // const [message, setMessage] = useState(null);
+  const [forceUpdateValue, forceUpdate] = useState(-1);
   const [retry, setRetry] = useState(null);
   const [regen, setRegen] = useState(false);
   const [inputHeight, setInputHeight] = useState(0);
@@ -182,6 +183,12 @@ export const ChatScreen = ({
     }
   }, [regen]);
 
+  // useEffect(() => {
+  //   if (forceUpdateValue >= 0) {
+  //     onSubmit();
+  //   }
+  // }, [forceUpdateValue]);
+
   useEffect(() => {
     if (error) {
       setShowBottomToast(true);
@@ -235,7 +242,7 @@ export const ChatScreen = ({
           )
         : 0;
       if (regen && result?.length > 1) {
-        return result[regenIndex + 1];
+        return result[regenIndex];
       } else if (retry && result?.length > 1) {
         return result[1];
       } else if (editMessage?.current != null && editMessageIndex >= 1) {
@@ -243,7 +250,7 @@ export const ChatScreen = ({
       }
       return result[0];
     },
-    [editMessage?.current, retry, regen]
+    [editMessage, retry, regen]
   );
 
   const getInput = useCallback(
@@ -256,7 +263,7 @@ export const ChatScreen = ({
       } else if (editMessage?.current != null) {
         return {
           result: {
-            text: input,
+            text: input?.current,
             id: editMessage?.current?.result?.id,
           },
           isInput: true,
@@ -265,13 +272,13 @@ export const ChatScreen = ({
       }
       return {
         result: {
-          text: input,
+          text: input?.current,
           id: inputId,
         },
         isInput: true,
       };
     },
-    [input, editMessage?.current, regen, retry]
+    [input, editMessage, regen, retry]
   );
 
   const onSubmit = useCallback(async () => {
@@ -335,7 +342,7 @@ export const ChatScreen = ({
           ? retry.result?.text
           : regen
           ? inputText.result?.text
-          : input;
+          : input?.current;
       const response = await fetch(`${API_URL}/generate`, {
         method: "POST",
         headers: {
@@ -446,8 +453,26 @@ export const ChatScreen = ({
       setError(true);
     } finally {
       setLoading(false);
+      forceUpdate(forceUpdateValue + 1);
     }
-  }, [chats, input, regen, retry, chatIndex, editMessage, chatDetails]);
+  }, [
+    chats,
+    input,
+    regen,
+    retry,
+    chatIndex,
+    editMessage,
+    chatDetails,
+    forceUpdateValue,
+    key,
+    model,
+    keyChanged,
+    retainContext,
+    temperature,
+    presencePenalty,
+    frequencyPenalty,
+    timeout,
+  ]);
   return (
     <SafeAreaProvider>
       <SafeAreaView

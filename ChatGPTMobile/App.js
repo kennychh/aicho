@@ -69,7 +69,7 @@ export default function App() {
   const [isDarkMode, setIsDarkMode] = useState(colorScheme === "dark");
   const [useDeviceSettings, setUseDeviceSettings] = useState(true);
   const [count, setCount] = useState(0);
-  const [input, setInput] = useState("");
+  const input = useRef("");
   const colorScheme = useColorScheme();
   const [theme, setTheme] = useState(getTheme(colorScheme));
   const darkModeModalizeRef = useRef(null);
@@ -242,15 +242,16 @@ export default function App() {
     chats.current = c;
     storeChats();
   };
-
-  console.log("app");
+  const handleInput = (i) => {
+    input.current = i;
+  };
 
   const resetData = () => {
     setDeleteChat(true);
     handleChats([[]]);
     setChatIndex(0);
     setChatDetails([["New chat", new Date().toString()]]);
-    setInput("");
+    handleInput("");
     handleEditMessage(null);
     setKey("test");
     setModel("gpt-3.5-turbo");
@@ -549,7 +550,7 @@ export default function App() {
         setDeleteChat,
         chatDetails,
         setChatDetails,
-        setInput,
+        handleInput,
         handleEditMessage,
         theme,
         setTheme,

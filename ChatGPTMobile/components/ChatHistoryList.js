@@ -15,7 +15,7 @@ const ChatHistoryList = ({
 }) => {
   const {
     theme,
-    setInput,
+    handleInput,
     handleEditMessage,
     setChatIndex,
     chats,
@@ -53,7 +53,7 @@ const ChatHistoryList = ({
               !!chats?.current[chatHistoryIndex][0] && (
                 <ChatHistoryItem
                   onPress={() => {
-                    setInput("");
+                    handleInput("");
                     handleEditMessage(null);
                     setChatIndex(chatHistoryIndex);
                     bottomSheetRef?.current?.close();
