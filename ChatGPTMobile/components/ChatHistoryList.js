@@ -56,7 +56,6 @@ const ChatHistoryList = ({
             ) {
               borderTopRadius = itemIndex == item.length - 2;
             }
-            console.log(chatTitle(chatHistoryIndex), borderTopRadius, itemIndex, item.length);
             return (
               !!chats?.current[chatHistoryIndex][0] && (
                 <ChatHistoryItem
