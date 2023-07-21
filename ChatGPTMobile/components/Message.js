@@ -39,7 +39,6 @@ const Message = ({
   setScrollEnabled,
   setShowEditMessage,
 }) => {
-  console.log("message", index);
   const { handleEditMessage, theme, color, holdMenuRef } =
     useContext(AppContext);
   const text = item?.result?.text || "";
