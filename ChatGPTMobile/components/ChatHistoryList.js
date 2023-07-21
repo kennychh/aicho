@@ -28,11 +28,17 @@ const ChatHistoryList = ({
     typeof chatDetails[index] === "undefined"
       ? chatDetails[index]
       : chatDetails[index][0];
+  const endIndex = chats?.current
+    ? !!chats?.current[chats?.current?.length - 1][0]
+    : 0;
+  const showHeader = item.length > 1 || endIndex;
   return (
     <View style={paddingBottom && { paddingBottom: insets.bottom + 16 }}>
-      <Text style={[styles.drawerChatsHeaderText(theme)]}>
-        {stickyHeadersData[index]}
-      </Text>
+      {showHeader && (
+        <Text style={[styles.drawerChatsHeaderText(theme)]}>
+          {stickyHeadersData[index]}
+        </Text>
+      )}
       {item
         .map((chatHistoryIndex, itemIndex) => {
           if (
@@ -45,7 +51,8 @@ const ChatHistoryList = ({
             if (
               chatHistoryIndex + 1 > 0 &&
               chatHistoryIndex + 1 <= chats?.current.length - 1 &&
-              !chats?.current[chatHistoryIndex + 1][0]
+              !chats?.current[chatHistoryIndex + 1][0] &&
+              item.indexOf(chatHistoryIndex + 1) != -1
             ) {
               borderTopRadius = itemIndex == item.length - 2;
             }

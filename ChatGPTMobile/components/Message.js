@@ -39,6 +39,7 @@ const Message = ({
   setScrollEnabled,
   setShowEditMessage,
 }) => {
+  console.log("message", index);
   const { handleEditMessage, theme, color, holdMenuRef } =
     useContext(AppContext);
   const text = item?.result?.text || "";
@@ -79,6 +80,7 @@ const Message = ({
       title: "Edit",
       icon: <Edit2 stroke={theme.iconColor} width={20} height={20} />,
       onPress: () => {
+        setShowEditMessage(true);
         handleEditMessage(item);
         // handleInput(text);
       },

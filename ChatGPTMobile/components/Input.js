@@ -23,6 +23,7 @@ export const Input = ({
   setRetry,
   showEditMessage,
   setShowEditMessage,
+  forceUpdate,
 }) => {
   const {
     handleInput,

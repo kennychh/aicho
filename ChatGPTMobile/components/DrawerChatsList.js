@@ -14,18 +14,23 @@ const DrawerChatsList = ({
   navigation,
 }) => {
   const { chats, theme } = useContext(AppContext);
-  const showHeader =
-    item.length > 1 || (chats?.current && !!chats?.current[0][0]);
+  const endIndex = chats?.current
+    ? !!chats?.current[chats?.current?.length - 1][0]
+    : 0;
+  const showHeader = item.length > 1 || endIndex;
   return (
     <View>
-      <Text
-        style={[
-          styles.drawerChatsHeaderText(theme),
-          index == 0 ? { paddingTop: 0 } : {},
-        ]}
-      >
-        {showHeader && stickyHeadersData[index]}
-      </Text>
+      {showHeader && (
+        <Text
+          style={[
+            styles.drawerChatsHeaderText(theme),
+            { paddingBottom: 16 },
+            index == 0 || (index != 0 && !endIndex) ? { paddingTop: 0 } : {},
+          ]}
+        >
+          {stickyHeadersData[index]}
+        </Text>
+      )}
       {item
         .map((drawerChatIndex) => {
           if (

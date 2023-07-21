@@ -178,6 +178,7 @@ export const ChatScreen = ({
 
   useEffect(() => {
     if (regen) {
+      forceUpdate(forceUpdateValue + 1);
       onSubmit();
       setRegen(null);
     }
@@ -242,7 +243,7 @@ export const ChatScreen = ({
           )
         : 0;
       if (regen && result?.length > 1) {
-        return result[regenIndex];
+        return result[regenIndex + 1];
       } else if (retry && result?.length > 1) {
         return result[1];
       } else if (editMessage?.current != null && editMessageIndex >= 1) {
@@ -472,6 +473,7 @@ export const ChatScreen = ({
     presencePenalty,
     frequencyPenalty,
     timeout,
+    showEditMessage,
   ]);
   return (
     <SafeAreaProvider>
@@ -515,6 +517,7 @@ export const ChatScreen = ({
               listRef={listRef}
               showEditMessage={showEditMessage}
               setShowEditMessage={setShowEditMessage}
+              forceUpdate={forceUpdate}
             />
           </View>
           <Header
