@@ -31,7 +31,7 @@ const ChatHistoryList = ({
   const endIndex = chats?.current
     ? !!chats?.current[chats?.current?.length - 1][0]
     : 0;
-  const showHeader = item.length > 1 || endIndex;
+  const showHeader = item.length >= 1 || endIndex;
   return (
     <View style={paddingBottom && { paddingBottom: insets.bottom + 16 }}>
       {showHeader && (
@@ -56,6 +56,7 @@ const ChatHistoryList = ({
             ) {
               borderTopRadius = itemIndex == item.length - 2;
             }
+            console.log(chatTitle(chatHistoryIndex), borderTopRadius, itemIndex, item.length);
             return (
               !!chats?.current[chatHistoryIndex][0] && (
                 <ChatHistoryItem

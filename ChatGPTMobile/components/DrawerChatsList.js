@@ -16,8 +16,11 @@ const DrawerChatsList = ({
   const { chats, theme } = useContext(AppContext);
   const endIndex = chats?.current
     ? !!chats?.current[chats?.current?.length - 1][0]
+      ? true
+      : index != 0 || item.length > 1
     : 0;
-  const showHeader = item.length > 1 || endIndex;
+
+  const showHeader = item.length >= 1 && endIndex;
   return (
     <View>
       {showHeader && (
@@ -25,7 +28,12 @@ const DrawerChatsList = ({
           style={[
             styles.drawerChatsHeaderText(theme),
             { paddingBottom: 16 },
-            index == 0 || (index != 0 && !endIndex) ? { paddingTop: 0 } : {},
+            index == 0 ||
+            (index == 1 &&
+              chats?.current &&
+              !!!chats?.current[chats?.current?.length - 1][0])
+              ? { paddingTop: 0 }
+              : {},
           ]}
         >
           {stickyHeadersData[index]}
