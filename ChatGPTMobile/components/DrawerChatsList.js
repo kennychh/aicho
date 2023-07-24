@@ -12,6 +12,7 @@ const DrawerChatsList = ({
   holdPreviewFunctions,
   drawerChatsOnPress,
   navigation,
+  drawerChatData,
 }) => {
   const { chats, theme } = useContext(AppContext);
   const endIndex = chats?.current
@@ -31,7 +32,8 @@ const DrawerChatsList = ({
             index == 0 ||
             (index == 1 &&
               chats?.current &&
-              !!!chats?.current[chats?.current?.length - 1][0])
+              !!!chats?.current[chats?.current?.length - 1][0] &&
+              drawerChatData[index - 1].length <= 1)
               ? { paddingTop: 0 }
               : {},
           ]}

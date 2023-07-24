@@ -78,6 +78,7 @@ const DrawerContent = ({
             holdPreviewFunctions={holdPreviewFunctions}
             drawerChatsOnPress={drawerChatsOnPress}
             navigation={navigation}
+            drawerChatData={drawerChatData}
           />
           {index == drawerChatData.length - 1 &&
             chatDetails.length > MAX_CHATS_SHOWN && (
