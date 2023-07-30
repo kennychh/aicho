@@ -38,7 +38,7 @@ const ChatHistoryList = ({
           const isLastIndex = itemIndex == item.length - 1;
           const showHeader =
             isLastIndex &&
-            (item.length >= 1 || !!chats?.current[chatHistoryIndex][0]);
+            (item.length > 1 || !!chats?.current[chatHistoryIndex][0]);
           if (chats.current && chats.current.length >= chatHistoryIndex) {
             let borderTopRadius = itemIndex == item.length - 1;
             if (
